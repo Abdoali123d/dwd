@@ -38,7 +38,7 @@
         container.appendChild(p1);
         container.appendChild(p2);
         document.documentElement.appendChild(container);
-        throw new Error("حماية المحتوى: تشغيل غير مصرح به.");
+        return;
     }
 
     const style = document.createElement('style');

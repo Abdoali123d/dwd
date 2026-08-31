@@ -12,6 +12,11 @@
     // إعفاء الصفحات العامة التي لا تحتاج حماية
     const isPublic = path.endsWith('index.html') && !path.includes('/dwd/') ||
         path === '/' ||
+        path === '/home' ||
+        path === '/home.html' ||
+        path === '/index.html' ||
+        path === '/login' ||
+        path === '/login.html' ||
         path === '/dwd-it/' ||
         path === '/dwd-it2' ||
         path.endsWith('/dwd-it/index.html') ||

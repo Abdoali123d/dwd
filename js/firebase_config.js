@@ -5,6 +5,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+const FALLBACK_CONFIG = {
+    apiKey: "AIzaSyBYk-L2-XU9FQRyXnb2b7zLa6gQ6pjyePY",
+    authDomain: "dwd-it2-92aa4.firebaseapp.com",
+    projectId: "dwd-it2-92aa4",
+    storageBucket: "dwd-it2-92aa4.firebasestorage.app",
+    messagingSenderId: "939613662564",
+    appId: "1:939613662564:web:4b6142cd66b17f28d3de71",
+    measurementId: "G-YSH146MSCB"
+};
+
 const getConfig = () => {
     if (typeof window !== 'undefined' && window.DWD_FIREBASE_CONFIG) {
         return window.DWD_FIREBASE_CONFIG;
@@ -20,8 +30,8 @@ const getConfig = () => {
             measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID
         };
     }
-    console.warn('Firebase configuration not found. Set VITE_FIREBASE_API_KEY and related env vars, or define window.DWD_FIREBASE_CONFIG.');
-    return null;
+    console.warn('Firebase configuration not found. Using fallback config.');
+    return FALLBACK_CONFIG;
 };
 
 const firebaseConfig = getConfig();

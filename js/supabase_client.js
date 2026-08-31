@@ -20,8 +20,9 @@ const getEnv = (key, fallback) => {
 
 // مفاتيح الـ Fallback removed for security.
 // App requires explicit configuration via environment or window.appSupabaseConfig.
-const SB_URL = getEnv("NEXT_PUBLIC_SUPABASE_URL", "");
-const SB_KEY = getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "");
+// Note: Supabase anon key is public by design; security is enforced by RLS.
+const SB_URL = getEnv("NEXT_PUBLIC_SUPABASE_URL", "https://suziirfasrahhaqffymz.supabase.co");
+const SB_KEY = getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1emlpcmZhc3JhaGhhcWZmeW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzNDcwODUsImV4cCI6MjA4MTkyMzA4NX0.ev0RubDLAVtnPxaTfQotPGN01dCFymBAwytLwebuN9Y");
 
 // إنشاء نسخة من العميل
 let supabaseClient = null;
