@@ -101,28 +101,45 @@ export default function middleware(request) {
     // This is a first layer; application logic MUST re-verify auth server-side.
     const protectedRoutes = [
         '/home.html',
+        '/home',
         '/profile.html',
+        '/profile',
         '/DWD/schedule/student-view.html',
+        '/DWD/schedule/student-view',
         '/DWD/schedule/index.html',
+        '/DWD/schedule/index',
         '/DWD/materials/index.html',
+        '/DWD/materials/index',
         '/professor.html',
+        '/professor',
         '/DWD/schedule/professor.html',
+        '/DWD/schedule/professor',
         '/DWD/schedule/admin-dashboard.html',
+        '/DWD/schedule/admin-dashboard',
         '/DWD/schedule/grading.html',
+        '/DWD/schedule/grading',
         '/DWD/schedule/grades-dashboard.html',
+        '/DWD/schedule/grades-dashboard',
         '/DWD/downloads/index.html',
+        '/DWD/downloads/index',
         '/DWD/attendance/index.html',
+        '/DWD/attendance/index',
         '/DWD/news/index.html',
+        '/DWD/news/index',
         '/DWD/training-weeks/index.html',
+        '/DWD/training-weeks/index',
         '/DWD/Ai-Nano/exams/index.html',
-        '/DWD/about/index.html'
+        '/DWD/Ai-Nano/exams/index',
+        '/DWD/about/index.html',
+        '/DWD/about/index'
     ];
     const isProtected = protectedRoutes.some(route => pathname.toLowerCase() === route.toLowerCase());
 
     if (isProtected) {
         const cookies = request.headers.get('cookie') || '';
         if (!cookies.includes('dwd_session=')) {
-            return Response.redirect(new URL('/login.html', request.url), 302);
+            const loginUrl = new URL('/login.html', request.url);
+            return Response.redirect(loginUrl, 302);
         }
     }
 

@@ -2,7 +2,11 @@
     const allowedDomains = ['dwd-edu.vercel.app', 'localhost', '127.0.0.1', ''];
     const hostname = window.location.hostname;
 
-    if (!allowedDomains.includes(hostname) && window.location.protocol !== 'file:') {
+    // Allow Vercel preview/production deployments for this project
+    const isVercelDomain = hostname.endsWith('.vercel.app');
+    const isAllowedDomain = allowedDomains.includes(hostname) || isVercelDomain;
+
+    if (!isAllowedDomain && window.location.protocol !== 'file:') {
         const msg = document.createElement('h1');
         msg.style.cssText = 'text-align:center; margin-top:100px; color:red; font-family:Cairo,sans-serif;';
         msg.textContent = '(دخول غير مصرح بك بل دخول)';
@@ -12,8 +16,10 @@
 
     const strictAllowed = ['dwd-edu.vercel.app', 'localhost', '127.0.0.1'];
     const isFileProtocol = window.location.protocol === 'file:';
+    const isDevProtocol = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+    const isAllowedStrict = strictAllowed.includes(hostname) || isVercelDomain;
 
-    if (isFileProtocol || (!strictAllowed.includes(hostname) && hostname !== '')) {
+    if (!isFileProtocol && isDevProtocol && !isAllowedStrict && hostname !== '') {
         const container = document.createElement('div');
         container.style.cssText = 'display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:red;font-family:Cairo,sans-serif;font-size:24px;text-align:center;flex-direction:column;direction:rtl;';
         const h1 = document.createElement('h1');

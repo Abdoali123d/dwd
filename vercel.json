@@ -7,10 +7,21 @@
                 }
         },
         "rewrites": [
-                
                 {
                         "source": "/login",
                         "destination": "/login.html"
+                },
+                {
+                        "source": "/",
+                        "destination": "/home.html"
+                },
+                {
+                        "source": "/home",
+                        "destination": "/home.html"
+                },
+                {
+                        "source": "/profile",
+                        "destination": "/DWD/profile/index.html"
                 },
                 {
                         "source": "/materials",
@@ -26,6 +37,10 @@
                 },
                 {
                         "source": "/DWD/schedule",
+                        "destination": "/DWD/schedule/index.html"
+                },
+                {
+                        "source": "/schedule",
                         "destination": "/DWD/schedule/index.html"
                 },
                 {
@@ -49,8 +64,28 @@
                         "destination": "/DWD/training-weeks/index.html"
                 },
                 {
-                        "source": "/profile",
-                        "destination": "/DWD/profile/index.html"
+                        "source": "/about",
+                        "destination": "/DWD/about/index.html"
+                },
+                {
+                        "source": "/student-view",
+                        "destination": "/DWD/schedule/student-view.html"
+                },
+                {
+                        "source": "/admin",
+                        "destination": "/DWD/schedule/admin.html"
+                },
+                {
+                        "source": "/admin-dashboard",
+                        "destination": "/DWD/schedule/admin-dashboard.html"
+                },
+                {
+                        "source": "/grading",
+                        "destination": "/DWD/schedule/grading.html"
+                },
+                {
+                        "source": "/grades-dashboard",
+                        "destination": "/DWD/schedule/grades-dashboard.html"
                 },
                 {
                         "source": "/api/auth/batu-login",
@@ -88,7 +123,7 @@
                                 },
                                 {
                                         "key": "Content-Security-Policy",
-                                        "value": "default-src 'self'; script-src 'self' https://www.gstatic.com https://*.gstatic.com https://www.google.com https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://s.ytimg.com; style-src 'self' https://fonts.googleapis.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: https://placehold.co; media-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.gstatic.com https://firebasestorage.googleapis.com https://*.supabase.co https://*.supabase.com wss://*.supabase.co wss://*.supabase.com https://www.google.com https://generativelanguage.googleapis.com https://cdn.jsdelivr.net https://va.vercel-scripts.com https://unpkg.com https://content-firebaseappcheck.googleapis.com https://*.cartocdn.com https://*.arcgisonline.com https://ui-avatars.com https://placehold.co https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://dwd-it.app.n8n.cloud; frame-src 'self' https://www.google.com https://www.recaptcha.net https://www.youtube.com https://youtube.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+                                        "value": "default-src 'self'; script-src 'self' https://www.gstatic.com https://*.gstatic.com https://www.google.com https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/ https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://s.ytimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: https://placehold.co; media-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.gstatic.com https://firebasestorage.googleapis.com https://*.supabase.co https://*.supabase.com wss://*.supabase.co wss://*.supabase.com https://www.google.com https://generativelanguage.googleapis.com https://cdn.jsdelivr.net https://va.vercel-scripts.com https://unpkg.com https://content-firebaseappcheck.googleapis.com https://*.cartocdn.com https://*.arcgisonline.com https://ui-avatars.com https://placehold.co https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://dwd-it.app.n8n.cloud; frame-src 'self' https://www.google.com https://www.recaptcha.net https://www.youtube.com https://youtube.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
                                 },
                                 {
                                         "key": "X-DNS-Prefetch-Control",
