@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل عبد الله للمناقشة والامتحانات</title>
+
+    <!-- خط كايرو للقراءة المريحة -->
+    
+    <!-- Tailwind CSS للتنسيق السريع -->
+    <script src="../assets/js/tailwind.js"></script>
+    <!-- Font Awesome للأيقونات -->
+    
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            /* لون خلفية غامق مريح للعين */
+            color: #e2e8f0;
+            line-height: 1.8;
+        }
+
+        .section-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Consolas', monpace;
+            direction: ltr;
+            display: inline-block;
+            background-color: #0f172a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: #38bdf8;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #334155;
+            direction: ltr;
+            /* الكود دائماً إنجليزي من اليسار لليمين */
+            text-align: left;
+            margin: 1rem 0;
+        }
+
+        .highlight {
+            color: #fca5a5;
+            /* لون مميز للشرح داخل الكود */
+            font-weight: bold;
+        }
+
+        h2 {
+            border-right: 4px solid #38bdf8;
+            padding-right: 12px;
+            margin-bottom: 1.5rem;
+            color: #38bdf8;
+        }
+
+        .tip-box {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../assets/css/fontawesome-all.min.css">
+    <link rel="manifest" href="../manifest.json">
+</head>
+
+<body class="p-6 md:p-12 max-w-5xl mx-auto">
+
+    <!-- Header -->
+    <header class="text-center mb-16">
+        <h1
+            class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-4">
+            خارطة طريق البطل عبد الله 🚀
+        </h1>
+        <p class="text-xl text-slate-400">
+            دليلك الشامل لمناقشة المشروع وامتحان الـ . لا تقلق، "أنت قدها" 💪.
+        </p>
+    </header>
+
+    <!-- 1. الخطة الدراسية -->
+    <section class="section-card border-emerald-500/30">
+        <h2 class="text-3xl font-bold flex items-center gap-3">
+            <i class="fas fa-calendar-alt text-emerald-400"></i>
+            خطة الطوارئ (السبت - الخميس)
+        </h2>
+
+        <div class="space-y-6">
+            <div class="bg-slate-800/50 p-4 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-2">📅 الليلة + الإثنين (التركيز على الـ )</h3>
+                <p class="text-slate-300">امتحان الـ  محتاج حفظ وفهم للخوارزميات. بما إنك عندك خلفية برمجية، ركز على:
+                </p>
+                <ul class="list-disc list-inside text-slate-400 mt-2 space-y-1">
+                    <li>فيديوهات شرح <strong>Process Scheduling (FCFS, SJF, Round Robin)</strong>.</li>
+                    <li>فهم الـ <strong>Deadlocks</strong> وكيفية تجنبها.</li>
+                    <li>الفرق بين <strong>Process</strong> و <strong>Thread</strong>.</li>
+                    <li>ذاكر الـ  بنسبة <strong>70%</strong> من وقتك في اليومين دول.</li>
+                    <li>الـ <strong>30%</strong> الباقية: اقرأ هذا الملف وتصفح كود المشروع قراءة فقط.</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-800/50 p-4 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-2">📅 الثلاثاء (يوم الكود العملي)</h3>
+                <p class="text-slate-300">اليوم ده مخصص للمشروع والـ Web:</p>
+                <ul class="list-disc list-inside text-slate-400 mt-2 space-y-1">
+                    <li>اتفرج على فيديوهات عن الـ <strong>SPA (Single Page Application)</strong> و <strong>DOM
+                            Manipulation</strong>.</li>
+                    <li>افتح ملف <code>server.js</code> وحاول تغير رسالة بسيطة وتعمل <code>npm start</code> وتشوف
+                        التغيير (ده هيديك ثقة).</li>
+                    <li>راجع "شرح الكود" الموجود في الأسفل بالتفصيل.</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-800/50 p-4 rounded-xl">
+                <h3 class="text-xl font-bold text-white mb-2">📅 الأربعاء (ليلة الامتحان والمناقشة)</h3>
+                <p class="text-slate-300">مراجعة نهائية وهدوء:</p>
+                <ul class="list-disc list-inside text-slate-400 mt-2 space-y-1">
+                    <li>الصبح: مراجعة سريعة لقوانين الـ  ومسائل الـ Scheduling.</li>
+                    <li>بالليل: جهز اللابتوب، اتأكد إن المشروع شغال (Run <code>npm start</code>)، وجهز جملتين تتكلم بيهم
+                        عن دورك في المشروع.</li>
+                    <li><strong>نام بدري!</strong> التركيز أهم من المذاكرة لغاية الصبح.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. شرح الكود والتقنيات (المهم للمناقشة) -->
+    <section class="section-card border-blue-500/30">
+        <h2 class="text-3xl font-bold flex items-center gap-3">
+            <i class="fas fa-code text-blue-400"></i>
+            شرح الكود (عشان لما الدكتورة تسألك)
+        </h2>
+        <p class="mb-6 text-slate-300">
+            دي أهم الأجزاء اللي استخدمناها في المشروع، مشروحين ببساطة عشان لو اتسألت "الكود ده بيعمل إيه؟".
+        </p>
+
+        <!-- Topic 1: Backend & Server -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-white mb-3">1. السيرفر (server.js) ودور Node.js</h3>
+            <p class="text-slate-400 mb-2">
+                احنا استخدمنا <strong>Node.js</strong> عشان نعمل "سيرفر بسيط" يشغل الموقع ويتحكم في البيانات.
+            </p>
+            <div class="tip-box mb-4">
+                <strong>سؤال متوقع:</strong> "ليه استخدمتوا Node.js؟"<br>
+                <strong>الإجابة:</strong> "عشان هو بيسمح لنا نستخدم JavaScript في الـ Backend والـ Frontend، وده بيسهل
+                الربط بينهم. كمان هو سريع في التعامل مع الـ API."
+            </div>
+            <pre><code class="language-javascript">const express = require('express'); // مكتبة لعمل السيرفر بسهولة
+const app = express();
+
+// ده اسمه Endpoint أو رابط الـ API
+// لما الفرونت إند يطلب البيانات، السيرفر بيرد عليه من هنا
+app.pt('/api/data', (req, res) => {
+    // req = الطلب اللي جاي من المستخدم
+    // res = الرد اللي السيرفر هيرسله
+    res.json({
+        users: LOCAL_USERS, // بنرجّع قائمة المستخدمين
+        doctors: DOCTOR_ACCOUNTS // وقائمة الدكاترة
+    });
+});</code></pre>
+        </div>
+
+        <!-- Topic 2: Fetch API -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-white mb-3">2. جلب البيانات (Fetch API)</h3>
+            <p class="text-slate-400 mb-2">
+                إزاي الصفحة بتجيب البيانات من السيرفر من غير ما تفضل ثابتة؟ بنستخدم دالة اسمها <code>fetch</code>.
+            </p>
+            <div class="tip-box mb-4">
+                <strong>سؤال متوقع:</strong> "يعني إيه Async / Await؟"<br>
+                <strong>الإجابة:</strong> "يعني الكود بيستنى (Await) البيانات تيجي من السيرفر (لأنها بتاخد وقت) قبل ما
+                يكمل تنفيذ باقي الأوامر، عشان مايحصلش خطأ وإن الصفحة تهنج."
+            </div>
+            <pre><code class="language-javascript">async function getData() {
+    try {
+        // بنطلب البيانات من الرابط ده
+        const response = await fetch('http://localht:3000/api/data');
+        
+        // بنحول البيانات اللي جت لـ JSON (صيغة بيفهمها الجافاسكريبت)
+        const data = await response.json();
+        
+        // console.log(data); // هنا البيانات بقت معانا نقدر نعرضها  [Security Fix]
+    } catch (error) {
+        console.error("حصل خطأ في الاتصال!", error);
+    }
+}</code></pre>
+        </div>
+
+        <!-- Topic 3: LocalStorage -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-white mb-3">3. التخزين المحلي (LocalStorage)</h3>
+            <p class="text-slate-400 mb-2">
+                ليه لما بعمل ريفرش مش بخرج من الموقع؟ عشان بنحفظ بيانات الدخول في "ذاكرة المتصفح".
+            </p>
+            <pre><code class="language-javascript">// حفظ البيانات (زي ما بنشيل حاجة في الدرج)
+localStorage.setItem("currentUser", JSON.stringify(userObject));
+
+// استرجاع البيانات (زي ما بنفتح الدرج نطلع الحاجة)
+const user = JSON.parse(localStorage.getItem("currentUser"));
+
+// لو مفيش يوزر، رجعه لصفحة تسجيل الدخول
+if (!user) {
+    window.location.href = "index.html";
+}</code></pre>
+        </div>
+
+        <!-- Topic 4: SPA (Swup.js) -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-white mb-3">4. التنقل السلس (SPA / Swup.js)</h3>
+            <p class="text-slate-400 mb-2">
+                لاحظت إن الانتقال بين الصفحات ناعم ومش بيعمل وميض أبيض؟ ده بسبب تقنية <strong>Single Page Application
+                    (SPA)</strong> باستخدام مكتبة اسمها <strong>Swup.js</strong>.
+            </p>
+            <div class="tip-box mb-4">
+                <strong>الفكرة:</strong> المكتبة دي بتغير بس الجزء اللي في النص (المحتوى) وبتسيب الهيدر والفوتر ثابتين،
+                فالموقع بيبقى أسرع وأشيك.
+            </div>
+            <pre><code class="language-javascript">// تعريف المكتبة وتحديد "الحاوية" اللي هتتغير
+const swup = new Swup({
+    containers: ['#swup-main'] // أي حاجة جوه الـ div ده هتتغير لما نضغط على رابط
+});</code></pre>
+        </div>
+
+        <!-- Topic 5: Array Methods -->
+        <div class="mb-8">
+            <h3 class="text-2xl font-bold text-white mb-3">5. دوال المصفوفات (Array Methods)</h3>
+            <p class="text-slate-400 mb-2">
+                بما إنك عارف الـ Loops، فيه طرق أحدث وأشيك للتعامل مع البيانات (Arrays):
+            </p>
+            <ul class="list-disc list-inside text-slate-400 mb-4">
+                <li><code>.find()</code>: بتدور على عنصر واحد (زي لما تدور على يوزر بالإيميل بتاعه).</li>
+                <li><code>.filter()</code>: بتصفي البيانات (زي لما تجيب الطلاب الناجحين بس).</li>
+                <li><code>.map()</code>: بتحول البيانات لشكل تاني (زي تحويل قائمة بيانات لكروت HTML).</li>
+            </ul>
+            <pre><code class="language-javascript">// مثال: البحث عن مستخدم
+const foundUser = users.find(u => u.email === "me@test.com");
+
+// مثال: فلترة الدرجات
+const highScores = students.filter(s => s.score > 50);</code></pre>
+        </div>
+    </section>
+
+    <!-- 3. فيديوهات مقترحة -->
+    <section class="section-card border-purple-500/30">
+        <h2 class="text-3xl font-bold flex items-center gap-3">
+            <i class="fab fa-youtube text-purple-400"></i>
+            ماذا تبحث عنه في يوتيوب؟
+        </h2>
+        <p class="text-slate-300 mb-4">
+            عشان وقتك ضيق، ابحث بالعناوين دي واتفرج على فيديوهات قصيرة (5-10 دقايق):
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="https://www.youtube.com/results?search_query=javascript+fetch+api+explained+arabic" target="_blank"
+                class="block p-4 bg-slate-800 rounded-lg hover:bg-purple-900/20 transition border border-slate-700">
+                <i class="fas fa-play-circle text-purple-400 ml-2"></i> شرح <strong>Fetch API</strong> (كيف نكلم
+                السيرفر).
+            </a>
+            <a href="https://www.youtube.com/results?search_query=javascript+async+await+explained+arabic"
+                target="_blank"
+                class="block p-4 bg-slate-800 rounded-lg hover:bg-purple-900/20 transition border border-slate-700">
+                <i class="fas fa-play-circle text-purple-400 ml-2"></i> شرح <strong>Async / Await</strong> (بساطة).
+            </a>
+            <a href="https://www.youtube.com/results?search_query=what+is+spa+single+page+application+arabic"
+                target="_blank"
+                class="block p-4 bg-slate-800 rounded-lg hover:bg-purple-900/20 transition border border-slate-700">
+                <i class="fas fa-play-circle text-purple-400 ml-2"></i> يعني إيه <strong>SPA (Single Page
+                    Application)</strong>.
+            </a>
+            <a href="https://www.youtube.com/results?search_query=javascript+dom+manipulation+arabic" target="_blank"
+                class="block p-4 bg-slate-800 rounded-lg hover:bg-purple-900/20 transition border border-slate-700">
+                <i class="fas fa-play-circle text-purple-400 ml-2"></i> شرح <strong>DOM Manipulation</strong> (تغيير
+                محتوى الصفحة بالكود).
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-slate-500 mt-12 pb-8">
+        <p>تم إعداد هذا الملف خصيصاً للبطل <strong>عبد الله</strong>.</p>
+        <p class="text-sm mt-2">بالتوفيق في المناقشة والامتحان، أنت بذلت مجهود كبير والمشروع شكله مشرف! 🌟</p>
+    </footer>
+
+</body>
+
+</html>

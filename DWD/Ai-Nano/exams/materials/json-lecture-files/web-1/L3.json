@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/web-1/L3.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: نماذج HTML (Forms) 📝</h3>\n    <p class=\"mb-4 text-lg\">نماذج HTML هي الطريقة الأساسية لجمع مدخلات المستخدم (User Input) على صفحة الويب وإرسالها إلى الخادم (Server) للمعالجة (Processing). زي فورم تسجيل الدخول أو فورم التواصل.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">العناصر الأساسية للفورم:</h4>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>\n            <strong>&lt;form&gt;:</strong> الوسم الرئيسي اللي بيحتوي كل عناصر الفورم. ليه خصائص مهمة:\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li><code class=\"text-white\">action=\"/action_page.php\"</code>: بتحدد عنوان الـ URL (الملف الموجود على السيرفر) اللي هيستقبل ويعالج بيانات الفورم لما المستخدم يضغط Submit.</li>\n                <li><code class=\"text-white\">method=\"GET|POST\"</code>: بتحدد طريقة إرسال البيانات (GET: البيانات بتظهر في الـ URL، POST: البيانات بتتبعت في جسم الطلب ومبتظهرش).</li>\n                <li><code class=\"text-white\">target=\"_blank|_self\"</code>: بتحدد فين هتظهر نتيجة معالجة الفورم (_blank: في تاب جديد، _self: في نفس التاب).</li>\n            </ul>\n        </li>\n        <li>\n            <strong>&lt;input&gt;:</strong> العنصر الأكثر استخدامًا لإنشاء حقول الإدخال. نوع الحقل بيتحدد بخاصية <code class=\"text-white\">type</code>:\n            <ul class=\"list-disc list-inside ml-6 mt-1 grid grid-cols-1 md:grid-cols-2 gap-x-4\">\n                <li><code class=\"text-white\">type=\"text\"</code>: حقل نصي لسطر واحد.</li>\n                <li><code class=\"text-white\">type=\"password\"</code>: حقل كلمة مرور (بيظهر نجوم).</li>\n                <li><code class=\"text-white\">type=\"radio\"</code>: زر اختيار واحد من متعدد (لازم يكون ليهم نفس الـ <code class=\"text-white\">name</code> عشان يختار واحد بس).</li>\n                <li><code class=\"text-white\">type=\"checkbox\"</code>: مربع اختيار يسمح باختيار صفر أو أكثر.</li>\n                <li><code class=\"text-white\">type=\"submit\"</code>: زر لإرسال بيانات الفورم للـ <code class=\"text-white\">action</code> المحدد.</li>\n                <li><code class=\"text-white\">type=\"button\"</code>: زر عادي ممكن نستخدمه مع JavaScript.</li>\n                <li>(أنواع تانية كتير زي email, number, date, file, etc.)</li>\n            </ul>\n             <p class=\"mt-2 text-yellow-400\">**مهم جدًا:** أي حقل <code class=\"text-white\">&lt;input&gt;</code> لازم يكون ليه خاصية <code class=\"text-white\">name=\"...\"</code> عشان قيمته تتبعت للسيرفر مع الفورم. لو نسيت الـ <code class=\"text-white\">name</code>، القيمة مش هتتبعت!</p>\n        </li>\n        <li>\n            <strong>&lt;label for=\"...\"&gt;:</strong> بيعمل عنوان وصفي لحقل الإدخال. خاصية <code class=\"text-white\">for</code> لازم قيمتها تكون نفس قيمة <code class=\"text-white\">id</code> بتاع الـ <code class=\"text-white\">&lt;input&gt;</code> المرتبط بيه. ده بيحسن الـ accessibility (لما تدوس على الـ label، الـ input بيشتغل).\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\n&lt;label for=\"fname\"&gt;First name:&lt;/label&gt;&lt;br&gt;\n&lt;input type=\"text\" id=\"fname\" name=\"fname\"&gt;\n            </code></pre>\n        </li>\n        <li>\n            <strong>&lt;select id=\"...\" name=\"...\"&gt;:</strong> بيعمل قائمة منسدلة (Drop-down list).\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li><strong>&lt;option value=\"...\"&gt;:</strong> كل عنصر جوه القائمة. الـ <code class=\"text-white\">value</code> هي اللي بتتبعت للسيرفر.</li>\n                <li>ممكن نضيف خاصية <code class=\"text-white\">selected</code> لوسم <code class=\"text-white\">&lt;option&gt;</code> عشان يكون هو الاختيار الافتراضي.</li>\n            </ul>\n             <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\n&lt;label for=\"cars\"&gt;Choose a car:&lt;/label&gt;\n&lt;select id=\"cars\" name=\"cars\"&gt;\n  &lt;option value=\"volvo\"&gt;Volvo&lt;/option&gt;\n  &lt;option value=\"fiat\" selected&gt;Fiat&lt;/option&gt;\n&lt;/select&gt;\n            </code></pre>\n        </li>\n        <li>\n            <strong>&lt;textarea name=\"...\" rows=\"...\" cols=\"...\"&gt;:</strong> بيعمل حقل نصي متعدد الأسطر. <code class=\"text-white\">rows</code> و <code class=\"text-white\">cols</code> بيحددوا حجمه الظاهر.\n        </li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: مقدمة لـ CSS (Box Model, Margins, Padding) 📦</h3>\n    <p class=\"mb-4 text-lg\">بنكمل كلامنا عن CSS وبنركز على ازاي الـ CSS بيتعامل مع كل عنصر HTML كأنه صندوق (Box).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Syntax (مراجعة):</h4>\n    <p class=\"mb-4\">قاعدة الـ CSS بتتكون من:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**Selector (مُحدِّد):** بيختار عنصر الـ HTML اللي عايزين ننسقه (زي <code class=\"text-white\">h1</code>, <code class=\"text-white\">.center</code>, <code class=\"text-white\">#para1</code>).</li>\n        <li>**Declaration Block (كتلة التعريف):** جوا أقواس <code class=\"text-white\">{ }</code>، بتحتوي على تعريف أو أكتر.</li>\n        <li>**Declaration (تعريف):** بيتكون من <code class=\"text-white\">Property</code> (خاصية زي <code class=\"text-white\">color</code>) و <code class=\"text-white\">Value</code> (قيمة زي <code class=\"text-white\">blue</code>)، بينهم <code class=\"text-white\">:</code> وبينتهوا بـ <code class=\"text-white\">;</code>.</li>\n    </ul>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto my-4\"><code>\n/* Selector: p, Property: color, Value: red */\np {\n  color: red;\n  text-align: center; /* Another declaration */\n}\n    </code></pre>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مُحدِّدات CSS (Selectors - مراجعة):</h4>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**Element Selector:** بيختار حسب اسم الوسم (e.g., <code class=\"text-white\">p { ... }</code>).</li>\n        <li>**ID Selector:** بيختار العنصر صاحب الـ ID المحدد (e.g., <code class=\"text-white\">#para1 { ... }</code>). الـ ID لازم يكون فريد في الصفحة.</li>\n        <li>**Class Selector:** بيختار كل العناصر اللي واخده Class معين (e.g., <code class=\"text-white\">.center { ... }</code>). ممكن نحدد عنصر معين واخد الكلاس ده (e.g., <code class=\"text-white\">p.center { ... }</code>).</li>\n        <li>**Grouping Selector:** بيسمح بتطبيق نفس التنسيق على كذا مُحدِّد مرة واحدة عن طريق فصلهم بـ <code class=\"text-white\">,</code> (e.g., <code class=\"text-white\">h1, h2, p { ... }</code>).</li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Colors, Backgrounds, Borders:</h4>\n     <ul class=\"list-disc list-inside space-y-1 mr-6\">\n         <li><code class=\"text-white\">color: value;</code>: لتغيير لون النص.</li>\n         <li><code class=\"text-white\">background-color: value;</code>: لتغيير لون الخلفية.</li>\n         <li><code class=\"text-white\">border: size style color;</code>: لعمل إطار حول العنصر (مثال: <code class=\"text-white\">border: 2px solid Tomato;</code>).</li>\n     </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Box Model (نموذج الصندوق):</h4>\n    <p class=\"mb-4\">الـ CSS بيتعامل مع كل عنصر HTML على إنه صندوق ليه 4 طبقات:</p>\n        <ol class=\"list-decimal list-inside space-y-1 mr-6\">\n        <li><strong>Content:** المحتوى الفعلي للعنصر (النص، الصورة). بنحدد عرضه وارتفاعه بـ <code class=\"text-white\">width</code> و <code class=\"text-white\">height</code>.</li>\n        <li>**Padding:** مساحة **داخلية** شفافة حول المحتوى، بين المحتوى والإطار. بنتحكم فيها بـ <code class=\"text-white\">padding-top</code>, <code class=\"text-white\">padding-right</code>, etc., أو الاختصار <code class=\"text-white\">padding</code>.</li>\n        <li>**Border:** الإطار اللي بيحيط بالـ Padding والمحتوى. بنتحكم فيه بـ <code class=\"text-white\">border</code>.</li>\n        <li>**Margin:** مساحة **خارجية** شفافة حول الإطار، بتفصل الصندوق عن العناصر اللي حواليه. بنتحكم فيها بـ <code class=\"text-white\">margin-top</code>, <code class=\"text-white\">margin-right</code>, etc., أو الاختصار <code class=\"text-white\">margin</code>.</li>\n    </ol>\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h5 class=\"text-lg font-semibold text-cyan-400 mb-2\">حساب العرض والارتفاع الكلي (مهم جدًا):</h5>\n        <p>بشكل افتراضي (<code class=\"text-white\">box-sizing: content-box;</code>)، الـ <code class=\"text-white\">width</code> و <code class=\"text-white\">height</code> اللي بنحددهم بيكونوا للمحتوى (Content) **فقط**. العرض الكلي اللي العنصر بياخده بيكون:</p>\n        <code class=\"block bg-slate-700 p-2 rounded mt-2 text-sm\">Total Width = width + left padding + right padding + left border + right border + left margin + right margin</code><br>\n        <code class=\"block bg-slate-700 p-2 rounded mt-1 text-sm\">Total Height = height + top padding + bottom padding + top border + bottom border + top margin + bottom margin</code>\n        <p class=\"mt-2 text-yellow-400\">ده ممكن يسبب مشاكل في التصميم لو مش واخدين بالنا. (فيه خاصية <code class=\"text-white\">box-sizing: border-box;</code> بتخلي الـ width يشمل الـ padding والـ border وبيكون التعامل معاها أسهل).</p>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">اختصارات Margin و Padding:</h4>\n    <p class=\"mb-4\">ممكن نكتب قيم الـ Margin والـ Padding بطرق مختصرة:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><strong>4 قيم:</strong> <code class=\"text-white\">margin: 25px 50px 75px 100px;</code> (Top, Right, Bottom, Left - مع عقارب الساعة).</li>\n        <li><strong>3 قيم:</strong> <code class=\"text-white\">margin: 25px 50px 75px;</code> (Top, Right/Left, Bottom).</li>\n        <li><strong>2 قيم:</strong> <code class=\"text-white\">margin: 25px 50px;</code> (Top/Bottom, Right/Left).</li>\n        <li><strong>1 قيمة:</strong> <code class=\"text-white\">margin: 25px;</code> (تطبق على كل الاتجاهات الأربعة).</li>\n    </ul>\n\n     <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">تنسيق الروابط (CSS Links):</h4>\n     <p class=\"mb-4\">ممكن نغير شكل الروابط (<code class=\"text-white\">&lt;a&gt;</code>) في حالاتها المختلفة باستخدام Pseudo-classes:</p>\n      <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><code class=\"text-white\">a:link</code>: الرابط العادي (لم تتم زيارته).</li>\n        <li><code class=\"text-white\">a:visited</code>: الرابط بعد زيارته.</li>\n        <li><code class=\"text-white\">a:hover</code>: شكل الرابط عند مرور الماوس فوقه.</li>\n        <li><code class=\"text-white\">a:active</code>: شكل الرابط لحظة الضغط عليه.</li>\n        <li>**مهم الترتيب:** <code class=\"text-white\">:hover</code> لازم تيجي بعد <code class=\"text-white\">:link</code> و <code class=\"text-white\">:visited</code>. و <code class=\"text-white\">:active</code> لازم تيجي بعد <code class=\"text-white\">:hover</code> (قاعدة LVHA).</li>\n     </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: HTML Forms 📝</h3>\n    <p class=\"mb-4 text-lg\">HTML forms are the primary way to collect User Input on a web page and send it to a Server for Processing (e.g., login forms, contact forms).</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Core Form Elements:</h4>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>\n            <strong>&lt;form&gt;:</strong> The main container for all form elements. Key attributes:\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li><code class=\"text-white\">action=\"/action_page.php\"</code>: Specifies the URL (server-side script) that will receive and process the form data upon submission.</li>\n                <li><code class=\"text-white\">method=\"GET|POST\"</code>: Defines how the data is sent (GET: data appended to URL, visible; POST: data sent in request body, hidden).</li>\n                <li><code class=\"text-white\">target=\"_blank|_self\"</code>: Specifies where to display the response after submission (_blank: new tab, _self: same tab).</li>\n            </ul>\n        </li>\n        <li>\n            <strong>&lt;input&gt;:</strong> The most versatile form element for creating input fields. The field type is determined by the <code class=\"text-white\">type</code> attribute:\n            <ul class=\"list-disc list-inside ml-6 mt-1 grid grid-cols-1 md:grid-cols-2 gap-x-4\">\n                <li><code class=\"text-white\">type=\"text\"</code>: Single-line text input.</li>\n                <li><code class=\"text-white\">type=\"password\"</code>: Password field (masks input).</li>\n                <li><code class=\"text-white\">type=\"radio\"</code>: Radio button (allows selecting only one option from a group with the same <code class=\"text-white\">name</code>).</li>\n                <li><code class=\"text-white\">type=\"checkbox\"</code>: Checkbox (allows selecting zero or more options).</li>\n                <li><code class=\"text-white\">type=\"submit\"</code>: Button to submit the form data to the specified <code class=\"text-white\">action</code>.</li>\n                <li><code class=\"text-white\">type=\"button\"</code>: Generic button, often used with JavaScript.</li>\n                <li>(Many other types: email, number, date, file, etc.)</li>\n            </ul>\n             <p class=\"mt-2 text-yellow-400\">**Very Important:** Every <code class=\"text-white\">&lt;input&gt;</code> field must have a <code class=\"text-white\">name=\"...\"</code> attribute for its value to be sent to the server. If <code class=\"text-white\">name</code> is omitted, the value is not submitted!</p>\n        </li>\n        <li>\n            <strong>&lt;label for=\"...\"&gt;:</strong> Defines a descriptive label for an input element. The <code class=\"text-white\">for</code> attribute's value must match the <code class=\"text-white\">id</code> of the associated <code class=\"text-white\">&lt;input&gt;</code>. This improves accessibility (clicking the label focuses the input).\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\n&lt;label for=\"fname\"&gt;First name:&lt;/label&gt;&lt;br&gt;\n&lt;input type=\"text\" id=\"fname\" name=\"fname\"&gt;\n            </code></pre>\n        </li>\n        <li>\n            <strong>&lt;select id=\"...\" name=\"...\"&gt;:</strong> Creates a Drop-down list.\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li><strong>&lt;option value=\"...\"&gt;:</strong> Each item within the list. The <code class=\"text-white\">value</code> is what gets sent to the server.</li>\n                <li>The <code class=\"text-white\">selected</code> attribute can be added to an <code class=\"text-white\">&lt;option&gt;</code> to make it the default choice.</li>\n            </ul>\n             <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\n&lt;label for=\"cars\"&gt;Choose a car:&lt;/label&gt;\n&lt;select id=\"cars\" name=\"cars\"&gt;\n  &lt;option value=\"volvo\"&gt;Volvo&lt;/option&gt;\n  &lt;option value=\"fiat\" selected&gt;Fiat&lt;/option&gt;\n&lt;/select&gt;\n            </code></pre>\n        </li>\n        <li>\n            <strong>&lt;textarea name=\"...\" rows=\"...\" cols=\"...\"&gt;:</strong> Defines a multi-line text input area. <code class=\"text-white\">rows</code> and <code class=\"text-white\">cols</code> suggest the visible size.\n        </li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: CSS Introduction (Box Model, Margins, Padding) 📦</h3>\n    <p class=\"mb-4 text-lg\">Continuing with CSS, focusing on how CSS treats every HTML element as a box.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Syntax (Review):</h4>\n    <p class=\"mb-4\">A CSS rule consists of:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Selector:** Targets the HTML element(s) to style (e.g., <code class=\"text-white\">h1</code>, <code class=\"text-white\">.center</code>, <code class=\"text-white\">#para1</code>).</li>\n        <li>**Declaration Block:** Enclosed in curly braces <code class=\"text-white\">{ }</code>, contains one or more declarations.</li>\n        <li>**Declaration:** Consists of a <code class=\"text-white\">Property</code> (e.g., <code class=\"text-white\">color</code>) and a <code class=\"text-white\">Value</code> (e.g., <code class=\"text-white\">blue</code>), separated by a colon <code class=\"text-white\">:</code> and ending with a semicolon <code class=\"text-white\">;</code>.</li>\n    </ul>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto my-4\"><code>\n/* Selector: p, Property: color, Value: red */\np {\n  color: red;\n  text-align: center; /* Another declaration */\n}\n    </code></pre>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Selectors (Review):</h4>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Element Selector:** Selects by tag name (e.g., <code class=\"text-white\">p { ... }</code>).</li>\n        <li>**ID Selector:** Selects the element with a specific ID (e.g., <code class=\"text-white\">#para1 { ... }</code>). IDs must be unique per page.</li>\n        <li>**Class Selector:** Selects all elements with a specific class (e.g., <code class=\"text-white\">.center { ... }</code>). Can target specific elements with that class (e.g., <code class=\"text-white\">p.center { ... }</code>).</li>\n        <li>**Grouping Selector:** Applies the same styles to multiple selectors by separating them with a comma <code class=\"text-white\">,</code> (e.g., <code class=\"text-white\">h1, h2, p { ... }</code>).</li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Colors, Backgrounds, Borders:</h4>\n     <ul class=\"list-disc list-inside space-y-1 ml-6\">\n         <li><code class=\"text-white\">color: value;</code>: Changes the text color.</li>\n         <li><code class=\"text-white\">background-color: value;</code>: Changes the background color.</li>\n         <li><code class=\"text-white\">border: size style color;</code>: Creates a border around the element (e.g., <code class=\"text-white\">border: 2px solid Tomato;</code>).</li>\n     </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Box Model:</h4>\n    <p class=\"mb-4\">CSS treats every HTML element as a box with four layers:</p>\n        <ol class=\"list-decimal list-inside space-y-1 ml-6\">\n        <li><strong>Content:</strong> The actual content (text, image). Its size is set by <code class=\"text-white\">width</code> and <code class=\"text-white\">height</code>.</li>\n        <li>**Padding:** Transparent **inner** space around the content, between the content and the border. Controlled by <code class=\"text-white\">padding-top</code>, <code class=\"text-white\">padding-right</code>, etc., or the shorthand <code class=\"text-white\">padding</code>.</li>\n        <li>**Border:** The line surrounding the padding and content. Controlled by <code class=\"text-white\">border</code>.</li>\n        <li>**Margin:** Transparent **outer** space around the border, separating the box from neighboring elements. Controlled by <code class=\"text-white\">margin-top</code>, <code class=\"text-white\">margin-right</code>, etc., or the shorthand <code class=\"text-white\">margin</code>.</li>\n    </ol>\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h5 class=\"text-lg font-semibold text-cyan-400 mb-2\">Calculating Total Width/Height (Important!):</h5>\n        <p>By default (<code class=\"text-white\">box-sizing: content-box;</code>), the <code class=\"text-white\">width</code> and <code class=\"text-white\">height</code> properties apply **only** to the Content area. The total space occupied by the element is:</p>\n        <code class=\"block bg-slate-700 p-2 rounded mt-2 text-sm\">Total Width = width + left padding + right padding + left border + right border + left margin + right margin</code><br>\n        <code class=\"block bg-slate-700 p-2 rounded mt-1 text-sm\">Total Height = height + top padding + bottom padding + top border + bottom border + top margin + bottom margin</code>\n        <p class=\"mt-2 text-yellow-400\">This can make layout calculations tricky. (The property <code class=\"text-white\">box-sizing: border-box;</code> changes this behavior so that <code class=\"text-white\">width</code> includes padding and border, which is often easier to work with).</p>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Margin & Padding Shorthands:</h4>\n    <p class=\"mb-4\">You can set margins and padding for all sides using shorthand properties:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><strong>4 values:</strong> <code class=\"text-white\">margin: 25px 50px 75px 100px;</code> (Top, Right, Bottom, Left - clockwise).</li>\n        <li><strong>3 values:</strong> <code class=\"text-white\">margin: 25px 50px 75px;</code> (Top, Right/Left, Bottom).</li>\n        <li><strong>2 values:</strong> <code class=\"text-white\">margin: 25px 50px;</code> (Top/Bottom, Right/Left).</li>\n        <li><strong>1 value:</strong> <code class=\"text-white\">margin: 25px;</code> (Applies to all four sides).</li>\n    </ul>\n\n     <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Links:</h4>\n     <p class=\"mb-4\">Links (<code class=\"text-white\">&lt;a&gt;</code>) can be styled differently based on their state using Pseudo-classes:</p>\n      <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><code class=\"text-white\">a:link</code>: A normal, unvisited link.</li>\n        <li><code class=\"text-white\">a:visited</code>: A link the user has visited.</li>\n        <li><code class=\"text-white\">a:hover</code>: A link when the user mouses over it.</li>\n        <li><code class=\"text-white\">a:active</code>: A link the moment it is clicked.</li>\n        <li>**Order Matters:** <code class=\"text-white\">:hover</code> MUST come after <code class=\"text-white\">:link</code> and <code class=\"text-white\">:visited</code>. <code class=\"text-white\">:active</code> MUST come after <code class=\"text-white\">:hover</code> (LVHA rule).</li>\n     </ul>\n  ",
+  "questions": [
+    {
+      "question": "1. What is the main purpose of an HTML form?",
+      "options": [
+        "To display images",
+        "To style text",
+        "To collect user input",
+        "To play videos"
+      ],
+      "correctAnswer": "To collect user input",
+      "hint": "الفورم بيجمع بيانات من المستخدم."
+    },
+    {
+      "question": "2. Which HTML element is the container for all form controls?",
+      "options": [
+        "<input>",
+        "<form>",
+        "<label>",
+        "<fieldset>"
+      ],
+      "correctAnswer": "<form>",
+      "hint": "هو الوسم الأساسي اللي بيلم كل عناصر الفورم."
+    },
+    {
+      "question": "3. Which <input> type creates a single-line text field?",
+      "options": [
+        "type=\"textarea\"",
+        "type=\"text\"",
+        "type=\"string\"",
+        "type=\"line\""
+      ],
+      "correctAnswer": "type=\"text\"",
+      "hint": "ده النوع القياسي لإدخال النصوص القصيرة."
+    },
+    {
+      "question": "4. Which <input> type allows selecting *only one* option from a group?",
+      "options": [
+        "type=\"checkbox\"",
+        "type=\"radio\"",
+        "type=\"select\"",
+        "type=\"button\""
+      ],
+      "correctAnswer": "type=\"radio\"",
+      "hint": "زي اختيار الجنس (ذكر/أنثى)."
+    },
+    {
+      "question": "5. Which <input> type allows selecting *zero or more* options?",
+      "options": [
+        "type=\"checkbox\"",
+        "type=\"radio\"",
+        "type=\"text\"",
+        "type=\"submit\""
+      ],
+      "correctAnswer": "type=\"checkbox\"",
+      "hint": "زي اختيار الهوايات (ممكن تختار أكتر من واحدة)."
+    },
+    {
+      "question": "6. What is the purpose of the <label> element's `for` attribute?",
+      "options": [
+        "To set the input's name",
+        "To link the label to a specific input using its ID",
+        "To style the label",
+        "To set the input's value"
+      ],
+      "correctAnswer": "To link the label to a specific input using its ID",
+      "hint": "بيربط العنوان بالحقل عشان سهولة الاستخدام."
+    },
+    {
+      "question": "7. Which attribute in the <form> tag specifies *where* to send the form data?",
+      "options": [
+        "method",
+        "target",
+        "name",
+        "action"
+      ],
+      "correctAnswer": "action",
+      "hint": "بيحدد الملف أو الـ URL اللي هيستقبل البيانات."
+    },
+    {
+      "question": "8. Which attribute is *essential* for an <input> field's value to be submitted?",
+      "options": [
+        "id",
+        "type",
+        "name",
+        "value"
+      ],
+      "correctAnswer": "name",
+      "hint": "من غير الـ name، القيمة مش بتتبعت للسيرفر."
+    },
+    {
+      "question": "9. Which <form> attribute specifies *how* the form data should be sent (e.g., GET or POST)?",
+      "options": [
+        "action",
+        "method",
+        "target",
+        "enctype"
+      ],
+      "correctAnswer": "method",
+      "hint": "بيحدد طريقة الإرسال."
+    },
+    {
+      "question": "10. Which element creates a multi-line text input field?",
+      "options": [
+        "<input type=\"text\">",
+        "<input type=\"multiline\">",
+        "<textarea>",
+        "<select multiple>"
+      ],
+      "correctAnswer": "<textarea>",
+      "hint": "لإدخال نصوص طويلة زي الرسائل."
+    },
+    {
+      "question": "11. Which element creates a drop-down list?",
+      "options": [
+        "<input type=\"list\">",
+        "<dropdown>",
+        "<select>",
+        "<listbox>"
+      ],
+      "correctAnswer": "<select>",
+      "hint": "بيستخدم مع وسوم <option>."
+    },
+    {
+      "question": "12. What does the `value` attribute in an <option> tag represent?",
+      "options": [
+        "The text displayed to the user",
+        "The value sent to the server",
+        "The order in the list",
+        "The style of the option"
+      ],
+      "correctAnswer": "The value sent to the server",
+      "hint": "القيمة اللي بتوصل للخادم لما المستخدم يختار العنصر ده."
+    },
+    {
+      "question": "13. What is the basic structure of a CSS rule?",
+      "options": [
+        "Property { Selector: Value; }",
+        "Selector { Property: Value; }",
+        "Value { Selector: Property; }",
+        "Selector ( Property = Value )"
+      ],
+      "correctAnswer": "Selector { Property: Value; }",
+      "hint": "مُحدِّد وبعدين قوسين جواهم الخاصية وقيمتها."
+    },
+    {
+      "question": "14. Which CSS selector targets an element with `id=\"main\"`?",
+      "options": [
+        ".main",
+        "main",
+        "#main",
+        "*main"
+      ],
+      "correctAnswer": "#main",
+      "hint": "بنستخدم # مع الـ ID."
+    },
+    {
+      "question": "15. Which CSS property changes the background color?",
+      "options": [
+        "color",
+        "background-color",
+        "border-color",
+        "text-background"
+      ],
+      "correctAnswer": "background-color",
+      "hint": "لتغيير لون خلفية العنصر."
+    },
+    {
+      "question": "16. In the CSS Box Model, what is the space *between* the content and the border?",
+      "options": [
+        "Margin",
+        "Padding",
+        "Outline",
+        "Content-space"
+      ],
+      "correctAnswer": "Padding",
+      "hint": "الحشو الداخلي."
+    },
+    {
+      "question": "17. In the CSS Box Model, what is the space *outside* the border?",
+      "options": [
+        "Margin",
+        "Padding",
+        "Border-space",
+        "Content"
+      ],
+      "correctAnswer": "Margin",
+      "hint": "الهامش الخارجي اللي بيفصل العنصر عن اللي حواليه."
+    },
+    {
+      "question": "18. If you write `margin: 10px 20px;`, what does it mean?",
+      "options": [
+        "Top 10px, Right 20px, Bottom 10px, Left 20px",
+        "Top/Bottom 10px, Right/Left 20px",
+        "Top/Bottom 20px, Right/Left 10px",
+        "All sides 10px"
+      ],
+      "correctAnswer": "Top/Bottom 10px, Right/Left 20px",
+      "hint": "قيمتين = (فوق وتحت)، (يمين وشمال)."
+    },
+    {
+      "question": "19. Which CSS pseudo-class styles a link when the mouse pointer is over it?",
+      "options": [
+        "a:link",
+        "a:visited",
+        "a:hover",
+        "a:active"
+      ],
+      "correctAnswer": "a:hover",
+      "hint": "الحالة عند مرور الماوس."
+    },
+    {
+      "question": "20. What is the default `box-sizing` value, where `width` and `height` apply only to the content area?",
+      "options": [
+        "border-box",
+        "padding-box",
+        "content-box",
+        "margin-box"
+      ],
+      "correctAnswer": "content-box",
+      "hint": "الحالة الافتراضية اللي بتخلي حساب الحجم الكلي أصعب شوية."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

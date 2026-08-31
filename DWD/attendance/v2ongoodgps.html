@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الحضور الذكي - تحديد الموقع</title>
+    <script src="../../js/auth-guard.js"></script>
+
+    <script src="../../assets/js/tailwind.js"></script>
+    
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        .card {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #1d4ed8;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #1e40af;
+        }
+
+        .spinner {
+            border-top-color: #ffffff;
+            animation: spinner 1s linear infinite;
+        }
+
+        @keyframes spinner {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="p-4 flex items-center justify-center">
+
+    <div class="card bg-white p-6 md:p-10 rounded-xl w-full max-w-lg text-right">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6 border-b pb-3 border-gray-200 text-center">
+            تسجيل الحضور (تحديد الموقع)
+        </h1>
+
+        <div id="status-message" class="text-center p-4 rounded-lg font-semibold hidden mb-6"></div>
+
+        <div class="space-y-3 text-sm text-gray-700">
+            <p><strong>حالة اتصال قاعدة البيانات:</strong> <span id="auth-status"
+                    class="font-semibold text-gray-500">جاري الاتصال...</span></p>
+            <p><strong>الموقع المعتمد (الجامعة):</strong> <span class="text-indigo-600 font-semibold">جامعة برج العرب
+                    التكنولوجية</span></p>
+            <!-- <p><strong>الإحداثيات المعتمدة:</strong> <span id="uni-coords" class="text-gray-500 text-xs">30.858333, -->
+            <!-- 29.571451</span></p> -->
+            <p><strong>نطاق القبول:</strong> <span id="radius-display" class="text-red-500 font-semibold">120 متر</span>
+            </p>
+            <!-- عنصر لعرض دقة الـ GPS الحالية -->
+            <p><strong>دقة جهازك (GPS Accuracy):</strong> <span id="accuracy-display"
+                    class="font-bold text-md text-gray-800">-- متر</span></p>
+            <p><strong>المسافة المحسوبة:</strong> <span id="distance-display" class="font-bold text-lg text-gray-800">--
+                    متر</span></p>
+        </div>
+
+        <button id="attendance-button" onclick="checkAttendance()"
+            class="btn-primary w-full py-3 mt-8 text-white font-bold rounded-lg flex items-center justify-center disabled:opacity-50"
+            disabled>
+            <span id="button-text">جارٍ تهيئة النظام...</span>
+            <div id="loading-spinner" class="spinner h-5 w-5 border-4 border-gray-200 rounded-full border-t-white mr-2">
+            </div>
+        </button>
+
+        <p class="text-xs text-gray-400 mt-4 text-center">
+            تأكد من تفعيل خاصية الموقع الجغرافي على جهازك والسماح للمتصفح بالوصول.
+        </p>
+    </div>
+
+    <script type="module">
+        // --------------------------------------------------------
+        // 1. FIREBASE CONFIGURATION & INITIALIZATION
+        // --------------------------------------------------------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, collection, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // إعدادات Firebase يتم توفيرها تلقائياً
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let db, auth, userId = null;
+        let isAuthReady = false;
+
+        setLogLevel('Debug');
+        // console.log("1. Starting Firebase Initialization...");  [Security Fix]
+
+        // --------------------------------------------------------
+        // 2. CONFIGURATION (University Location)
+        // --------------------------------------------------------
+
+        const universityLocation = {
+            latitude: 30.858333,
+
+            // 30.858100
+            longitude: 29.571451,
+            // 29.571492
+        };
+
+        const MAX_DISTANCE_METERS = 120;
+
+        // --------------------------------------------------------
+        // 3. CORE UTILITIES (Made global to prevent ReferenceError)
+        // --------------------------------------------------------
+
+        const displayMessage = (title, body, bgColor) => {
+            const statusElement = document.getElementById('status-message');
+            // تأكد من تهيئة العنصر قبل محاولة إزالة الفئة hidden
+            if (statusElement) {
+                statusElement.className = `text-center p-4 rounded-lg font-semibold ${bgColor} mb-6`;
+                // REVIEW: Potential XSS - Check this line manually
+                statusElement.innerHTML = `<strong>${title}</strong><br>${body}`;
+                statusElement.classList.remove('hidden');
+            }
+        };
+
+        const resetButton = (button, buttonText, spinner) => {
+            if (button) button.disabled = false;
+            if (spinner) spinner.classList.add('hidden');
+            // لو كان الاتصال ناجحاً، ترجع الرسالة الأصلية
+            const newText = isAuthReady ?
+                'اضغط للتحقق من موقعك وتسجيل الحضور' :
+                'اضغط للتحقق من موقعك (لن يتم الحفظ)';
+            if (buttonText) buttonText.textContent = newText;
+        };
+
+        const forceEnableButtonForTest = () => {
+            console.warn("Forcing button activation for Geolocation test after timeout/failure.");
+            const button = document.getElementById('attendance-button');
+            const buttonText = document.getElementById('button-text');
+            const spinner = document.getElementById('loading-spinner');
+            const authStatus = document.getElementById('auth-status');
+
+            if (button) button.disabled = false;
+            if (buttonText) buttonText.textContent = 'اضغط للتحقق من موقعك (لن يتم الحفظ)';
+            if (spinner) spinner.classList.add('hidden');
+
+            if (authStatus) {
+                authStatus.textContent = 'تحذير: فشل الاتصال بقاعدة البيانات. (تم تفعيل الزر للاختبار)';
+                authStatus.classList.replace('text-gray-500', 'text-orange-500');
+            }
+            // الآن displayMessage يمكن استدعاؤها بأمان
+            displayMessage('تحذير اتصال', 'فشل اتصال قاعدة البيانات. الزرار مُفعَّل لاختبار الموقع فقط.', 'bg-orange-500 text-white');
+        };
+
+        // دالة تحويل الدرجات إلى راديان (ضرورية لحساب Haversine)
+        const toRad = (value) => (value * Math.PI) / 180;
+
+        /**
+         * دالة Haversine لحساب المسافة بين نقطتين GPS بالمتر.
+         */
+        const getDistance = (lat1, lon1, lat2, lon2) => {
+            const R = 6371000; // نصف قطر الأرض بالمتر
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // المسافة بالمتر
+        };
+
+
+        // --------------------------------------------------------
+        // 4. MAIN LOGIC (Geolocation & Geo-Fencing) - MUST be on window scope
+        // --------------------------------------------------------
+
+        window.checkAttendance = () => {
+            const button = document.getElementById('attendance-button');
+            const buttonText = document.getElementById('button-text');
+            const spinner = document.getElementById('loading-spinner');
+
+            // 1. إظهار حالة التحميل وتعطيل الزرار
+            button.disabled = true;
+            spinner.classList.remove('hidden');
+            buttonText.textContent = 'جارٍ تحديد الموقع...';
+            displayMessage('جاري التحقق', 'جاري طلب الموقع الجغرافي من جهازك...', 'bg-blue-500 text-white');
+            document.getElementById('distance-display').textContent = 'جاري الحساب...';
+            document.getElementById('accuracy-display').textContent = 'جاري القياس...';
+
+
+            // خيارات طلب الموقع بدقة عالية
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            };
+
+            // استخدام الـ Geolocation API المجانية
+            navigator.geolocation.getCurrentPosition(
+                // حالة النجاح: تم الحصول على الموقع
+                (position) => {
+                    const myLocation = {
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+
+                    const university = universityLocation;
+
+                    // 3. حساب المسافة بدقة
+                    const distance = getDistance(
+                        myLocation.lat, myLocation.lon,
+                        university.latitude, university.longitude
+                    );
+
+                    document.getElementById('distance-display').textContent = `${distance.toFixed(1)} متر`;
+                    document.getElementById('accuracy-display').textContent = `${myLocation.accuracy.toFixed(1)} متر`;
+
+
+
+                    // جوه دالة النجاح (position)
+                    // ...
+                    // 3. حساب المسافة بدقة
+                    // ...
+                    document.getElementById('distance-display').textContent = `${distance.toFixed(1)} متر`;
+                    document.getElementById('accuracy-display').textContent = `${myLocation.accuracy.toFixed(1)} متر`;
+
+                    // **الشرط الجديد: إذا كانت الدقة أكبر من 100 متر (أي الدقة سيئة)، نعتبرها فشل**
+                    if (myLocation.accuracy > 100) {
+                        handleAttendanceFailure(myLocation, distance);
+                        displayMessage('❌ خطأ في الدقة',
+                            `دقة الـ GPS ضعيفة جداً (${myLocation.accuracy.toFixed(1)} متر). يرجى الخروج لمنطقة مفتوحة أو تفعيل GPS بدقة عالية.`,
+                            'bg-red-700 text-white');
+                        resetButton(button, buttonText, spinner);
+                        return; // نخرج من الدالة ولا نكمل
+                    }
+
+                    // 4. تنفيذ الـ if condition (الـ Geo-Fencing)
+                    if (distance <= MAX_DISTANCE_METERS) {
+                        handleAttendanceSuccess(myLocation, distance);
+                    } else {
+                        handleAttendanceFailure(myLocation, distance);
+                    }
+                    // ...
+                    // 4. تنفيذ الـ if condition (الـ Geo-Fencing)
+
+                    // استعادة حالة الزرار
+                    resetButton(button, buttonText, spinner);
+                },
+
+                // حالة الفشل: لم يتمكن من تحديد الموقع
+                (error) => {
+                    console.error("Geolocation Error:", error);
+                    let errorMessage = (error.code === 1) ?
+                        'تم رفض الوصول للموقع. يرجى السماح للمتصفح بالوصول لموقعك الجغرافي.' :
+                        'فشل تحديد الموقع. تأكد من تفعيل GPS.';
+                    displayMessage('❌ خطأ في الموقع', errorMessage, 'bg-red-500 text-white');
+                    document.getElementById('distance-display').textContent = 'غير متاح';
+                    document.getElementById('accuracy-display').textContent = 'غير متاح';
+                    resetButton(button, buttonText, spinner);
+                },
+                options
+            );
+        };
+
+        // دالة يتم استدعاؤها عند نجاح الحضور
+        const handleAttendanceSuccess = async (location, distance) => {
+            const now = new Date();
+            let successMessage;
+
+            if (isAuthReady && userId) {
+                // حفظ البيانات فقط إذا كان الاتصال جاهزاً
+                try {
+                    const attendanceData = {
+                        userId: userId,
+                        timestamp: now.toISOString(),
+                        sectionId: 'IT401-S01',
+                        status: 'present',
+                        distanceMeters: parseFloat(distance.toFixed(2)),
+                        location: {
+                            latitude: location.lat,
+                            longitude: location.lon,
+                            accuracy: location.accuracy
+                        }
+                    };
+
+                    const attendanceCollectionPath = `artifacts/${appId}/users/${userId}/attendance_records`;
+                    await addDoc(collection(db, attendanceCollectionPath), attendanceData);
+                    successMessage = '✅ تم تسجيل الحضور وحفظه بنجاح.';
+                    // console.log("Data saved successfully to Firestore.");  [Security Fix]
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                    successMessage = `⚠️ تم تحديد الموقع، لكن فشل الحفظ في قاعدة البيانات: ${e.message}`;
+                }
+            } else {
+                // رسالة في حالة نجاح الموقع لكن فشل الاتصال بقاعدة البيانات
+                successMessage = '✅ تم تحديد موقعك (داخل النطاق). لم يتم الحفظ في قاعدة البيانات بسبب مشكلة في الاتصال.';
+            }
+
+            displayMessage('نتيجة التحقق',
+                `${successMessage}<br>المسافة: ${distance.toFixed(1)} متر. (دقة GPS: ${location.accuracy.toFixed(1)} متر)`,
+                'bg-green-600 text-white');
+        };
+
+        // دالة يتم استدعاؤها عند فشل الحضور
+        const handleAttendanceFailure = (location, distance) => {
+            displayMessage('⚠️ خارج النطاق',
+                `أنت بعيد عن المدرج. المسافة: ${distance.toFixed(1)} متر. يجب أن تكون أقل من ${MAX_DISTANCE_METERS} متر. (دقة GPS: ${location.accuracy.toFixed(1)} متر)`,
+                'bg-orange-500 text-white');
+        };
+
+        // --------------------------------------------------------
+        // 5. FIREBASE AUTHENTICATION (The part that caused the API Key error)
+        // --------------------------------------------------------
+
+        const authTimeout = setTimeout(() => {
+            if (!isAuthReady) {
+                console.warn("Firebase initialization timed out after 2 seconds.");
+                // يتم استدعاء forceEnableButtonForTest الآن بعد التأكد من تعريفها
+                forceEnableButtonForTest();
+            }
+        }, 2000); // ثانيتين مهلة قصيرة
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // الاستماع لحالة المصادقة
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // console.log("Authentication successful. User ID:", user.uid);  [Security Fix]
+                    userId = user.uid;
+                    isAuthReady = true;
+                    document.getElementById('auth-status').textContent = `متصل (ID: ${userId.substring(0, 8)}...)`;
+                    document.getElementById('auth-status').classList.replace('text-gray-500', 'text-green-600');
+                    // تفعيل الزرار بعد المصادقة
+                    resetButton(document.getElementById('attendance-button'), document.getElementById('button-text'), document.getElementById('loading-spinner'));
+                    clearTimeout(authTimeout);
+                } else {
+                    // console.log("No user found. Attempting sign-in...");  [Security Fix]
+                    authenticateUser();
+                }
+            });
+
+            const authenticateUser = async () => {
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        // console.log("Signed in with custom token.");  [Security Fix]
+                    } else {
+                        await signInAnonymously(auth);
+                        // console.log("Signed in anonymously.");  [Security Fix]
+                    }
+                } catch (error) {
+                    console.error("Firebase Authentication Error (Catch):", error);
+                    document.getElementById('auth-status').textContent = 'فشل الاتصال بـ Firebase';
+                    document.getElementById('auth-status').classList.replace('text-gray-500', 'text-red-500');
+                    clearTimeout(authTimeout);
+                    forceEnableButtonForTest();
+                }
+            };
+
+            if (!auth.currentUser) {
+                authenticateUser();
+            }
+
+        } catch (error) {
+            console.error("Firebase Initialization Error (Catch Block):", error);
+            // سيتم استدعاء forceEnableButtonForTest هنا بسبب فشل الـ API key
+            document.getElementById('auth-status').textContent = 'خطأ فادح في تهيئة Firebase';
+            document.getElementById('auth-status').classList.replace('text-gray-500', 'text-red-500');
+            clearTimeout(authTimeout);
+            forceEnableButtonForTest();
+        }
+
+    </script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

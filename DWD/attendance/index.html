@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DWD Attendance | نظام الحضور الذكي</title>
+    <meta name="theme-color" content="#0f172a">
+
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com" data-swup-ignore-script></script>
+
+
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                        'glass-border': 'rgba(255, 255, 255, 0.1)',
+                        neon: '#00f2ff',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'breathe': 'breathe 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        breathe: {
+                            '0%, 100%': { boxShadow: '0 0 10px rgba(0, 242, 255, 0.2)' },
+                            '50%': { boxShadow: '0 0 25px rgba(0, 242, 255, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Map Fixes */
+        .leaflet-container {
+            font-family: 'Cairo', sans-serif;
+            z-index: 10;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+        }
+    </style>
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="flex flex-col items-center p-4 md:p-8">
+
+    <!-- Background Elements -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] animate-pulse-slow"
+            style="animation-delay: 1.5s;"></div>
+    </div>
+
+    <!-- Main Container: Wider & Responsive Grid -->
+    <main
+        class="relative z-10 w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 animate__animated animate__fadeInUp">
+
+        <!-- Left Column: Context & Controls -->
+        <div class="col-span-1 space-y-6">
+
+            <!-- Context Card -->
+            <div class="glass-card rounded-3xl p-6 relative overflow-hidden">
+                <!-- Header -->
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                        <i class="fas fa-university text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-white text-xl">DWD System</h1>
+                        <div class="flex items-center gap-2">
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <span class="text-[10px] text-green-400 font-mono tracking-wider">LIVE GPS TRACKING</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Profile ID Card Style -->
+                <div
+                    class="glass-input rounded-2xl p-4 flex items-center justify-between mb-6 group hover:bg-white/5 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-slate-700 ring-2 ring-slate-600 flex items-center justify-center text-slate-300">
+                            <i class="fas fa-user-graduate text-lg"></i>
+                        </div>
+                        <div>
+                            <div id="current-user-name" class="text-sm font-bold text-white max-w-[150px] truncate">جاري
+                                التحميل...</div>
+                            <div id="current-user-id" class="text-[10px] text-slate-400 font-mono">ID: --</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-id-card text-slate-600 text-xl group-hover:text-cyan-500 transition-colors"></i>
+                </div>
+
+                <!-- Scan Button (Hero in Sidebar) -->
+                <button id="btn-scan"
+                    class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 p-1 shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] animate-breathe">
+                    <div
+                        class="relative flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-900/40 px-6 py-6 transition-all group-hover:bg-transparent">
+                        <i
+                            class="fas fa-fingerprint text-4xl text-white group-hover:scale-110 transition-transform mb-2"></i>
+                        <span class="text-lg font-bold text-white">تسجيل الحضور</span>
+                        <span class="text-[10px] text-cyan-200 opacity-80">اضغط هنا عندما تكون في الجامعة</span>
+                    </div>
+                    <!-- Shine Effect -->
+                    <div
+                        class="absolute -left-full top-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-all duration-1000 group-hover:left-full">
+                    </div>
+                </button>
+
+                <!-- Status Feedback -->
+                <div id="status-container"
+                    class="hidden mt-4 rounded-xl bg-slate-800/50 border border-slate-700 p-4 text-center backdrop-blur-md transition-all">
+                    <div id="status-icon" class="mb-2 text-3xl"></div>
+                    <p id="status-msg" class="text-sm font-medium text-slate-300"></p>
+                </div>
+            </div>
+
+            <!-- Stats / Info Panel -->
+            <div class="glass-card rounded-3xl p-6 hidden lg:block">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">معلومات المستشعر</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                        <span class="text-sm text-slate-300"><i
+                                class="fas fa-satellite-dish mr-2 text-blue-400"></i>الدقة</span>
+                        <span id="stat-accuracy" class="font-mono text-cyan-400 font-bold text-sm">-- m</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                        <span class="text-sm text-slate-300"><i
+                                class="fas fa-ruler-horizontal mr-2 text-purple-400"></i>المسافة</span>
+                        <span id="stat-distance" class="font-mono text-white font-bold text-sm">-- m</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                        <span class="text-sm text-slate-300"><i
+                                class="fas fa-shield-alt mr-2 text-green-400"></i>الحماية</span>
+                        <span id="stat-security"
+                            class="font-bold text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">جاري
+                            الفحص...</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                        <span class="text-sm text-slate-300"><i class="fas fa-stopwatch mr-2 text-yellow-400"></i>الوقت
+                            المتبقي</span>
+                        <span id="stat-time-remaining"
+                            class="font-mono text-xl font-bold text-white px-2 py-1 rounded bg-slate-800">--:--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Links -->
+            <div
+                class="glass-card rounded-2xl p-4 flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                <a href="../index.html" class="hover:text-white transition-colors flex items-center gap-1 group">
+                    <div
+                        class="w-6 h-6 rounded-lg bg-slate-700 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    الرئيسية
+                </a>
+                <a href="/DWD/attendance/privacy-policy"
+                    class="hover:text-white transition-colors flex items-center gap-1 group">
+                    <div
+                        class="w-6 h-6 rounded-lg bg-slate-700 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    سياسة الخصوصية
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Map Hero Area -->
+        <div class="col-span-1 lg:col-span-2 relative h-80 lg:h-[600px] glass-card rounded-3xl p-1 overflow-visible">
+            <!-- Map Container -->
+            <div class="relative w-full h-full rounded-2xl overflow-hidden shadow-inner border border-white/5 group">
+                <div id="map" class="w-full h-full z-0"></div>
+
+                <!-- Overlay Gradient -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent pointer-events-none z-[400]">
+                </div>
+
+                <!-- Floating Map Badge -->
+                <div
+                    class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 z-[400] shadow-xl">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Live Map</div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                        <span class="text-xs font-bold text-white">تحديد الموقع...</span>
+                    </div>
+                </div>
+
+                <!-- Floating Controls (Mobile Only Stats) -->
+                <div class="lg:hidden absolute bottom-3 right-3 left-3 flex justify-between items-end z-[400]">
+                    <div
+                        class="bg-black/60 backdrop-blur-md rounded-lg px-3 py-1.5 border border-white/5 text-[10px] text-slate-300">
+                        Acc: <span class="text-cyan-400 font-bold" id="stat-accuracy-m">--</span>
+                    </div>
+                    <div
+                        class="bg-black/60 backdrop-blur-md rounded-lg px-3 py-1.5 border border-white/5 text-[10px] text-slate-300">
+                        Dist: <span class="text-green-400 font-bold" id="stat-distance-m">--</span>
+                    </div>
+                    <div
+                        class="bg-black/60 backdrop-blur-md rounded-lg px-3 py-1.5 border border-yellow-500/30 text-[10px] text-yellow-400">
+                        Time: <span class="font-bold" id="stat-time-remaining-m">--:--</span>
+                    </div>
+                </div>
+
+                <!-- PC Warning -->
+                <div id="pc-warning"
+                    class="absolute top-0 left-0 w-full bg-yellow-500/90 text-black text-xs font-bold py-2 px-4 text-center hidden transform transition-transform z-[500] backdrop-blur shadow-lg">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> دقة الموقع منخفضة (PC). للحصول على أفضل دقة، يرجى
+                    استخدام الهاتف.
+                </div>
+            </div>
+
+            <!-- Glow Effect behind map -->
+            <div
+                class="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-[2.5rem] blur-2xl -z-10 opacity-50">
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Helper Scripts -->
+    <script src="../../js/sound-effects.js"></script>
+    <script src="../../js/supabase_client.js"></script>
+    <script type="module" src="../../js/secure_connect.js"></script>
+    <script src="../../js/content-protection.js" defer></script>
+
+    <!-- Core Logic -->
+    <script src="../../js/device-lock.js"></script>
+    <script src="../../js/attendance.js"></script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+    <!-- Sync Mobile Stats to Desktop Stats -->
+    <script>
+        // Simple syncing script for the duplicate IDs issue (stat-accuracy appears twice in DOM? No, avoided by using unique ID for mobile or class)
+        // Actually, IDs must be unique. I used 'stat-accuracy' in sidebar and 'stat-accuracy-m' in mobile map.
+        // Original JS updates 'stat-accuracy' and 'stat-distance'.
+        // We will add a small observer to copy values to mobile if needed, or better yet, just let the original JS update the main ones (in sidebar).
+        // Since original JS targets specific IDs, we kept them in the sidebar (Left Column).
+        // Mobile users will see the "Context Card" first, so they see the stats there?
+        // Wait, on mobile, columns stack. Left col is top. So stats are visible.
+        // The floating stats inside map on mobile are extra. I'll remove them to avoid confusion and ID conflicts.
+    </script>
+
+</body>
+
+</html>

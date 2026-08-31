@@ -1,0 +1,818 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>جامعة برج العرب التكنولوجية | BATU Portal</title>
+    <script src="../../js/auth-guard.js"></script>
+
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts (Cairo for Arabic) -->
+
+
+
+    <!-- Icons -->
+
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['IBM Plex Sans Arabic', 'sans-serif'],
+                    },
+                    colors: {
+                        batu: {
+                            primary: '#0ea5e9', // Sky 500
+                            dark: '#0f172a',    // Slate 900
+                            light: '#f8fafc',   // Slate 50
+                            accent: '#8b5cf6',  // Violet 500
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0ea5e9;
+        }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 3D Canvas Container */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+            /* Let clicks pass through */
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .dark .card-hover:hover {
+            box-shadow: 0 20px 25px -5px rgba(14, 165, 233, 0.15), 0 10px 10px -5px rgba(14, 165, 233, 0.1);
+        }
+
+        /* Ticker Animation */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+</head>
+
+<body
+    class="bg-batu-light dark:bg-batu-dark text-slate-800 dark:text-slate-100 transition-colors duration-300 overflow-x-hidden">
+
+    <!-- 3D Background -->
+    <div id="canvas-container"></div>
+
+    <!-- Urgent Alert Banner -->
+    <div
+        class="bg-red-600 text-white px-4 py-2 text-sm font-bold flex justify-between items-center relative z-50 shadow-lg">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-exclamation-triangle animate-pulse"></i>
+            <span>تنبيه هام: تم إلغاء محاضرات يوم الأربعاء القادم نظراً لسوء الأحوال الجوية وحرصاً على سلامة
+                الطلاب.</span>
+        </div>
+        <button onclick="this.parentElement.style.display='none'" class="hover:text-red-200"><i
+                class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 top-10 px-4">
+        <div class="container mx-auto">
+            <div class="glass rounded-2xl shadow-lg px-6 py-3 flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <img src="images.jpg" alt="BATU Logo" class="w-10 h-10 rounded-lg">
+                    <!-- loading="lazy" -->
+                    <div class="hidden md:block">
+                        <h1 class="text-lg font-bold leading-tight">جامعة برج العرب</h1>
+                        <p class="text-xs text-blue-600 dark:text-blue-400 font-semibold tracking-wider">التكنولوجية</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex gap-8 font-semibold text-sm">
+                    <a href="#home" class="hover:text-blue-500 transition-colors relative group">
+                        الرئيسية
+                        <span
+                            class="absolute bottom-0 right-0 w-0 h-0.5 bg-blue-500 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#news" class="hover:text-blue-500 transition-colors relative group">الأخبار والقرارات</a>
+                    <a href="#departments" class="hover:text-blue-500 transition-colors relative group">الكليات
+                        والأقسام</a>
+                    <a href="#training" class="hover:text-blue-500 transition-colors relative group">التدريب
+                        والامتحانات</a>
+                    <a href="#about" class="hover:text-blue-500 transition-colors relative group">عن الجامعة</a>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <button id="langToggle"
+                        class="text-xs font-bold border border-slate-300 dark:border-slate-600 px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        EN
+                    </button>
+                    <button id="themeToggle"
+                        class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center hover:scale-110 transition shadow-inner">
+                        <i class="fas fa-moon dark:hidden text-slate-700"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="md:hidden text-xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu"
+            class="hidden absolute top-20 right-4 left-4 glass rounded-xl p-4 flex-col gap-4 text-center shadow-2xl z-50 transform transition-transform scale-95 opacity-0">
+            <a href="#home" class="py-2 border-b border-gray-200 dark:border-gray-700 hover:text-blue-500">الرئيسية</a>
+            <a href="#news" class="py-2 border-b border-gray-200 dark:border-gray-700 hover:text-blue-500">الأخبار</a>
+            <a href="#departments"
+                class="py-2 border-b border-gray-200 dark:border-gray-700 hover:text-blue-500">الكليات</a>
+            <a href="#training" class="py-2 hover:text-blue-500">التدريب</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="container mx-auto px-4 z-10 grid md:grid-cols-2 gap-10 items-center">
+            <div class="text-right space-y-6 hero-content opacity-0 translate-y-10">
+                <div
+                    class="inline-block px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-sm font-bold border border-blue-200 dark:border-blue-700 mb-2">
+                    <i class="fas fa-rocket ml-2"></i> مستقبل التعليم التكنولوجي في مصر
+                </div>
+                <h1
+                    class="text-5xl md:text-7xl font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-500 pb-2">
+                    جامعة برج العرب <br> التكنولوجية
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+                    نحو تعليم يواكب سوق العمل، ندمج بين النظرية والتطبيق لنخرج جيلاً من التكنولوجيين المبدعين.
+                </p>
+                <div class="flex gap-4 pt-4">
+                    <a href="#news"
+                        class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 transition-all hover:scale-105 flex items-center gap-2">
+                        آخر القرارات <i class="fas fa-arrow-left mt-1"></i>
+                    </a>
+                    <a href="https://batechu.com/" target="_blank"
+                        class="px-8 py-3 glass hover:bg-white/20 text-slate-800 dark:text-white rounded-xl font-bold transition-all hover:scale-105 border border-slate-300 dark:border-slate-600">
+                        الموقع الرسمي
+                    </a>
+                </div>
+            </div>
+            <!-- The 3D element occupies the right side visually via canvas background logic -->
+            <div class="hidden md:block">
+                <!-- Placeholder for visual balance -->
+            </div>
+        </div>
+
+        <!-- News Ticker -->
+        <div
+            class="absolute bottom-0 w-full bg-slate-100 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-700 py-3 z-20 backdrop-blur-sm">
+            <div class="container mx-auto flex items-center">
+                <div class="bg-red-500 text-white px-3 py-1 text-sm font-bold rounded mr-4 shrink-0 shadow-md">
+                    عاجل
+                </div>
+                <div class="ticker-wrap flex-1 overflow-hidden">
+                    <div class="ticker text-sm font-medium">
+                        بدء تسجيل الرغبات للتدريب الصيفي ... إعلان جداول امتحانات "الميدتيرم" لكلية تكنولوجيا الصناعة
+                        والطاقة ... هام: يرجى من جميع الطلاب تحديث بياناتهم على المنصة ... مسابقة "المبتكر التكنولوجي"
+                        تفتح أبوابها ...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 space-y-24 relative z-10">
+
+        <!-- President Word Section -->
+        <section id="about" class="gsap-reveal">
+            <div class="glass rounded-3xl p-8 md:p-12 relative overflow-hidden border-r-4 border-blue-500">
+                <div class="absolute -left-10 -top-10 w-40 h-40 bg-blue-500 rounded-full blur-[80px] opacity-20"></div>
+
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div
+                        class="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-tr from-slate-200 to-slate-400 p-1 shadow-2xl shrink-0">
+                        <!-- loading="lazy" -->
+                        <img src="manigar.jpg" alt="د. محمد مرسي الجوهري"
+                            onerror="this.src='https://ui-avatars.com/api/?name=Mohamed+ElGohary&background=0ea5e9&color=fff&size=200'"
+                            alt="أ.د. محمد مرسي الجوهري"
+                            class="w-full h-full rounded-full object-cover border-4 border-white dark:border-slate-800">
+                    </div>
+                    <div class="text-center md:text-right flex-1">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">كلمة رئيس الجامعة</h2>
+                        <h3 class="text-xl text-blue-600 dark:text-blue-400 font-bold mb-4">أ.د. محمد مرسي الجوهري</h3>
+                        <p class="text-slate-600 dark:text-slate-300 leading-loose italic relative">
+
+                            "تسعى جامعة برج العرب التكنولوجية لتخريج جيل قادر على المنافسة في سوق العمل المحلي والدولي،
+                            مسلحاً بأحدث ما توصلت إليه التكنولوجيا، من خلال منظومة تعليمية متكاملة تجمع بين الجانب
+                            الأكاديمي والتدريب الميداني."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Departments Section -->
+        <section id="departments" class="gsap-reveal">
+            <div class="text-center mb-16">
+                <h2
+                    class="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-slate-800 to-slate-500 dark:from-white dark:to-slate-400">
+                    الكليات والأقسام</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Industry & Energy -->
+                <div class="card-hover glass rounded-2xl overflow-hidden group">
+                    <div class="h-48 bg-gradient-to-r from-blue-600 to-indigo-600 relative p-6 flex items-end">
+                        <i
+                            class="fas fa-cogs text-9xl absolute -left-4 -bottom-8 text-white opacity-10 group-hover:opacity-20 transition-opacity"></i>
+                        <h3 class="text-2xl font-bold text-white relative z-10">كلية تكنولوجيا الصناعة والطاقة</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-500 mb-4 text-justify">
+                            الكلية الأكبر، تضم تخصصات تخدم القطاع الصناعي الثقيل والدقيق.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="قسم تكنولوجيا المعلومات يركز على البرمجة، تطوير البرمجيات، إدارة الشبكات، والأمن السيبراني.">
+                                <div
+                                    class="w-8 h-8 rounded bg-blue-100 dark:bg-blue-900 text-blue-600 flex items-center justify-center">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <div>
+                                    <span class="font-bold block">تكنولوجيا المعلومات (IT)</span>
+                                    <span class="text-xs text-slate-500">برمجة، شبكات، أمن سيبراني</span>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="قسم تكنولوجيا السكك الحديدية يختص بأنظمة تشغيل القطارات وصيانتها وإشارات السكك الحديدية.">
+                                <div
+                                    class="w-8 h-8 rounded bg-orange-100 dark:bg-orange-900 text-orange-600 flex items-center justify-center">
+                                    <i class="fas fa-train"></i>
+                                </div>
+                                <span class="font-bold">تكنولوجيا السكك الحديدية</span>
+                            </li>
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="قسم تكنولوجيا الجرارات والمعدات الزراعية يركز على صيانة وتشغيل الآلات الزراعية الحديثة.">
+                                <div
+                                    class="w-8 h-8 rounded bg-green-100 dark:bg-green-900 text-green-600 flex items-center justify-center">
+                                    <i class="fas fa-tractor"></i>
+                                </div>
+                                <span class="font-bold">تكنولوجيا الجرارات والمعدات الزراعية</span>
+                            </li>
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="قسم تكنولوجيا الغزل والنسيج يهتم بكل مراحل صناعة المنسوجات من المواد الخام إلى المنتج النهائي.">
+                                <div
+                                    class="w-8 h-8 rounded bg-purple-100 dark:bg-purple-900 text-purple-600 flex items-center justify-center">
+                                    <i class="fas fa-tshirt"></i>
+                                </div>
+                                <span class="font-bold">تكنولوجيا الغزل والنسيج</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Health Sciences (Included for completeness/future proofing based on typical tech uni structure, usually separate or upcoming) -->
+                <!-- Assuming focused on Industry & Energy as user stated, but making the second card specialized for Energy specific departments or General Info -->
+                <div class="card-hover glass rounded-2xl overflow-hidden group">
+                    <div class="h-48 bg-gradient-to-r from-emerald-600 to-teal-600 relative p-6 flex items-end">
+                        <i
+                            class="fas fa-bolt text-9xl absolute -left-4 -bottom-8 text-white opacity-10 group-hover:opacity-20 transition-opacity"></i>
+                        <h3 class="text-2xl font-bold text-white relative z-10">تكنولوجيا العلوم الصحية (مثال)</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-500 mb-4">
+                            تخصصات تخدم القطاع الطبي وتصنيع الأدوية والأغذية.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="قسم تكنولوجيا التصنيع الغذائي يدرس طرق حفظ وتصنيع الأغذية بأحدث التقنيات.">
+                                <div
+                                    class="w-8 h-8 rounded bg-emerald-100 dark:bg-emerald-900 text-emerald-600 flex items-center justify-center">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <span class="font-bold">تكنولوجيا التصنيع الغذائي</span>
+                            </li>
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="قسم تكنولوجيا الصناعات الدوائية يركز على إنتاج وتطوير الأدوية ومراقبة جودتها.">
+                                <div
+                                    class="w-8 h-8 rounded bg-teal-100 dark:bg-teal-900 text-teal-600 flex items-center justify-center">
+                                    <i class="fas fa-pills"></i>
+                                </div>
+                                <span class="font-bold">تكنولوجيا الصناعات الدوائية</span>
+                            </li>
+                            <li class="flex items-center gap-3 p-3 rounded-lg hover:bg-emerald-50 dark:hover:bg-slate-700/50 transition cursor-pointer department-item"
+                                data-info="برامج مقترحة لتأهيل كوادر في مجال المساعدة الطبية والتمريض وصحة الفم والأسنان.">
+                                <div
+                                    class="w-8 h-8 rounded bg-cyan-100 dark:bg-cyan-900 text-cyan-600 flex items-center justify-center">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <span class="font-bold">مساعد تمريض / أسنان (مقترحات مستقبلية)</span>
+                            </li>
+                        </ul>
+                        <div
+                            class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg text-xs text-yellow-700 dark:text-yellow-400">
+                            <i class="fas fa-info-circle ml-1"></i>
+                            يتم تحديث الأقسام المتاحة سنوياً بناءً على لائحة الجامعة.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News & Decisions Section -->
+        <section id="news" class="gsap-reveal">
+            <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
+                <span class="w-2 h-8 bg-blue-500 rounded-full"></span>
+                الأخبار والقرارات الرسمية
+            </h2>
+
+            <div id="news-cards-container" class="grid md:grid-cols-3 gap-6">
+                <!-- Dynamic Content will be loaded here via loadNews() -->
+                <!-- Fallback Static Content (removed to avoid duplication when JS loads) -->
+                <!-- Loading Skeleton can be added here if needed -->
+            </div>
+        </section>
+
+        <!-- Training Proposals Section -->
+        <section id="training" class="gsap-reveal mb-20">
+            <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
+                <span class="w-2 h-8 bg-purple-500 rounded-full"></span>
+                مقترحات التدريب (خصم الأسابيع)
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Internal Training -->
+                <div class="glass rounded-2xl p-6 relative">
+                    <div class="absolute top-0 left-0 bg-blue-600 text-white px-4 py-1 rounded-br-xl text-sm font-bold">
+                        داخلي</div>
+                    <h3 class="text-xl font-bold mb-4 mt-2">تدريب داخل الجامعة</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 shrink-0">
+                                1</div>
+                            <div>
+                                <h4 class="font-bold">صيانة معامل الحاسب</h4>
+                                <p class="text-sm text-slate-500">المشاركة في صيانة أجهزة المعامل وتنزيل البرمجيات (لمدة
+                                    أسبوعين).</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 shrink-0">
+                                2</div>
+                            <div>
+                                <h4 class="font-bold">ورش الميكانيكا</h4>
+                                <p class="text-sm text-slate-500">تدريب عملي على المخارط والفرايز في ورش الكلية.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- External Training -->
+                <div class="glass rounded-2xl p-6 relative">
+                    <div
+                        class="absolute top-0 left-0 bg-purple-600 text-white px-4 py-1 rounded-br-xl text-sm font-bold">
+                        خارجي</div>
+                    <h3 class="text-xl font-bold mb-4 mt-2">تدريب خارج الجامعة</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 shrink-0">
+                                1</div>
+                            <div>
+                                <h4 class="font-bold">مصانع فاركو للأدوية</h4>
+                                <p class="text-sm text-slate-500">لطلاب العلوم الصحية وبرمجة الماكينات.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 shrink-0">
+                                2</div>
+                            <div>
+                                <h4 class="font-bold">مدينة الأبحاث العلمية</h4>
+                                <p class="text-sm text-slate-500">تدريب متقدم في مجال النانو تكنولوجي والذكاء الاصطناعي.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-slate-600 dark:text-slate-300 mb-4">نحن مطورون العالم الرقمي ونسعى لبناء حلول مبتكره
+                    ومواقع احترافية</p>
+                <a href="https://dwd-it2.netlify.app/" target="_blank"
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 dark:bg-white text-white dark:text-slate-900 rounded-full font-bold hover:shadow-lg hover:scale-105 transition duration-300">
+                    <i class="fas fa-external-link-alt"></i>
+                    زيارة منصة مطوري العالم الرقمي (DWD)
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12 relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500"></div>
+
+        <div class="container mx-auto px-4 grid md:grid-cols-4 gap-8 relative z-10">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="https://ui-avatars.com/api/?name=BATU&background=0f172a&color=fff" alt="BATU Logo"
+                        class="w-10 h-10 rounded-lg" loading="lazy">
+                    <h2 class="text-2xl font-bold">جامعة برج العرب التكنولوجية</h2>
+                </div>
+                <p class="text-slate-400 max-w-sm mb-6">
+                    منارة التعليم التكنولوجي في مصر. نخرج كفاءات جاهزة للمستقبل.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-400 transition"><i
+                            class="fab fa-twitter"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-red-600 transition"><i
+                            class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-4 text-blue-400">روابط هامة</h3>
+                <ul class="space-y-2 text-slate-300">
+                    <li><a href="https://batechu.com/" class="hover:text-white transition">الموقع الرسمي للجامعة</a>
+                    </li>
+                    <li><a href="https://dwd-it2.netlify.app/" class="hover:text-white transition">منصة الطلاب (DWD)</a>
+                    </li>
+                    <li><a href="#" class="hover:text-white transition">نتيجة الامتحانات</a></li>
+                    <li><a href="#" class="hover:text-white transition">الجداول الدراسية</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-lg mb-4 text-blue-400">تواصل معنا</h3>
+                <ul class="space-y-2 text-slate-300">
+                    <li class="flex items-center gap-2"><i class="fas fa-map-marker-alt"></i> الحي الأول، برج العرب
+                        الجديدة</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-phone"></i> 03 1234567</li>
+                    <li class="flex items-center gap-2"><i class="fas fa-envelope"></i> info@batechu.edu.eg</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-12 pt-8 border-t border-slate-800 text-slate-500 text-sm">
+            &copy; 2025 جميع الحقوق محفوظة | تصميم وتطوير <span class="text-blue-400 font-bold">عبد الله محمد علي</span>
+        </div>
+    </footer>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../js/supabase_client.js"></script>
+
+    <!-- Scripts -->
+    <script>
+        // --- Dynamic News Logic (Patched) ---
+        const NEWS_CONTAINER_ID = 'news-cards-container';
+        const NEWS_TABLE = 'news';
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g,
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag]));
+        }
+
+        async function loadNews() {
+            // Patch 2: Connection Safety Guard
+            if (typeof _supabase === 'undefined' || !_supabase) {
+                console.warn("Supabase not ready, retrying...");
+                setTimeout(loadNews, 500); // Retry after 500ms
+                return;
+            }
+
+            try {
+                const { data: newsItems, error } = await _supabase
+                    .from(NEWS_TABLE)
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(3);
+
+                if (error) throw error;
+
+                if (newsItems && newsItems.length > 0) {
+                    const container = document.getElementById(NEWS_CONTAINER_ID);
+                    if (!container) return;
+
+                    container.innerHTML = newsItems.map(item => `
+                        <!-- News Card -->
+                        <div class="glass rounded-xl overflow-hidden card-hover group cursor-pointer">
+                            <div class="h-40 bg-slate-300 relative overflow-hidden">
+                                <img 
+                                    src="${escapeHTML(item.image_url) || 'https://ui-avatars.com/api/?name=DWD+News&background=0f172a&color=fff&size=512'}" 
+                                    alt="${escapeHTML(item.title)}" 
+                                    loading="eager"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=DWD+News&background=0f172a&color=fff&size=512';"
+                                >
+                                <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                                    ${item.category || 'خبر جديد'}
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="text-xs text-slate-500 mb-2 flex items-center gap-2">
+                                    <i class="far fa-calendar"></i>
+                                    ${new Date(item.created_at).toLocaleDateString('ar-EG')}
+                                </div>
+                                <h3 class="font-bold text-lg mb-2 group-hover:text-blue-500 transition">
+                                    ${item.title}
+                                </div>
+                                <p class="text-sm text-slate-500 line-clamp-2">
+                                    ${item.content}
+                                </p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("Error fetching news:", err);
+            }
+        }
+
+        // Initialize News Loading
+        document.addEventListener('DOMContentLoaded', loadNews);
+
+        // --- Dark/Light Mode Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+                update3DColor(true);
+            } else {
+                localStorage.theme = 'light';
+                update3DColor(false);
+            }
+        });
+
+        // --- Mobile Menu ---
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            setTimeout(() => {
+                menu.classList.toggle('opacity-0');
+                menu.classList.toggle('scale-95');
+            }, 10);
+        });
+
+        // --- GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Content Animation
+        gsap.to(".hero-content", {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            ease: "power3.out",
+            delay: 0.5
+        });
+
+        // Scroll Reveal Sections
+        gsap.utils.toArray('.gsap-reveal').forEach(section => {
+            gsap.fromTo(section,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+        // --- Department Info Click ---
+        document.querySelectorAll('.department-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const info = item.getAttribute('data-info');
+                if (info) {
+                    alert(info);
+                }
+            });
+        });
+
+        // --- Three.js Background Animation ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        // Geometries
+        const geometry = new THREE.IcosahedronGeometry(10, 1); // Complex shape
+        const wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: html.classList.contains('dark') ? 0x0ea5e9 : 0x2563eb,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.15
+        });
+
+        const sphere = new THREE.Mesh(geometry, wireframeMaterial);
+        scene.add(sphere);
+
+        // Add particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 700;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 50; // Spread
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            color: html.classList.contains('dark') ? 0x8b5cf6 : 0x0ea5e9,
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        scene.add(particlesMesh);
+
+        camera.position.z = 20;
+
+        // Mouse Interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        function update3DColor(isDark) {
+            wireframeMaterial.color.setHex(isDark ? 0x0ea5e9 : 0x2563eb);
+            material.color.setHex(isDark ? 0x8b5cf6 : 0x0ea5e9);
+        }
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            const elapsedTime = clock.getElapsedTime();
+
+            sphere.rotation.y += 0.5 * (targetX - sphere.rotation.y);
+            sphere.rotation.x += 0.5 * (targetY - sphere.rotation.x);
+            sphere.rotation.z += 0.002; // Constant slow rotation
+
+            particlesMesh.rotation.y = -mouseX * 0.0002;
+            particlesMesh.rotation.x = -mouseY * 0.0002;
+
+            // Floating effect
+            sphere.position.y = Math.sin(elapsedTime) * 0.5;
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+    </script>
+    <script src="../../js/content-protection.js"></script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

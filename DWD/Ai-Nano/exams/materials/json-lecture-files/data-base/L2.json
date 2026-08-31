@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/DB/L2.pdf",
+  "tutorialFile": "W2T2DB.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: أنواع قواعد البيانات والعلاقات 🔗</h3>\n    <p class=\"mb-4 text-lg\">بنكمل كلامنا عن قواعد البيانات وبنشوف أنواعها والعلاقات بين الجداول.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أنواع قواعد البيانات (حسب الاستخدام):</h4>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**قواعد بيانات بسيطة (مثل MS Access):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>مناسبة للمشاريع الصغيرة والمتوسطة.</li>\n                <li>سهلة الاستخدام نسبيًا.</li>\n                <li><strong>عيوبها:</strong> تخزين محدود (حتى 2 جيجابايت)، عدد مستخدمين محدود، حماية أضعف مقارنة بالأنظمة الكبيرة.</li>\n            </ul>\n        </li>\n        <li>**قواعد بيانات للشركات الكبيرة (مثل Oracle, MySQL, SQL Server, MongoDB):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>مصممة للتعامل مع كميات ضخمة من البيانات وعدد كبير من المستخدمين (زي البنوك).</li>\n                <li>توفر حماية وأداء أعلى بكثير.</li>\n            </ul>\n        </li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أنواع العلاقات بين الجداول (Relationship Types):</h4>\n    <p class=\"mb-4\">العلاقات بتحدد إزاي السجلات في جدول معين مرتبطة بسجلات في جدول تاني.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-3 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">1. علاقة واحد لواحد (One-to-One / 1:1):</h5>\n            <p>كل سجل في الجدول الأول بيرتبط بسجل واحد بس في الجدول التاني، والعكس صحيح. (مثال: جدول الموظفين وجدول تفاصيل الرواتب).</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">2. علاقة واحد لكثير (One-to-Many / 1:M):</h5>\n            <p>كل سجل في الجدول الأول (Parent) ممكن يرتبط بكذا سجل في الجدول التاني (Child)، لكن كل سجل في الجدول التاني بيرتبط بسجل واحد بس في الجدول الأول. (مثال: جدول المؤلفين وجدول الكتب، المؤلف الواحد له كذا كتاب).</p>\n            <p class=\"mt-2\">بنستخدم **المفتاح الأجنبي (Foreign Key - FK)** في الجدول التاني (Child) عشان نربطه بالمفتاح الأساسي (PK) في الجدول الأول (Parent).</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">3. علاقة كثير لكثير (Many-to-Many / M:N):</h5>\n            <p>كل سجل في الجدول الأول ممكن يرتبط بكذا سجل في الجدول التاني، وكل سجل في الجدول التاني ممكن يرتبط بكذا سجل في الجدول الأول. (مثال: جدول الطلاب وجدول المواد الدراسية، الطالب الواحد بيسجل في كذا مادة، والمادة الواحدة بيسجل فيها كذا طالب).</p>\n             <p class=\"mt-2\">العلاقة دي مينفعش نعملها مباشرة. بنحتاج نعمل **جدول وسيط (Junction Table / Linking Table)** يربط بينهم. الجدول ده بيكون فيه Foreign Keys للجدولين الأساسيين.</p>\n        </div>\n    </div>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: مقدمة لـ Microsoft Access 🖱️</h3>\n    <p class=\"mb-4 text-lg\">MS Access هو نظام إدارة قواعد بيانات بسيط بيجي مع حزمة مايكروسوفت أوفيس. هنتعلم إزاي ننشئ جداول ونعرف الحقول فيه.</p>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**إنشاء قاعدة بيانات جديدة:** من شاشة البداية، بنختار \"Blank desktop database\"، نديها اسم ومكان للحفظ، ونضغط \"Create\".</li>\n        <li>**إنشاء جدول (Table):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>نروح لتاب \"Create\" ونختار \"Table\" (لإدخال البيانات مباشرة) أو \"Table Design\" (لتحديد الحقول وأنواعها الأول).</li>\n                <li>**طريقة عرض التصميم (Design View):** هي الأفضل لتعريف هيكل الجدول. بنحدد:\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li><strong>Field Name (اسم الحقل):</strong> زي \"اسم الموظف\".</li>\n                        <li><strong>Data Type (نوع البيانات):</strong> زي Short Text, Number, Date/Time, Currency, AutoNumber (للـ ID), Yes/No, Hyperlink, Attachment, Calculated, Lookup Wizard.</li>\n                        <li><strong>Description (الوصف - اختياري):</strong> شرح للحقل بيظهر للمستخدم.</li>\n                        <li><strong>Field Properties (خصائص الحقل):</strong> زي حجم الحقل (Field Size)، هل هو مطلوب (Required)، هل هو مفهرس (Indexed).</li>\n                    </ul>\n                </li>\n                <li>**تحديد المفتاح الأساسي (Primary Key):** بنعلم على الحقل اللي عايزينه PK (زي الـ ID) ونضغط على أيقونة المفتاح 🔑 في تاب \"Design\".</li>\n                 <li>**حفظ الجدول:** بنضغط كليك يمين على اسم الجدول ونختار \"Save\" ونديله اسم معبر.</li>\n                <li>**طريقة عرض البيانات (Datasheet View):** بنستخدمها لإدخال البيانات الفعلية في الجدول بعد تصميمه.</li>\n            </ul>\n        </li>\n        <li>**أداة Lookup Wizard:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>بنستخدمها لما نختار Data Type عشان نعمل قائمة منسدلة (Combo Box) لحقل معين.</li>\n                <li>القيم ممكن نجيبها من جدول تاني (وده مهم للعلاقات) أو نكتبها يدويًا.</li>\n                <li>بنسهل إدخال البيانات وبنقلل الأخطاء.</li>\n            </ul>\n        </li>\n    </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Database Types and Relationships 🔗</h3>\n    <p class=\"mb-4 text-lg\">Continuing our discussion on databases, looking at their types and the relationships between tables.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Database Types (By Use Case):</h4>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**Simple Databases (e.g., MS Access):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Suitable for small to medium projects.</li>\n                <li>Relatively easy to use.</li>\n                <li>**Drawbacks:** Limited storage (up to 2GB), limited number of concurrent users, weaker security compared to enterprise systems.</li>\n            </ul>\n        </li>\n        <li>**Enterprise Databases (e.g., Oracle, MySQL, SQL Server, MongoDB):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Designed to handle massive amounts of data and numerous users (like banks).</li>\n                <li>Offer significantly higher security and performance.</li>\n            </ul>\n        </li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Relationship Types Between Tables:</h4>\n    <p class=\"mb-4\">Relationships define how records in one table are linked to records in another table.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-3 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">1. One-to-One (1:1):</h5>\n            <p>Each record in the first table is linked to only one record in the second table, and vice versa. (Example: Employees table and Payroll Details table).</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">2. One-to-Many (1:M):</h5>\n            <p>Each record in the first (Parent) table can be linked to multiple records in the second (Child) table, but each record in the second table is linked to only one record in the first. (Example: Authors table and Books table; one author can have many books).</p>\n            <p class=\"mt-2\">A **Foreign Key (FK)** is used in the second (Child) table to link back to the **Primary Key (PK)** in the first (Parent) table.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">3. Many-to-Many (M:N):</h5>\n            <p>Each record in the first table can be linked to multiple records in the second table, and each record in the second table can be linked to multiple records in the first. (Example: Students table and Courses table; a student enrolls in many courses, and a course has many students).</p>\n             <p class=\"mt-2\">This relationship cannot be implemented directly. A **Junction Table (or Linking Table)** is needed in between. This table contains Foreign Keys referencing the primary keys of the two main tables.</p>\n        </div>\n    </div>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Introduction to Microsoft Access 🖱️</h3>\n    <p class=\"mb-4 text-lg\">MS Access is a simple DBMS included with the Microsoft Office suite. We'll learn how to create tables and define fields.</p>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**Creating a New Database:** From the start screen, choose \"Blank desktop database\", give it a name and location, and click \"Create\".</li>\n        <li>**Creating a Table:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Go to the \"Create\" tab and choose \"Table\" (for direct data entry) or \"Table Design\" (to define fields and types first).</li>\n                <li>**Design View:** The preferred way to define the table structure. Specify:\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li><strong>Field Name:</strong> e.g., \"EmployeeName\".</li>\n                        <li><strong>Data Type:</strong> e.g., Short Text, Number, Date/Time, Currency, AutoNumber (for ID), Yes/No, Hyperlink, Attachment, Calculated, Lookup Wizard.</li>\n                        <li><strong>Description (Optional):</strong> Explains the field to the user.</li>\n                        <li><strong>Field Properties:</strong> e.g., Field Size, Required, Indexed.</li>\n                    </ul>\n                </li>\n                <li>**Setting the Primary Key:** Select the desired PK field (like ID) and click the Key icon 🔑 in the \"Design\" tab.</li>\n                 <li>**Saving the Table:** Right-click the table tab, choose \"Save\", and give it a meaningful name.</li>\n                <li>**Datasheet View:** Used for entering the actual data into the table after designing it.</li>\n            </ul>\n        </li>\n        <li>**Lookup Wizard Tool:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Used when selecting a Data Type to create a drop-down list (Combo Box) for a field.</li>\n                <li>Values can come from another table (important for relationships) or be typed in manually.</li>\n                <li>Simplifies data entry and reduces errors.</li>\n            </ul>\n        </li>\n    </ul>\n  ",
+  "quiz": [
+    {
+      "question": "1. MS Access is generally suitable for:",
+      "options": [
+        "Large Banks",
+        "Small to Medium Projects",
+        "Supercomputers",
+        "Web Hosting"
+      ],
+      "correctAnswer": "Small to Medium Projects",
+      "hint": "هو مناسب للمشاريع الصغيرة والمتوسطة بسبب سهولته وقيوده."
+    },
+    {
+      "question": "2. Which is a limitation of MS Access mentioned in the lecture?",
+      "options": [
+        "High Security",
+        "Unlimited Users",
+        "Limited Storage (up to 2GB)",
+        "Difficult to Use"
+      ],
+      "correctAnswer": "Limited Storage (up to 2GB)",
+      "hint": "مساحة تخزينه محدودة مقارنة بالأنظمة الكبيرة."
+    },
+    {
+      "question": "3. Which type of relationship links one Employee record to one Payroll record?",
+      "options": [
+        "One-to-Many",
+        "Many-to-Many",
+        "One-to-One",
+        "No Relationship"
+      ],
+      "correctAnswer": "One-to-One",
+      "hint": "موظف واحد له سجل راتب واحد فقط."
+    },
+    {
+      "question": "4. In a One-to-Many relationship between Authors and Books, where is the Foreign Key (FK) typically placed?",
+      "options": [
+        "In the Authors table",
+        "In the Books table",
+        "In both tables",
+        "In a separate Junction table"
+      ],
+      "correctAnswer": "In the Books table",
+      "hint": "الجدول 'الكثير' (الابن) هو اللي بيحتوي على المفتاح الأجنبي."
+    },
+    {
+      "question": "5. What is required to implement a Many-to-Many relationship (e.g., Students and Courses)?",
+      "options": [
+        "A Primary Key only",
+        "A Foreign Key only",
+        "A Junction Table",
+        "A One-to-One link"
+      ],
+      "correctAnswer": "A Junction Table",
+      "hint": "جدول وسيط بيربط بين الجدولين الأساسيين."
+    },
+    {
+      "question": "6. What is the first step to create a new database in MS Access?",
+      "options": [
+        "Create Table",
+        "Choose 'Blank desktop database'",
+        "Import Data",
+        "Design Form"
+      ],
+      "correctAnswer": "Choose 'Blank desktop database'",
+      "hint": "نبدأ بقاعدة بيانات فاضية."
+    },
+    {
+      "question": "7. Which view in MS Access is best for defining the structure (Fields, Data Types) of a table?",
+      "options": [
+        "Datasheet View",
+        "Design View",
+        "Form View",
+        "Report View"
+      ],
+      "correctAnswer": "Design View",
+      "hint": "طريقة عرض التصميم هي لتحديد الهيكل."
+    },
+    {
+      "question": "8. What does 'PK' stand for?",
+      "options": [
+        "Partial Key",
+        "Primary Key",
+        "Private Key",
+        "Program Key"
+      ],
+      "correctAnswer": "Primary Key",
+      "hint": "المفتاح الأساسي."
+    },
+    {
+      "question": "9. Which Data Type automatically generates a unique number for each record?",
+      "options": [
+        "Number",
+        "Short Text",
+        "AutoNumber",
+        "Currency"
+      ],
+      "correctAnswer": "AutoNumber",
+      "hint": "ترقيم تلقائي فريد."
+    },
+    {
+      "question": "10. The 'Lookup Wizard' in Data Type selection helps create:",
+      "options": [
+        "Primary Keys",
+        "Reports",
+        "Drop-down lists (Combo Boxes)",
+        "Queries"
+      ],
+      "correctAnswer": "Drop-down lists (Combo Boxes)",
+      "hint": "بيعمل قائمة منسدلة للاختيار منها."
+    },
+    {
+      "question": "11. To set a field as the Primary Key in Design View, you click the:",
+      "options": [
+        "Save icon",
+        "Key icon",
+        "View icon",
+        "Relationship icon"
+      ],
+      "correctAnswer": "Key icon",
+      "hint": "أيقونة المفتاح الأصفر."
+    },
+    {
+      "question": "12. In which view do you typically enter the actual data into the table?",
+      "options": [
+        "Design View",
+        "Datasheet View",
+        "Relationship View",
+        "SQL View"
+      ],
+      "correctAnswer": "Datasheet View",
+      "hint": "طريقة عرض ورقة البيانات لإدخال السجلات."
+    },
+    {
+      "question": "13. A field in one table that refers to the Primary Key of another table is called a:",
+      "options": [
+        "Primary Key (PK)",
+        "Foreign Key (FK)",
+        "Candidate Key",
+        "Super Key"
+      ],
+      "correctAnswer": "Foreign Key (FK)",
+      "hint": "المفتاح الأجنبي هو اللي بيربط الجداول."
+    },
+    {
+      "question": "14. Which database system is mentioned as suitable for large companies like banks?",
+      "options": [
+        "MS Access",
+        "SQLite",
+        "Oracle",
+        "Excel"
+      ],
+      "correctAnswer": "Oracle",
+      "hint": "أوراكل معروف بقوته في المؤسسات الكبيرة."
+    },
+    {
+      "question": "15. What action should you perform after defining the fields in Design View?",
+      "options": [
+        "Delete the table",
+        "Enter data immediately",
+        "Save the table structure",
+        "Create a report"
+      ],
+      "correctAnswer": "Save the table structure",
+      "hint": "لازم تحفظ التصميم قبل إدخال البيانات."
+    },
+    {
+      "question": "16. Which of these is NOT a standard relationship type?",
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "One-to-Self"
+      ],
+      "correctAnswer": "One-to-Self",
+      "hint": "العلاقات الأساسية هي 1:1, 1:M, M:N."
+    },
+    {
+      "question": "17. A Junction table typically contains:",
+      "options": [
+        "Only Primary Keys",
+        "Foreign Keys from the tables being linked",
+        "User interface elements",
+        "Calculated fields only"
+      ],
+      "correctAnswer": "Foreign Keys from the tables being linked",
+      "hint": "بيحتوي على المفاتيح الأجنبية للجدولين اللي بيربطهم."
+    },
+    {
+      "question": "18. Which command is used to save and close the current table view in Access?",
+      "options": [
+        "Exit Software",
+        "Save & Close",
+        "Delete Table",
+        "Minimize Window"
+      ],
+      "correctAnswer": "Save & Close",
+      "hint": "لحفظ التغييرات وإغلاق الجدول."
+    },
+    {
+      "question": "19. If one Customer can place multiple Orders, this is a:",
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "No Relationship"
+      ],
+      "correctAnswer": "One-to-Many",
+      "hint": "العميل الواحد (One) له طلبات كثيرة (Many)."
+    },
+    {
+      "question": "20. The 'Required' field property in Access Design View determines if:",
+      "options": [
+        "The field must be unique",
+        "The field can be left empty",
+        "The field must contain a value",
+        "The field is indexed"
+      ],
+      "correctAnswer": "The field must contain a value",
+      "hint": "هل الحقل ده إجباري ولا ممكن تسيبه فاضي."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

@@ -1,0 +1,249 @@
+{
+  "pdfFile": "../../materials-lectures/operating-system/L1.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: ما هو نظام التشغيل (OS)؟ 🧠</h3>\n<p class=\"mb-4 text-lg\">نظام التشغيل (OS) هو برنامج أساسي يعمل كـ <strong>وسيط (Interface)</strong> بين المستخدم وتطبيقاته، وبين <strong>عتاد الكمبيوتر (Hardware)</strong>. دوره الحيوي يجعله العقل المدبر الذي يضمن عمل النظام بكفاءة وأمان.</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n    <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">أهدافه الرئيسية:</h4>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><strong>التنفيذ (Execution):</strong> تنفيذ برامج المستخدمين وحل مشاكلهم بسهولة.</li>\n        <li><strong>الراحة (Convenience):</strong> جعل استخدام الكمبيوتر مريحًا وسهلًا.</li>\n        <li><strong>الكفاءة (Efficiency):</strong> استخدام موارد الهاردوير بكفاءة عالية (زي CPU والذاكرة).</li>\n    </ul>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">بنية طبقات نظام الكمبيوتر (The Hierarchy):</h4>\n<p class=\"mb-4\">بيتكون من 4 طبقات أساسية، من الأدنى (الأقرب للعتاد) للأعلى (الأقرب للمستخدم):</p>\n<ul class=\"list-none space-y-3 mr-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong>1. العتاد (Hardware):</strong> مكونات مادية مثل CPU, RAM, I/O devices.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong>2. نظام التشغيل (OS):</strong> المتحكم والمنظم الرئيسي للعتاد.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-green-400\"><strong>3. برامج النظام والتطبيقات:</strong> برامج تخدم المستخدم (مثل برامج تحرير النصوص والمتصفحات).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong>4. المستخدمون (Users):</strong> نحن الذين نتفاعل مع النظام (الأشخاص، الأجهزة الأخرى، أو أنظمة التشغيل الأخرى).</li>\n</ul>\n\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: وظائف نظام التشغيل الأساسية (Core OS Functions) ⚙️</h3>\n<p class=\"mb-4 text-lg\">نظام التشغيل مسؤول عن مجموعة من المهام الحرجة لضمان استقرار النظام:</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. إدارة العمليات (Process Management):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>التعريف:</strong> العملية (Process) هي البرنامج أثناء تنفيذه (مثل المتصفح الآن).</li>\n    <li><strong>المهمة:</strong> مسؤول عن إنشاء العمليات وحذفها، وإيقافها مؤقتًا واستئنافها (Scheduling).</li>\n    <li><strong>الذاكرة:</strong> يحدد كيف ومتى تحصل كل عملية على وقت الـ CPU.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. إدارة الذاكرة الرئيسية (Main Memory Management):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>التعريف:</strong> الذاكرة الرئيسية (RAM) هي مخزن سريع للبيانات التي يتم العمل عليها حاليًا.</li>\n    <li><strong>المهمة:</strong> يقرر أي أجزاء من الذاكرة مستخدمة ومن قبل من، ويحدد أي عملية سيتم تحميلها في الذاكرة.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. إدارة الملفات (File Management):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>التعريف:</strong> الملف (File) هو مجموعة من المعلومات المُعرّفة، والمجلدات (Directories) لتنظيم هذه الملفات.</li>\n    <li><strong>المهمة:</strong> مسؤول عن إنشاء وحذف الملفات والمجلدات، وتوفير الواجهات اللازمة للتعامل معها.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">4. إدارة الإدخال والإخراج (I/O System Management):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>التعريف:</strong> الأجهزة الطرفية (I/O Devices) مثل الطابعات، الكيبورد، والفأرة.</li>\n    <li><strong>المهمة:</strong> يوفر نظام تشغيل سهل وموحد للبرامج للتعامل مع كل هذه الأجهزة، بدلاً من أن تتعامل معها مباشرة.</li>\n</ul>\n\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: مكونات نظام الكمبيوتر والـ Booting 🚀</h3>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مكونات العتاد الأساسية (Hardware Components):</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong>وحدة المعالجة المركزية (CPU):</strong> المنفذ الرئيسي للتعليمات. تحتوي على ALU (وحدة الحساب والمنطق) و Control Unit (وحدة التحكم).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><strong>الذاكرة الرئيسية (RAM):</strong> مخزن مؤقت وسريع للبيانات والتعليمات التي يتم استخدامها حاليًا.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><strong>وحدات الإدخال/الإخراج (I/O Devices):</strong> أي جهاز يتفاعل مع النظام (شاشة، طابعة، USB).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><strong>الناقلات (System Bus):</strong> المسارات التي تربط بين CPU، الذاكرة، و I/O (ناقل البيانات، ناقل العناوين، ناقل التحكم).</div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">عملية الإقلاع (Bootstrapping):</h4>\n<p class=\"mb-4\">هي عملية بدء تشغيل الكمبيوتر. لما بتدوس على زرار الطاقة، اللي بيحصل هو:</p>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li>بيشتغل برنامج صغير اسمه **Boot Program** أو **Bootstrap Loader**، بيكون موجود في ذاكرة ROM (BIOS أو UEFI).</li>\n    <li>هذا البرنامج مسؤول عن اختبار مكونات النظام الأساسية.</li>\n    <li>بعد الاختبار، يقوم بتحميل **نواة نظام التشغيل (OS Kernel)** من القرص الصلب إلى الذاكرة الرئيسية (RAM) ويبدأ في تنفيذها.</li>\n</ul>\n\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: أنواع أنظمة التشغيل والـ Kernel 💻</h3>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">نواة النظام (The Kernel):</h4>\n<p class=\"mb-4\">الـ <strong>Kernel</strong> هو القلب الأساسي لنظام التشغيل. هو الجزء الوحيد اللي بيشتغل بشكل مستمر على الكمبيوتر، ومسؤول عن التحكم المباشر في الهاردوير، وتقديم الخدمات الأساسية لبقية برامج النظام.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أنواع الـ Kernel:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\">\n        <h5 class=\"font-semibold\">1. Monolithic Kernel</h5>\n        <p class=\"text-sm text-gray-400\">الخدمات الأساسية كلها (إدارة العمليات والذاكرة والملفات) بتشتغل في نفس مساحة النواة (Kernel Space). مثال: Linux (وهو اللي هنركز عليه).</p>\n    </div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-orange-400\">\n        <h5 class=\"font-semibold\">2. Microkernel</h5>\n        <p class=\"text-sm text-gray-400\">النواة بتبقى صغيرة جدًا وفيها خدمات أساسية بس. باقي الخدمات (زي إدارة الملفات) بتشتغل كـ \"خوادم\" في مساحة المستخدم (User Space). مثال: Mach (مستخدم في MacOS).</p>\n    </div>\n</div>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: What is an Operating System (OS)? 🧠</h3>\n<p class=\"mb-4 text-lg\">An Operating System (OS) is essential software that acts as an <strong>intermediary (Interface)</strong> between the user/applications and the <strong>computer hardware</strong>. Its vital role makes it the brain that ensures the system operates efficiently and securely.</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n    <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Its Main Goals:</h4>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><strong>Execution:</strong> Executing user programs and solving their problems easily.</li>\n        <li><strong>Convenience:</strong> Making computer use convenient and straightforward.</li>\n        <li><strong>Efficiency:</strong> Efficiently utilizing hardware resources (like CPU and memory).</li>\n    </ul>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Computer System Structure (The Hierarchy):</h4>\n<p class=\"mb-4\">It consists of 4 basic layers, from the bottom (closest to the hardware) to the top (closest to the user):</p>\n<ul class=\"list-none space-y-3 ml-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong>1. Hardware:</strong> Physical components like CPU, RAM, I/O devices.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong>2. Operating System (OS):</strong> The main controller and manager of the hardware.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-green-400\"><strong>3. System and Application Programs:</strong> Software serving the user (like text editors and browsers).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong>4. Users:</strong> We who interact with the system (people, other devices, or other OSs).</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Core OS Functions ⚙️</h3>\n<p class=\"mb-4 text-lg\">The OS is responsible for a set of critical tasks to ensure system stability:</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Process Management:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>Definition:</strong> A Process is a program during its execution (like the browser now).</li>\n    <li><strong>Task:</strong> Responsible for creating, deleting, temporarily stopping, and resuming processes (Scheduling).</li>\n    <li><strong>Resource Allocation:</strong> Determines how and when each process gets CPU time.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Main Memory Management:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>Definition:</strong> Main memory (RAM) is a fast, temporary store for currently used data.</li>\n    <li><strong>Task:</strong> Decides which parts of memory are used and by whom, and determines which process will be loaded into memory.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. File Management:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>Definition:</strong> A File is a defined collection of information, and Directories are used to organize these files.</li>\n    <li><strong>Task:</strong> Responsible for creating and deleting files and directories, and providing the necessary interfaces to deal with them.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">4. I/O System Management:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>Definition:</strong> Peripheral devices (I/O Devices) such as printers, keyboard, and mouse.</li>\n    <li><strong>Task:</strong> Provides an easy and unified OS interface for programs to interact with all these devices, instead of dealing with them directly.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Computer Components and Booting 🚀</h3>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Basic Hardware Components:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong>Central Processing Unit (CPU):</strong> The main executor of instructions. Contains the ALU (Arithmetic Logic Unit) and Control Unit.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><strong>Main Memory (RAM):</strong> Fast, temporary storage for currently used data and instructions.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><strong>I/O Devices:</strong> Any device interacting with the system (monitor, printer, USB).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><strong>System Bus:</strong> Pathways connecting the CPU, memory, and I/O (Data Bus, Address Bus, Control Bus).</div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">The Bootstrapping Process:</h4>\n<p class=\"mb-4\">This is the process of starting the computer. When you press the power button, the following happens:</p>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li>A small program called the **Boot Program** or **Bootstrap Loader** starts, which resides in ROM (BIOS or UEFI).</li>\n    <li>This program is responsible for testing the basic system components.</li>\n    <li>After testing, it loads the **OS Kernel** from the hard disk into the main memory (RAM) and begins its execution.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: OS Types and The Kernel 💻</h3>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">The Kernel:</h4>\n<p class=\"mb-4\">The <strong>Kernel</strong> is the essential core of the OS. It is the only part that runs continuously on the computer and is responsible for direct hardware control, providing essential services to the rest of the system programs.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Kernel Types:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\">\n        <h5 class=\"font-semibold\">1. Monolithic Kernel</h5>\n        <p class=\"text-sm text-gray-400\">All basic services (process, memory, and file management) run in the same Kernel Space. Example: Linux (which we will focus on).</p>\n    </div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-orange-400\">\n        <h5 class=\"font-semibold\">2. Microkernel</h5>\n        <p class=\"text-sm text-gray-400\">The kernel is very small and contains only essential services. The remaining services (like file management) run as 'servers' in the User Space. Example: Mach (used in MacOS).</p>\n    </div>\n</div>",
+  "quiz": [
+    {
+      "question": "1. What is the primary role of the Operating System?",
+      "options": [
+        "Writing code and compiling programs",
+        "Acting as an intermediary between the user and hardware",
+        "Managing the screen resolution and graphics card",
+        "Providing the internet connection"
+      ],
+      "correctAnswer": "Acting as an intermediary between the user and hardware",
+      "hint": "هو حلقة الوصل الأساسية بين السوفت وير والهارد وير.",
+      "englishHint": "It is the fundamental link between software and hardware."
+    },
+    {
+      "question": "2. Which of these is NOT a core goal of the OS?",
+      "options": [
+        "Ensuring efficient use of hardware",
+        "Making computer use convenient",
+        "Executing user programs",
+        "Physically repairing broken hardware"
+      ],
+      "correctAnswer": "Physically repairing broken hardware",
+      "hint": "نظام التشغيل هو سوفت وير، مش بتاع صيانة هاردوير.",
+      "englishHint": "The OS is software, not for hardware maintenance."
+    },
+    {
+      "question": "3. Which layer is at the bottom of the computer system structure?",
+      "options": [
+        "Users",
+        "Operating System",
+        "Hardware",
+        "Application Programs"
+      ],
+      "correctAnswer": "Hardware",
+      "hint": "هو القاعدة المادية للهرم.",
+      "englishHint": "It is the physical base of the pyramid."
+    },
+    {
+      "question": "4. The process of loading the OS Kernel into memory during startup is called:",
+      "options": [
+        "Compiling",
+        "Bootstrapping",
+        "Debugging",
+        "Paging"
+      ],
+      "correctAnswer": "Bootstrapping",
+      "hint": "هي عملية بدء التشغيل وتحميل النظام.",
+      "englishHint": "It is the process of startup and loading the system."
+    },
+    {
+      "question": "5. Which OS function is responsible for creating, deleting, and scheduling programs in execution?",
+      "options": [
+        "File Management",
+        "Memory Management",
+        "Process Management",
+        "I/O Management"
+      ],
+      "correctAnswer": "Process Management",
+      "hint": "البرنامج أثناء التنفيذ يسمى عملية (Process).",
+      "englishHint": "A program during execution is called a Process."
+    },
+    {
+      "question": "6. The OS component that is the core of the system and runs continuously is the:",
+      "options": [
+        "Shell",
+        "Kernel",
+        "BIOS",
+        "Application Layer"
+      ],
+      "correctAnswer": "Kernel",
+      "hint": "النواة هي قلب النظام (Core).",
+      "englishHint": "The Kernel is the core of the system."
+    },
+    {
+      "question": "7. What is the main characteristic of a 'Microkernel'?",
+      "options": [
+        "All services run in User Space",
+        "The kernel is very small with only essential services",
+        "All services run in Kernel Space",
+        "It is only used in mobile phones"
+      ],
+      "correctAnswer": "The kernel is very small with only essential services",
+      "hint": "النواة المصغرة بتقلل من الخدمات اللي بتشتغل في الـ Kernel Space.",
+      "englishHint": "The Microkernel minimizes services running in the Kernel Space."
+    },
+    {
+      "question": "8. Which component is responsible for carrying memory addresses between the CPU and memory?",
+      "options": [
+        "Data Bus",
+        "Control Bus",
+        "Address Bus",
+        "System Clock"
+      ],
+      "correctAnswer": "Address Bus",
+      "hint": "ناقل العناوين هو المسؤول عن تحديد المواقع.",
+      "englishHint": "The Address Bus is responsible for locating memory positions."
+    },
+    {
+      "question": "9. A program during execution is formally called a:",
+      "options": [
+        "Thread",
+        "Driver",
+        "Process",
+        "File"
+      ],
+      "correctAnswer": "Process",
+      "hint": "العملية هي كيان التنفيذ.",
+      "englishHint": "A Process is the execution entity."
+    },
+    {
+      "question": "10. In a Monolithic Kernel (like Linux), where do most OS services run?",
+      "options": [
+        "User Space",
+        "Network Cloud",
+        "Kernel Space",
+        "BIOS"
+      ],
+      "correctAnswer": "Kernel Space",
+      "hint": "النواة المتجانسة بتجمع كل الخدمات في مساحة النواة.",
+      "englishHint": "The Monolithic kernel aggregates all services in the Kernel Space."
+    },
+    {
+      "question": "11. The OS component that allows programs to interact with I/O devices without knowing the hardware details is the:",
+      "options": [
+        "File System",
+        "I/O Subsystem",
+        "ALU",
+        "Registers"
+      ],
+      "correctAnswer": "I/O Subsystem",
+      "hint": "نظام الإدخال/الإخراج بيوحد طريقة التعامل مع الأجهزة.",
+      "englishHint": "The I/O subsystem standardizes device interaction."
+    },
+    {
+      "question": "12. What does the Bootstrap Loader load into the RAM?",
+      "options": [
+        "Application Programs",
+        "User Data",
+        "OS Kernel",
+        "Printer Drivers"
+      ],
+      "correctAnswer": "OS Kernel",
+      "hint": "هو مهمته الأساسية تحميل نواة النظام للذاكرة.",
+      "englishHint": "Its main task is to load the system kernel into memory."
+    },
+    {
+      "question": "13. What is the role of the Control Unit inside the CPU?",
+      "options": [
+        "Performing arithmetic operations",
+        "Storing temporary data",
+        "Organizing data flow and instruction execution",
+        "Connecting to the internet"
+      ],
+      "correctAnswer": "Organizing data flow and instruction execution",
+      "hint": "وحدة التحكم هي المسؤولة عن التنظيم.",
+      "englishHint": "The Control Unit is responsible for organization."
+    },
+    {
+      "question": "14. A key responsibility of Main Memory Management is to determine:",
+      "options": [
+        "Which files are stored on the disk",
+        "Which user is currently logged in",
+        "Which process should be loaded into RAM",
+        "The speed of the CPU"
+      ],
+      "correctAnswer": "Which process should be loaded into RAM",
+      "hint": "إدارة الذاكرة بتهتم بتحميل العمليات في الـ RAM.",
+      "englishHint": "Memory management deals with loading processes into RAM."
+    },
+    {
+      "question": "15. The OS must decide between conflicting requests for resources to ensure:",
+      "options": [
+        "Maximum user freedom",
+        "Highest possible speed",
+        "Efficiency and fairness",
+        "Kernel isolation"
+      ],
+      "correctAnswer": "Efficiency and fairness",
+      "hint": "الكفاءة والعدل من أهم أدوار مخصص الموارد.",
+      "englishHint": "Efficiency and fairness are key roles of the resource allocator."
+    },
+    {
+      "question": "16. Where does the Boot Program (Bootstrap Loader) initially reside?",
+      "options": [
+        "Hard Disk (HDD/SSD)",
+        "RAM",
+        "ROM (BIOS/UEFI)",
+        "CPU Registers"
+      ],
+      "correctAnswer": "ROM (BIOS/UEFI)",
+      "hint": "هو برنامج إقلاع أساسي موجود في ذاكرة القراءة فقط (ROM).",
+      "englishHint": "It is a basic boot program located in Read-Only Memory (ROM)."
+    },
+    {
+      "question": "17. A set of information defined by its creator is called a:",
+      "options": [
+        "Process",
+        "Thread",
+        "Kernel",
+        "File"
+      ],
+      "correctAnswer": "File",
+      "hint": "هو العنصر الأساسي في إدارة الملفات.",
+      "englishHint": "It is the basic element in file management."
+    },
+    {
+      "question": "18. What is the core characteristic of the Monolithic Kernel architecture?",
+      "options": [
+        "Uses many small, independent modules",
+        "Runs all core services in Kernel Space",
+        "Separates all services into User Space servers",
+        "Only supports a single user"
+      ],
+      "correctAnswer": "Runs all core services in Kernel Space",
+      "hint": "النواة المتجانسة تعمل كوحدة واحدة.",
+      "englishHint": "The Monolithic kernel operates as a single unit."
+    },
+    {
+      "question": "19. Which bus carries control signals (like read/write commands)?",
+      "options": [
+        "Data Bus",
+        "Control Bus",
+        "Address Bus",
+        "System Bus"
+      ],
+      "correctAnswer": "Control Bus",
+      "hint": "ناقل التحكم.",
+      "englishHint": "The Control Bus."
+    },
+    {
+      "question": "20. The Application Programs layer is directly above which layer in the computer system hierarchy?",
+      "options": [
+        "Hardware",
+        "Users",
+        "Operating System",
+        "Input/Output Devices"
+      ],
+      "correctAnswer": "Operating System",
+      "hint": "نظام التشغيل هو اللي بيدعم البرامج دي.",
+      "englishHint": "The Operating System supports these programs."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

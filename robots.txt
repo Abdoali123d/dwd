@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /DWD/schedule/professor.html
+Sitemap: https://dwd-edu.vercel.app/sitemap.xml

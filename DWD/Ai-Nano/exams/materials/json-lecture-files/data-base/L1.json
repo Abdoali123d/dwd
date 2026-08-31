@@ -1,0 +1,249 @@
+{
+  "pdfFile": "../../materials-lectures/DB/L1.pdf",
+  "arabicSummary": "\n                    <p class=\"mb-4\">قاعدة البيانات (**Data Base**) هي ببساطة مجموعة من البيانات المنظمة والمُرتبة، يمكن أن تكون في البداية مُرتبة باستخدام تطبيقات بسيطة مثل **Excel** أو أي تطبيق آخر.</p>\n\n                    <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">مكونات قاعدة البيانات:</h4>\n                    <p class=\"mr-6\">تتكون قاعدة البيانات من مجموعات من **الجداول (Tables)**، حيث يحتوي كل جدول على **صفوف (Rows)** و **أعمدة (Columns)**:</p>\n                    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n                        <li>**الأعمدة (Columns/Fields):** تمثل السمات أو الحقول (مثل الاسم، العمر، العنوان).</li>\n                        <li>**الصفوف (Rows/Records):** تمثل سجلات أو قيود البيانات الفردية (بيانات شخص واحد بالكامل).</li>\n                    </ul>\n\n                    <div class=\"flex justify-center my-6\"><img src=\"https://placehold.co/600x200/0f172a/22d3ee?text=Database+Table+Structure\" alt=\"هيكل جدول قاعدة البيانات\" class=\"rounded-lg shadow-xl w-full max-w-md\"></div>\n\n                    <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">مفاهيم أساسية:</h4>\n                    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n                        <li>**المفتاح الأساسي (Primary Key - PK):** هو عمود أو مجموعة أعمدة تُستخدم لتحديد كل صف (سجل) بشكل **فريد** داخل الجدول. هذا المفتاح لا يمكن أن يتكرر في الجدول. مثال: رقم الهوية (ID).</li>\n                        <li>**DBMS (نظام إدارة قواعد البيانات):** اختصار لـ **Data Base Management System**. هو نظام برمجي يسمح للمستخدمين بتعريف وإنشاء وصيانة والتحكم في الوصول إلى قاعدة البيانات. أمثلة: MySQL, Oracle, SQL Server.</li>\n                    </ul>\n                    \n                    <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">مكونات نظام إدارة قواعد البيانات (DBMS):</h4>\n                    <p class=\"mr-6\">نظام إدارة قواعد البيانات يقع بين برامج التطبيقات (Database Applications) والمستخدمين النهائيين (End Users) من جهة، وقاعدة البيانات المادية (Database) من جهة أخرى، لضمان إدارة البيانات بكفاءة وأمان.</p>\n                ",
+  "englishSummary": "\n                    <p class=\"mb-4\">A **Data Base** is simply a collection of arranged and organized data, which can initially be structured using simple applications like **Excel** or any other application.</p>\n\n                    <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Database Components:</h4>\n                    <p class=\"ml-6\">A database consists of groups of **Tables**, where each table has **Rows** and **Columns**:</p>\n                    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n                        <li>**Columns (Fields):** Represent attributes (like Name, Age, Address).</li>\n                        <li>**Rows (Records):** Represent individual data entries or records (all data for one person).</li>\n                    </ul>\n                    \n                    <div class=\"flex justify-center my-6\"><img src=\"https://placehold.co/600x200/0f172a/22d3ee?text=Database+Table+Structure\" alt=\"Database Table Structure\" class=\"rounded-lg shadow-xl w-full max-w-md\"></div>\n\n                    <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Key Concepts:</h4>\n                    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n                        <li>**Primary Key (PK):** A column or set of columns used to **uniquely** identify each row (record) within a table. This key cannot be duplicated in the table. Example: ID number.</li>\n                        <li>**DBMS:** Stands for **Data Base Management System**. It is a software system that allows users to define, create, maintain, and control access to the database. Examples: MySQL, Oracle, SQL Server.</li>\n                    </ul>\n\n                    <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Components of a DBMS:</h4>\n                    <p class=\"ml-6\">The DBMS is positioned between application programs (Database Applications) and the end users on one side, and the physical database on the other, ensuring data is managed efficiently and securely.</p>\n                ",
+  "quiz": [
+    {
+      "question": "1. What is the fundamental structure of a relational database?",
+      "options": [
+        "A single file",
+        "A collection of nested folders",
+        "A group of related tables",
+        "A hierarchy of programs"
+      ],
+      "correctAnswer": "A group of related tables",
+      "hint": "قواعد البيانات تتكون من جداول.",
+      "englishHint": "Databases consist of tables."
+    },
+    {
+      "question": "2. The rows in a database table are also known as:",
+      "options": [
+        "Fields",
+        "Attributes",
+        "Records",
+        "Indexes"
+      ],
+      "correctAnswer": "Records",
+      "hint": "كل صف يمثل سجلًا كاملاً لبيانات فردية.",
+      "englishHint": "Each row represents a complete individual data record."
+    },
+    {
+      "question": "3. Which of the following is an example of an organized arrangement of data mentioned in the lecture?",
+      "options": [
+        "A photo album",
+        "An Excel sheet",
+        "A random pile of papers",
+        "A computer monitor"
+      ],
+      "correctAnswer": "An Excel sheet",
+      "hint": "أبسط مثال لترتيب البيانات في جداول.",
+      "englishHint": "The simplest example of arranging data in tables."
+    },
+    {
+      "question": "4. What is the main purpose of a Primary Key?",
+      "options": [
+        "To store large files",
+        "To uniquely identify each record in a table",
+        "To speed up data sorting",
+        "To link the database to the internet"
+      ],
+      "correctAnswer": "To uniquely identify each record in a table",
+      "hint": "المفتاح الأساسي لا يتكرر.",
+      "englishHint": "The primary key cannot be duplicated."
+    },
+    {
+      "question": "5. What does the acronym DBMS stand for?",
+      "options": [
+        "Data Backup Management System",
+        "Digital Business Model Server",
+        "Data Base Management System",
+        "Data Block Management Software"
+      ],
+      "correctAnswer": "Data Base Management System",
+      "hint": "هو النظام البرمجي الذي يدير قاعدة البيانات.",
+      "englishHint": "It is the software system that manages the database."
+    },
+    {
+      "question": "6. Which part of the database table represents a single attribute or characteristic (e.g., 'Name' or 'Age')?",
+      "options": [
+        "Row",
+        "Record",
+        "Field",
+        "Key"
+      ],
+      "correctAnswer": "Field",
+      "hint": "العمود يمثل حقلًا.",
+      "englishHint": "The column represents a field."
+    },
+    {
+      "question": "7. A Primary Key in a table is not allowed to have:",
+      "options": [
+        "Letters",
+        "Numbers",
+        "Duplicate values",
+        "NULL values"
+      ],
+      "correctAnswer": "Duplicate values",
+      "hint": "يجب أن يكون فريدًا لتحديد السجل.",
+      "englishHint": "It must be unique to identify the record."
+    },
+    {
+      "question": "8. Which of these is an example of a DBMS?",
+      "options": [
+        "Microsoft Word",
+        "MySQL",
+        "Adobe Photoshop",
+        "Microsoft Windows"
+      ],
+      "correctAnswer": "MySQL",
+      "hint": "هو أشهر نظام لإدارة قواعد البيانات العلائقية.",
+      "englishHint": "It is the most famous relational database management system."
+    },
+    {
+      "question": "9. The DBMS acts as an intermediary between the end users and the...",
+      "options": [
+        "Operating System",
+        "Hardware",
+        "Physical Database",
+        "Internet"
+      ],
+      "correctAnswer": "Physical Database",
+      "hint": "هو جسر للوصول والتحكم في البيانات المخزنة.",
+      "englishHint": "It is the bridge to access and control the stored data."
+    },
+    {
+      "question": "10. Which is NOT a function of a DBMS?",
+      "options": [
+        "Defining the database structure",
+        "Creating and updating data",
+        "Controlling data access and security",
+        "Writing the computer's operating system"
+      ],
+      "correctAnswer": "Writing the computer's operating system",
+      "hint": "هذه وظيفة مطوري أنظمة التشغيل.",
+      "englishHint": "This is the job of OS developers."
+    },
+    {
+      "question": "11. The term 'Attribute' is another name for a database:",
+      "options": [
+        "Row",
+        "Record",
+        "Table",
+        "Column"
+      ],
+      "correctAnswer": "Column",
+      "hint": "السمة هي اسم آخر للعمود أو الحقل.",
+      "englishHint": "Attribute is another name for a column or field."
+    },
+    {
+      "question": "12. What does a database table primarily organize data into?",
+      "options": [
+        "Files and folders",
+        "Graphs and charts",
+        "Rows and columns",
+        "Lists and queues"
+      ],
+      "correctAnswer": "Rows and columns",
+      "hint": "هيكل الجدول الأساسي.",
+      "englishHint": "The basic table structure."
+    },
+    {
+      "question": "13. A typical database application is one that:",
+      "options": [
+        "Writes code in Java",
+        "Allows users to interact with the DBMS",
+        "Manages the computer hardware",
+        "Performs arithmetic calculations"
+      ],
+      "correctAnswer": "Allows users to interact with the DBMS",
+      "hint": "مثل برنامج إدارة المخزون أو نظام تسجيل الطلاب.",
+      "englishHint": "Such as an inventory management program or a student registration system."
+    },
+    {
+      "question": "14. If a field holds a unique ID number for every customer, it is most likely the:",
+      "options": [
+        "Foreign Key",
+        "Secondary Key",
+        "Primary Key",
+        "Index Key"
+      ],
+      "correctAnswer": "Primary Key",
+      "hint": "رقم الهوية لا يتكرر.",
+      "englishHint": "The ID number does not repeat."
+    },
+    {
+      "question": "15. The 'data' in a database must be:",
+      "options": [
+        "Random and disorganized",
+        "Arranged and organized",
+        "Only in text format",
+        "Only stored in the cloud"
+      ],
+      "correctAnswer": "Arranged and organized",
+      "hint": "الترتيب هو ما يميز قاعدة البيانات.",
+      "englishHint": "Organization is what distinguishes a database."
+    },
+    {
+      "question": "16. Which component is at the highest level of abstraction in the database structure?",
+      "options": [
+        "Physical Database",
+        "DBMS",
+        "End User",
+        "Database Application"
+      ],
+      "correctAnswer": "End User",
+      "hint": "المستخدم يتفاعل مع التطبيق ولا يرى التفاصيل الداخلية.",
+      "englishHint": "The user interacts with the application and doesn't see the internal details."
+    },
+    {
+      "question": "17. The process of defining the structure of the database is called:",
+      "options": [
+        "Programming",
+        "Querying",
+        "Data Definition",
+        "Data Insertion"
+      ],
+      "correctAnswer": "Data Definition",
+      "hint": "تحديد الجداول والحقول وأنواع البيانات.",
+      "englishHint": "Defining tables, fields, and data types."
+    },
+    {
+      "question": "18. What is the main characteristic that distinguishes a Primary Key from other fields?",
+      "options": [
+        "It stores names",
+        "It must be an integer",
+        "It ensures uniqueness of records",
+        "It can be empty (NULL)"
+      ],
+      "correctAnswer": "It ensures uniqueness of records",
+      "hint": "الفرادة هي الأساس.",
+      "englishHint": "Uniqueness is the foundation."
+    },
+    {
+      "question": "19. Databases are generally composed of groups of:",
+      "options": [
+        "Documents",
+        "Images",
+        "Tables",
+        "Code files"
+      ],
+      "correctAnswer": "Tables",
+      "hint": "الوحدة الأساسية في قواعد البيانات العلائقية.",
+      "englishHint": "The basic unit in relational databases."
+    },
+    {
+      "question": "20. What is the role of the ID column in the example table provided in the lecture?",
+      "options": [
+        "To store the customer's name",
+        "To serve as the Primary Key",
+        "To store the address",
+        "To hold a description of the data"
+      ],
+      "correctAnswer": "To serve as the Primary Key",
+      "hint": "لأنه لا يتكرر في الجدول.",
+      "englishHint": "Because it does not repeat in the table."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

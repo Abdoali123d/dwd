@@ -1,0 +1,252 @@
+{
+  "id": "os_l3",
+  "title": "Lecture 3: I/O Structure, Storage Hierarchy, and DMA",
+  "number": 3,
+  "pdfFile": "../../materials-lectures/operating-system/L3.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: هيكل الإدخال/الإخراج (I/O Structure) 🔄</h3>\n<p class=\"mb-4 text-lg\">بنشوف إزاي الـ CPU بيتعامل مع عمليات الإدخال والإخراج البطيئة، والفرق بين الطريقتين الأساسيتين.</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">I/O المتزامن (Synchronous I/O):</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li>الـ CPU بيبدأ عملية الـ I/O وبيفضل **مستني** لحد ما تخلص تمامًا.</li>\n            <li>ممكن يستنى وهو خامل (Wait instruction) أو يفضل يسأل الجهاز خلص ولا لأ (Wait loop / Polling).</li>\n            <li>**النتيجة:** بطء في الأداء العام لأن الـ CPU بيضيع وقته في الانتظار.</li>\n        </ul>\n    </div>\n    <div class=\"glass-card p-4 rounded-lg\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">I/O الغير متزامن (Asynchronous I/O):</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li>الـ CPU بيبدأ عملية الـ I/O و**بيكمل شغله فورًا** على عملية تانية.</li>\n            <li>عملية الـ I/O بتشتغل في الخلفية، ولما بتخلص، بتعمل **مقاطعة (Interrupt)** للـ CPU.</li>\n            <li>**النتيجة:** كفاءة أعلى في استخدام الـ CPU وقدرة على عمل برامج متعددة (Multiprogramming).</li>\n        </ul>\n    </div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">الوصول المباشر للذاكرة (Direct Memory Access - DMA) 🚀</h4>\n<p class=\"mb-4\">هي تقنية حيوية للأجهزة عالية السرعة (High-Speed I/O) زي الهارد ديسك وبطاقات الشبكة. وظيفتها الرئيسية إنها تخلي **متحكم الجهاز (Device Controller)** ينقل كتل ضخمة من البيانات مباشرة من وإلى الذاكرة (RAM) **بدون تدخل مستمر من الـ CPU**.</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-yellow-400\">\n    <p class=\"font-semibold\">**كيف تعمل؟** الـ CPU بيدي الأمر للـ DMA Controller، وبعدين الـ CPU بيشتغل في حاجة تانية. لما النقل يخلص، الـ DMA بيعمل **مقاطعة (Interrupt)** واحدة بس عشان يبلغ الـ CPU. ده بيقلل عدد المقاطعات جدًا، ويزوّد كفاءة الـ CPU.</p>\n</div>\n\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: التخزين الهرمي (Storage Hierarchy) 💾</h3>\n<p class=\"mb-4 text-lg\">نظام الكمبيوتر بيستخدم أنواع تخزين مختلفة مترتبة حسب السرعة، الحجم، والتكلفة:</p>\n\n<ol class=\"list-decimal list-inside space-y-2 mr-6\">\n    <li>**الأسرع والأغلى (Fastest & Most Expensive):**\n        <ul class=\"list-disc list-inside ml-6 mt-1\">\n            <li>**Registers:** الأسرع والأصغر، موجودة داخل الـ CPU.</li>\n            <li>**Cache:** ذاكرة سريعة جدًا بين الـ CPU والذاكرة الرئيسية.</li>\n            <li>**Main Memory (RAM):** سريعة، متطايرة (Volatile)، هي اللي بتشتغل عليها البرامج حاليًا.</li>\n        </ul>\n    </li>\n    <li>**الأبطأ والأرخص (Slowest & Cheapest):**\n        <ul class=\"list-disc list-inside ml-6 mt-1\">\n            <li>**Solid State Disks (SSDs):** تخزين دائم (Nonvolatile)، أسرع من HDDs.</li>\n            <li>**Hard Disk Drives (HDDs):** تخزين دائم، أبطأ من SSDs لكن أرخص في الحجم الكبير.</li>\n            <li>**Optical Storage / Tapes:** تخزين طويل المدى (Archival Storage).</li>\n        </ul>\n    </li>\n</ol>\n\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مبدأ الـ Caching (التخزين المؤقت):</h4>\n<p class=\"mb-4\">الـ Caching هو عملية نقل البيانات من مستوى تخزين أبطأ إلى مستوى أسرع وأصغر (زي نقل البيانات من RAM للـ Cache) عشان الـ CPU يقدر يوصلها بسرعة. الفكرة الأساسية: لو حاجة استخدمتها مرة، غالبًا هتستخدمها تاني قريب.</p>\n<ul class=\"list-disc list-inside space-y-1 mr-6\">\n    <li>**Cache Hit:** البيانات المطلوبة موجودة في الـ Cache. **(الأداء بيكون سريع)**.</li>\n    <li>**Cache Miss:** البيانات المطلوبة مش موجودة في الـ Cache. **(بيتم النقل من الذاكرة الأبطأ)**.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: أوامر الملفات والمجلدات في Linux 📂</h3>\n<p class=\"mb-4 text-lg\">دي أوامر حيوية للتحرك وإنشاء وعرض الملفات والمجلدات في سطر الأوامر.</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">pwd</code>: لعرض المسار الكامل للمجلد الحالي (Print Working Directory).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">cd [path]</code>: لتغيير المجلد الحالي. (مثل <code>cd /</code> للوصول للـ Root).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">cd ..</code>: للرجوع للمجلد الأب (Parent Directory).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">ls -l</code>: لعرض محتويات المجلد بالتفصيل (Long list format) زي الأذونات والحجم والتاريخ.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">mkdir name</code>: لإنشاء مجلد جديد.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">rmdir name</code>: لحذف مجلد فارغ.</div>\n</div>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: I/O Structure 🔄</h3>\n<p class=\"mb-4 text-lg\">We look at how the CPU handles slow Input/Output operations, and the difference between the two main methods.</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Synchronous I/O (Blocking):</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li>The CPU starts the I/O operation and **waits** until it is completely finished.</li>\n            <li>It might wait idle (Wait instruction) or continuously check if the device is done (Wait loop / Polling).</li>\n            <li>**Result:** Slow overall performance because the CPU wastes time waiting.</li>\n        </ul>\n    </div>\n    <div class=\"glass-card p-4 rounded-lg\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Asynchronous I/O (Non-Blocking):</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li>The CPU starts the I/O operation and **immediately resumes its work** on another task.</li>\n            <li>The I/O operation runs in the background, and when finished, it generates an **Interrupt** to the CPU.</li>\n            <li>**Result:** Higher CPU utilization and ability to run multiple programs (Multiprogramming).</li>\n        </ul>\n    </div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Direct Memory Access (DMA) 🚀</h4>\n<p class=\"mb-4\">This is a vital technology for high-speed I/O devices like hard disks and network cards. Its primary function is to allow the **Device Controller** to transfer large blocks of data directly to and from memory (RAM) **without constant CPU intervention**.</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-yellow-400\">\n    <p class=\"font-semibold\">**How it Works:** The CPU gives the command to the DMA Controller, and then the CPU works on something else. When the transfer is complete, the DMA generates only **one Interrupt** to notify the CPU. This significantly reduces the number of interrupts and increases CPU efficiency.</p>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Storage Hierarchy 💾</h3>\n<p class=\"mb-4 text-lg\">The computer system uses different types of storage arranged by speed, size, and cost:</p>\n\n<ol class=\"list-decimal list-inside space-y-2 ml-6\">\n    <li>**Fastest & Most Expensive:**\n        <ul class=\"list-disc list-inside ml-6 mt-1\">\n            <li>**Registers:** Fastest and smallest, located inside the CPU.</li>\n            <li>**Cache:** Very fast memory between the CPU and main memory.</li>\n            <li>**Main Memory (RAM):** Fast, volatile, where currently running programs reside.</li>\n        </ul>\n    </li>\n    <li>**Slowest & Cheapest:**\n        <ul class=\"list-disc list-inside ml-6 mt-1\">\n            <li>**Solid State Disks (SSDs):** Nonvolatile storage, faster than HDDs.</li>\n            <li>**Hard Disk Drives (HDDs):** Nonvolatile storage, slower than SSDs but cheaper for large volumes.</li>\n            <li>**Optical Storage / Tapes:** Long-term archival storage.</li>\n        </ul>\n    </li>\n</ol>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">The Caching Principle:</h4>\n<p class=\"mb-4\">Caching is the process of transferring data from a slower storage level to a faster, smaller level (like moving data from RAM to Cache) so the CPU can access it quickly. The main idea: if something was used once, it will likely be used again soon (Locality of Reference).</p>\n<ul class=\"list-disc list-inside space-y-1 ml-6\">\n    <li>**Cache Hit:** The requested data is found in the Cache. **(Performance is fast)**.</li>\n    <li>**Cache Miss:** The requested data is not found in the Cache. **(It must be transferred from the slower memory)**.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Linux File and Directory Commands 📂</h3>\n<p class=\"mb-4 text-lg\">These are vital commands for navigating, creating, and viewing files and directories in the command line.</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">pwd</code>: To display the full path of the current directory (Print Working Directory).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">cd [path]</code>: To change the current directory. (e.g., <code>cd /</code> to go to the Root).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">cd ..</code>: To go back to the Parent Directory.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">ls -l</code>: To display directory contents in detail (Long list format) including permissions, size, and date.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">mkdir name</code>: To create a new directory.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">rmdir name</code>: To delete an empty directory.</div>\n</div>",
+  "quiz": [
+    {
+      "question": "1. What is the main advantage of Asynchronous I/O over Synchronous I/O?",
+      "options": [
+        "It is always faster",
+        "It prevents the CPU from waiting for the I/O operation to finish",
+        "It uses less memory",
+        "It does not require interrupts"
+      ],
+      "correctAnswer": "It prevents the CPU from waiting for the I/O operation to finish",
+      "hint": "الـ CPU بيكمل شغله فورًا.",
+      "englishHint": "The CPU resumes its work immediately."
+    },
+    {
+      "question": "2. What is the primary purpose of Direct Memory Access (DMA)?",
+      "options": [
+        "To speed up the CPU clock",
+        "To allow high-speed I/O to transfer data without constant CPU intervention",
+        "To perform complex calculations",
+        "To manage user passwords"
+      ],
+      "correctAnswer": "To allow high-speed I/O to transfer data without constant CPU intervention",
+      "hint": "بيقلل تدخل الـ CPU في نقل البيانات الضخمة.",
+      "englishHint": "It reduces CPU intervention in large data transfers."
+    },
+    {
+      "question": "3. The fastest and most expensive storage level in the storage hierarchy is:",
+      "options": [
+        "Hard Disk Drive (HDD)",
+        "Main Memory (RAM)",
+        "Registers",
+        "Solid State Disk (SSD)"
+      ],
+      "correctAnswer": "Registers",
+      "hint": "موجودة داخل الـ CPU.",
+      "englishHint": "Located inside the CPU."
+    },
+    {
+      "question": "4. What is it called when the CPU asks the I/O device repeatedly if the operation is complete?",
+      "options": [
+        "DMA",
+        "Interrupt",
+        "Polling",
+        "Caching"
+      ],
+      "correctAnswer": "Polling",
+      "hint": "هي الاستعلام المستمر (Wait Loop).",
+      "englishHint": "It is continuous querying (Wait Loop)."
+    },
+    {
+      "question": "5. What happens when a 'Cache Miss' occurs?",
+      "options": [
+        "The system crashes",
+        "The data is found in the Cache",
+        "The data must be retrieved from a slower memory level",
+        "A DMA transfer begins"
+      ],
+      "correctAnswer": "The data must be retrieved from a slower memory level",
+      "hint": "لما الـ Cache بتفشل في إيجاد المعلومة.",
+      "englishHint": "When the Cache fails to find the information."
+    },
+    {
+      "question": "6. Which Linux command displays the long list format of directory contents (including permissions)?",
+      "options": [
+        "ls -a",
+        "ls -l",
+        "man ls",
+        "pwd"
+      ],
+      "correctAnswer": "ls -l",
+      "hint": "الـ 'l' اختصار لـ 'long'.",
+      "englishHint": "The 'l' stands for 'long'."
+    },
+    {
+      "question": "7. To navigate back to the parent directory (المجلد الأب) in Linux CLI, you use:",
+      "options": [
+        "cd /",
+        "cd home",
+        "cd ..",
+        "cd -"
+      ],
+      "correctAnswer": "cd ..",
+      "hint": "النقطتين بيرجعوك خطوة لورا.",
+      "englishHint": "The two dots take you back one step."
+    },
+    {
+      "question": "8. Which storage type is typically *volatile* (loses data when power is off)?",
+      "options": [
+        "SSD",
+        "RAM",
+        "HDD",
+        "Magnetic Tape"
+      ],
+      "correctAnswer": "RAM",
+      "hint": "الذاكرة الرئيسية متطايرة.",
+      "englishHint": "Main memory is volatile."
+    },
+    {
+      "question": "9. DMA generates only **one** interrupt when the entire data transfer is complete, instead of one interrupt per:",
+      "options": [
+        "File",
+        "User",
+        "Byte",
+        "CPU cycle"
+      ],
+      "correctAnswer": "Byte",
+      "hint": "الـ DMA بيشتغل بكتل (Blocks) مش بالبايت.",
+      "englishHint": "DMA works with blocks, not bytes."
+    },
+    {
+      "question": "10. What does the `pwd` command do in Linux?",
+      "options": [
+        "Displays user permissions",
+        "Prints the current working directory",
+        "Deletes a directory",
+        "Changes the password"
+      ],
+      "correctAnswer": "Prints the current working directory",
+      "hint": "اختصار لـ 'Print Working Directory'.",
+      "englishHint": "Short for 'Print Working Directory'."
+    },
+    {
+      "question": "11. Which storage technology is nonvolatile and generally faster than HDDs?",
+      "options": [
+        "Registers",
+        "RAM",
+        "SSD",
+        "Cache"
+      ],
+      "correctAnswer": "SSD",
+      "hint": "الأقراص الصلبة ذات الحالة الثابتة.",
+      "englishHint": "Solid State Disks."
+    },
+    {
+      "question": "12. The `rmdir name` command is used to delete a directory only if it is:",
+      "options": [
+        "Hidden",
+        "Non-empty",
+        "Empty",
+        "Read-only"
+      ],
+      "correctAnswer": "Empty",
+      "hint": "لحذف المجلدات غير الفارغة بنستخدم أمر تاني.",
+      "englishHint": "To delete non-empty directories, a different command is used."
+    },
+    {
+      "question": "13. What principle is Caching based on?",
+      "options": [
+        "Volatile storage",
+        "Locality of Reference (data used once will be used again)",
+        "Sequential Access",
+        "Low cost"
+      ],
+      "correctAnswer": "Locality of Reference (data used once will be used again)",
+      "hint": "التركيز على البيانات اللي تم استخدامها مؤخرًا.",
+      "englishHint": "Focusing on recently used data."
+    },
+    {
+      "question": "14. What happens to the CPU during a Synchronous I/O operation?",
+      "options": [
+        "It crashes",
+        "It is idle or busy waiting for the I/O to complete",
+        "It starts another I/O operation immediately",
+        "It switches to Kernel Mode permanently"
+      ],
+      "correctAnswer": "It is idle or busy waiting for the I/O to complete",
+      "hint": "الانتظار بيضيّع وقته.",
+      "englishHint": "Waiting wastes its time."
+    },
+    {
+      "question": "15. Which command creates a new, empty directory?",
+      "options": [
+        "newdir",
+        "touch",
+        "mkdir",
+        "make"
+      ],
+      "correctAnswer": "mkdir",
+      "hint": "اختصار لـ 'Make Directory'.",
+      "englishHint": "Short for 'Make Directory'."
+    },
+    {
+      "question": "16. In the storage hierarchy, where is the Cache located relative to the CPU and RAM?",
+      "options": [
+        "Slower than RAM",
+        "Inside the Hard Drive",
+        "Between the CPU and RAM",
+        "Faster than Registers"
+      ],
+      "correctAnswer": "Between the CPU and RAM",
+      "hint": "هي مخزن مؤقت وسريع بين المعالج والذاكرة الرئيسية.",
+      "englishHint": "It is a fast, temporary store between the processor and main memory."
+    },
+    {
+      "question": "17. DMA transfers data between the I/O controller's buffer and the:",
+      "options": [
+        "CPU registers",
+        "Main Memory (RAM)",
+        "Optical Drive",
+        "System Bus only"
+      ],
+      "correctAnswer": "Main Memory (RAM)",
+      "hint": "الهدف هو النقل إلى ومن الذاكرة الرئيسية.",
+      "englishHint": "The goal is to transfer to and from main memory."
+    },
+    {
+      "question": "18. What is the path to the root directory in Linux?",
+      "options": [
+        ".",
+        "~",
+        "/",
+        ".."
+      ],
+      "correctAnswer": "/",
+      "hint": "هو أصل كل شيء في النظام.",
+      "englishHint": "It is the origin of everything in the system."
+    },
+    {
+      "question": "19. The two types of I/O operation are Synchronous and:",
+      "options": [
+        "Blocking",
+        "Vectorized",
+        "Asynchronous",
+        "Continuous"
+      ],
+      "correctAnswer": "Asynchronous",
+      "hint": "متزامن وغير متزامن.",
+      "englishHint": "Synchronous and Asynchronous."
+    },
+    {
+      "question": "20. The `cd [path]` command can be used to move to another directory, like using:",
+      "options": [
+        "The Windows File Explorer",
+        "The mouse and icons",
+        "The Linux terminal",
+        "The BIOS menu"
+      ],
+      "correctAnswer": "The Linux terminal",
+      "hint": "بنستخدمه في سطر الأوامر (CLI).",
+      "englishHint": "We use it in the Command Line Interface (CLI)."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

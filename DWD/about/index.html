@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أبطال DWD | فريق Digital World Developer</title>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/sound-effects.js" defer></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="../../assets/js/tailwind.js"></script>
+    <!-- خط القاهرة (Cairo) لجمالية الخط العربي والاحترافية -->
+
+
+    <!-- Font Awesome Icons -->
+
+    <style>
+        /* إعدادات الخلفية والخط الأساسية */
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: #0f172a;
+            /* Slate-900 */
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* حاوية الكارت الأساسية - تصميم جذاب ثلاثي الأبعاد */
+        .member-card {
+            background-color: rgba(30, 41, 59, 0.8);
+            /* Slate-800 شفاف */
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 1rem;
+        }
+
+        /* تأثير الـ Hover على الكارت */
+        .member-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(34, 211, 238, 0.2);
+            /* ظل سماوي جذاب */
+            border-color: #22d3ee;
+        }
+
+        /* الأيقونات والألوان الأساسية */
+        .primary-color {
+            color: #22d3ee;
+        }
+
+        /* Cyan-400 */
+        /* Cyan-400 */
+        .bg-primary {
+            background-color: #22d3ee;
+        }
+
+        /* برواز التيم ليدر الحاد واللامع */
+        @keyframes shine-border {
+            0% {
+                border-color: #22d3ee;
+                box-shadow: 0 0 10px rgba(34, 211, 238, 0.5), inset 0 0 10px rgba(34, 211, 238, 0.2);
+            }
+
+            50% {
+                border-color: #facc15;
+                box-shadow: 0 0 20px rgba(250, 204, 21, 0.8), inset 0 0 15px rgba(250, 204, 21, 0.4);
+            }
+
+            100% {
+                border-color: #22d3ee;
+                box-shadow: 0 0 10px rgba(34, 211, 238, 0.5), inset 0 0 10px rgba(34, 211, 238, 0.2);
+            }
+        }
+
+        @keyframes shine-glare {
+            0% {
+                left: -150%;
+            }
+
+            50% {
+                left: 150%;
+            }
+
+            100% {
+                left: 150%;
+            }
+        }
+
+        .leader-card {
+            border: 2px solid #22d3ee !important;
+            animation: shine-border 2s infinite alternate;
+            position: relative;
+            overflow: hidden;
+            transform: scale(1.02);
+        }
+
+        .leader-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transform: skewX(-20deg);
+            animation: shine-glare 3s infinite;
+            pointer-events: none;
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="p-4 sm:p-8">
+    <div id="swup-main" class="transition-fade">
+
+        <div class="max-w-7xl mx-auto">
+
+            <!-- ============================================= -->
+            <!-- Header: مقدمة عن الفريق ولقبهم -->
+            <!-- ============================================= -->
+            <header class="text-center mb-16 relative">
+                <h1
+                    class="text-5xl md:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-500">
+                    أبطال DWD
+                </h1>
+                <h2 class="text-xl md:text-3xl text-slate-300 font-medium mb-6">
+                    فريق Digital World Developer (تيم 8)
+                </h2>
+                <p class="text-slate-400 max-w-4xl mx-auto leading-relaxed border-b border-slate-700 pb-8">
+                    نحن فريق متكامل من 8 مطورين من طلاب الفرقة الثانية، نعمل بشغف لتقديم **نظام إدارة جامعية ذكي
+                    (SUMS)**
+                    يعتمد على Firebase و AI. كل عضو هنا هو عمود أساسي في بناء هذا النظام المتطور.
+                </p>
+
+                <!-- زر العودة للصفحة الرئيسية -->
+                <a href="../../home.html"
+                    class="mt-8 inline-flex items-center px-6 py-3 border border-cyan-500 text-cyan-500 rounded-full font-bold transition-all hover:bg-cyan-500 hover:text-slate-900 shadow-lg shadow-cyan-500/20">
+                    <i class="fas fa-arrow-right ml-2"></i> العودة للصفحة الرئيسية
+                </a>
+            </header>
+
+            <!-- ============================================= -->
+            <!-- قسم أعضاء الفريق: عرض المهام -->
+            <!-- ============================================= -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- 1. عبدالله محمد علي (القائد) -->
+                <div class="member-card leader-card p-6 border-r-4 border-cyan-500 md:col-span-2 lg:col-span-2">
+                    <div class="text-3xl primary-color mb-3"><i class="fas fa-crown"></i></div>
+                    <h3 class="text-2xl font-bold text-white mb-1">عبدالله محمد علي</h3>
+                    <p class="text-sm text-yellow-400 font-bold mb-4">قائد الفريق ومنظم المهام للمشروع بأكمله
+                        (FullStack)</p>
+                    <div class="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-x-4">
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle primary-color ml-2"></i> ربط الـ Frontend مع Firebase.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle primary-color ml-2"></i> تصميم الـ Home Page والـ 3D
+                            Cards.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle primary-color ml-2"></i> إدارة صفحات المواد والاختبارات
+                            التفاعلية (MCQ).</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-green-400 ml-2"></i> تصميم فكرة الحضور المتقدمة (GPS).</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-green-400 ml-2"></i> تنفيذ منطق مقارنة الإحداثيات
+                            والمهلة الزمنية.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-orange-400 ml-2"></i> تصميم نظام رفع التكليفات والشيتات
+                            (Assignments).</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-orange-400 ml-2"></i> إدارة تخزين ملفات PDF في
+                            Storage.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-pink-400 ml-2"></i> تصميم الهيكل الكامل لقاعدة بيانات
+                            Firestore.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-pink-400 ml-2"></i> إنشاء وتصميم صفحة البروفايل
+                            للطالب.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-purple-400 ml-2"></i> تصميم صفحة عرض الدرجات والنتائج
+                            اللحظية.</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-purple-400 ml-2"></i> وضع قواعد الأمان (Security Rules)
+                            في الفايربيز.</span>
+                    </div>
+                </div>
+
+                <!-- 2. عبدالله الشيمي -->
+                <div class="member-card p-6 border-r-4 border-teal-500">
+                    <div class="text-3xl text-teal-400 mb-3"><i class="fas fa-user-shield"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-1">عبدالله الشيمي</h3>
+                    <p class="text-sm text-slate-400 mb-4">تصميم واجهه صفحه الlogin</p>
+                    <div class="space-y-2">
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-teal-500 ml-2"></i> تصميم وتنفيذ صفحة تسجيل الدخول
+                            (Login).</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-teal-500 ml-2"></i> 
+                            عمل صفحه 3d بمكتبه ال three js
+                            </span>
+                    </div>
+                </div>
+
+
+
+                <!-- 4. عبدالرحمن علي -->
+                <div class="member-card p-6 border-r-4 border-yellow-500">
+                    <div class="text-3xl text-yellow-400 mb-3"><i class="fas fa-table"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-1">عبدالرحمن علي</h3>
+                    <p class="text-sm text-slate-400 mb-4">إدارة السكاشن والمحاضرات (Admin Panel)</p>
+                    <div class="space-y-2">
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-yellow-500 ml-2"></i> إدارة المحاضرات والسكاشن (CRUD
+                            operations).</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-yellow-500 ml-2"></i> ربط الجداول وتحديثها تلقائياً حسب
+                            الفرقة في قاعدة البيانات.</span>
+                    </div>
+                </div>
+
+
+
+                <!-- 8. عبدالله محمد عادل -->
+                <div class="member-card p-6 border-r-4 border-indigo-500">
+                    <div class="text-3xl text-indigo-400 mb-3"><i class="fas fa-comments"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-1">عبدالله محمد عادل</h3>
+                    <p class="text-sm text-slate-400 mb-4">منصة التواصل والتذاكر (Chat System)</p>
+                    <div class="space-y-2">
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-indigo-500 ml-2"></i> تصميم منصة التواصل الجماعي
+                            (General
+                            Chat).</span>
+                        <span class="block text-sm font-medium text-slate-300"><i
+                                class="fas fa-check-circle text-indigo-500 ml-2"></i> ربط الإيميلات لإنشاء نظام الدردشة
+                            الخاصة (Private Messaging).</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <!-- ============================================= -->
+        <!-- قسم التقنيات المستخدمة (Tech Stack) -->
+        <!-- ============================================= -->
+        <div class="mt-24 mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black mb-4 text-white relative inline-block">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">التقنيات
+                        المستخدمة</span>
+                    <div
+                        class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full">
+                    </div>
+                </h2>
+                <p class="text-slate-400 mt-4">أدوات حديثة صنعت هذا الإنجاز</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                <!-- Tech Item: HTML5 -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-orange-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fab fa-html5 text-4xl text-orange-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">HTML5</span>
+                </div>
+
+                <!-- Tech Item: CSS3 -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fab fa-css3-alt text-4xl text-blue-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">CSS3</span>
+                </div>
+
+                <!-- Tech Item: JavaScript -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-yellow-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-yellow-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fab fa-js text-4xl text-yellow-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">JavaScript</span>
+                </div>
+
+                <!-- Tech Item: Tailwind CSS -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-cyan-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fab fa-css3 text-4xl text-cyan-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Tailwind CSS</span>
+                </div>
+
+                <!-- Tech Item: Node.js -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-green-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fab fa-node text-4xl text-green-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Node.js</span>
+                </div>
+
+                <!-- Tech Item: Supabase -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-emerald-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-emerald-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-database text-4xl text-emerald-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Supabase</span>
+                </div>
+
+                <!-- Tech Item: Firebase -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-amber-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-amber-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fas fa-fire text-4xl text-amber-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Firebase</span>
+                </div>
+
+                <!-- Tech Item: Gemini AI -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-purple-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-purple-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-robot text-4xl text-purple-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Gemini AI</span>
+                </div>
+
+                <!-- Tech Item: Three.js -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-white transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fas fa-cube text-4xl text-white z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Three.js</span>
+                </div>
+
+                <!-- Tech Item: React (Ai-Nano) -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-blue-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fab fa-react text-4xl text-blue-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">React.js</span>
+                </div>
+
+                <!-- Tech Item: Vue.js (Communication) -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-emerald-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fab fa-vuejs text-4xl text-emerald-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Vue.js</span>
+                </div>
+
+                <!-- Tech Item: Express.js -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-white transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-server text-4xl text-slate-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Express.js</span>
+                </div>
+
+                <!-- Tech Item: Vercel -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-white transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-server text-4xl text-slate-200 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">Vercel</span>
+                </div>
+
+                <!-- Tech Item: GitHub -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-white transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fab fa-github text-4xl text-slate-200 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">GitHub</span>
+                </div>
+
+                <!-- Tech Item: PWA -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-indigo-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-indigo-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-mobile-alt text-4xl text-indigo-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">PWA</span>
+                </div>
+
+                <!-- Tech Item: PostgreSQL -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-database text-4xl text-blue-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-sm">PostgreSQL</span>
+                </div>
+
+                <!-- Tech Item: SweetAlert2 -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-pink-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="far fa-window-restore text-4xl text-pink-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-sm">SweetAlert2</span>
+                </div>
+
+                <!-- Tech Item: Leaflet Maps & GPS -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-teal-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-teal-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-map-marked-alt text-4xl text-teal-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-xs">Leaflet & GPS API</span>
+                </div>
+
+                <!-- Tech Item: Haversine -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-orange-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-orange-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-calculator text-4xl text-orange-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-xs">Haversine Formula</span>
+                </div>
+
+                <!-- Tech Item: n8n -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-red-500 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-project-diagram text-4xl text-red-500 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white">n8n Workflow</span>
+                </div>
+
+                <!-- Tech Item: App Check -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-yellow-400 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-yellow-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-shield-alt text-4xl text-yellow-400 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-xs">Firebase App Check</span>
+                </div>
+
+                <!-- Tech Item: Service Workers -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-cyan-300 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-cyan-300/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fas fa-cogs text-4xl text-cyan-300 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-xs">Service Workers</span>
+                </div>
+
+                <!-- Tech Item: Cairo Font -->
+                <div
+                    class="tech-card group p-4 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-yellow-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-center gap-3 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-yellow-200/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i class="fas fa-font text-4xl text-yellow-200 z-10 group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold text-slate-300 z-10 group-hover:text-white text-xs">Cairo Font</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================= -->
+        <!-- المقطع الختامي -->
+        <!-- ============================================= -->
+        <div class="text-center mt-16 pt-8 border-t border-slate-700">
+            <h4 class="text-3xl font-bold primary-color mb-3">#نطمح_لرقمنة_التعليم</h4>
+            <p class="text-slate-500 max-w-2xl mx-auto">
+                بالعمل الجماعي والتخصص، تمكنا من بناء نظام متكامل ومؤمن يخدم العملية التعليمية بكفاءة عالية.
+            </p>
+        </div>
+
+    </div>
+    </div> <!-- End of #swup-main -->
+
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

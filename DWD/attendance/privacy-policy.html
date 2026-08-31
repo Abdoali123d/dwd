@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسة الخصوصية | DWD Attendance</title>
+    <script src="https://cdn.tailwindcss.com" data-swup-ignore-script></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+
+        .section-title {
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .legal-badge {
+            background: linear-gradient(135deg, #1e3a5f, #1e293b);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+    </style>
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-3 legal-badge px-6 py-3 rounded-full mb-4">
+                <i class="fas fa-shield-alt text-blue-400 text-xl"></i>
+                <span class="text-sm font-bold text-blue-300 tracking-wider uppercase">GDPR Compliant</span>
+            </div>
+            <h1
+                class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
+                سياسة الخصوصية وشروط الاستخدام
+            </h1>
+            <p class="text-slate-400 mt-2">DWD Attendance System — Borg El Arab Technological University</p>
+            <p class="text-xs text-slate-500 mt-1">آخر تحديث: ١١ فبراير ٢٠٢٦ | الإصدار 2.0</p>
+        </div>
+
+        <!-- Disclaimer Banner -->
+        <div class="glass-panel p-4 mb-6 border-l-4 border-yellow-500">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-exclamation-triangle text-yellow-400 text-xl mt-1"></i>
+                <div>
+                    <h3 class="font-bold text-yellow-300 mb-1">إخلاء مسؤولية — مشروع أكاديمي</h3>
+                    <p class="text-sm text-slate-300">
+                        هذا النظام هو <strong>مشروع طلابي أكاديمي</strong> تم تطويره في إطار متطلبات المقررات الدراسية
+                        بجامعة برج العرب التكنولوجية.
+                        لا يُعد هذا النظام منتجاً تجارياً ولا يقدم ضمانات قانونية كاملة. ومع ذلك، تلتزم هذه الوثيقة
+                        بتطبيق
+                        أعلى المعايير المهنية لحماية بيانات المستخدمين استناداً إلى اللائحة العامة لحماية البيانات
+                        (GDPR).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="glass-panel p-6 mb-6">
+            <h2 class="font-bold text-lg text-blue-400 mb-3"><i class="fas fa-list-ol ml-2"></i>جدول المحتويات</h2>
+            <nav class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                <a href="#section-1" class="text-slate-300 hover:text-blue-400 transition-colors">1. مقدمة
+                    والتعريفات</a>
+                <a href="#section-2" class="text-slate-300 hover:text-blue-400 transition-colors">2. البيانات التي
+                    نجمعها</a>
+                <a href="#section-3" class="text-slate-300 hover:text-blue-400 transition-colors">3. الأساس القانوني
+                    للجمع</a>
+                <a href="#section-4" class="text-slate-300 hover:text-blue-400 transition-colors">4. كيف نستخدم
+                    بياناتك</a>
+                <a href="#section-5" class="text-slate-300 hover:text-blue-400 transition-colors">5. مدة الاحتفاظ
+                    بالبيانات</a>
+                <a href="#section-6" class="text-slate-300 hover:text-blue-400 transition-colors">6. حقوقك (GDPR)</a>
+                <a href="#section-7" class="text-slate-300 hover:text-blue-400 transition-colors">7. أمان البيانات</a>
+                <a href="#section-8" class="text-slate-300 hover:text-blue-400 transition-colors">8. مشاركة البيانات مع
+                    أطراف ثالثة</a>
+                <a href="#section-9" class="text-slate-300 hover:text-blue-400 transition-colors">9. نظام مكافحة
+                    الاحتيال</a>
+                <a href="#section-10" class="text-slate-300 hover:text-blue-400 transition-colors">10. التواصل وتقديم
+                    الشكاوى</a>
+            </nav>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div id="section-1" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-info-circle ml-2"></i>١. مقدمة والتعريفات
+            </h2>
+            <p class="text-slate-300 mb-3 leading-relaxed">
+                مرحباً بكم في نظام <strong class="text-white">DWD Attendance</strong>، نظام إدارة الحضور الذكي المُطوَّر
+                لخدمة
+                طلاب وأعضاء هيئة التدريس بجامعة برج العرب التكنولوجية (BATU).
+            </p>
+            <div class="bg-slate-800/50 rounded-lg p-4 space-y-2 text-sm">
+                <p><strong class="text-blue-300">"النظام":</strong> يشير إلى تطبيق DWD Attendance بجميع واجهاته.</p>
+                <p><strong class="text-blue-300">"المستخدم":</strong> أي طالب أو عضو هيئة تدريس مسجل في النظام.</p>
+                <p><strong class="text-blue-300">"البيانات الشخصية":</strong> أي معلومات يمكن من خلالها تحديد هوية
+                    المستخدم.</p>
+                <p><strong class="text-blue-300">"المعالج":</strong> فريق تطوير DWD بصفته المسؤول عن معالجة البيانات.
+                </p>
+                <p><strong class="text-blue-300">"GDPR":</strong> اللائحة العامة لحماية البيانات الأوروبية (EU)
+                    2016/679.</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Data We Collect -->
+        <div id="section-2" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-database ml-2"></i>٢. البيانات التي نجمعها
+            </h2>
+            <p class="text-slate-300 mb-4">يجمع النظام الأنواع التالية من البيانات عند تسجيل الحضور:</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-blue-900/30 text-blue-300">
+                            <th class="p-3 text-right rounded-tr-lg">نوع البيانات</th>
+                            <th class="p-3 text-right">أمثلة</th>
+                            <th class="p-3 text-right rounded-tl-lg">الغرض</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3 font-bold text-white">بيانات الهوية</td>
+                            <td class="p-3">الاسم، الرقم الأكاديمي، البريد الجامعي</td>
+                            <td class="p-3">تحديد هوية الطالب</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3 font-bold text-white">بيانات الموقع الجغرافي</td>
+                            <td class="p-3">خط العرض، خط الطول، دقة الإشارة</td>
+                            <td class="p-3">التحقق من التواجد داخل الحرم الجامعي</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3 font-bold text-white">بيانات الجهاز</td>
+                            <td class="p-3">User-Agent، بصمة المتصفح (Device Fingerprint)</td>
+                            <td class="p-3">مكافحة الاحتيال (Buddy Punching)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-white">الطابع الزمني</td>
+                            <td class="p-3">تاريخ ووقت التسجيل (UTC)</td>
+                            <td class="p-3">توثيق وقت الحضور</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 bg-green-900/20 border border-green-700/30 rounded-lg p-3 text-sm">
+                <i class="fas fa-check-circle text-green-400 ml-1"></i>
+                <strong class="text-green-300">ملاحظة:</strong> لا نجمع كلمات المرور بشكل مباشر. تتم المصادقة عبر نظام
+                مشفر.
+            </div>
+        </div>
+
+        <!-- Section 3: Legal Basis -->
+        <div id="section-3" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-gavel ml-2"></i>٣. الأساس القانوني لجمع البيانات
+            </h2>
+            <p class="text-slate-300 mb-4">نعالج بياناتك الشخصية استناداً إلى الأسس القانونية التالية وفقاً للمادة 6(1)
+                من GDPR:</p>
+
+            <div class="space-y-4">
+                <div class="bg-slate-800/50 rounded-lg p-4 border-r-4 border-blue-500">
+                    <h3 class="font-bold text-blue-300 mb-2">المصلحة المشروعة — المادة 6(1)(f)</h3>
+                    <p class="text-sm text-slate-300">
+                        جمع بيانات <strong>الموقع الجغرافي</strong> و<strong>بصمة الجهاز</strong> يتم لغرض
+                        <strong class="text-white">النزاهة الأكاديمية ومنع الاحتيال</strong> في تسجيل الحضور.
+                        هذه المصلحة المشروعة للمؤسسة التعليمية تتفوق على الحد الأدنى من التأثير على خصوصية المستخدم،
+                        حيث يتم جمع البيانات فقط أثناء عملية التسجيل وفي نطاق محدود.
+                    </p>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 border-r-4 border-green-500">
+                    <h3 class="font-bold text-green-300 mb-2">تنفيذ العقد — المادة 6(1)(b)</h3>
+                    <p class="text-sm text-slate-300">
+                        تسجيل الحضور هو جزء من الالتزامات التعاقدية بين الطالب والجامعة.
+                        استخدام النظام ضروري لتنفيذ هذا الالتزام.
+                    </p>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 border-r-4 border-purple-500">
+                    <h3 class="font-bold text-purple-300 mb-2">الموافقة الصريحة — المادة 6(1)(a)</h3>
+                    <p class="text-sm text-slate-300">
+                        بالضغط على زر "تسجيل الحضور"، يمنح المستخدم موافقته الصريحة على جمع
+                        بيانات موقعه الجغرافي. يمكن سحب هذه الموافقة في أي وقت عبر إعدادات المتصفح.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: How We Use Data -->
+        <div id="section-4" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-cogs ml-2"></i>٤. كيف نستخدم بياناتك
+            </h2>
+            <ul class="space-y-3 text-slate-300">
+                <li class="flex items-start gap-3">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span><strong class="text-white">التحقق من الحضور:</strong> مطابقة موقعك مع إحداثيات الحرم
+                        الجامعي.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span><strong class="text-white">مكافحة الاحتيال:</strong> كشف ومنع تسجيل الحضور بالنيابة (Buddy
+                        Punching) عبر بصمة الجهاز.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span><strong class="text-white">التقارير الأكاديمية:</strong> تزويد أعضاء هيئة التدريس بسجلات حضور
+                        دقيقة.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fas fa-check text-green-400 mt-1"></i>
+                    <span><strong class="text-white">تحسين النظام:</strong> تحليلات مجمعة (غير شخصية) لتطوير أداء
+                        النظام.</span>
+                </li>
+            </ul>
+
+            <div class="mt-4 bg-red-900/20 border border-red-700/30 rounded-lg p-3 text-sm">
+                <i class="fas fa-ban text-red-400 ml-1"></i>
+                <strong class="text-red-300">لن نقوم بـ:</strong> بيع بياناتك، مشاركتها مع جهات إعلانية، أو استخدامها
+                لأي غرض خارج النطاق الأكاديمي.
+            </div>
+        </div>
+
+        <!-- Section 5: Data Retention -->
+        <div id="section-5" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-clock ml-2"></i>٥. مدة الاحتفاظ بالبيانات
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-blue-900/30 text-blue-300">
+                            <th class="p-3 text-right rounded-tr-lg">نوع البيانات</th>
+                            <th class="p-3 text-right">مدة الاحتفاظ</th>
+                            <th class="p-3 text-right rounded-tl-lg">بعد انتهاء المدة</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3">سجلات الحضور</td>
+                            <td class="p-3 font-bold text-white">فصل دراسي واحد (٦ أشهر)</td>
+                            <td class="p-3">حذف تلقائي</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3">بيانات الموقع الجغرافي</td>
+                            <td class="p-3 font-bold text-white">٣٠ يوماً</td>
+                            <td class="p-3">حذف تلقائي (يُحتفظ فقط بحالة "حاضر/غائب")</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3">بصمة الجهاز</td>
+                            <td class="p-3 font-bold text-white">٢٤ ساعة</td>
+                            <td class="p-3">حذف تلقائي</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3">سجلات الاحتيال المكتشف</td>
+                            <td class="p-3 font-bold text-white">سنة أكاديمية واحدة</td>
+                            <td class="p-3">أرشفة مجهولة الهوية</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 6: User Rights -->
+        <div id="section-6" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-user-shield ml-2"></i>٦. حقوقك بموجب GDPR
+            </h2>
+            <p class="text-slate-300 mb-4">وفقاً للمواد 15-22 من GDPR، يحق لك:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-eye text-blue-400"></i>
+                        <h3 class="font-bold text-white">حق الوصول (المادة 15)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">طلب نسخة من جميع بياناتك المخزنة لدينا.</p>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-edit text-green-400"></i>
+                        <h3 class="font-bold text-white">حق التصحيح (المادة 16)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">تصحيح أي بيانات غير دقيقة أو ناقصة.</p>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-trash-alt text-red-400"></i>
+                        <h3 class="font-bold text-white">حق المحو (المادة 17)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">طلب حذف بياناتك ("الحق في النسيان").</p>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-ban text-yellow-400"></i>
+                        <h3 class="font-bold text-white">حق الاعتراض (المادة 21)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">الاعتراض على معالجة بياناتك المبنية على المصلحة المشروعة.</p>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-file-export text-purple-400"></i>
+                        <h3 class="font-bold text-white">حق قابلية النقل (المادة 20)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">استلام بياناتك بتنسيق آلي قابل للقراءة (JSON/CSV).</p>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-pause-circle text-orange-400"></i>
+                        <h3 class="font-bold text-white">حق تقييد المعالجة (المادة 18)</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">تقييد معالجة بياناتك في ظروف محددة.</p>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-blue-900/20 border border-blue-700/30 rounded-lg p-4 text-sm">
+                <h4 class="font-bold text-blue-300 mb-2"><i class="fas fa-paper-plane ml-1"></i>كيفية تقديم طلب (DSAR)
+                </h4>
+                <p class="text-slate-300">
+                    أرسل طلبك عبر البريد الإلكتروني إلى <strong class="text-white">privacy@dwd-it.github.io</strong>
+                    مع ذكر اسمك الكامل ورقمك الأكاديمي. سنرد خلال <strong class="text-white">٣٠ يوماً</strong> كحد أقصى.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 7: Security -->
+        <div id="section-7" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-lock ml-2"></i>٧. أمان البيانات
+            </h2>
+            <div class="space-y-3 text-slate-300 text-sm">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-shield-alt text-green-400 mt-1"></i>
+                    <span><strong class="text-white">التشفير أثناء النقل:</strong> جميع البيانات مشفرة باستخدام TLS 1.3
+                        (HTTPS).</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-shield-alt text-green-400 mt-1"></i>
+                    <span><strong class="text-white">التشفير أثناء التخزين:</strong> البيانات الحساسة مشفرة (AES-256)
+                        على خوادم Supabase.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-shield-alt text-green-400 mt-1"></i>
+                    <span><strong class="text-white">التحكم بالوصول:</strong> صلاحيات صارمة على مستوى قاعدة البيانات
+                        (RLS).</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-shield-alt text-green-400 mt-1"></i>
+                    <span><strong class="text-white">رؤوس الأمان:</strong> CSP, HSTS, X-Frame-Options,
+                        X-Content-Type-Options.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Third Parties -->
+        <div id="section-8" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-handshake ml-2"></i>٨. مشاركة البيانات مع أطراف ثالثة
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-blue-900/30 text-blue-300">
+                            <th class="p-3 text-right rounded-tr-lg">الطرف</th>
+                            <th class="p-3 text-right">البيانات المشاركة</th>
+                            <th class="p-3 text-right rounded-tl-lg">الأساس القانوني</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3 font-bold text-white">Supabase (قاعدة البيانات)</td>
+                            <td class="p-3">جميع سجلات الحضور</td>
+                            <td class="p-3">معالج بيانات — DPA موقع</td>
+                        </tr>
+                        <tr class="border-b border-slate-700/50">
+                            <td class="p-3 font-bold text-white">Vercel (الاستضافة)</td>
+                            <td class="p-3">تحليلات مجمعة (مجهولة الهوية)</td>
+                            <td class="p-3">معالج بيانات — DPA موقع</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-white">Leaflet/OpenStreetMap (الخرائط)</td>
+                            <td class="p-3">بلاطات الخريطة فقط (لا بيانات شخصية)</td>
+                            <td class="p-3">لا تتم مشاركة بيانات شخصية</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 9: Anti-Fraud -->
+        <div id="section-9" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-user-secret ml-2"></i>٩. نظام مكافحة الاحتيال (Anti-Fraud)
+            </h2>
+            <p class="text-slate-300 mb-4">
+                لضمان النزاهة الأكاديمية، يستخدم النظام التقنيات التالية لمنع تسجيل الحضور بالنيابة عن الآخرين:
+            </p>
+            <div class="space-y-3 text-sm">
+                <div class="bg-slate-800/30 rounded-lg p-3 border-r-4 border-red-500">
+                    <strong class="text-red-300">Device Locking:</strong>
+                    <span class="text-slate-300"> عند تسجيل الحضور، يُقفل الجهاز على المستخدم لمدة ٢٤ ساعة. لا يمكن
+                        لمستخدم آخر التسجيل من نفس الجهاز.</span>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-3 border-r-4 border-orange-500">
+                    <strong class="text-orange-300">Browser Fingerprinting:</strong>
+                    <span class="text-slate-300"> يتم إنشاء بصمة رقمية خفيفة لتحديد الجهاز (Canvas + WebGL + المنطقة
+                        الزمنية).</span>
+                </div>
+                <div class="bg-slate-800/30 rounded-lg p-3 border-r-4 border-yellow-500">
+                    <strong class="text-yellow-300">GPS Spoofing Detection:</strong>
+                    <span class="text-slate-300"> فحص متعدد الطبقات يشمل دقة الإشارة، السرعة، الارتفاع، واتساق
+                        الإحداثيات.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 10: Contact -->
+        <div id="section-10" class="glass-panel p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-400 section-title mb-4">
+                <i class="fas fa-envelope ml-2"></i>١٠. التواصل وتقديم الشكاوى
+            </h2>
+            <div class="bg-slate-800/30 rounded-lg p-4 space-y-3 text-sm">
+                <p class="text-slate-300">
+                    <i class="fas fa-user-tie text-blue-400 ml-1"></i>
+                    <strong class="text-white">مسؤول حماية البيانات (DPO):</strong> فريق تطوير DWD
+                </p>
+                <p class="text-slate-300">
+                    <i class="fas fa-envelope text-blue-400 ml-1"></i>
+                    <strong class="text-white">البريد الإلكتروني:</strong> privacy@dwd-it.github.io
+                </p>
+                <p class="text-slate-300">
+                    <i class="fas fa-university text-blue-400 ml-1"></i>
+                    <strong class="text-white">الجهة المختصة:</strong> جامعة برج العرب التكنولوجية — قسم تكنولوجيا
+                    المعلومات
+                </p>
+            </div>
+            <p class="text-xs text-slate-500 mt-4">
+                إذا لم تكن راضياً عن استجابتنا، يحق لك تقديم شكوى إلى الجهة الرقابية المختصة لحماية البيانات.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-slate-500 text-xs py-6 border-t border-slate-800">
+            <p>© 2026 DWD System — Borg El Arab Technological University</p>
+            <p class="mt-1">هذه الوثيقة خاضعة للمراجعة الدورية وقد يتم تحديثها دون إشعار مسبق.</p>
+        </div>
+    </div>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+{
+  "id": "linux_l4",
+  "title": "Lecture 4: Dealing with Files and User/Group Management",
+  "number": 4,
+  "pdfFile": "../../materials-lectures/linux/l4.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: إنشاء وتعديل الملفات النصية 📝</h3>\n<p class=\"mb-4 text-lg\">هنتعلم إزاي نتعامل مع الملفات النصية مباشرة من سطر الأوامر (CLI).</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">touch file.txt</code>: لإنشاء ملف نصي فارغ. (يمكن إنشاء عدة ملفات مرة واحدة).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">open file.txt</code>: لفتح ملف (أو مجلد) باستخدام البرنامج الافتراضي.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">cat file.txt</code>: لعرض محتويات الملف بالكامل على الشاشة.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">nano file.txt</code>: لفتح محرر النصوص \"nano\" والتعديل على الملف (Ctrl+O للحفظ, Ctrl+X للخروج).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">less file.txt</code>: لعرض محتويات الملف على مراحل (للملفات الكبيرة). للخروج اضغط q.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">echo \"text\" > file.txt</code>: لكتابة نص جديد وتخزينه في الملف (هذا الأمر يمسح المحتوى القديم).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">echo \"text\" >> file.txt</code>: لإضافة نص إلى نهاية الملف دون مسح المحتوى القديم.</div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أوامر النسخ والتحريك والحذف:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-3 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\"><strong><code>cp source destination</code>:</strong> لنسخ الملفات (Copy).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><strong><code>mv oldName newName</code>:</strong> لتحريك الملفات أو إعادة تسميتها (Move).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><strong><code>rm file.txt</code>:</strong> لحذف الملفات (Remove).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><strong><code>rm -r folder</code>:</strong> لحذف مجلد غير فارغ (Recursive Remove).</div>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: إدارة المستخدمين والمجموعات (Users & Groups) 👥</h3>\n<p class=\"mb-4 text-lg\">فهم إدارة المستخدمين والمجموعات في لينكس أمر حيوي للأمن والصلاحيات.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. إدارة المستخدمين:</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>useradd newuser</code>:</strong> لإنشاء مستخدم جديد.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>useradd -m newuser</code>:</strong> لإنشاء المستخدم + المجلد الرئيسي الخاص به (Home Directory).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>userdel username</code>:</strong> لحذف المستخدم (مع بقاء ملفاته).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>userdel -r username</code>:</strong> لحذف المستخدم + حزمة ملفاته والمجلد الرئيسي.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>usermod -l newname oldname</code>:</strong> لتعديل اسم المستخدم.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. إدارة المجموعات:</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-amber-400\"><strong><code>groupadd newgroup</code>:</strong> لإنشاء مجموعة جديدة.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-amber-400\"><strong><code>groupdel groupname</code>:</strong> لحذف مجموعة.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-amber-400\"><strong><code>usermod -aG groupname username</code>:</strong> لإضافة مستخدم لمجموعة إضافية (Secondary Group). (يُستخدم <code>-a</code> مع <code>-G</code>).</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. ملفات النظام الهامة للمستخدمين:</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-pink-400\"><strong><code>cat /etc/passwd</code>:</strong> لعرض جميع المستخدمين الحاليين على النظام.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-pink-400\"><strong><code>cat /etc/group</code>:</strong> لعرض جميع المجموعات الحالية على النظام.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">4. حسابات المدير (Root Accounts):</h4>\n<p class=\"mb-4\">يوجد حسابان رئيسيان بصلاحيات كاملة في لينكس:</p>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>Owner (المالك):</strong> وهو أول مستخدم تم إنشاؤه على النظام، وعادة ما تكون لديه صلاحيات \"sudo\".</li>\n    <li><strong>Root (المدير):</strong> وهو الحساب الفعلي الذي يمتلك صلاحيات لا محدودة على النظام كله.</li>\n</ul>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Creating and Modifying Text Files 📝</h3>\n<p class=\"mb-4 text-lg\">We will learn how to deal with text files directly from the Command Line Interface (CLI).</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">touch file.txt</code>: To create an empty text file. (Can create multiple files at once).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">open file.txt</code>: To open a file (or folder) using the default program.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">cat file.txt</code>: To display the entire contents of the file on the screen.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">nano file.txt</code>: To open the \"nano\" text editor and modify the file (Ctrl+O to save, Ctrl+X to exit).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">less file.txt</code>: To display file contents in stages (for large files). Press q to exit.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">echo \"text\" > file.txt</code>: To write new text and store it in the file (This command overwrites old content).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">echo \"text\" >> file.txt</code>: To append text to the end of the file without deleting old content.</div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Copy, Move, and Delete Commands:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-3 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\"><strong><code>cp source destination</code>:</strong> To copy files.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><strong><code>mv oldName newName</code>:</strong> To move or rename files.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><strong><code>rm file.txt</code>:</strong> To remove files.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><strong><code>rm -r folder</code>:</strong> To delete a non-empty folder (Recursive Remove).</div>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: User and Group Management 👥</h3>\n<p class=\"mb-4 text-lg\">Understanding user and group management in Linux is vital for security and permissions.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. User Management:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>useradd newuser</code>:</strong> To create a new user.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>useradd -m newuser</code>:</strong> To create the user + their Home Directory.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>userdel username</code>:</strong> To delete the user (files remain).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>userdel -r username</code>:</strong> To delete the user + their files and Home Directory.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>usermod -l newname oldname</code>:</strong> To modify the username.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Group Management:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-amber-400\"><strong><code>groupadd newgroup</code>:</strong> To create a new group.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-amber-400\"><strong><code>groupdel groupname</code>:</strong> To delete a group.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-amber-400\"><strong><code>usermod -aG groupname username</code>:</strong> To add a user to a secondary group. (Use <code>-a</code> with <code>-G</code>).</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. Important System Files for Users:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-pink-400\"><strong><code>cat /etc/passwd</code>:</strong> To display all current users on the system.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-pink-400\"><strong><code>cat /etc/group</code>:</strong> To display all current groups on the system.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">4. Root Accounts:</h4>\n<p class=\"mb-4\">There are two main accounts with full permissions in Linux:</p>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>Owner:</strong> The first user created on the system, usually having 'sudo' privileges.</li>\n    <li><strong>Root:</strong> The actual account that possesses unlimited permissions over the entire system.</li>\n</ul>",
+  "quiz": [
+    {
+      "question": "1. Which command is used to create an empty text file?",
+      "options": [
+        "write",
+        "create",
+        "touch",
+        "echo"
+      ],
+      "correctAnswer": "touch",
+      "hint": "يستخدم لإنشاء ملفات فارغة أو لتحديث وقت آخر تعديل.",
+      "englishHint": "Used to create empty files or update the last modified time."
+    },
+    {
+      "question": "2. What is the effect of the command: <code>echo \"hello\" > file.txt</code>?",
+      "options": [
+        "Appends \"hello\" to the file",
+        "Deletes the file",
+        "Overwrites the file with \"hello\"",
+        "Displays the file contents"
+      ],
+      "correctAnswer": "Overwrites the file with \"hello\"",
+      "hint": "علامة التوجيه الواحدة (<code>></code>) تمسح القديم وتكتب الجديد.",
+      "englishHint": "The single redirection symbol (<code>></code>) deletes the old content and writes the new one."
+    },
+    {
+      "question": "3. Which command is used to add text to the *end* of a file without deleting the old content?",
+      "options": [
+        "echo \"text\" > file.txt",
+        "echo \"text\" | file.txt",
+        "echo \"text\" >> file.txt",
+        "cat \"text\" > file.txt"
+      ],
+      "correctAnswer": "echo \"text\" >> file.txt",
+      "hint": "علامة التوجيه المزدوجة (<code>>></code>) تعني الإضافة (Append).",
+      "englishHint": "The double redirection symbol (<code>>></code>) means append."
+    },
+    {
+      "question": "4. The <code>cat</code> command is primarily used for:",
+      "options": [
+        "Renaming a file",
+        "Displaying file contents entirely",
+        "Moving a file",
+        "Deleting a file"
+      ],
+      "correctAnswer": "Displaying file contents entirely",
+      "hint": "اختصار لـ 'concatenate' لكن وظيفته الشائعة هي العرض.",
+      "englishHint": "Abbreviation for 'concatenate' but its common function is display."
+    },
+    {
+      "question": "5. What is the key combination to save the changes in the <code>nano</code> editor?",
+      "options": [
+        "Ctrl+X",
+        "Ctrl+C",
+        "Ctrl+O",
+        "Ctrl+S"
+      ],
+      "correctAnswer": "Ctrl+O",
+      "hint": "O for 'Output' (Save to file).",
+      "englishHint": "O for 'Output' (Save to file)."
+    },
+    {
+      "question": "6. Which command can be used to both move a file *and* rename a file?",
+      "options": [
+        "cp",
+        "mv",
+        "rm",
+        "rename"
+      ],
+      "correctAnswer": "mv",
+      "hint": "اختصار لـ 'Move' لكنه يعمل كـ 'Rename' إذا كان المصدر والوجهة في نفس المسار.",
+      "englishHint": "Abbreviation for 'Move' but acts as 'Rename' if source and destination are in the same path."
+    },
+    {
+      "question": "7. What option is required with <code>rm</code> to delete a non-empty folder?",
+      "options": [
+        "-f",
+        "-d",
+        "-r",
+        "-a"
+      ],
+      "correctAnswer": "-r",
+      "hint": "اختصار لـ 'Recursive' لحذف كل شيء داخل المجلد.",
+      "englishHint": "Abbreviation for 'Recursive' to delete everything inside the folder."
+    },
+    {
+      "question": "8. The <code>useradd -m newuser</code> command does what?",
+      "options": [
+        "Creates user but not home folder",
+        "Creates user and their home folder",
+        "Modifies an existing user",
+        "Deletes the user"
+      ],
+      "correctAnswer": "Creates user and their home folder",
+      "hint": "الأوبشن <code>-m</code> لإنشاء الـ 'Home Directory'.",
+      "englishHint": "The <code>-m</code> option is for creating the 'Home Directory'."
+    },
+    {
+      "question": "9. To delete a user *and* their home directory, you use:",
+      "options": [
+        "userdel username",
+        "userdel -h username",
+        "userdel -r username",
+        "rm -r /home/username"
+      ],
+      "correctAnswer": "userdel -r username",
+      "hint": "نفس الأوبشن بتاع حذف المجلدات: <code>-r</code>.",
+      "englishHint": "The same option as deleting folders: <code>-r</code>."
+    },
+    {
+      "question": "10. Which command modifies the name of an existing user?",
+      "options": [
+        "userrename",
+        "usermod -l",
+        "useradd -r",
+        "mv user"
+      ],
+      "correctAnswer": "usermod -l",
+      "hint": "<code>usermod</code> للتعديل، و <code>-l</code> للاسم الجديد (Login Name).",
+      "englishHint": "<code>usermod</code> for modification, and <code>-l</code> for the new name (Login Name)."
+    },
+    {
+      "question": "11. The <code>groupadd</code> command is used to:",
+      "options": [
+        "Add a user to a group",
+        "Create a new group",
+        "Delete a group",
+        "Rename a group"
+      ],
+      "correctAnswer": "Create a new group",
+      "hint": "واضحة من الاسم: 'Group Add'.",
+      "englishHint": "Clear from the name: 'Group Add'."
+    },
+    {
+      "question": "12. What file contains a list of all current groups on the system?",
+      "options": [
+        "/etc/groups.txt",
+        "/etc/passwd",
+        "/etc/group",
+        "/usr/groups"
+      ],
+      "correctAnswer": "/etc/group",
+      "hint": "الكل موجود في مجلد <code>/etc</code>.",
+      "englishHint": "Everything is in the <code>/etc</code> folder."
+    },
+    {
+      "question": "13. What file contains a list of all current users on the system?",
+      "options": [
+        "/etc/user",
+        "/etc/passwd",
+        "/etc/logins",
+        "/home/users"
+      ],
+      "correctAnswer": "/etc/passwd",
+      "hint": "هذا الملف يحوي بيانات المستخدمين (وليس الباسوردات نفسها).",
+      "englishHint": "This file contains user data (not the passwords themselves)."
+    },
+    {
+      "question": "14. What is the role of the <code>less</code> command?",
+      "options": [
+        "Editing files",
+        "Displaying small files only",
+        "Displaying files page by page (for large files)",
+        "Comparing two files"
+      ],
+      "correctAnswer": "Displaying files page by page (for large files)",
+      "hint": "أفضل للملفات اللي محتواها كبير ومش بيظهر كله على الشاشة.",
+      "englishHint": "Better for files whose content is large and doesn't fit entirely on the screen."
+    },
+    {
+      "question": "15. What command is used to open a file using the default graphical program?",
+      "options": [
+        "read",
+        "run",
+        "start",
+        "open"
+      ],
+      "correctAnswer": "open",
+      "hint": "الأمر ده بيستخدم البرنامج اللي متسجل كافتراضي.",
+      "englishHint": "This command uses the registered default program."
+    },
+    {
+      "question": "16. Which option must be used with <code>usermod -G</code> to *add* a user to a secondary group without removing them from others?",
+      "options": [
+        "-r",
+        "-m",
+        "-a",
+        "-d"
+      ],
+      "correctAnswer": "-a",
+      "hint": "اختصار لـ 'Append' أو الإضافة.",
+      "englishHint": "Abbreviation for 'Append'."
+    },
+    {
+      "question": "17. Which command creates user 'ali' *and* their home directory *and* adds them to group 'sudo'?",
+      "options": [
+        "useradd -m -g sudo ali",
+        "useradd -aG sudo ali",
+        "usermod -aG sudo ali",
+        "groupadd -m sudo ali"
+      ],
+      "correctAnswer": "useradd -m -g sudo ali",
+      "hint": "ده الأمر المدمج: 'm-' لإنشاء مجلد، 'g-' لإضافة مجموعة أساسية.",
+      "englishHint": "This is the combined command: 'm-' for home directory, 'g-' for primary group."
+    },
+    {
+      "question": "18. What are the two main 'root' (admin) accounts mentioned?",
+      "options": [
+        "Owner and User",
+        "Owner and Root",
+        "Admin and Guest",
+        "Root and Sudo"
+      ],
+      "correctAnswer": "Owner and Root",
+      "hint": "حساب المالك، وحساب الـ Root (المدير).",
+      "englishHint": "The Owner account, and the Root (Administrator) account."
+    },
+    {
+      "question": "19. If you delete a user with <code>userdel</code>, what file can you check to confirm they are gone?",
+      "options": [
+        "cat /etc/group",
+        "cat /etc/passwd",
+        "ls /home",
+        "groups"
+      ],
+      "correctAnswer": "cat /etc/passwd",
+      "hint": "الملف ده هو اللي فيه قايمة كل المستخدمين.",
+      "englishHint": "This file contains the list of all users."
+    },
+    {
+      "question": "20. If you delete a group, what file can you check to confirm it is gone?",
+      "options": [
+        "cat /etc/passwd",
+        "cat /etc/shadow",
+        "cat /etc/group",
+        "ls /etc"
+      ],
+      "correctAnswer": "cat /etc/group",
+      "hint": "نفس الملف اللي بيحتوي على أسماء المجموعات.",
+      "englishHint": "The same file that contains group names."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

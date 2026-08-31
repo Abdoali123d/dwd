@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/cpp/L3.pdf",
+  "tutorialFile": "W3T3C++.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: معاملات الزيادة والنقصان (Increment/Decrement) ++ --</h3>\n    <p class=\"mb-4 text-lg\">دي معاملات مختصرة عشان نزود أو ننقص قيمة المتغير بواحد.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. الزيادة (Increment ++):</h4>\n            <ul class=\"list-disc list-inside space-y-1 mr-6\">\n                <li><strong>Postfix (z++):</strong> بيستخدم القيمة **القديمة** للمتغير الأول، وبعدين يزوده بواحد.<br><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">int z=5; int x = z++;</code> // x هتبقى 5، وبعدها z هتبقى 6</li>\n                <li><strong>Prefix (++z):</strong> بيزود المتغير بواحد الأول، وبعدين يستخدم القيمة **الجديدة**.<br><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">int z=5; int x = ++z;</code> // z هتبقى 6 الأول، وبعدها x هتبقى 6</li>\n            </ul>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. النقصان (Decrement --):</h4>\n            <ul class=\"list-disc list-inside space-y-1 mr-6\">\n                <li><strong>Postfix (z--):</strong> بيستخدم القيمة **القديمة** الأول، وبعدين ينقصه بواحد.</li>\n                <li><strong>Prefix (--z):</strong> بينقص المتغير بواحد الأول، وبعدين يستخدم القيمة **الجديدة**.</li>\n            </ul>\n        </div>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: أولوية العمليات الحسابية (Operator Precedence) 📊</h3>\n    <p class=\"mb-4 text-lg\">الكمبيوتر بينفذ العمليات الحسابية بترتيب معين (مش شرط من الشمال لليمين).</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">الترتيب من الأعلى للأقل أولوية:</h4>\n        <ol class=\"list-decimal list-inside space-y-1 mr-6\">\n            <li>الأقواس <code class=\"text-white\">()</code></li>\n            <li>الزيادة والنقصان (Prefix <code class=\"text-white\">++z</code>, <code class=\"text-white\">--z</code>) والعلامة السالبة الأحادية (<code class=\"text-white\">-x</code>)</li>\n            <li>الضرب <code class=\"text-white\">*</code> والقسمة <code class=\"text-white\">/</code> وباقي القسمة <code class=\"text-white\">%</code> (من الشمال لليمين لو ليهم نفس الأولوية)</li>\n            <li>الجمع <code class=\"text-white\">+</code> والطرح <code class=\"text-white\">-</code> (من الشمال لليمين)</li>\n            <li>الإسناد <code class=\"text-white\">=</code> ومعاملات الإسناد المركبة (+=, -=, ...)</li>\n            <li>الزيادة والنقصان (Postfix <code class=\"text-white\">z++</code>, <code class=\"text-white\">z--</code>) - (ملحوظة: الـ Postfix تنفيذه بيتأخر شوية)</li>\n        </ol>\n        <p class=\"mt-3 text-yellow-400\">لما يكون فيه أكتر من عملية ليهم نفس الأولوية في نفس المستوى (زي الضرب والقسمة)، بيتم تنفيذهم من **الشمال لليمين (Left to Right Associativity)**.</p>\n        <p class=\"mt-2\"><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">d = a + b * c;</code> // الضرب هيتنفذ الأول.</p>\n        <p class=\"mt-1\"><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">d = (a + b) * c;</code> // الجمع هيتنفذ الأول بسبب الأقواس.</p>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: المعاملات المنطقية (Logical Operators) && || !</h3>\n    <p class=\"mb-4 text-lg\">بنستخدمها عشان نربط بين الشروط (Boolean expressions) أو نعكسها. النتيجة بتكون دايما <code class=\"text-white\">true</code> (تُمثل بـ 1) أو <code class=\"text-white\">false</code> (تُمثل بـ 0).</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">المعاملات:</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li><code class=\"text-white\">&&</code> (AND - و): النتيجة بتكون <code class=\"text-white\">true</code> **فقط** لو الشرطين اللي بتربط بينهم <code class=\"text-white\">true</code>.<br><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">(x > 0 && x < 10)</code> // عشان تكون صح لازم x تكون أكبر من 0 **و** أصغر من 10.</li>\n            <li><code class=\"text-white\">||</code> (OR - أو): النتيجة بتكون <code class=\"text-white\">true</code> لو **واحد على الأقل** من الشرطين <code class=\"text-white\">true</code>.<br><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">(grade == 'A' || grade == 'B')</code> // عشان تكون صح كفاية الـ grade تكون A **أو** B.</li>\n            <li><code class=\"text-white\">!</code> (NOT - ليس): بتعكس قيمة الشرط. لو الشرط <code class=\"text-white\">true</code> بتخليه <code class=\"text-white\">false</code> والعكس.<br><em>مثال:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">!(x == 0)</code> // هتكون صح لو x **مش** بتساوي صفر. (هي نفسها <code class=\"text-white\">x != 0</code>).</li>\n        </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">معاملات المقارنة (Comparison Operators):</h4>\n        <p>دي اللي بنستخدمها عشان نعمل الشروط نفسها:</p>\n         <ul class=\"list-disc list-inside space-y-1 mr-6\">\n             <li><code class=\"text-white\">></code> (أكبر من), <code class=\"text-white\"><</code> (أصغر من)</li>\n             <li><code class=\"text-white\">>=</code> (أكبر من أو يساوي), <code class=\"text-white\"><=</code> (أصغر من أو يساوي)</li>\n             <li><code class=\"text-white\">==</code> (يساوي - لاحظ اتنين يساوي للمقارنة)</li>\n             <li><code class=\"text-white\">!=</code> (لا يساوي)</li>\n         </ul>\n         <p class=\"mt-2\"><em>مثال طباعة نتيجة مقارنة:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">cout << (5 > 3);</code> // هيطبع 1 (عشان true).</p>\n    </div>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Increment/Decrement Operators ++ --</h3>\n    <p class=\"mb-4 text-lg\">These are shorthand operators to increase or decrease a variable's value by one.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. Increment (++):</h4>\n            <ul class=\"list-disc list-inside space-y-1 ml-6\">\n                <li><strong>Postfix (z++):</strong> Uses the variable's **old** value first, then increments it.<br><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">int z=5; int x = z++;</code> // x becomes 5, then z becomes 6</li>\n                <li><strong>Prefix (++z):</strong> Increments the variable first, then uses the **new** value.<br><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">int z=5; int x = ++z;</code> // z becomes 6 first, then x becomes 6</li>\n            </ul>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. Decrement (--):</h4>\n            <ul class=\"list-disc list-inside space-y-1 ml-6\">\n                <li><strong>Postfix (z--):</strong> Uses the **old** value first, then decrements.</li>\n                <li><strong>Prefix (--z):</b> Decrements first, then uses the **new** value.</li>\n            </ul>\n        </div>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Operator Precedence 📊</h3>\n    <p class=\"mb-4 text-lg\">The computer executes arithmetic operations in a specific order (not necessarily left to right).</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Order from Highest to Lowest Precedence:</h4>\n        <ol class=\"list-decimal list-inside space-y-1 ml-6\">\n            <li>Parentheses <code class=\"text-white\">()</code></li>\n            <li>Prefix Increment/Decrement (<code class=\"text-white\">++z</code>, <code class=\"text-white\">--z</code>), Unary Minus (<code class=\"text-white\">-x</code>), Logical NOT (<code class=\"text-white\">!</code>)</li>\n            <li>Multiplication <code class=\"text-white\">*</code>, Division <code class=\"text-white\">/</code>, Modulus <code class=\"text-white\">%</code> (Left-to-right associativity)</li>\n            <li>Addition <code class=\"text-white\">+</code>, Subtraction <code class=\"text-white\">-</code> (Left-to-right associativity)</li>\n            <li>Comparison Operators (<code class=\"text-white\">></code>, <code class=\"text-white\"><</code>, <code class=\"text-white\">>=</code>, <code class=\"text-white\"><=</code>, <code class=\"text-white\">==</code>, <code class=\"text-white\">!=</code>)</li>\n            <li>Logical AND <code class=\"text-white\">&&</code></li>\n            <li>Logical OR <code class=\"text-white\">||</code></li>\n            <li>Assignment Operators (<code class=\"text-white\">=</code>, <code class=\"text-white\">+=</code>, <code class=\"text-white\">-=</code>, etc.)</li>\n            <li>Postfix Increment/Decrement (<code class=\"text-white\">z++</code>, <code class=\"text-white\">z--</code>) - (Note: Postfix evaluation is complex and happens later)</li>\n        </ol>\n        <p class=\"mt-3 text-yellow-400\">When multiple operators have the same precedence level (like * and /), they are evaluated from **left to right**.</p>\n        <p class=\"mt-2\"><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">d = a + b * c;</code> // Multiplication happens first.</p>\n        <p class=\"mt-1\"><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">d = (a + b) * c;</code> // Addition happens first due to parentheses.</p>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Logical Operators && || !</h3>\n    <p class=\"mb-4 text-lg\">Used to combine or negate boolean expressions (conditions). The result is always <code class=\"text-white\">true</code> (represented as 1) or <code class=\"text-white\">false</code> (represented as 0).</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Operators:</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li><code class=\"text-white\">&&</code> (Logical AND): Result is <code class=\"text-white\">true</code> **only if** both conditions it connects are <code class=\"text-white\">true</code>.<br><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">(x > 0 && x < 10)</code> // True only if x is greater than 0 **AND** less than 10.</li>\n            <li><code class=\"text-white\">||</code> (Logical OR): Result is <code class=\"text-white\">true</code> if **at least one** of the conditions is <code class=\"text-white\">true</code>.<br><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">(grade == 'A' || grade == 'B')</code> // True if grade is 'A' **OR** 'B'.</li>\n            <li><code class=\"text-white\">!</code> (Logical NOT): Reverses the boolean value. If the condition is <code class=\"text-white\">true</code>, it makes it <code class=\"text-white\">false</code>, and vice versa.<br><em>Example:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">!(x == 0)</code> // True if x is **NOT** equal to 0. (Same as <code class=\"text-white\">x != 0</code>).</li>\n        </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Comparison Operators:</h4>\n        <p>These are used to create the actual conditions:</p>\n         <ul class=\"list-disc list-inside space-y-1 ml-6\">\n             <li><code class=\"text-white\">></code> (Greater than), <code class=\"text-white\"><</code> (Less than)</li>\n             <li><code class=\"text-white\">>=</code> (Greater than or equal), <code class=\"text-white\"><=</code> (Less than or equal)</li>\n             <li><code class=\"text-white\">==</code> (Equal to - Note the double equals for comparison)</li>\n             <li><code class=\"text-white\">!=</code> (Not equal to)</li>\n         </ul>\n         <p class=\"mt-2\"><em>Example printing comparison result:</em> <code class=\"text-white bg-slate-700 p-1 rounded\">cout << (5 > 3);</code> // Prints 1 (representing true).</p>\n    </div>\n  ",
+  "quiz": [
+    {
+      "question": "1. What is the value of `x` after this code: `int z = 5; int x = z++;`?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "Error"
+      ],
+      "correctAnswer": "5",
+      "hint": "Postfix (z++) بيستخدم القيمة القديمة الأول."
+    },
+    {
+      "question": "2. What is the value of `z` after this code: `int z = 5; int x = z++;`?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "Error"
+      ],
+      "correctAnswer": "6",
+      "hint": "Postfix بيزود القيمة بعد استخدامها."
+    },
+    {
+      "question": "3. What is the value of `x` after this code: `int z = 5; int x = ++z;`?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "Error"
+      ],
+      "correctAnswer": "6",
+      "hint": "Prefix (++z) بيزود الأول وبعدين يستخدم القيمة الجديدة."
+    },
+    {
+      "question": "4. What is the value of `z` after this code: `int z = 5; int x = ++z;`?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "Error"
+      ],
+      "correctAnswer": "6",
+      "hint": "Prefix بيزود القيمة قبل استخدامها."
+    },
+    {
+      "question": "5. Which operator has the highest precedence?",
+      "options": [
+        "+",
+        "*",
+        "()",
+        "="
+      ],
+      "correctAnswer": "()",
+      "hint": "الأقواس دايما ليها الأولوية القصوى."
+    },
+    {
+      "question": "6. What is the result of `10 + 2 * 3`?",
+      "options": [
+        "36",
+        "16",
+        "15",
+        "Error"
+      ],
+      "correctAnswer": "16",
+      "hint": "الضرب بيتم الأول (2*3=6) وبعدين الجمع (10+6)."
+    },
+    {
+      "question": "7. What is the result of `(10 + 2) * 3`?",
+      "options": [
+        "36",
+        "16",
+        "15",
+        "Error"
+      ],
+      "correctAnswer": "36",
+      "hint": "الأقواس بتجبر الجمع يتم الأول (10+2=12)."
+    },
+    {
+      "question": "8. Which logical operator returns true only if *both* conditions are true?",
+      "options": [
+        "|| (OR)",
+        "&& (AND)",
+        "! (NOT)",
+        "!="
+      ],
+      "correctAnswer": "&& (AND)",
+      "hint": "معامل 'و' المنطقي."
+    },
+    {
+      "question": "9. Which logical operator returns true if *at least one* condition is true?",
+      "options": [
+        "|| (OR)",
+        "&& (AND)",
+        "! (NOT)",
+        "=="
+      ],
+      "correctAnswer": "|| (OR)",
+      "hint": "معامل 'أو' المنطقي."
+    },
+    {
+      "question": "10. What does the `!` (Logical NOT) operator do?",
+      "options": [
+        "Adds two numbers",
+        "Compares two numbers",
+        "Reverses the boolean value of a condition",
+        "Checks for inequality"
+      ],
+      "correctAnswer": "Reverses the boolean value of a condition",
+      "hint": "بيحول الـ true لـ false والعكس."
+    },
+    {
+      "question": "11. What is the output of `cout << (5 > 2 && 5 < 10);`?",
+      "options": [
+        "0 (false)",
+        "1 (true)",
+        "5",
+        "Error"
+      ],
+      "correctAnswer": "1 (true)",
+      "hint": "الشرطين صح (5 أكبر من 2 و 5 أصغر من 10)، و بينهم AND."
+    },
+    {
+      "question": "12. What is the output of `cout << (5 < 2 || 5 < 10);`?",
+      "options": [
+        "0 (false)",
+        "1 (true)",
+        "5",
+        "Error"
+      ],
+      "correctAnswer": "1 (true)",
+      "hint": "الشرط الأول غلط، لكن التاني صح (5 أصغر من 10)، و بينهم OR."
+    },
+    {
+      "question": "13. What is the output of `cout << !(5 == 5);`?",
+      "options": [
+        "0 (false)",
+        "1 (true)",
+        "5",
+        "Error"
+      ],
+      "correctAnswer": "0 (false)",
+      "hint": "الشرط (5==5) صح (true)، والـ NOT بتعكسها."
+    },
+    {
+      "question": "14. Which operator checks for equality?",
+      "options": [
+        "=",
+        "==",
+        "!=",
+        "=>"
+      ],
+      "correctAnswer": "==",
+      "hint": "علامتين يساوي للمقارنة، علامة واحدة للإسناد."
+    },
+    {
+      "question": "15. Which operator checks for inequality?",
+      "options": [
+        "=",
+        "==",
+        "!=",
+        "<>"
+      ],
+      "correctAnswer": "!=",
+      "hint": "علامة تعجب وبعدها يساوي."
+    },
+    {
+      "question": "16. If `int x = 10;`, what is `x += 5;` equivalent to?",
+      "options": [
+        "x = 5;",
+        "x = 10;",
+        "x = 15;",
+        "x = x + 5;"
+      ],
+      "correctAnswer": "x = x + 5;",
+      "hint": "ده معامل إسناد مركب (جمع ثم إسناد)."
+    },
+    {
+      "question": "17. What is the value of `y` after `int x = 5; int y = --x;`?",
+      "options": [
+        "5",
+        "4",
+        "6",
+        "Error"
+      ],
+      "correctAnswer": "4",
+      "hint": "Prefix decrement بينقص الأول (x بقت 4)، وبعدين يسند القيمة الجديدة لـ y."
+    },
+    {
+      "question": "18. What is the value of `x` after `int x = 5; int y = --x;`?",
+      "options": [
+        "5",
+        "4",
+        "6",
+        "Error"
+      ],
+      "correctAnswer": "4",
+      "hint": "قيمة x اتغيرت وبقت 4."
+    },
+    {
+      "question": "19. Evaluate: `2 + 10 / 5 * 2 - 1`",
+      "options": [
+        "3",
+        "5",
+        "1",
+        "1.4"
+      ],
+      "correctAnswer": "5",
+      "hint": "القسمة والضرب الأول من الشمال لليمين: (10/5=2)، (2*2=4). ثم الجمع والطرح: (2+4=6)، (6-1=5)."
+    },
+    {
+      "question": "20. What is the value of `(true || false) && false`?",
+      "options": [
+        "true (1)",
+        "false (0)",
+        "Error"
+      ],
+      "correctAnswer": "false (0)",
+      "hint": "(true || false) نتيجتها true. وبعدين (true && false) نتيجتها false."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

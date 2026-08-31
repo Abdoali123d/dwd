@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile | بوابة الطالب الذكية</title>
+    <script src="../../assets/js/tailwind.js"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <!-- Critical: Apply Theme Immediately to prevent FOUC (White Flash) -->
+    <script>
+        (function () {
+            try {
+                const savedTheme = localStorage.getItem('dwd-theme') || 'theme-sky';
+                document.documentElement.className = savedTheme;
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.body.classList.add(savedTheme);
+
+                    const isLightMode = localStorage.getItem('dwd-light-mode');
+                    if (isLightMode === 'true') {
+                        document.body.classList.add('light-mode');
+                    }
+
+                    const savedCardColor = localStorage.getItem('dwd-card-bg');
+                    if (savedCardColor) {
+                        document.body.style.setProperty('--card-bg', savedCardColor);
+                    }
+                });
+            } catch (e) { console.error("Theme Init Error", e); }
+        })();
+    </script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../js/supabase_client.js"></script>
+    <script type="module" src="../../js/secure_connect.js"></script>
+
+    <!-- SPA Transitions (CSS only - Swup library not loaded on this page) -->
+    <link rel="stylesheet" href="../../css/spa-transitions.css">
+
+    <style>
+        :root {
+            --primary: #00f2ff;
+            /* سيان نيون */
+            --secondary: #7000ff;
+            /* بنفسجي */
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-light: #ffffff;
+            --text-gray: #a5b4fc;
+            --radius-lg: 20px;
+            --danger: #ff0055;
+            --success: #00ff88;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(189, 0, 255, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.15), transparent 25%);
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            z-index: -1;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) scale(2);
+            opacity: 0.2;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0) scale(2);
+            }
+
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px) scale(2);
+            }
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-item.active {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.7);
+        }
+
+        /* --- Profile Specific Styles --- */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .img-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 3px;
+            background: linear-gradient(145deg, #1e293b, #000);
+        }
+
+        .user-info h2 {
+            margin: 0;
+            font-size: 2rem;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        .user-info p {
+            color: var(--text-gray);
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge-pro {
+            background: rgba(112, 0, 255, 0.2);
+            color: #d8b4fe;
+            border: 1px solid rgba(112, 0, 255, 0.4);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* --- Profile Grid --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            /* Add spacing between header and cards */
+        }
+
+        .card-title {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Profile Form Inputs */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .input-box {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: white;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+
+        .input-box:disabled {
+            color: #888;
+            background: rgba(0, 0, 0, 0.2);
+            border-color: transparent;
+            cursor: not-allowed;
+        }
+
+        /* Profile Buttons */
+        .btn-neon {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-neon:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .btn-danger {
+            color: var(--danger);
+            border-color: var(--danger);
+            margin-top: 20px;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 0 20px var(--danger);
+        }
+
+        /* Profile Alerts */
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border-left: 4px solid var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: 0.4s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-alert.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info p {
+                justify-content: center;
+            }
+        }
+    </style>
+    <style>
+        /* --- أنماط الهيدر الجديد المنسوخة من home.html --- */
+        :root {
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --header-bg: rgba(15, 23, 42, 0.9);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .main-header {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 10;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color, #f1f5f9);
+            font-weight: 600;
+            position: relative;
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: 0.3s;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="flex h-screen overflow-hidden">
+    <div id="swup-main" class="transition-fade flex w-full h-full">
+
+        <!-- الخلفية المتحركة -->
+
+        <div class="grid-bg"></div>
+
+        <!-- SIDEBAR (القائمة الجانبية) -->
+        <aside
+            class="w-64 bg-[#0a1120] border-r border-slate-700 flex-col z-30 shadow-2xl transition-transform duration-300 transform fixed md:relative md:translate-x-0 h-full translate-x-full flex">
+            <div class="p-6 text-center border-b border-slate-700">
+                <h1
+                    class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-1">
+                    IT HUB
+                </h1>
+                <p class="text-xs text-slate-400 tracking-widest">FUTURE UNIVERSITY</p>
+            </div>
+
+            <nav class="flex-1 py-6 space-y-2">
+                <a href="/DWD/materials/index.html"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-book-open text-xl w-8"></i> المواد الدراسية
+                </a>
+                <a href="/DWD/schedule/index.html"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-calendar-alt text-xl w-8"></i> الجدول الدراسي
+                </a>
+                <a href="/DWD/schedule/index.html"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-users text-xl w-8"></i> إدارة السكاشن
+                </a>
+                <a href="/DWD/schedule/index.html#grades"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-chart-line text-xl w-8"></i> النتائج والتقديرات
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-slate-700">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=User&background=random" id="user-avatar"
+                        alt="صورة المستخدم" loading="lazy" class="w-10 h-10 rounded-full border-2 border-cyan-500">
+                    <div>
+                        <p class="text-sm font-bold text-white" id="user-name">ضيف</p>
+                        <p class="text-xs text-slate-400" id="user-id">ID: ---</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-20 hidden md:hidden" onclick="toggleSidebar()">
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- HEADER (Hidden on mobile) -->
+            <div class="hidden md:block p-4 md:p-8">
+                <header class="main-header">
+                    <div class="logo">
+                        <i class="fas fa-microchip"></i> DWD
+                    </div>
+
+                    <nav class="nav-links">
+                        <a href="https://dwd-edu.vercel.app/home.html" class="nav-link">الرئيسية</a>
+                        <a href="/DWD/materials/index.html" class="nav-link">المواد الدراسية</a>
+                        <a href="/DWD/Ai-Nano/exams/index.html" class="nav-link">الامتحانات</a>
+                        <a href="/DWD/schedule/index.html" class="nav-link">الجدول الدراسي</a>
+                        <a href="/DWD/downloads/index.html" class="nav-link">التكليفات والواجبات</a>
+                        <a href="/DWD/attendance/index.html" class="nav-link">صفحة تسجيل الحضور والغياب</a>
+                        <a href="/DWD/about/index.html" class="nav-link">عنا </a>
+                    </nav>
+                </header>
+            </div>
+
+            <!-- Mobile Top Bar with Burger Menu -->
+            <div class="md:hidden flex justify-between items-center p-4 z-40 relative">
+                <div class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-user-circle text-cyan-400"></i> Profile
+                </div>
+                <button onclick="toggleSidebar()"
+                    class="text-cyan-400 text-xl w-10 h-10 flex items-center justify-center rounded-lg bg-[#0f172a] border border-cyan-500/30 shadow-[0_0_15px_rgba(0,242,255,0.2)]">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-container overflow-y-auto px-4 md:px-8">
+                <div class="glass-panel profile-header">
+                    <div id="profileImageWrapper" class="img-wrapper group relative cursor-pointer">
+                        <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff&size=150"
+                            alt="صورة الملف الشخصي" loading="lazy" id="headerProfileImg" alt="Profile"
+                            class="profile-img">
+                        <div
+                            class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-camera text-2xl text-white"></i>
+                        </div>
+                    </div>
+                    <input type="file" id="profileImageInput" accept="image/*" class="hidden">
+                    <div class="user-info">
+                        <h2 id="headerName">جاري التحميل...</h2>
+                        <p>
+                            <i class="fas fa-code text-primary"></i>
+                            <span id="userDepartmentText">قسم : IT الفرقه الثانيه</span>
+                            <span id="userRoleBadge" class="badge-pro">Student</span>
+                        </p>
+                        <p>
+                            <span><i class="fas fa-id-card"></i> ID: <span id="headerID" dir="ltr"
+                                    style="unicode-bidi: embed;">---</span></span>
+                            <span style="margin-right: 15px;"><i class="fas fa-envelope"></i> <span
+                                    id="headerEmail">---</span></span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid-container">
+                    <div class="glass-panel p-6">
+                        <h3 class="card-title"><i class="fas fa-microchip"></i> البيانات الشخصية</h3>
+                        <form id="personalInfoForm">
+                            <div class="form-group">
+                                <label>الاسم بالكامل</label>
+                                <input type="text" class="input-box" id="fullNameInput" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الهاتف</label>
+                                <input type="tel" class="input-box" id="phoneInput" dir="ltr" style="text-align: right;"
+                                    placeholder="+20 1xxxxxxxxx">
+                            </div>
+                            <div class="form-group">
+                                <label>البريد الإلكتروني الجامعي</label>
+                                <input type="email" class="input-box" id="emailInput" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>الفرقة الدراسية / الوظيفة</label>
+                                <input type="text" id="studyYearInput" class="input-box"
+                                    value="الفرقة الثانية - تكنولوجيا المعلومات" disabled>
+                            </div>
+                            <button type="button" class="btn-neon" onclick="saveExtraData()">
+                                <i class="fas fa-save"></i> حفظ البيانات الإضافية
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="card-title"><i class="fas fa-shield-virus"></i> الأمان والحماية</h3>
+                        <form id="securityForm" onsubmit="event.preventDefault(); changePassword();">
+                            <div class="form-group">
+                                <label>كلمة المرور الحالية</label>
+                                <div class="relative">
+                                    <input type="password" class="input-box pl-10" id="currentPassword"
+                                        placeholder="••••••••" required>
+                                    <i class="fas fa-eye absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-cyan-400 transition z-10"
+                                        onclick="togglePassword('currentPassword', this)"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>كلمة المرور الجديدة</label>
+                                <div class="relative">
+                                    <input type="password" class="input-box pl-10" id="newPassword" minlength="8"
+                                        placeholder="********" required>
+                                    <i class="fas fa-eye absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-cyan-400 transition z-10"
+                                        onclick="togglePassword('newPassword', this)"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>تأكيد كلمة المرور الجديدة</label>
+                                <div class="relative">
+                                    <input type="password" class="input-box pl-10" id="confirmPassword" minlength="8"
+                                        placeholder="********" required>
+                                    <i class="fas fa-eye absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-cyan-400 transition z-10"
+                                        onclick="togglePassword('confirmPassword', this)"></i>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-neon">
+                                <i class="fas fa-sync-alt"></i> تحديث كلمة المرور
+                            </button>
+                        </form>
+                        <button class="btn-neon btn-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="../../js/sound-effects.js" defer></script>
+        <script src="../../js/content-protection.js" defer></script>
+
+        <!-- End of Swup Container -->
+    </div>
+
+    <script>
+
+        // --- 1. Load User Data on Startup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedUser = localStorage.getItem('currentUser') || localStorage.getItem('dwd_user');
+
+            if (!storedUser) {
+                window.location.href = '../../index.html';
+                return;
+            }
+
+            const user = JSON.parse(storedUser);
+
+            // Priority: Academic ID > Displayed ID > Email match for specific user > Generated/Fallback ID
+            let userId = user.academic_id;
+
+            if (!userId || userId === 'N/A') {
+                userId = user.displayed_id || user.id;
+            }
+
+            // Save corrected ID back if needed (optional, but good for consistency)
+            if (userId && (!user.displayed_id || user.displayed_id !== userId)) {
+                user.displayed_id = userId;
+                // Avoid infinite loop of saves, just keeping it in memory for display mostly
+            }
+
+            // Update Header & Profile Info
+            document.getElementById('headerName').textContent = user.name;
+            document.getElementById('headerID').textContent = userId;
+            document.getElementById('headerEmail').textContent = user.email;
+
+            // Load profile image
+            const profileImgData = localStorage.getItem(`profileImage_${userId}`);
+            if (profileImgData) {
+                document.getElementById('headerProfileImg').src = profileImgData;
+                document.getElementById('user-avatar').src = profileImgData;
+            } else {
+                document.getElementById('headerProfileImg').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=7000ff&color=fff&size=200&bold=true`;
+                document.getElementById('user-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=00f2ff&color=000&bold=true`;
+            }
+
+
+            document.getElementById('fullNameInput').value = user.name;
+            document.getElementById('emailInput').value = user.email;
+
+            // Handle Doctor Role
+            if (user.role && user.role.toLowerCase().includes('doctor')) {
+                const deptText = document.getElementById('userDepartmentText');
+                const roleBadge = document.getElementById('userRoleBadge');
+                const yearInput = document.getElementById('studyYearInput');
+
+                if (deptText) deptText.textContent = 'عضو هيئة تدريس';
+                if (yearInput) yearInput.value = 'عضو هيئة تدريس - جامعه برج العرب التكنولوجيا';
+                if (roleBadge) {
+                    roleBadge.textContent = 'Doctor';
+                    roleBadge.style.background = 'rgba(0, 242, 255, 0.2)';
+                    roleBadge.style.color = '#00f2ff';
+                    roleBadge.style.borderColor = 'rgba(0, 242, 255, 0.4)';
+                }
+
+                // Hide Academic ID for Doctors
+                const headerIdSpan = document.getElementById('headerID');
+                if (headerIdSpan && headerIdSpan.parentElement) {
+                    headerIdSpan.parentElement.style.display = 'none';
+                }
+                const sideBarId = document.getElementById('user-id');
+                if (sideBarId) {
+                    sideBarId.style.display = 'none';
+                }
+            }
+
+            // Update Sidebar
+            document.getElementById('user-name').innerText = user.name || 'مستخدم';
+            // Ensure ID is displayed in LTR for proper number rendering
+            const userIdEl = document.getElementById('user-id');
+            userIdEl.dir = 'ltr';
+            userIdEl.style.unicodeBidi = 'embed';
+            userIdEl.innerText = 'ID: ' + userId;
+
+            // Retrieve extra data
+            const extraData = JSON.parse(localStorage.getItem(`profileData_${userId}`)) || {};
+            if (extraData.phone) {
+                document.getElementById('phoneInput').value = extraData.phone;
+            }
+
+            // Image upload listener
+            const profileImageWrapper = document.getElementById('profileImageWrapper');
+            const profileImageInput = document.getElementById('profileImageInput');
+
+            profileImageWrapper.addEventListener('click', () => {
+                profileImageInput.click();
+            });
+
+            profileImageInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageData = e.target.result;
+                        document.getElementById('headerProfileImg').src = imageData;
+                        document.getElementById('user-avatar').src = imageData;
+                        localStorage.setItem(`profileImage_${userId}`, imageData);
+                        showAlert('تم تحديث صورة profile بنجاح!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // --- Sidebar Toggle for Mobile ---
+        function toggleSidebar() {
+            const sidebar = document.querySelector('aside');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+        // --- 2. Save Extra Data (رقم الهاتف) ---
+        function saveExtraData() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('dwd_user'));
+            if (!user) return;
+            // Uses logical ID for storage key
+            const userId = (user.email === '2420766@batechu.com') ? '2420766' : (user.academic_id && user.academic_id !== 'N/A' ? user.academic_id : (user.displayed_id || user.id));
+
+            const phone = document.getElementById('phoneInput').value;
+            localStorage.setItem(`profileData_${userId}`, JSON.stringify({ phone }));
+            showAlert('تم حفظ البيانات الإضافية بنجاح!', 'success');
+        }
+
+        // --- 3. Change Password Function ---
+        // --- 3. Change Password Function ---
+        async function changePassword() {
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+
+            if (newPass.length < 8) {
+                showAlert('كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل.', 'error');
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                showAlert('كلمة المرور وتأكيدها غير متطابقين.', 'error');
+                return;
+            }
+
+            const btn = document.querySelector('#securityForm button[type="submit"]');
+            // REVIEW: Potential XSS - Ensure variable is safe
+            const originalText = btn.innerHTML;
+            // REVIEW: Potential XSS - Check this line manually
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحديث...';
+            btn.disabled = true;
+
+            try {
+                // Call the new Global Firebase Function
+                if (window.changeUserPassword) {
+                    const oldPass = document.getElementById('currentPassword').value;
+                    await window.changeUserPassword(oldPass, newPass);
+                    showAlert('تم تحديث كلمة المرور بنجاح في النظام!', 'success');
+                    document.getElementById('securityForm').reset();
+                } else {
+                    throw new Error("وظيفة تغيير كلمة المرور غير محملة (انتظر قليلاً وحاول مرة أخرى).");
+                }
+            } catch (error) {
+                console.error(error);
+                showAlert('خطأ: ' + error.message, 'error');
+            } finally {
+                // REVIEW: Potential XSS - Ensure variable is safe
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // --- 4. Password Visibility Toggle ---
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                icon.classList.add('text-cyan-400'); // Highlight active
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                icon.classList.remove('text-cyan-400');
+            }
+        }
+
+
+        // --- Helper: Show Alert ---
+        function showAlert(msg, type = 'success') {
+            // Reuse existing custom-alert if possible, or create one
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `custom-alert show`;
+            alertDiv.style.borderLeftColor = type === 'error' ? '#ff0055' : '#00ff88';
+            alertDiv.innerText = msg;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 400);
+            }, 3000);
+        }
+
+
+        // --- 7. Logout Function ---
+        function logout() {
+            if (window.logout) {
+                window.logout();
+            } else {
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = '/index.html';
+            }
+        }
+    </script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

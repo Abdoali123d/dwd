@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تسجيل الدخول إلى منصة DWD Smart Campus الجامعية">
+    <title>تسجيل الدخول | DWD Smart Campus</title>
+
+    <!-- Favicon & Theme -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#16a34a">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="./assets/js/supabase.js"></script>
+    <script src="js/supabase_client.js"></script>
+    <script src="./js/content-protection.js" defer></script>
+    <script src="js/sound-effects.js" defer></script>
+    <link rel="modulepreload" href="js/secure_connect.js">
+    <script type="module" src="js/secure_connect.js"></script>
+
+    <!-- Firebase App Check (deferred) -->
+    <script type="module">
+        setTimeout(async () => {
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+            const isThrottled = sessionStorage.getItem('dwd_app_check_throttled');
+            if (isThrottled) return;
+            try {
+                const { initializeAppCheck, ReCaptchaV3Provider } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js');
+                const { app } = await import('./js/firebase_config.js');
+                initializeAppCheck(app, {
+                    provider: new ReCaptchaV3Provider('6LdwH3osAAAAAD8D_yNjmF_OMA2Aw4-Ejop5yCN4'),
+                    isTokenAutoRefreshEnabled: true
+                });
+            } catch (error) {
+                if (error.code === 'app-check/thottled' || (error.message && error.message.includes('403'))) {
+                    sessionStorage.setItem('dwd_app_check_throttled', 'true');
+                }
+            }
+        }, 3000);
+    </script>
+
+    <!-- Tailwind -->
+    <script src="assets/js/tailwind.js"></script>
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/academic-design.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                        'ibm': ['IBM Plex Sans Arabic', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js?v=28'));
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', sans-serif;
+        }
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+        /* Background Orbs */
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -30%; right: -15%;
+            width: 700px; height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(22,163,74,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .login-page::after {
+            content: '';
+            position: absolute;
+            bottom: -25%; left: -10%;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Wide Login Card */
+        .login-card {
+            width: 100%;
+            max-width: 560px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Alert */
+        .login-alert {
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px; border-radius: 0.5rem;
+            font-weight: 700; font-size: 0.875rem;
+            z-index: 1000; display: none;
+            min-width: 300px; text-align: center;
+            animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .login-alert.alert-success { 
+            background: rgba(24, 24, 27, 0.9); 
+            color: #ecfdf5; 
+            border-color: rgba(16, 185, 129, 0.2); 
+        }
+        .login-alert.alert-error { 
+            background: rgba(24, 24, 27, 0.9); 
+            color: #fef2f2; 
+            border-color: rgba(239, 68, 68, 0.2); 
+        }
+        @keyframes slideDown {
+            from { top: -60px; opacity: 0; }
+            to   { top: 20px; opacity: 1; }
+        }
+
+        /* Password Field Container */
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-left: 2.5rem; /* RTL: eye icon on the left */
+        }
+        .toggle-password {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px;
+            transition: color 0.2s;
+            z-index: 2;
+        }
+        .toggle-password:hover {
+            color: var(--accent-green, #16a34a);
+        }
+
+        /* Remember Me */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        .remember-me input[type="checkbox"] {
+            accent-color: var(--accent-green, #16a34a);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .remember-me label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary, #6b7280);
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body class="font-ibm">
+    <div id="custom-alert" class="login-alert"></div>
+
+    <div class="login-page">
+        <div class="login-card">
+            <!-- Back -->
+            <a href="/" class="inline-flex items-center gap-2 text-sm mb-5 no-underline font-bold transition-all hover:-translate-x-1" style="color: var(--text-secondary)">
+                <i class="fas fa-arrow-right"></i>
+                العودة للصفحة الرئيسية
+            </a>
+
+            <!-- Card -->
+            <div class="academic-card" style="padding: 2.75rem;">
+                <!-- Logo -->
+                <div class="text-center mb-8">
+                    <img src="img/logo.png" alt="BATU Logo" class="h-16 mx-auto mb-4 bg-white rounded-lg p-2 shadow-sm">
+                    <h1 class="font-cairo text-3xl font-black mb-2">تسجيل الدخول</h1>
+                    <p class="text-sm font-medium">
+                        DWD Smart Campus
+                    </p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-5">
+                    <!-- Email -->
+                    <div>
+                        <label class="form-label font-bold" for="login-email">
+                            <i class="fas fa-envelope ml-1 text-green-500"></i>
+                            البريد الجامعي
+                        </label>
+                        <input type="email" id="login-email" class="input-field"
+                               placeholder="your.email@batechu.edu.eg" required dir="ltr" autofocus
+                               style="font-family: 'IBM Plex Sans Arabic', monospace; font-weight: 500;">
+                    </div>
+
+                    <!-- Password with Eye Icon -->
+                    <div>
+                        <label class="form-label font-bold" for="login-password">
+                            <i class="fas fa-lock ml-1 text-green-500"></i>
+                            كلمة المرور
+                        </label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" class="input-field"
+                                   placeholder="••••••••••" required dir="ltr"
+                                   style="font-family: monospace; font-weight: 500; letter-spacing: 2px;">
+                            <button type="button" class="toggle-password" id="toggle-pw" aria-label="إظهار كلمة المرور">
+                                <i class="fas fa-eye" id="pw-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-me-check">
+                            <label for="remember-me-check">تذكرني</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" id="loginBtn" class="btn btn-primary w-full font-bold text-base mb-3" style="padding: 0.95rem; font-family: 'Cairo', sans-serif; font-size: 1.05rem;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        تسجيل الدخول
+                    </button>
+
+                    <!-- BATU Login Toggle -->
+                    <button type="button" id="toggle-login-mode" class="btn btn-soft w-full font-bold text-base transition-all duration-300" style="padding: 0.85rem; font-family: 'Cairo', sans-serif; border: 1px solid var(--accent-green, #16a34a);">
+                        <i id="login-mode-icon" class="fas fa-id-badge text-[var(--accent-green)]"></i>
+                        <span id="login-mode-text">تسجيل الدخول بحساب الجامعة (BATU)</span>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 my-6">
+                    <div class="flex-1 h-px bg-gray-300 dark:bg-gray-700"></div>
+                    <span class="text-xs font-bold text-gray-500">DWD</span>
+                    <div class="flex-1 h-px bg-gray-300 dark:bg-gray-700"></div>
+                </div>
+
+                <p class="text-center text-xs leading-relaxed font-medium">
+                    Log in to your account and view your latest documents. Your journey begins here.
+                </p>
+            </div>
+
+            <!-- Theme Toggle -->
+            <div class="flex items-center justify-center gap-3 mt-5">
+                <button id="theme-toggle" class="theme-toggle" aria-label="تبديل الوضع">
+                    <i class="fas fa-sun" id="theme-icon"></i>
+                </button>
+                <span class="text-xs" style="color: var(--text-muted)" id="theme-label">الوضع الداكن</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── 3-Mode Theme Toggle ──
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeLabel = document.getElementById('theme-label');
+        const html = document.documentElement;
+
+        function getThemeMode() { return localStorage.getItem('dwd-theme') || 'dark'; }
+
+        function applyTheme(mode) {
+            html.classList.remove('dark', 'classic');
+            if (mode === 'system') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                html.classList.toggle('dark', prefersDark);
+                themeIcon.className = 'fas fa-desktop';
+                themeLabel.textContent = 'وضع النظام';
+            } else if (mode === 'light') {
+                themeIcon.className = 'fas fa-moon';
+                themeLabel.textContent = 'الوضع الفاتح';
+            } else if (mode === 'classic') {
+                html.classList.add('classic');
+                themeIcon.className = 'fas fa-leaf';
+                themeLabel.textContent = 'الوضع الكلاسيكي';
+            } else {
+                html.classList.add('dark');
+                themeIcon.className = 'fas fa-sun';
+                themeLabel.textContent = 'الوضع الداكن';
+            }
+        }
+
+        applyTheme(getThemeMode());
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if (getThemeMode() === 'system') applyTheme('system');
+        });
+
+        themeToggle.addEventListener('click', () => {
+            const current = getThemeMode();
+            let next;
+            if (current === 'dark') next = 'light';
+            else if (current === 'light') next = 'classic';
+            else if (current === 'classic') next = 'system';
+            else next = 'dark';
+            localStorage.setItem('dwd-theme', next);
+            applyTheme(next);
+        });
+
+        // ── Toggle Password Visibility ──
+        document.getElementById('toggle-pw').addEventListener('click', function() {
+            const pwInput = document.getElementById('login-password');
+            const pwIcon = document.getElementById('pw-icon');
+            if (pwInput.type === 'password') {
+                pwInput.type = 'text';
+                pwIcon.className = 'fas fa-eye-slash';
+            } else {
+                pwInput.type = 'password';
+                pwIcon.className = 'fas fa-eye';
+            }
+        });
+
+        // ── Remember Me: Auto-fill email ──
+        const rememberCheck = document.getElementById('remember-me-check');
+        const emailInput = document.getElementById('login-email');
+        const savedEmail = localStorage.getItem('dwd_remember_email');
+        if (savedEmail) {
+            emailInput.value = savedEmail;
+            rememberCheck.checked = true;
+        }
+
+        // ── Login Logic ──
+        const loginForm = document.getElementById("loginForm");
+        const alertBox = document.getElementById("custom-alert");
+
+        function showAlert(msg, type) {
+            if (!alertBox) return;
+            alertBox.textContent = msg;
+            alertBox.className = `login-alert alert-${type}`;
+            alertBox.style.display = 'block';
+            setTimeout(() => alertBox.style.display = 'none', 4000);
+        }
+
+        // Toggle Login Mode
+        let isBatuLogin = false;
+        const toggleLoginModeBtn = document.getElementById('toggle-login-mode');
+        const loginModeIcon = document.getElementById('login-mode-icon');
+        const loginModeText = document.getElementById('login-mode-text');
+        
+        if (toggleLoginModeBtn) {
+            toggleLoginModeBtn.addEventListener('click', function() {
+                isBatuLogin = !isBatuLogin;
+                if (isBatuLogin) {
+                    this.classList.replace('btn-soft', 'btn-primary');
+                    loginModeIcon.className = 'fas fa-university';
+                    loginModeText.textContent = 'العودة للتسجيل العادي (DWD)';
+                    showAlert("تم تفعيل وضع تسجيل الدخول عبر حساب الجامعة", "success");
+                } else {
+                    this.classList.replace('btn-primary', 'btn-soft');
+                    loginModeIcon.className = 'fas fa-id-badge';
+                    loginModeText.textContent = 'تسجيل الدخول بحساب الجامعة (BATU)';
+                }
+            });
+        }
+
+        if (loginForm) {
+            loginForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                const email = document.getElementById("login-email").value.trim();
+                const password = document.getElementById("login-password").value.trim();
+                const btn = document.getElementById("loginBtn");
+                const originalBtnHTML = btn.innerHTML;
+
+                if (!email || !password) {
+                    showAlert("الرجاء إدخال البريد الإلكتروني وكلمة المرور", "error");
+                    return;
+                }
+
+                // Remember Me
+                if (rememberCheck.checked) {
+                    localStorage.setItem('dwd_remember_email', email);
+                } else {
+                    localStorage.removeItem('dwd_remember_email');
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+
+                try {
+                    let user;
+                    
+                    if (isBatuLogin) {
+                        // ── BATU Lms Authentication Bridge ──
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الاتصال بالجامعة...';
+                        
+                        const response = await fetch('/api/auth/batu-login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-Token': 'XMLHttpRequest'
+                            },
+                            body: JSON.stringify({ email, password })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (!response.ok) {
+                            throw new Error(data.error || 'فشل في الاتصال بخوادم الجامعة');
+                        }
+                        
+                        // الحفظ في LocalStorage بنفس هيكل مستخدم DWD ليتوافق مع باقي النظام
+                        user = {
+                            uid: 'batu_' + Date.now(),
+                            email: data.user.email,
+                            name: data.user.name,
+                            role: 'Student', // نفترض أنه طالب
+                            isBatuVerified: true
+                        };
+                        
+                        localStorage.setItem("currentUser", JSON.stringify(user));
+                        localStorage.setItem("isLoggedIn", "true");
+                        localStorage.setItem("loginMethod", "batu");
+                        if (data.batuToken) {
+                            localStorage.setItem("batuToken", data.batuToken);
+                        }
+                        
+                    } else {
+                        // ── DWD Firebase/Supabase Authentication ──
+                        if (typeof window.login !== 'function' && typeof login !== 'function') {
+                            throw new Error("نظام الدخول لم يتم تحميله، من فضلك أعد المحاولة.");
+                        }
+                        const loginFunc = window.login || login;
+                        await loginFunc(email, password);
+                        user = JSON.parse(localStorage.getItem("currentUser")) || { name: "مستخدم" };
+                    }
+
+                    showAlert(`مرحباً ${user.name || 'يا بطل'} — تم تسجيل الدخول بنجاح`, "success");
+
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.cancel();
+                        const u = new SpeechSynthesisUtterance('Welcome back');
+                        u.lang = 'en-US'; u.rate = 1.4; u.pitch = 1.1;
+                        const voices = window.speechSynthesis.getVoices();
+                        const voice = voices.find(v => v.name.includes('Google UK English Female')) ||
+                                      voices.find(v => v.name.includes('Samantha')) ||
+                                      voices.find(v => v.lang.startsWith('en'));
+                        if (voice) u.voice = voice;
+                        window.speechSynthesis.speak(u);
+                    }
+
+                    setTimeout(() => { window.location.href = "home.html"; }, 1500);
+                } catch (error) {
+                    console.error("Login Failed:", error);
+                    showAlert(error.message || "عذراً، البريد أو كلمة المرور غير صحيحة.", "error");
+                    btn.disabled = false;
+                    btn.innerHTML = originalBtnHTML;
+                }
+            });
+        }
+    </script>
+
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+</html>

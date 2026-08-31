@@ -1,0 +1,385 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الحضور الموثق</title>
+    <script src="../../js/auth-guard.js"></script>
+
+    <script src="../../assets/js/tailwind.js"></script>
+    
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #1a202c;
+            color: #fff;
+            min-height: 100vh
+        }
+
+        .card {
+            background-color: #2d3748;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5)
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #3182ce 0%, #2c5282 100%);
+            transition: all 0.3s
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(66, 153, 225, 0.5)
+        }
+
+        .spinner {
+            border-color: #4299e1;
+            border-right-color: transparent;
+            animation: s 1s linear infinite
+        }
+
+        @keyframes s {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-1px, 0, 0)
+            }
+
+            20%,
+            80% {
+                transform: translate3d(2px, 0, 0)
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-4px, 0, 0)
+            }
+
+            40%,
+            60% {
+                transform: translate3d(4px, 0, 0)
+            }
+        }
+
+        /* --- أنماط الهيدر الجديد --- */
+        :root {
+            --header-bg: rgba(26, 32, 44, 0.9);
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --primary-color: #38bdf8;
+        }
+
+        .main-header {
+            width: 100%;
+            height: 80px;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 10;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        /* مخفية في هذه الصفحة */
+        @media (min-width: 993px) {
+            .nav-links {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .nav-link {
+                text-decoration: none;
+                color: #f1f5f9;
+                font-weight: 600;
+                position: relative;
+                padding: 5px 10px;
+                transition: 0.3s;
+            }
+
+            .nav-link:hover {
+                color: var(--primary-color);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="flex flex-col">
+    <header class="main-header">
+        <div class="logo">
+            <i class="fas fa-microchip"></i> DWD
+        </div>
+        <nav class="nav-links">
+            <a href="../../home.html" class="nav-link">الرئيسية</a>
+            <a href="../profile/index.html" class="nav-link">البروفايل</a>
+        </nav>
+    </header>
+
+
+    <main class="p-4 flex items-center justify-center">
+        <div class="card p-6 md:p-10 rounded-2xl w-full max-w-lg text-center border border-gray-700">
+            <div class="mb-6"><i class="fa-solid fa-user-secret text-5xl text-blue-500"></i></div>
+            <h1 class="text-2xl font-bold mb-2">تسجيل الحضور الآمن</h1>
+            <p class="text-gray-400 text-sm mb-6">نافذة التسجيل مفتوحة لمدة 5 دقائق فقط.</p>
+
+            <div id="status-box" class="hidden p-4 rounded-lg mb-6 text-sm font-bold"></div>
+
+            <!-- Time Status -->
+            <div id="time-alert" class="hidden bg-blue-900 text-blue-200 p-2 rounded mb-4 text-xs">
+                <i class="fa-regular fa-clock ml-1"></i> <span id="time-msg"></span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-6 bg-gray-800 p-4 rounded-lg">
+                <div>الحالة: <span id="conn-stat" class="text-yellow-500">جاري الاتصال...</span></div>
+                <div>المسافة: <span id="dist-val" class="text-white font-mono">--</span></div>
+                <div>الدقة: <span id="sens-val" class="text-white font-mono">--</span></div>
+                <div>البصمة: <span id="fp-val"
+                        class="text-white font-mono text-[8px] truncate max-w-[100px] inline-block">جاري
+                        الإنشاء...</span>
+                </div>
+            </div>
+
+            <button id="verify-btn" onclick="_0xRun()"
+                class="btn-primary w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span id="btn-txt">بدء الفحص الأمني</span>
+                <div id="spin" class="spinner w-5 h-5 border-2 rounded-full hidden"></div>
+            </button>
+
+            <p class="text-[10px] text-gray-600 mt-4">* محاولات التحايل يتم تسجيلها وإرسالها للإدارة تلقائياً.</p>
+        </div>
+    </main>
+    <!-- Hidden Canvas for Fingerprinting -->
+    <canvas id="_fp_canvas" style="display:none;"></canvas>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- GLOBAL CONFIG ---
+        const _c = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const _tk = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const _aid = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Coords (Univ) - Base64
+        const _k1 = "MzAuOTE4OTAw"; // Lat
+        const _k2 = "MjkuNjc0OTAw"; // Lng
+        const _xD = 150; // Max Distance (m)
+        const _xA = 100; // Max Accuracy (m)
+
+        // --- TIME WINDOW CONFIG (الدقائق المسموحة في الساعة) ---
+        // مثال: من الدقيقة 0 للدقيقة 59 (مفتوح دائماً للتجربة)
+        // عشان تنفذ طلبك (45 لـ 50)، غير الأرقام دي لـ: _tMin = 45, _tMax = 50
+        const _tMin = 0;
+        const _tMax = 59;
+
+        let _db, _au, _uid = null, _rdy = false;
+        let _deviceFP = 'N/A';
+
+        // --- UTILITIES ---
+        const _0xEl = (i) => document.getElementById(i);
+        const _0xTxt = (i, t) => _0xEl(i).textContent = t;
+        // REVIEW: Potential XSS - Ensure variable is safe
+        const _0xMsg = (t, c) => { const b = _0xEl('status-box'); b.innerHTML = t; b.className = `p-4 rounded-lg mb-6 text-sm font-bold ${c}`; b.classList.remove('hidden'); };
+        const _0xRst = () => { _0xEl('verify-btn').disabled = false; _0xEl('spin').classList.add('hidden'); _0xTxt('btn-txt', 'إعادة الفحص'); };
+
+        // Haversine
+        const _0xHaversine = (lat1, lon1, lat2, lon2) => {
+            const R = 6371e3, p = Math.PI / 180;
+            const a = 0.5 - Math.cos((lat2 - lat1) * p) / 2 + Math.cos(lat1 * p) * Math.cos(lat2 * p) * (1 - Math.cos((lon2 - lon1) * p)) / 2;
+            return R * 2 * Math.asin(Math.sqrt(a));
+        };
+
+        // Fingerprint Hash
+        const _0xSha256 = async (str) => {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 8);
+        };
+
+        // --- LOGIC ---
+        const _getFingerprint = async () => {
+            const canvas = _0xEl('_fp_canvas');
+            if (!canvas) return 'NO_CANVAS';
+            const ctx = canvas.getContext('2d');
+            const txt = "Gemini_Secure_FP";
+            ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60";
+            ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText(txt, 2, 15);
+            const combinedData = [canvas.toDataURL(), navigator.userAgent, navigator.language, screen.width, screen.height].join('|');
+            return await _0xSha256(combinedData);
+        };
+
+        // 1. Time Check Function
+        const _checkTime = () => {
+            const now = new Date();
+            const min = now.getMinutes();
+            // Logic: Is current minute between tMin and tMax?
+            if (min >= _tMin && min <= _tMax) return true;
+            return false;
+        };
+
+        window._0xRun = () => {
+            const b = _0xEl('verify-btn'), s = _0xEl('spin');
+            b.disabled = true; s.classList.remove('hidden'); _0xTxt('btn-txt', 'جاري الفحص...');
+            _0xEl('status-box').classList.add('hidden');
+
+            // TIME CHECK
+            if (!_checkTime()) {
+                const now = new Date().getMinutes();
+                _0xMsg(`⛔ الوقت غير مسموح<br>التسجيل متاح بين الدقيقة ${_tMin} والدقيقة ${_tMax}. (حالياً: ${now})`, 'bg-gray-700 text-gray-200');
+                _0xRst(); return;
+            }
+
+            if (!navigator.geolocation) {
+                _0xMsg('الجهاز غير مدعوم', 'bg-red-900 text-red-200'); _0xRst(); return;
+            }
+
+            const _ops = { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 };
+
+            navigator.geolocation.getCurrentPosition(async (p) => {
+                const c = p.coords;
+                const _hasAlt = c.altitude !== null && c.altitude !== 0;
+                const _isSuspicious = c.accuracy < 10 && !_hasAlt; // Suspicious pattern
+
+                _0xTxt('sens-val', `${c.accuracy.toFixed(1)}m`);
+
+                // Distance Calc
+                const _uLa = parseFloat(atob(_k1));
+                const _uLo = parseFloat(atob(_k2));
+                const _d = _0xHaversine(c.latitude, c.longitude, _uLa, _uLo);
+                _0xTxt('dist-val', `${_d.toFixed(1)}m`);
+
+                // LOGIC BRANCHING
+                if (c.accuracy > _xA) {
+                    // Poor Signal - Not necessarily cheating, just warn
+                    _0xMsg('⚠️ إشارة GPS ضعيفة<br>حاول في مكان مفتوح.', 'bg-yellow-900 text-yellow-200');
+                } else if (_d > _xD) {
+                    // CHEATER DETECTED (Too far but trying to register)
+                    _0xReportCheater(c, _d, "OUT_OF_RANGE");
+                    _0xMsg(`❌ خارج النطاق (${_d.toFixed(0)}m)<br>تم تسجيل المحاولة وإبلاغ الإدارة.`, 'bg-red-900 text-red-200 shake');
+                } else if (_isSuspicious) {
+                    // SUSPICIOUS (Fake GPS likely) -> Report AND Warn
+                    _0xReportCheater(c, _d, "MOCK_LOCATION_SUSPECT");
+                    _0xMsg(`⚠️ تم كشف نمط محاكاة<br>تم تسجيل الواقعة للمراجعة.`, 'bg-orange-800 text-orange-200');
+                } else {
+                    // SUCCESS
+                    _0xSave(c, _d, _hasAlt);
+                }
+                _0xRst();
+
+            }, (e) => {
+                _0xMsg('⛔ خطأ في تحديد الموقع', 'bg-red-900 text-red-200'); _0xRst();
+            }, _ops);
+        };
+
+        // 2. Report Cheater Function (The "Minus" Feature)
+        const _0xReportCheater = async (c, dist, reason) => {
+            if (_rdy && _uid) {
+                try {
+                    await addDoc(collection(_db, `artifacts/${_aid}/users/${_uid}/suspicious_logs`), {
+                        uid: _uid,
+                        timestamp: serverTimestamp(),
+                        reason: reason,
+                        details: `Dist: ${dist.toFixed(0)}m, Acc: ${c.accuracy}, FP: ${_deviceFP}`,
+                        location: { lat: c.latitude, lng: c.longitude }
+                    });
+                    // console.log("Cheater reported >:)");  [Security Fix]
+                // } catch (e) { console.log("Report fail", e); }  [Security Fix]
+            }
+        };
+
+        const _0xSave = async (c, dist, hasAlt) => {
+            let msg = "✅ تم تسجيل الحضور";
+            let cls = "bg-green-900 text-green-200";
+            if (_rdy && _uid) {
+                try {
+                    await addDoc(collection(_db, `artifacts/${_aid}/users/${_uid}/attendance`), {
+                        uid: _uid, t: serverTimestamp(),
+                        loc: { lat: c.latitude, lng: c.longitude, acc: c.accuracy, alt: c.altitude },
+                        dist: dist,
+                        fp: _deviceFP,
+                        status: "VERIFIED"
+                    });
+                } catch (e) { msg += "<br>(فشل الحفظ في السيرفر)"; cls = "bg-green-800 text-white"; }
+            } else { msg += "<br>(وضع العرض)"; }
+            _0xMsg(msg, cls);
+        };
+
+        // Force Test Mode
+        const _0xFrc = () => {
+            _0xEl('verify-btn').disabled = false;
+            _0xTxt('conn-stat', 'OFFLINE');
+            _0xEl('conn-stat').className = 'text-red-500 font-bold';
+            _0xEl('spin').classList.add('hidden');
+        };
+
+        window.onload = async () => {
+            _deviceFP = await _getFingerprint();
+            _0xTxt('fp-val', _deviceFP);
+
+            // Time Check UI
+            const min = new Date().getMinutes();
+            const isOpen = min >= _tMin && min <= _tMax;
+            const tDiv = _0xEl('time-alert');
+            const tMsg = _0xEl('time-msg');
+            tDiv.classList.remove('hidden');
+            if (isOpen) {
+                tDiv.className = "bg-green-900 text-green-200 p-2 rounded mb-4 text-xs";
+                tMsg.textContent = `التسجيل متاح الآن (دقيقة ${min})`;
+            } else {
+                tDiv.className = "bg-red-900 text-red-200 p-2 rounded mb-4 text-xs";
+                tMsg.textContent = `التسجيل مغلق. (الموعد: الدقيقة ${_tMin} - ${_tMax})`;
+            }
+
+            try {
+                const app = initializeApp(_c);
+                _au = getAuth(app);
+                _db = getFirestore(app);
+                onAuthStateChanged(_au, (u) => {
+                    if (u) { _uid = u.uid; _rdy = true; _0xTxt('conn-stat', 'SECURE'); _0xEl('conn-stat').className = 'text-green-500 font-bold'; _0xEl('verify-btn').disabled = false; }
+                    else { _0xLogin(); }
+                });
+            } catch (e) { _0xFrc(); }
+        };
+
+        const _0xLogin = async () => {
+            try { if (_tk) await signInWithCustomToken(_au, _tk); else await signInAnonymously(_au); } catch (e) { _0xFrc(); }
+        };
+    </script>
+    </main>
+
+</html>

@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الطالب الذكية | Smart Student Hub</title>
+    <script src="../../js/security-utils.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../assets/js/tailwind.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+    <script src="../../assets/js/supabase.js"></script>
+
+    <style>
+        /* --- CORE CONFIG --- */
+        :root {
+            --primary: #00f2ff;
+            --secondary: #bd00ff;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: var(--bg-dark);
+            color: #fff;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(189, 0, 255, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 255, 0.15), transparent 25%);
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .card-3d {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card-3d:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 242, 255, 0.15);
+            border-color: var(--primary);
+        }
+
+        .nav-item {
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-item.active {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .nav-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            z-index: -1;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) scale(2);
+            opacity: 0.3;
+            animation: moveGrid 10s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0) scale(2);
+            }
+
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px) scale(2);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* --- UTILS --- */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.7);
+        }
+
+
+        .hidden-section {
+            display: none;
+            opacity: 0;
+            animation: fadeOut 0.3s forwards;
+        }
+
+        .active-section {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lec-btn {
+            background: linear-gradient(45deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        .lec-btn:hover {
+            border-color: var(--primary);
+            background: linear-gradient(45deg, #00f2ff20, #0f172a);
+            transform: translateX(-5px);
+        }
+
+        .main-header {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            background-color: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #f1f5f9;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 10px;
+            transition: 0.3s;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: 0.3s;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .theme-control {
+            position: relative;
+        }
+
+        .theme-icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-color, #f1f5f9);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .theme-icon-btn:hover {
+            color: var(--primary-color);
+            transform: rotate(30deg);
+        }
+
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="flex h-screen overflow-hidden">
+    <div id="swup-main" class="flex h-screen overflow-hidden w-full">
+        <div class="grid-bg"></div>
+
+        <aside
+            class="w-64 bg-[#0a1120] border-r border-slate-700 flex-col z-30 shadow-2xl transition-transform duration-300 transform fixed md:relative md:translate-x-0 h-full translate-x-full flex">
+            <div class="p-6 text-center border-b border-slate-700">
+                <h1
+                    class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-1">
+                    IT HUB</h1>
+                <p class="text-xs text-slate-400 tracking-widest">FUTURE UNIVERSITY</p>
+            </div>
+            <nav class="flex-1 py-6 space-y-2">
+                <button onclick="showSection('materials')"
+                    class="nav-item active w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-book-open text-xl w-8"></i> المواد الدراسية
+                </button>
+                <button onclick="showSection('tutorials')"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-chalkboard-teacher text-xl w-8"></i> دروس تعليمية
+                </button>
+                <button onclick="showSection('schedule')"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-calendar-alt text-xl w-8"></i> الجدول الدراسي
+                </button>
+
+                <a href="/DWD/schedule/grades.html"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-chart-line text-xl w-8"></i> النتائج والتقديرات
+                </a>
+                <button onclick="showSection('attendance')"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-user-clock text-xl w-8"></i> سجل الحضور
+                </button>
+                <button onclick="showSection('smart-builder')"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-magic text-xl w-8"></i> منشئ الجدول الذكي
+                    <span class="mr-auto bg-amber-500 text-black text-xs px-2 py-0.5 rounded-full font-bold">Beta</span>
+                </button>
+
+                <a href="/DWD/downloads/index.html"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold">
+                    <i class="fas fa-cloud-upload-alt text-xl w-8"></i> بوابة التكليفات
+                </a>
+                <button onclick="showSection('manual')"
+                    class="nav-item w-full p-4 flex items-center gap-4 hover:bg-slate-800 text-slate-300 font-bold text-cyan-400">
+                    <i class="fas fa-book text-xl w-8"></i> دليل الطالب
+                </button>
+            </nav>
+            <div class="p-4 border-t border-slate-700">
+                <div class="flex items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=User&background=random" id="user-avatar"
+                        alt="صورة المستخدم" loading="lazy" class="w-10 h-10 rounded-full border-2 border-cyan-500">
+                    <div>
+                        <p class="text-sm font-bold text-white" id="user-name">ضيف</p>
+                        <p class="text-xs text-slate-400" id="user-id">ID: ---</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-20 hidden md:hidden" onclick="toggleSidebar()">
+        </div>
+
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div class="p-4 md:p-8">
+                <header class="main-header">
+                    <div class="logo"><i class="fas fa-microchip"></i> DWD</div>
+                    <nav class="nav-links">
+                        <a href="../../home.html" class="nav-link">الرئيسية</a>
+                        <a href="../materials/index.html" class="nav-link">المواد الدراسية</a>
+                        <a href="../ai-Nano/exam/index.html" class="nav-link">الامتحانات</a>
+                        <a href="./index.html" class="nav-link active">الجدول الدراسي</a>
+                        <a href="../downloads/index.html" class="nav-link">التكليفات والواجبات</a>
+                        <a href="https://communication-1p3m.vercel.app/" class="nav-link">منصة التواصل</a>
+                        <a href="#" onclick="showSection('attendance'); return false;" class="nav-link">صفحة تسجيل
+                            الحضور والغياب</a>
+                        <a href="../profile/index.html" class="nav-link">البروفايل</a>
+                        <a href="../about/index.html" class="nav-link">عنا </a>
+                    </nav>
+                    <div style="display: flex; align-items: center; gap: 15px;"></div>
+                    <div class="md:hidden text-2xl cursor-pointer" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </header>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 md:px-8">
+                <section id="materials" class="active-section space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="materials-grid">
+                    </div>
+                </section>
+
+                <section id="tutorials" class="hidden-section space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tutorials-grid">
+                    </div>
+                </section>
+
+                <section id="schedule" class="hidden-section">
+                    <div class="glass-panel p-6 w-full overflow-x-auto">
+                        <header class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-cyan-400 mb-2 text-glow">الجدول الدراسي المباشر</h3>
+                            <div class="text-slate-400">تكنولوجيا المعلومات - الفرقة الثانية - الترم الأول 2026/2025</div>
+                        </header>
+
+                        <div class="flex flex-col md:flex-row justify-center gap-4 mb-8 bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                            <div class="flex-1 max-w-xs w-full text-right">
+                                <label class="block text-xs font-bold text-slate-400 mb-2">اختر مجموعتك:</label>
+                                <select id="groupSelect" onchange="renderScheduleView()" class="w-full bg-[#0f0f1a] text-cyan-400 border border-purple-500/50 p-2 rounded-lg outline-none cursor-pointer">
+                                    <option value="g1">المجموعة الأولى</option>
+                                    <option value="g2">المجموعة الثانية</option>
+                                    <option value="g3">المجموعة الثالثة</option>
+                                    <option value="g4">المجموعة الرابعة</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 max-w-xs w-full text-right">
+                                <label class="block text-xs font-bold text-slate-400 mb-2">السكشن:</label>
+                                <select id="sectionSelect" onchange="renderScheduleView()" class="w-full bg-[#0f0f1a] text-cyan-400 border border-purple-500/50 p-2 rounded-lg outline-none cursor-pointer">
+                                    <option value="s1">السكشن 1 (الرئيسي)</option>
+                                    <option value="s2">السكشن 2</option>
+                                    <option value="s3">السكشن 3</option>
+                                    <option value="s4">السكشن 4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto border border-slate-700/50 rounded-xl bg-slate-900/50 custom-scroll">
+                            <table id="scheduleTable" class="w-full min-w-[1000px] text-right border-collapse">
+                                <thead>
+                                    <tr id="tableHeader" class="bg-purple-500/10 border-b-2 border-cyan-500">
+                                        <th class="p-4 text-white text-center">اليوم</th>
+                                        <!-- الأعمدة ستنشأ بالجافاسكربت -->
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody" class="divide-y divide-slate-700/30">
+                                    <!-- الصفوف ستنشأ بالجافاسكربت -->
+                                    <tr><td colspan="10" class="text-center p-8 text-slate-500">جاري تحميل الجدول...</td></tr>
+                                </tbody>
+                            </table>
+                            <div id="noData" class="text-center p-10 text-xl text-red-400 hidden">لا توجد بيانات متاحة لهذا الجدول حالياً.</div>
+                        </div>
+                        <div class="text-center mt-6 text-xs text-slate-500">تحديث البيانات يتم بواسطة إدارة القسم • Last Sync: Live</div>
+                    </div>
+                </section>
+
+                <section id="smart-builder" class="hidden-section">
+                    <div class="glass-panel p-8 relative">
+                        <div class="text-center mb-10">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto shadow-lg shadow-purple-500/30">
+                                <i class="fas fa-magic text-white"></i>
+                            </div>
+                            <h3 class="text-3xl font-black mb-2 text-white">منشئ الجدول الذكي 🤖 <span class="bg-amber-500 text-black text-xs px-2 py-1 rounded-full align-middle ml-2 font-bold">قريباً (Beta)</span></h3>
+                            <p class="text-slate-400">أخبرني بتفضيلاتك، وسأقوم بتصميم خطة دراسية مخصصة لك!</p>
+                        </div>
+
+                        <!-- Step 1: Preferences -->
+                        <div id="step-1" class="space-y-6 max-w-2xl mx-auto">
+                            <div>
+                                <label class="block text-sm font-bold mb-3 text-blue-300">ما هي الأوقات المفضلة للمذاكرة؟</label>
+                                <div class="flex flex-wrap gap-3">
+                                    <button class="option-btn border border-slate-600 px-4 py-2 rounded-xl text-sm font-bold text-slate-300 hover:border-blue-500 transition focus:bg-blue-600 focus:text-white" onclick="toggleOption(this)">☀️ الصباح الباكر</button>
+                                    <button class="option-btn border border-slate-600 px-4 py-2 rounded-xl text-sm font-bold text-slate-300 hover:border-blue-500 transition focus:bg-blue-600 focus:text-white" onclick="toggleOption(this)">🌑 السهرة بالليل</button>
+                                    <button class="option-btn border border-slate-600 px-4 py-2 rounded-xl text-sm font-bold text-slate-300 hover:border-blue-500 transition focus:bg-blue-600 focus:text-white" onclick="toggleOption(this)">☕ بعد الظهر</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold mb-3 text-purple-300">أيام الراحة المفضلة؟ (غير الجمعة)</label>
+                                <div class="flex flex-wrap gap-3">
+                                    <button class="option-btn border border-slate-600 px-4 py-2 rounded-xl text-sm font-bold text-slate-300 hover:border-purple-500 transition focus:bg-purple-600 focus:text-white" onclick="toggleOption(this)">السبت</button>
+                                    <button class="option-btn border border-slate-600 px-4 py-2 rounded-xl text-sm font-bold text-slate-300 hover:border-purple-500 transition focus:bg-purple-600 focus:text-white" onclick="toggleOption(this)">الأحد</button>
+                                    <button class="option-btn border border-slate-600 px-4 py-2 rounded-xl text-sm font-bold text-slate-300 hover:border-purple-500 transition focus:bg-purple-600 focus:text-white" onclick="toggleOption(this)">الخميس</button>
+                                </div>
+                            </div>
+
+                            <button onclick="generateSchedule()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:scale-[1.02] text-white font-black py-4 rounded-xl shadow-xl transition transform mt-8 flex items-center justify-center gap-2 block">
+                                <i class="fas fa-wand-magic-sparkles"></i> إنشاء جدولي الآن
+                            </button>
+                        </div>
+
+                        <!-- Step 2: Loading (Hidden) -->
+                        <div id="step-loading" class="hidden text-center py-10">
+                            <i class="fas fa-circle-notch fa-spin text-5xl text-purple-500 mb-6 relative z-10"></i>
+                            <h3 class="text-xl font-bold text-white animate-pulse">الذكاء الاصطناعي يفكر... 🧠</h3>
+                            <p class="text-slate-500 mt-2 text-sm">جاري تحليل المواد ومواعيد المحاضرات...</p>
+                        </div>
+
+                        <!-- Step 3: Result (Hidden) -->
+                        <div id="step-result" class="hidden max-w-2xl mx-auto">
+                            <h2 class="text-xl font-bold mb-4 text-green-400">✅ خطتك المقترحة:</h2>
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-white/5 space-y-4 max-h-60 overflow-y-auto mb-6 pr-2 custom-scroll">
+                                <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                                    <div class="bg-blue-500/20 text-blue-400 p-2 rounded-lg font-bold">السبت</div>
+                                    <div>
+                                        <p class="font-bold text-white text-sm">مذاكرة قواعد بيانات (DB)</p>
+                                        <p class="text-[10px] text-slate-400">10:00 ص - 12:00 م</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                                    <div class="bg-purple-500/20 text-purple-400 p-2 rounded-lg font-bold">الاثنين</div>
+                                    <div>
+                                        <p class="font-bold text-white text-sm">مشروع Web Development</p>
+                                        <p class="text-[10px] text-slate-400">04:00 م - 07:00 م</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="resetSmartBuilder()" class="flex-1 border border-slate-600 text-white py-3 rounded-xl hover:bg-slate-700 transition font-bold">إعادة المحاولة</button>
+                                <button class="flex-1 bg-green-600 text-white py-3 rounded-xl hover:bg-green-500 transition font-bold shadow-lg">حفظ الجدول</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="manual" class="hidden-section">
+                    <div class="glass-panel p-8 max-w-5xl mx-auto">
+                        <div class="text-center mb-12">
+                            <h3 class="text-4xl font-black text-white mb-2">كتالوج الطالب الذكي</h3>
+                            <p class="text-cyan-400">الدليل الشامل لاستخدام منصة التعليم الإلكتروني DWD</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-slate-800/80 border border-cyan-500/20 p-6 rounded-2xl flex gap-4 hover:-translate-y-1 hover:border-cyan-500 transition-all">
+                                <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 shrink-0 text-2xl"><i class="fas fa-sign-in-alt"></i></div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2">الدخول للمنصة</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">قم بتسجيل الدخول باستخدام البريد الإلكتروني الجامعي وكلمة المرور الخاصة بك. النظام محمي بالكامل بتقنيات التشفير.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-800/80 border border-blue-500/20 p-6 rounded-2xl flex gap-4 hover:-translate-y-1 hover:border-blue-500 transition-all">
+                                <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0 text-2xl"><i class="fas fa-book-open"></i></div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2">الاطلاع على المقررات</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">من تبويب "المواد الدراسية"، يمكنك الدخول لأي مادة مسجلة للحصول على المحاضرات والدروس.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-800/80 border border-purple-500/20 p-6 rounded-2xl flex gap-4 hover:-translate-y-1 hover:border-purple-500 transition-all">
+                                <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 shrink-0 text-2xl"><i class="fas fa-tasks"></i></div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2">تسليم التكليفات</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">تُتيح لك "بوابة التكليفات" رفع أبحاثك وواجباتك مباشرة للدكتور بضغطة زر. سيصل التكليف للدكتور فوراً.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-800/80 border border-green-500/20 p-6 rounded-2xl flex gap-4 hover:-translate-y-1 hover:border-green-500 transition-all">
+                                <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 shrink-0 text-2xl"><i class="fas fa-star"></i></div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2">معرفة الدرجات</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">قسم "النتائج والتقديرات" يعرض لك درجات أعمال السنة والفاينل التي تم رصدها لك بفضل المزامنة اللحظية.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-800/80 border border-emerald-500/20 p-6 rounded-2xl flex gap-4 hover:-translate-y-1 hover:border-emerald-500 transition-all">
+                                <div class="w-14 h-14 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0 text-2xl"><i class="fas fa-calendar-alt"></i></div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2">منشئ الجدول الذكي <span class="bg-amber-500 text-black text-xs px-2 py-0.5 rounded-full align-middle ml-2 font-bold">Beta</span></h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">استخدم خاصية "منشئ الجدول الذكي" لبناء جدول دراسي أسبوعي ذكي وفق مجموعتك وسكاشنك لتنظيم الأوقات.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-800/80 border border-pink-500/20 p-6 rounded-2xl flex gap-4 hover:-translate-y-1 hover:border-pink-500 transition-all">
+                                <div class="w-14 h-14 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-400 shrink-0 text-2xl"><i class="fas fa-robot"></i></div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-white mb-2">مساعد الذكاء الاصطناعي Nano</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">اسأل Nano لشرح الأكواد، وتلخيص المحاضرات، والإجابة عن الاستفسارات على مدار الساعة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!-- 4. SECTIONS: GRADES (النتائج) (moved to grades.html) -->
+
+                <!-- 5. SECTIONS: ATTENDANCE (سجل الحضور) -->
+                <section id="attendance" class="hidden-section">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-xl font-bold text-green-400 mb-6 flex items-center gap-2">
+                            <i class="fas fa-user-check"></i> سجل الحضور الخاص بك
+                        </h3>
+                        <div id="attendance-list" class="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+                            <p class="text-slate-400 text-center py-10">جاري تحميل سجلات الحضور...</p>
+                        </div>
+                    </div>
+                </section>
+        </main>
+
+        <!-- Modal للمحاضرات (يظهر عند الضغط على مادة) -->
+        <div id="modal"
+            class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center backdrop-blur-sm opacity-0 transition-opacity duration-300">
+            <div class="bg-[#0f172a] border border-cyan-500/30 w-full max-w-2xl rounded-2xl p-6 relative shadow-[0_0_50px_rgba(0,242,255,0.2)] transform scale-90 transition-transform duration-300"
+                id="modal-content">
+                <button onclick="closeModal()"
+                    class="absolute top-4 left-4 text-slate-400 hover:text-white text-2xl">&times;</button>
+
+                <h2 id="modal-title" class="text-2xl font-bold text-white mb-2">اسم المادة</h2>
+                <p class="text-sm text-cyan-400 mb-6">قائمة المحاضرات والموارد التعليمية</p>
+
+                <div class="grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll" id="lectures-list">
+                    <!-- أزرار المحاضرات هتظهر هنا -->
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // 1. إعدادات Supabase (قاعدة البيانات التي أنشأتها)
+            // Use centralized Supabase client if available, otherwise create one
+            var _supabase = window.appSupabaseClient || null;
+            if (!_supabase && typeof supabase !== 'undefined') {
+                var _SB_URL = "https://suziirfasrahhaqffymz.supabase.co";
+                var _SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1emlpcmZhc3JhaGhhcWZmeW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzNDcwODUsImV4cCI6MjA4MTkyMzA4NX0.ev0RubDLAVtnPxaTfQotPGN01dCFymBAwytLwebuN9Y";
+                _supabase = supabase.createClient(_SB_URL, _SB_KEY);
+            }
+
+
+
+
+            // --------------------------
+            // ================= FUNCTIONS =================
+            window.onload = async function () {
+                // Robust wait for Supabase and Auth Sync
+                let attempts = 0;
+                while ((!window.appSupabaseClient || !window.SecureConnect?.syncSupabaseAuth) && attempts < 50) {
+                    await new Promise(r => setTimeout(r, 200));
+                    attempts++;
+                }
+
+                if (window.SecureConnect?.syncSupabaseAuth) {
+                    console.log("[Schedule] Syncing Supabase auth...");
+                    await window.SecureConnect.syncSupabaseAuth();
+                }
+
+                // Update local pointer
+                _supabase = window.appSupabaseClient || _supabase;
+
+                loadMaterialsAndLectures();
+                loadCourses();
+                loadTutorials();
+                initScheduleSystem(); // Replaces old loadSchedule()
+                initUserProfile();
+            };
+
+            // ================= SMART BUILDER LOGIC =================
+            function toggleOption(btn) {
+                btn.classList.toggle('bg-blue-600');
+                btn.classList.toggle('text-white');
+                btn.classList.toggle('border-blue-500');
+            }
+
+            function generateSchedule() {
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-loading').classList.remove('hidden');
+
+                setTimeout(() => {
+                    document.getElementById('step-loading').classList.add('hidden');
+                    document.getElementById('step-result').classList.remove('hidden');
+                }, 3000);
+            }
+
+            function resetSmartBuilder() {
+                document.getElementById('step-result').classList.add('hidden');
+                document.getElementById('step-1').classList.remove('hidden');
+            }
+
+
+            // ================= SCHEDULE LOGIC =================
+            const DB_SCHED_ID = 'IT_Schedule_2026';
+            let liveScheduleData = null;
+
+            const timeSlots = [
+                { label: "1", time: "9:40-10:20" }, { label: "2", time: "10:20-11:00" },
+                { label: "3", time: "11:00-11:40" }, { label: "4", time: "11:40-12:20" },
+                { label: "5", time: "12:20-1:00" }, { label: "6", time: "1:00-1:40" },
+                { label: "7", time: "1:40-2:20" }, { label: "8", time: "2:20-3:00" },
+                { label: "9", time: "3:00-3:40" }
+            ];
+            const schedDays = ["السبت", "الأحد", "الإثنين", "الثلاثاء"];
+
+            async function initScheduleSystem() {
+                try {
+                    const { data, error } = await _supabase
+                        .from('schedules')
+                        .select('schedule_data')
+                        .eq('id', DB_SCHED_ID)
+                        .single();
+
+                    if (data && data.schedule_data) {
+                        liveScheduleData = data.schedule_data;
+                        renderScheduleView();
+                    } else {
+                        document.getElementById('noData').classList.remove('hidden');
+                        document.getElementById('noData').innerText = 'جاري انتظار نشر الجدول من قبل الإدارة...';
+                    }
+                    
+                    // Subscribe to realtime updates
+                    _supabase
+                        .channel('public:schedules')
+                        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'schedules', filter: `id=eq.${DB_SCHED_ID}` }, (payload) => {
+                            if (payload.new && payload.new.schedule_data) {
+                                liveScheduleData = payload.new.schedule_data;
+                                renderScheduleView();
+                                const container = document.getElementById('schedule').querySelector('.glass-panel');
+                                container.style.boxShadow = "0 0 60px rgba(0, 243, 255, 0.5)";
+                                setTimeout(() => container.style.boxShadow = "0 8px 32px 0 rgba(0, 0, 0, 0.37)", 1000);
+                            }
+                        })
+                        .subscribe();
+
+                } catch (err) {
+                    console.error("Error fetching schedule:", err);
+                }
+            }
+
+            function renderScheduleView() {
+                if (!liveScheduleData) return;
+
+                const group = document.getElementById('groupSelect').value;
+                const section = document.getElementById('sectionSelect').value;
+                const data = liveScheduleData;
+
+                const headerRow = document.getElementById('tableHeader');
+                headerRow.innerHTML = '<th class="p-4 text-white text-center">اليوم</th>';
+                timeSlots.forEach(slot => {
+                    headerRow.innerHTML += `
+                        <th class="p-4 text-white text-center">
+                            ${slot.label}
+                            <span class="block text-[10px] text-slate-400 mt-1">${slot.time}</span>
+                        </th>
+                    `;
+                });
+
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+                let hasData = false;
+
+                schedDays.forEach((day, dayIndex) => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('hover:bg-slate-800/50', 'transition-colors');
+
+                    tr.innerHTML = `<td class="p-4 font-bold text-cyan-400 bg-cyan-500/5 text-center align-middle">${day}</td>`;
+
+                    timeSlots.forEach((_, slotIndex) => {
+                        let cellContent = "";
+                        if (data[group]) {
+                            if (data[group][section] && data[group][section][dayIndex]) {
+                                cellContent = data[group][section][dayIndex][slotIndex];
+                            } else if (data[group]['s1'] && data[group]['s1'][dayIndex]) {
+                                cellContent = data[group]['s1'][dayIndex][slotIndex];
+                            }
+                        }
+
+                        if (cellContent) hasData = true;
+
+                        const td = document.createElement('td');
+                        td.className = "p-2 min-w-[120px] align-middle";
+                        
+                        const card = document.createElement('div');
+                        if(cellContent) {
+                            card.className = 'bg-slate-800/80 border border-slate-700 p-3 rounded-lg text-sm text-center text-white hover:border-cyan-500 hover:shadow-[0_0_15px_rgba(0,242,255,0.2)] transition-all h-full min-h-[60px] flex items-center justify-center';
+                        } else {
+                            card.className = 'p-3 rounded-lg text-sm text-center text-slate-600 italic h-full min-h-[60px] flex items-center justify-center opacity-50';
+                        }
+                        
+                        card.textContent = cellContent || "---";
+
+                        td.appendChild(card);
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('noData').classList.toggle('hidden', hasData);
+                if (!hasData) document.getElementById('noData').innerText = 'لا توجد محاضرات مسجلة لهذا الجدول حالياً.';
+            }
+
+            // 1. Fetch user data from LocalStorage
+
+            function initUserProfile() {
+
+                const storedUser = localStorage.getItem('currentUser') || localStorage.getItem('dwd_user');
+
+                if (storedUser) {
+
+                    const user = JSON.parse(storedUser);
+
+                    document.getElementById('user-name').innerText = user.name || 'مستخدم';
+
+                    // Fixed Academic ID extraction from user data
+                    const displayId = user.academic_id || user.id || (user.email ? user.email.split('@')[0] : '---');
+                    document.getElementById('user-id').innerText = 'ID: ' + displayId;
+
+                    // Sync Profile Avatar from LocalStorage globally across pages
+                    const storedImage = localStorage.getItem(`profileImage_${user.id}`) || localStorage.getItem(`profileImage_${displayId}`);
+                    document.getElementById('user-avatar').src = storedImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=00f2ff&color=000&bold=true`;
+
+                }
+
+            }
+
+
+            // 2. جلب المواد والمحاضرات (Materials & Lectures)
+            async function loadMaterialsAndLectures() {
+                const grid = document.getElementById('materials-grid');
+
+                // جلب المواد
+                const { data: materials, error: mError } = await _supabase.from('materials').select('*');
+                if (mError) return console.error(mError);
+
+                grid.textContent = '';
+                for (const mat of materials) {
+                    // جلب المحاضرات لكل مادة
+                    const { data: lectures } = await _supabase.from('lectures').select('*').eq('material_id', mat.id);
+
+                    const lecturesHtml = (lectures && lectures.length > 0)
+                        ? lectures.map(l => `
+                        <a href="${l.url}" target="_blank" class="lec-btn text-center py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white block mb-2">
+                            <i class="fas fa-file-pdf mr-1"></i> ${l.title}
+                        </a>
+                    `).join('')
+                        : '<p class="text-xs text-slate-500 text-center py-4">لا توجد محاضرات</p>';
+
+                    // REVIEW: Potential XSS - Ensure variable is safe
+                    grid.innerHTML += `
+                    <div class="glass-panel card-3d p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-1 h-full" style="background-color: ${mat.accent_color || '#00f2ff'}"></div>
+                        <div class="flex items-center gap-4 mb-4 border-b border-slate-700 pb-4">
+                            <h3 class="text-2xl font-bold">${mat.name}</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                            ${lecturesHtml}
+                        </div>
+                    </div>
+                `;
+                }
+            }
+
+            // New function for tutorials
+            async function loadTutorials() {
+                const grid = document.getElementById('tutorials-grid');
+
+                // جلب المواد
+                const { data: materials, error: mError } = await _supabase.from('materials').select('*');
+                if (mError) return console.error(mError);
+
+                grid.textContent = '';
+                for (const mat of materials) {
+                    // جلب الدروس التعليمية لكل مادة
+                    const { data: tutorials } = await _supabase.from('tutorials').select('*').eq('material_id', mat.id);
+
+                    const tutorialsHtml = (tutorials && tutorials.length > 0)
+                        ? tutorials.map(t => `
+                        <a href="${t.url}" target="_blank" class="lec-btn text-center py-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white block mb-2">
+                            <i class="fas fa-file-code mr-1"></i> ${t.title}
+                        </a>
+                    `).join('')
+                        : '<p class="text-xs text-slate-500 text-center py-4">لا توجد دروس تعليمية</p>';
+
+                    // REVIEW: Potential XSS - Ensure variable is safe
+                    grid.innerHTML += `
+                    <div class="glass-panel card-3d p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-1 h-full" style="background-color: ${mat.accent_color || '#bd00ff'}"></div>
+                        <div class="flex items-center gap-4 mb-4 border-b border-slate-700 pb-4">
+                            <h3 class="text-2xl font-bold">${mat.name}</h3>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                            ${tutorialsHtml}
+                        </div>
+                    </div>
+                `;
+                }
+            }
+
+            // ================= NEW COURSES/WEEKS LOGIC =================
+
+            // Load Courses Overview
+            async function loadCourses() {
+                const grid = document.getElementById('courses-grid');
+                if (!grid) return;
+
+                const { data: materials, error } = await _supabase.from('materials').select('*');
+                if (error) {
+                    console.error("Error loading courses:", error);
+                    grid.innerHTML = '<p class="text-red-400 p-4">خطأ في تحميل المقررات</p>';
+                    return;
+                }
+
+                if (!materials || materials.length === 0) {
+                    grid.innerHTML = '<p class="text-slate-400 p-4">لا توجد مقررات مسجلة حالياً.</p>';
+                    return;
+                }
+
+                grid.innerHTML = materials.map(mat => `
+                    <div class="glass-panel flex flex-col items-center justify-center p-8 rounded-2xl border-t-4 hover:bg-slate-800 transition-all cursor-pointer group" style="border-top-color: ${mat.accent_color || '#00f2ff'}" onclick="showCourseDetails('${mat.id}', '${escapeHTML(mat.name)}')">
+                        <div class="w-20 h-20 mb-4 bg-slate-800 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fas fa-laptop-code text-4xl" style="color: ${mat.accent_color || '#00f2ff'}"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white text-center mb-6">${escapeHTML(mat.name)}</h3>
+                        <button class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl w-full font-bold transition-colors">
+                            دخول المقرر
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Show Weeks for a specific course
+            async function showCourseDetails(materialId, materialName) {
+                const gridParams = document.getElementById('courses-grid');
+                const detailsView = document.getElementById('course-details-view');
+                const title = document.getElementById('courses-main-title');
+                const backBtn = document.getElementById('back-to-courses-btn');
+
+                gridParams.classList.add('hidden');
+                detailsView.classList.remove('hidden');
+                backBtn.classList.remove('hidden');
+                title.textContent = materialName;
+
+                detailsView.innerHTML = '<p class="text-center text-slate-400 py-10"><i class="fas fa-spinner fa-spin text-3xl"></i><br>جاري تحميل محتوى المقرر...</p>';
+
+                try {
+                    // Fetch Lectures, Tutorials, Assignments
+                    const [lecRes, tutRes, assRes] = await Promise.all([
+                        _supabase.from('lectures').select('*').eq('material_id', materialId),
+                        _supabase.from('tutorials').select('*').eq('material_id', materialId),
+                        _supabase.from('assignments').select('*').eq('material_id', materialId)
+                    ]);
+
+                    const items = [];
+                    if (lecRes.data) items.push(...lecRes.data.map(i => ({ ...i, type: 'lecture' })));
+                    if (tutRes.data) items.push(...tutRes.data.map(i => ({ ...i, type: 'tutorial' })));
+                    if (assRes.data) items.push(...assRes.data.map(i => ({ ...i, type: 'assignment' })));
+
+                    // Group by week_number safely (default to week 1 if not set)
+                    const weeksMap = {};
+                    items.forEach(item => {
+                        const w = item.week_number || 1;
+                        if (!weeksMap[w]) weeksMap[w] = [];
+                        weeksMap[w].push(item);
+                    });
+
+                    // Sort weeks Keys
+                    const sortedWeeks = Object.keys(weeksMap).map(Number).sort((a, b) => a - b);
+
+                    if (sortedWeeks.length === 0) {
+                        detailsView.innerHTML = `
+                            <div class="glass-panel p-10 text-center">
+                                <i class="fas fa-folder-open text-5xl text-slate-600 mb-4"></i>
+                                <h3 class="text-xl font-bold text-slate-300">هذا المقرر فارغ حالياً</h3>
+                                <p class="text-slate-500 mt-2">لم يقم الدكتور برفع أي محتوى بعد.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    // Render Weeks
+                    let html = '';
+                    sortedWeeks.forEach(weekNum => {
+                        const weekItems = weeksMap[weekNum];
+
+                        html += `
+                            <div class="glass-panel p-6 rounded-2xl mb-6 relative overflow-hidden group">
+                                <div class="absolute right-0 top-0 w-2 h-full bg-slate-700 group-hover:bg-cyan-500 transition-colors"></div>
+                                <h3 class="text-xl font-bold text-cyan-400 border-b border-slate-700 pb-3 mb-4 flex items-center gap-3">
+                                    <i class="fas fa-calendar-week"></i> 
+                                    الأسبوع ${weekNum}
+                                </h3>
+                                <div class="space-y-3 pl-4">
+                        `;
+
+                        weekItems.forEach(item => {
+                            let icon, color, label;
+                            if (item.type === 'lecture') { icon = 'fa-file-video'; color = 'text-purple-400'; label = 'محاضرة'; }
+                            else if (item.type === 'tutorial') { icon = 'fa-file-code'; color = 'text-green-400'; label = 'درس تعليمي'; }
+                            else { icon = 'fa-tasks'; color = 'text-orange-400'; label = 'واجب (تكليف)'; }
+
+                            // If it's an assignment without a direct URL, route to downloads page. Otherwise use the URL provided.
+                            const linkHref = (item.type === 'assignment' && !item.url) ? '/DWD/downloads/index.html' : (item.url || '#');
+
+                            html += `
+                                <div class="flex items-center justify-between bg-slate-800/50 p-3 justify-center rounded-lg border border-slate-700 hover:border-slate-500 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center ${color}">
+                                            <i class="fas ${icon}"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-sm text-slate-200">${escapeHTML(item.title)}</h4>
+                                            <span class="text-xs text-slate-500">${label}</span>
+                                        </div>
+                                    </div>
+                                    <a href="${linkHref}" target="_blank" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-xs font-bold transition-colors">
+                                        عرض <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            `;
+                        });
+
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    detailsView.innerHTML = html;
+
+                } catch (error) {
+                    console.error("Error loading course details:", error);
+                    detailsView.innerHTML = '<p class="text-red-400 p-4 text-center">خطأ في تحميل بيانات المقرر.</p>';
+                }
+            }
+
+            function showCoursesList() {
+                document.getElementById('courses-grid').classList.remove('hidden');
+                document.getElementById('course-details-view').classList.add('hidden');
+                document.getElementById('back-to-courses-btn').classList.add('hidden');
+                document.getElementById('courses-main-title').textContent = 'المقررات التعليمية (نظام إدارة التعلم)';
+            }
+
+
+            // 3. الجدول الدراسي (Schedule) Removed - Now uses initScheduleSystem
+
+            // 5. جلب وعرض الدرجات (Grades) - تم النقل إلى grades.html
+
+            // وظائف الواجهة (UI Functions)
+            function showSection(id) {
+                document.querySelectorAll('section').forEach(s => { s.classList.replace('active-section', 'hidden-section'); });
+                document.getElementById(id).classList.replace('hidden-section', 'active-section');
+                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+            }
+
+            function toggleSidebar() {
+                document.querySelector('aside').classList.toggle('translate-x-full');
+                document.getElementById('sidebar-overlay').classList.toggle('hidden');
+            }
+
+
+
+        </script>
+
+        <!-- SUPABASE MODULE FOR ATTENDANCE -->
+        <script>
+            async function loadAttendanceLogs() {
+                const listEl = document.getElementById('attendance-list');
+                try {
+                    // Get current user using the SecureConnect system
+                    const user = JSON.parse(localStorage.getItem('currentUser'));
+                    if (!user) {
+                        listEl.innerHTML = '<p class="text-center text-red-400 py-10">يجب تسجيل الدخول لعرض سجلات الحضور.</p>';
+                        return;
+                    }
+
+                    const uid = user.id;
+
+                    // Fetch logs from Supabase
+                    const { data, error } = await _supabase
+                        .from('attendance_logs')
+                        .select('*')
+                        .eq('student_id', uid)
+                        .order('scan_timestamp', { ascending: false })
+                        .limit(20);
+
+                    if (error) throw error;
+
+                    if (!data || data.length === 0) {
+                        listEl.innerHTML = '<p class="text-center text-slate-500 py-10">لا توجد سجلات حضور مسجلة بعد.</p>';
+                        return;
+                    }
+
+                    let html = '';
+                    data.forEach((log) => {
+                        const date = new Date(log.scan_timestamp);
+                        const dateStr = date.toLocaleDateString('ar-EG');
+                        const timeStr = date.toLocaleTimeString('ar-EG');
+
+                        html += `
+                        <div class="glass-panel p-4 flex items-center justify-between border-l-4 border-green-500 hover:bg-slate-800 transition mb-4">
+                            <div>
+                                <h4 class="font-bold text-white mb-1"><i class="fas fa-calendar-check text-green-400 ml-2"></i> ${escapeHTML(log.lecture_title || 'محاضرة')}</h4>
+                                <p class="text-xs text-slate-400">
+                                    <i class="far fa-clock ml-1"></i> ${timeStr} (${dateStr})
+                                    <span class="mx-2">|</span> 
+                                    <i class="fas fa-map-marker-alt ml-1"></i> المسافة: ${Math.round(log.distance_meters || 0)}m
+                                </p>
+                            </div>
+                            <div class="text-left">
+                                <span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500/20">
+                                    حاضر
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                    });
+
+                    listEl.innerHTML = html;
+
+                } catch (e) {
+                    console.error("Error loading attendance logs:", e);
+                    listEl.innerHTML = '<p class="text-center text-red-400 py-10">حدث خطأ أثناء تحميل السجلات.</p>';
+                }
+            }
+
+            // Load it when the attendance tab is clicked or on load if needed
+            // It will be triggered when navigating to attendance section
+            document.querySelector("a[href='#attendance']")?.addEventListener('click', loadAttendanceLogs);
+
+            // To be safe, if they start on it
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    const currentHash = window.location.hash;
+                    if (currentHash === '#attendance') loadAttendanceLogs();
+                }, 1000); // Give Supabase time to init
+            });
+
+            // Hack for the non-SPA tab click (it uses toggle function)
+            const oldShowSection = showSection;
+            window.showSection = function (id) {
+                oldShowSection(id);
+                if (id === 'attendance') {
+                    loadAttendanceLogs();
+                }
+            };
+        </script>
+    </div>
+    <script src="../../js/sound-effects.js" defer></script>
+    <script src="../../js/content-protection.js" defer></script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

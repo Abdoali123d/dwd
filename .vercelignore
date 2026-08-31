@@ -1,0 +1,9 @@
+dwd-next
+node_modules
+.env.example
+.env
+.git
+sql
+docs
+*.ps1temp*.js
+test*.js

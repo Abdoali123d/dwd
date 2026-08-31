@@ -1,0 +1,42 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Database scripts (keep in repo but ignore local copies)
+*.sql.bak
+
+# Test files
+test*.js
+testsprite_tests/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+temp*.js
+*.tmp
+
+# Local project files
+seet ptoject 2026 U.html
+
+.vercel

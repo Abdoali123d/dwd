@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/web-1/L4.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: خاصية العرض (CSS Display Property) 🚦</h3>\n    <p class=\"mb-4 text-lg\">خاصية <code class=\"text-white\">display</code> في CSS بتتحكم في كيفية عرض العنصر على الصفحة وسلوكه مع العناصر اللي حواليه. القيمة الافتراضية لأي عنصر بتكون يا <code class=\"text-white\">block</code> يا <code class=\"text-white\">inline</code>.</p>\n\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">العناصر الكتلية (Block-level Elements):</h4>\n            <ul class=\"list-disc list-inside space-y-1 mr-6\">\n                <li>دايمًا بتبدأ على **سطر جديد**.</li>\n                <li>بتاخد **كل العرض المتاح** (width: 100%) بشكل افتراضي.</li>\n                <li>بتقبل خصائص <code class=\"text-white\">width</code>, <code class=\"text-white\">height</code>, <code class=\"text-white\">margin</code> (top/bottom), <code class=\"text-white\">padding</code>.</li>\n                <li>أمثلة شائعة: <code class=\"text-white\">&lt;div&gt;</code>, <code class=\"text-white\">&lt;h1&gt;-&lt;h6&gt;</code>, <code class=\"text-white\">&lt;p&gt;</code>, <code class=\"text-white\">&lt;form&gt;</code>, <code class=\"text-white\">&lt;header&gt;</code>, <code class=\"text-white\">&lt;footer&gt;</code>, <code class=\"text-white\">&lt;section&gt;</code>, <code class=\"text-white\">&lt;li&gt;</code>.</li>\n            </ul>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">العناصر السطرية (Inline-level Elements):</h4>\n            <ul class=\"list-disc list-inside space-y-1 mr-6\">\n                <li>**لا تبدأ** على سطر جديد، بتكمل جنب العناصر اللي قبلها.</li>\n                <li>بتاخد عرض **على قد محتواها فقط**.</li>\n                <li>**لا تقبل** <code class=\"text-white\">width</code>, <code class=\"text-white\">height</code>, ولا <code class=\"text-white\">margin-top/bottom</code> (بتقبل margin-left/right و padding).</li>\n                <li>أمثلة شائعة: <code class=\"text-white\">&lt;span&gt;</code>, <code class=\"text-white\">&lt;a&gt;</code>, <code class=\"text-white\">&lt;img&gt;</code>, <code class=\"text-white\">&lt;b&gt;</code>, <code class=\"text-white\">&lt;i&gt;</code>.</li>\n            </ul>\n        </div>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">تغيير سلوك العرض (Overriding Display):</h4>\n    <p class=\"mb-4\">ممكن نغير القيمة الافتراضية لخاصية <code class=\"text-white\">display</code> عشان نخلي العنصر يتصرف بشكل مختلف:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><code class=\"text-white\">display: inline;</code>: بتحول عنصر Block (زي <code class=\"text-white\">&lt;li&gt;</code>) لـ Inline (مفيد للقوائم الأفقية).</li>\n        <li><code class=\"text-white\">display: block;</code>: بتحول عنصر Inline (زي <code class=\"text-white\">&lt;span&gt;</code> أو <code class=\"text-white\">&lt;a&gt;</code>) لـ Block (عشان يبدأ سطر جديد وياخد عرض كامل أو يقبل width/height).</li>\n        <li><code class=\"text-white\">display: inline-block;</code>: بيجمع بين الاتنين؛ العنصر بيكون Inline (مبيبدأش سطر جديد) لكنه بيقبل <code class=\"text-white\">width</code>, <code class=\"text-white\">height</code>, <code class=\"text-white\">margin-top/bottom</code>.</li>\n        <li><code class=\"text-white\">display: none;</code>: بتخفي العنصر **تمامًا** كأنه مش موجود في الصفحة (مبيخدش أي مساحة).</li>\n    </ul>\n\n     <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">الفرق بين <code class=\"text-white\">display: none</code> و <code class=\"text-white\">visibility: hidden</code>:</h4>\n     <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><code class=\"text-white\">display: none;</code>: بتشيل العنصر من تخطيط الصفحة تمامًا (كأنه اتمسح).</li>\n        <li><code class=\"text-white\">visibility: hidden;</code>: بتخفي العنصر لكن **بتسيب مكانه محجوز** وفاضي في الصفحة.</li>\n     </ul>\n         <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: مُحدِّدات الدمج (CSS Combinators) 🤝</h3>\n    <p class=\"mb-4 text-lg\">دي رموز بنستخدمها بين المُحدِّدات البسيطة عشان نختار عناصر بناءً على علاقتها بعناصر تانية في هيكل الـ HTML.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. Descendant Selector (space) - مُحدِّد السليل</h4>\n            <p>بيختار كل العناصر اللي بتكون **داخل** (سواء ابن مباشر أو حفيد أو أبعد) عنصر معين.</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">ده هيختار أي <code class=\"text-white\">&lt;p&gt;</code> موجود جوه أي <code class=\"text-white\">&lt;div&gt;</code>, حتى لو كان جوه <code class=\"text-white\">&lt;section&gt;</code> تانية جوه الـ div.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. Child Selector (&gt;) - مُحدِّد الابن المباشر</h4>\n            <p>بيختار العناصر اللي بتكون **ابن مباشر فقط** لعنصر معين.</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div &gt; p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">ده هيختار الـ <code class=\"text-white\">&lt;p&gt;</code> اللي موجود مباشرة جوه الـ <code class=\"text-white\">&lt;div&gt;</code>, لكن مش هيختار <code class=\"text-white\">&lt;p&gt;</code> اللي جوه <code class=\"text-white\">&lt;section&gt;</code> جوه الـ div.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">3. Adjacent Sibling Selector (+) - مُحدِّد الأخ المجاور</h4>\n            <p>بيختار العنصر اللي بيجي **مباشرة بعد** عنصر معين (لازم يكونوا إخوة وليهم نفس الأب).</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div + p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">ده هيختار أول <code class=\"text-white\">&lt;p&gt;</code> يجي **بعد** أي <code class=\"text-white\">&lt;div&gt;</code> مباشرة.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">4. General Sibling Selector (~) - مُحدِّد الإخوة العام</h4>\n            <p>بيختار **كل** العناصر اللي بتيجي **بعد** عنصر معين (مش شرط مباشرة، بس لازم يكونوا إخوة وليهم نفس الأب).</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div ~ p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">ده هيختار أي <code class=\"text-white\">&lt;p&gt;</code> يجي **بعد** أي <code class=\"text-white\">&lt;div&gt;</code>, حتى لو بينهم عناصر تانية زي <code class=\"text-white\">&lt;code&gt;</code>.</p>\n        </div>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: الشفافية (CSS Opacity) 👻</h3>\n    <p class=\"mb-4 text-lg\">خاصية <code class=\"text-white\">opacity</code> بتتحكم في درجة شفافية العنصر (وكل محتواه).</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>القيمة بتكون رقم بين **0.0** (شفاف تمامًا / مختفي) و **1.0** (غير شفاف / ظاهر بالكامل - القيمة الافتراضية).</li>\n        <li>مثال: <code class=\"text-white\">img { opacity: 0.5; }</code> بتخلي الصورة شفافة بنسبة 50%.</li>\n    </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: The CSS Display Property 🚦</h3>\n    <p class=\"mb-4 text-lg\">The <code class=\"text-white\">display</code> property in CSS specifies how an element is rendered on the page and how it interacts with surrounding elements. The default display value for any element is either <code class=\"text-white\">block</code> or <code class=\"text-white\">inline</code>.</p>\n\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Block-level Elements:</h4>\n            <ul class=\"list-disc list-inside space-y-1 ml-6\">\n                <li>Always start on a **new line**.</li>\n                <li>Take up the **full width available** by default.</li>\n                <li>Accept <code class=\"text-white\">width</code>, <code class=\"text-white\">height</code>, <code class=\"text-white\">margin</code> (top/bottom), and <code class=\"text-white\">padding</code> properties.</li>\n                <li>Common examples: <code class=\"text-white\">&lt;div&gt;</code>, <code class=\"text-white\">&lt;h1&gt;-&lt;h6&gt;</code>, <code class=\"text-white\">&lt;p&gt;</code>, <code class=\"text-white\">&lt;form&gt;</code>, <code class=\"text-white\">&lt;header&gt;</code>, <code class=\"text-white\">&lt;footer&gt;</code>, <code class=\"text-white\">&lt;section&gt;</code>, <code class=\"text-white\">&lt;li&gt;</code>.</li>\n            </ul>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Inline-level Elements:</h4>\n            <ul class=\"list-disc list-inside space-y-1 ml-6\">\n                <li>Do **not** start on a new line; they flow with surrounding content.</li>\n                <li>Take up **only as much width as necessary** for their content.</li>\n                <li>Do **not** accept <code class=\"text-white\">width</code>, <code class=\"text-white\">height</code>, or <code class=\"text-white\">margin-top/bottom</code> (they do accept margin-left/right and padding).</li>\n                <li>Common examples: <code class=\"text-white\">&lt;span&gt;</code>, <code class=\"text-white\">&lt;a&gt;</code>, <code class=\"text-white\">&lt;img&gt;</code>, <code class=\"text-white\">&lt;b&gt;</code>, <code class=\"text-white\">&lt;i&gt;</code>.</li>\n            </ul>\n        </div>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Overriding Display Behavior:</h4>\n    <p class=\"mb-4\">We can change the default <code class=\"text-white\">display</code> value to make elements behave differently:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><code class=\"text-white\">display: inline;</code>: Turns a block element (like <code class=\"text-white\">&lt;li&gt;</code>) into an inline element (useful for horizontal menus).</li>\n        <li><code class=\"text-white\">display: block;</code>: Turns an inline element (like <code class=\"text-white\">&lt;span&gt;</code> or <code class=\"text-white\">&lt;a&gt;</code>) into a block element (to start on a new line, take full width, or accept width/height).</li>\n        <li><code class=\"text-white\">display: inline-block;</code>: A hybrid; the element is inline (doesn't start a new line) but accepts <code class=\"text-white\">width</code>, <code class=\"text-white\">height</code>, and <code class=\"text-white\">margin-top/bottom</code>.</li>\n        <li><code class=\"text-white\">display: none;</code>: Hides the element **completely**, removing it from the page layout (it takes up no space).</li>\n    </ul>\n\n     <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Difference between <code class=\"text-white\">display: none</code> and <code class=\"text-white\">visibility: hidden</code>:</h4>\n     <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><code class=\"text-white\">display: none;</code>: Removes the element entirely from the document flow.</li>\n        <li><code class=\"text-white\">visibility: hidden;</code>: Hides the element, but it **still occupies its original space** in the layout.</li>\n     </ul>\n         <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: CSS Combinators 🤝</h3>\n    <p class=\"mb-4 text-lg\">These are symbols used between simple selectors to target elements based on their relationship to other elements in the HTML structure.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. Descendant Selector (space)</h4>\n            <p>Selects all elements that are **descendants** (children, grandchildren, etc.) of a specified element.</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">This selects any <code class=\"text-white\">&lt;p&gt;</code> inside any <code class=\"text-white\">&lt;div&gt;</code>, even if nested within other tags inside the div.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. Child Selector (&gt;)</h4>\n            <p>Selects only elements that are **direct children** of a specified element.</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div &gt; p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">This selects a <code class=\"text-white\">&lt;p&gt;</code> only if it's directly inside the <code class=\"text-white\">&lt;div&gt;</code>, not if it's inside another element like <code class=\"text-white\">&lt;section&gt;</code> within the div.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">3. Adjacent Sibling Selector (+)</h4>\n            <p>Selects an element that is **immediately following** another specific element (they must be siblings with the same parent).</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div + p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">This selects the first <code class=\"text-white\">&lt;p&gt;</code> that comes right after any <code class=\"text-white\">&lt;div&gt;</code>.</p>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">4. General Sibling Selector (~)</h4>\n            <p>Selects **all** elements that are **siblings following** a specified element (not necessarily immediately, but must share the same parent).</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm\"><code>div ~ p { background-color: yellow; }</code></pre>\n            <p class=\"mt-1 text-sm\">This selects any <code class=\"text-white\">&lt;p&gt;</code> that comes after any <code class=\"text-white\">&lt;div&gt;</code>, even if there are other sibling elements like <code class=\"text-white\">&lt;code&gt;</code> in between.</p>\n        </div>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: CSS Opacity / Transparency 👻</h3>\n    <p class=\"mb-4 text-lg\">The <code class=\"text-white\">opacity</code> property controls the transparency level of an element (including all its content).</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>The value is a number between **0.0** (fully transparent / invisible) and **1.0** (fully opaque / visible - the default).</li>\n        <li>Example: <code class=\"text-white\">img { opacity: 0.5; }</code> makes an image 50% transparent.</li>\n    </ul>\n  ",
+  "questions": [
+    {
+      "question": "1. Which CSS property specifies how an element is displayed?",
+      "options": [
+        "visibility",
+        "position",
+        "display",
+        "layout"
+      ],
+      "correctAnswer": "display",
+      "hint": "هي الخاصية الأساسية للتحكم في نوع عرض العنصر."
+    },
+    {
+      "question": "2. By default, a <div> element has which display value?",
+      "options": [
+        "inline",
+        "block",
+        "inline-block",
+        "none"
+      ],
+      "correctAnswer": "block",
+      "hint": "عناصر div بطبيعتها كتلية، تأخذ عرض السطر."
+    },
+    {
+      "question": "3. Which of these is typically an `inline` element by default?",
+      "options": [
+        "<p>",
+        "<h1>",
+        "<span>",
+        "<li>"
+      ],
+      "correctAnswer": "<span>",
+      "hint": "Span يستخدم لتنسيق جزء من النص دون كسر السطر."
+    },
+    {
+      "question": "4. What is a characteristic of block-level elements?",
+      "options": [
+        "They only take up necessary width",
+        "They do not start on a new line",
+        "They always start on a new line and take full width",
+        "They cannot have margins"
+      ],
+      "correctAnswer": "They always start on a new line and take full width",
+      "hint": "تبدأ سطر جديد وتملأ العرض المتاح."
+    },
+    {
+      "question": "5. Which CSS declaration would make list items (<li>) appear side-by-side horizontally?",
+      "options": [
+        "li { display: block; }",
+        "li { display: none; }",
+        "li { display: inline; }",
+        "li { visibility: hidden; }"
+      ],
+      "correctAnswer": "li { display: inline; }",
+      "hint": "تحويلها من block إلى inline يضعها بجانب بعضها."
+    },
+    {
+      "question": "6. What happens to an element styled with `display: none;`?",
+      "options": [
+        "It becomes transparent",
+        "It is hidden but still takes up space",
+        "It is completely removed from the layout",
+        "It turns into an inline element"
+      ],
+      "correctAnswer": "It is completely removed from the layout",
+      "hint": "يختفي تمامًا وكأنه غير موجود."
+    },
+    {
+      "question": "7. What happens to an element styled with `visibility: hidden;`?",
+      "options": [
+        "It is removed from the layout",
+        "It is hidden but still takes up space",
+        "It becomes block-level",
+        "It becomes transparent"
+      ],
+      "correctAnswer": "It is hidden but still takes up space",
+      "hint": "يختفي لكن مكانه يظل محجوزًا."
+    },
+    {
+      "question": "8. Which CSS combinator selects all <p> elements that are *descendants* of a <div>?",
+      "options": [
+        "div > p",
+        "div p",
+        "div + p",
+        "div ~ p"
+      ],
+      "correctAnswer": "div p",
+      "hint": "المسافة تعني أي سليل (ابن، حفيد، إلخ)."
+    },
+    {
+      "question": "9. Which CSS combinator selects only <p> elements that are *direct children* of a <div>?",
+      "options": [
+        "div > p",
+        "div p",
+        "div + p",
+        "div ~ p"
+      ],
+      "correctAnswer": "div > p",
+      "hint": "علامة '>' تعني الابن المباشر فقط."
+    },
+    {
+      "question": "10. Which CSS combinator selects the <p> element that comes *immediately after* a <div>?",
+      "options": [
+        "div > p",
+        "div p",
+        "div + p",
+        "div ~ p"
+      ],
+      "correctAnswer": "div + p",
+      "hint": "علامة '+' تعني الأخ التالي المباشر."
+    },
+    {
+      "question": "11. Which CSS combinator selects *all* <p> elements that come *after* a <div> (sharing the same parent)?",
+      "options": [
+        "div > p",
+        "div p",
+        "div + p",
+        "div ~ p"
+      ],
+      "correctAnswer": "div ~ p",
+      "hint": "علامة '~' تعني كل الإخوة التالين."
+    },
+    {
+      "question": "12. Consider `<article><p>Text</p></article>`. Which selector would target the <p>?",
+      "options": [
+        "article + p",
+        "article ~ p",
+        "article > p",
+        "p > article"
+      ],
+      "correctAnswer": "article > p",
+      "hint": "الفقرة هنا هي ابن مباشر للمقال."
+    },
+    {
+      "question": "13. Consider `<div></div> <p>One</p> <p>Two</p>`. Which selector would target *only* `<p>One</p>`?",
+      "options": [
+        "div > p",
+        "div p",
+        "div + p",
+        "div ~ p"
+      ],
+      "correctAnswer": "div + p",
+      "hint": "الفقرة 'One' هي الأخ التالي المباشر للـ div."
+    },
+    {
+      "question": "14. Consider `<div> <p>One</p> <span> <p>Two</p> </span> </div>`. Which selector targets *both* <p> elements?",
+      "options": [
+        "div > p",
+        "div p",
+        "div + p",
+        "div ~ p"
+      ],
+      "correctAnswer": "div p",
+      "hint": "مُحدِّد السليل (المسافة) يختار أي فقرة داخل الـ div."
+    },
+    {
+      "question": "15. What does the `opacity` property control?",
+      "options": [
+        "Element size",
+        "Element position",
+        "Element transparency",
+        "Element border color"
+      ],
+      "correctAnswer": "Element transparency",
+      "hint": "تتحكم في درجة شفافية العنصر."
+    },
+    {
+      "question": "16. Which `opacity` value makes an element completely invisible (fully transparent)?",
+      "options": [
+        "1.0",
+        "0.5",
+        "0.0",
+        "100"
+      ],
+      "correctAnswer": "0.0",
+      "hint": "صفر يعني شفاف تمامًا."
+    },
+    {
+      "question": "17. Which `opacity` value makes an element fully opaque (not transparent at all)?",
+      "options": [
+        "0.0",
+        "0.5",
+        "1.0",
+        "0.1"
+      ],
+      "correctAnswer": "1.0",
+      "hint": "واحد صحيح يعني ظاهر تمامًا (الوضع الافتراضي)."
+    },
+    {
+      "question": "18. How can you make an <a> tag behave like a block-level element?",
+      "options": [
+        "a { inline: block; }",
+        "a { display: block; }",
+        "a { block: true; }",
+        "a { visibility: block; }"
+      ],
+      "correctAnswer": "a { display: block; }",
+      "hint": "تغيير خاصية الـ display إلى block."
+    },
+    {
+      "question": "19. Which element is NOT block-level by default?",
+      "options": [
+        "<div>",
+        "<p>",
+        "<img>",
+        "<h1>"
+      ],
+      "correctAnswer": "<img>",
+      "hint": "الصور تعتبر عناصر inline."
+    },
+    {
+      "question": "20. If an element has `visibility: hidden;`, does it affect the layout of other elements?",
+      "options": [
+        "Yes, they move into its space",
+        "No, its space is preserved",
+        "Yes, all following elements are hidden too",
+        "No, it only affects text"
+      ],
+      "correctAnswer": "No, its space is preserved",
+      "hint": "المكان يظل محجوزًا حتى لو العنصر غير مرئي."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

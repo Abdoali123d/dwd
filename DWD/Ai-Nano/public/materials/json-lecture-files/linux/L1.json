@@ -1,0 +1,249 @@
+{
+  "pdfFile": "../../materials-lectures/linux/l1.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: ما هو نظام التشغيل (OS)؟ 🧠</h3>\n<p class=\"mb-4 text-lg\">نظام التشغيل (OS) هو العقل المدبر لجهاز الكمبيوتر. تخيله زي المايسترو اللي بينظم عمل كل أجزاء الأوركسترا. هو أول برنامج بيشتغل لما تفتح جهازك، ومسؤوليته إنه يدير كل مكونات الهاردوير (زي المعالج والرامات) وكل برامج السوفتوير (زي المتصفح والألعاب).</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n<h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">ما هي وظيفته الأساسية؟</h4>\n<p>يعمل كوسيط ذكي بينك وبين أجزاء الكمبيوتر المادية (الهاردوير). هو اللي بيترجم أوامرك لِلُغة يفهمها الهاردوير، وبيخلي البرامج المختلفة تقدر تشتغل وتتواصل مع بعضها بسلاسة.</p>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">بنية طبقات نظام الكمبيوتر:</h4>\n<p class=\"mb-4\">تخيل نظام الكمبيوتر كهرم مقلوب، كل طبقة بتعتمد على اللي تحتها:</p>\n<ul class=\"list-none space-y-3 mr-4\">\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl ml-3\">👤</span><div><strong class=\"text-white\">المستخدم (User):</strong> أنت! اللي بتتفاعل مع البرامج والتطبيقات.</div></li>\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl ml-3\">🧩</span><div><strong class=\"text-white\">التطبيقات (Applications):</strong> البرامج اللي بتستخدمها يوميًا (متصفح، ألعاب، برامج مكتبية).</div></li>\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl ml-3\">⚙️</span><div><strong class=\"text-white\">نظام التشغيل (OS):</strong> المايسترو اللي بيدير كل حاجة وبيتحكم في الهاردوير.</div></li>\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl ml-3\">🔩</span><div><strong class=\"text-white\">الهاردوير (Hardware):</strong> الأجزاء المادية زي المعالج (CPU)، الذاكرة (RAM)، والهارد ديسك.</div></li>\n</ul>\n\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: ما هو نظام لينكس (Linux)؟ 🐧</h3>\n<p class=\"mb-4 text-lg\">لينكس هو نظام تشغيل قوي جدًا، لكنه في الحقيقة مش نظام كامل لوحده. الاسم الأدق هو <strong>\"نواة لينكس\" (Linux Kernel)</strong>. التوزيعات اللي بنستخدمها (زي Ubuntu) هي اللي بتاخد النواة دي وتبني حواليها نظام متكامل.</p>\n\n<div class=\"flex justify-center my-6\"><img src=\"https://placehold.co/600x300/0f172a/22d3ee?text=Linux+System+Layers\" alt=\"طبقات نظام لينكس\" class=\"rounded-lg shadow-xl w-full max-w-lg\"></div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">المكونات الأساسية لتوزيعة لينكس:</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n<li><strong>Linux Kernel (النواة):</strong> دي أهم حتة. هي الجزء اللي بيتكلم مباشرة مع الهاردوير (CPU, RAM, VGA). هي قلب النظام.</li>\n<li><strong>GNU & Tool Chain (أدوات ومكتبات):</strong> مجموعة من المكتبات والأدوات الأساسية اللي بتخلي التطبيقات تشتغل. من غيرها، النواة لوحدها مش هتعرف تشغل برامج.</li>\n<li><strong>Graphical Environment (البيئة الرسومية):</strong> دي اللي بتديك الواجهة الجميلة اللي فيها شبابيك وأيقونات وقوائم (زي GNOME أو KDE).</li>\n<li><strong>Package Manager (مدير الحزم):</strong> الأداة اللي بتستخدمها لتثبيت وتحديث وإزالة البرامج بسهولة (زي apt في Ubuntu).</li>\n<li><strong>Modules (الوحدات):</strong> هي تعريفات الأجهزة (Drivers) في لينكس، اللي بتخلي النظام يتعرف على الماوس والكيبورد والطابعة.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: لماذا لينكس هو الأفضل؟ (المميزات) ✨</h3>\n<p class=\"mb-4 text-lg\">لينكس مش مجرد نظام تشغيل، ده فلسفة عمل كاملة ليها مميزات بتخليه الاختيار الأول للمطورين والشركات الكبرى:</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl ml-3\">💰</span> <strong>مجاني (Costless):</strong> مش هتدفع ولا جنيه عشان تستخدمه.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl ml-3\">👨‍💻</span> <strong>مفتوح المصدر (Open Source):</strong> تقدر تشوف الكود بتاعه وتعدل عليه بنفسك.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl ml-3\">🛡️</span> <strong>آمن جدًا (Highly Secure):</strong> بنيته القائمة على الصلاحيات بتخليه صعب الاختراق ومقاوم للفيروسات.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl ml-3\">💪</span> <strong>قوي (Extremely Powerful):</strong> بيديك تحكم كامل في كل تفصيلة في النظام.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl ml-3\">🚀</span> <strong>مستقر وموثوق (Stable & Reliable):</strong> سيرفرات لينكس ممكن تفضل شغالة لسنين من غير ما تحتاج تعملها إعادة تشغيل.</div>\n</div>\n",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: What is an Operating System (OS)? 🧠</h3>\n<p class=\"mb-4 text-lg\">The Operating System (OS) is the mastermind of a computer. Think of it as the conductor of an orchestra, organizing the work of all its parts. It's the first program that loads when you turn on your device, and its responsibility is to manage all the hardware components (like the CPU and RAM) and all the software programs (like browsers and games).</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n<h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">What is its primary function?</h4>\n<p>It acts as a smart intermediary between you and the physical computer parts (the hardware). It translates your commands into a language the hardware understands and allows different programs to run and communicate with each other smoothly.</p>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Computer System Layers:</h4>\n<p class=\"mb-4\">Imagine the computer system as an inverted pyramid, where each layer depends on the one below it:</p>\n<ul class=\"list-none space-y-3 ml-4\">\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl mr-3\">👤</span><div><strong class=\"text-white\">User:</strong> You! The one who interacts with programs and applications.</div></li>\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl mr-3\">🧩</span><div><strong class=\"text-white\">Applications:</strong> The programs you use daily (browser, games, office software).</div></li>\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl mr-3\">⚙️</span><div><strong class=\"text-white\">Operating System (OS):</strong> The conductor that manages everything and controls the hardware.</div></li>\n<li class=\"flex items-start\"><span class=\"text-cyan-400 text-2xl mr-3\">🔩</span><div><strong class=\"text-white\">Hardware:</strong> The physical parts like the CPU, RAM, and Hard Disk.</div></li>\n</ul>\n\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: What is Linux? 🐧</h3>\n<p class=\"mb-4 text-lg\">Linux is a very powerful operating system, but it's not actually a complete system on its own. The more accurate name is the <strong>\"Linux Kernel\"</strong>. The distributions we use (like Ubuntu) are what take this kernel and build an integrated system around it.</p>\n\n<div class=\"flex justify-center my-6\"><img src=\"https://placehold.co/600x300/0f172a/22d3ee?text=Linux+System+Layers\" alt=\"Linux System Layers\" class=\"rounded-lg shadow-xl w-full max-w-lg\"></div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Core Components of a Linux Distribution:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n<li><strong>Linux Kernel:</strong> This is the most important part. It's the component that communicates directly with the hardware (CPU, RAM, VGA). It is the heart of the system.</li>\n<li><strong>GNU & Tool Chain:</strong> A collection of essential libraries and tools that allow applications to run. Without them, the kernel alone wouldn't be able to run programs.</li>\n<li><strong>Graphical Environment:</strong> This provides the beautiful interface with windows, icons, and menus (like GNOME or KDE).</li>\n<li><strong>Package Manager:</strong> The tool you use to easily install, update, and remove software (like 'apt' in Ubuntu).</li>\n<li><strong>Modules:</strong> These are the device drivers in Linux, which allow the system to recognize the mouse, keyboard, and printer.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Why is Linux the Best? (Advantages) ✨</h3>\n<p class=\"mb-4 text-lg\">Linux is not just an OS; it's a complete philosophy with advantages that make it the first choice for developers and major corporations:</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl mr-3\">💰</span> <strong>Costless:</strong> You don't have to pay a single penny to use it.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl mr-3\">👨‍💻</span> <strong>Open Source:</strong> You can view its code and modify it yourself.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl mr-3\">🛡️</span> <strong>Highly Secure:</strong> Its permission-based structure makes it difficult to penetrate and resistant to viruses.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl mr-3\">💪</span> <strong>Extremely Powerful:</strong> It gives you complete control over every detail of the system.</div>\n<div class=\"glass-card p-4 rounded-lg flex items-center\"><span class=\"text-2xl mr-3\">🚀</span> <strong>Stable & Reliable:</strong> Linux servers can run for years without needing a reboot.</div>\n</div>\n",
+  "quiz": [
+    {
+      "question": "1. The Kernel in Linux is primarily responsible for connecting to the...?",
+      "options": [
+        "Applications",
+        "Hardware",
+        "Users",
+        "Internet"
+      ],
+      "correctAnswer": "Hardware",
+      "hint": "الـ Kernel هو حلقة الوصل المباشرة بين السوفتوير وأجزاء الجهاز المادية.",
+      "englishHint": "The Kernel is the direct link between the software and the physical parts of the device."
+    },
+    {
+      "question": "2. Which of the following is an advantage of Linux?",
+      "options": [
+        "It is expensive",
+        "It is closed source",
+        "It is open source",
+        "It has few distributions"
+      ],
+      "correctAnswer": "It is open source",
+      "hint": "ميزة رئيسية تتيح للجميع رؤية وتعديل الكود.",
+      "englishHint": "A key feature that allows everyone to view and modify the code."
+    },
+    {
+      "question": "3. What does 'Open Source' mean for the Linux Operating System?",
+      "options": [
+        "It is free to use only",
+        "The source code is public and modifiable",
+        "It is only used by servers",
+        "It is not secure"
+      ],
+      "correctAnswer": "The source code is public and modifiable",
+      "hint": "تعني أن الكود المصدري متاح للجميع.",
+      "englishHint": "It means the source code is available to everyone."
+    },
+    {
+      "question": "4. What is the main purpose of the Shell in Linux?",
+      "options": [
+        "Managing network connections",
+        "Storing user data",
+        "Allowing user interaction with the Kernel",
+        "Rendering graphics"
+      ],
+      "correctAnswer": "Allowing user interaction with the Kernel",
+      "hint": "يمكن أن يكون واجهة سطر أوامر أو واجهة رسومية.",
+      "englishHint": "It can be a command-line interface or a graphical interface."
+    },
+    {
+      "question": "5. Which component provides a comfortable visual environment with menus and windows?",
+      "options": [
+        "Kernel",
+        "GUI",
+        "Shell (CLI)",
+        "Hardware"
+      ],
+      "correctAnswer": "GUI",
+      "hint": "الواجهة الرسومية (Graphical User Interface).",
+      "englishHint": "Graphical User Interface."
+    },
+    {
+      "question": "6. Linux is often the first choice for servers due to its stability and...",
+      "options": [
+        "High cost",
+        "Lack of updates",
+        "High security",
+        "Limited distributions"
+      ],
+      "correctAnswer": "High security",
+      "hint": "الأمان هو أهم ميزة في بيئات العمل الهامة.",
+      "englishHint": "Security is the most important feature in critical work environments."
+    },
+    {
+      "question": "7. Which of these is a popular Linux Distribution?",
+      "options": [
+        "Windows 11",
+        "macOS",
+        "Ubuntu",
+        "MS-DOS"
+      ],
+      "correctAnswer": "Ubuntu",
+      "hint": "هي واحدة من التوزيعات المشهورة لنظام لينكس.",
+      "englishHint": "It is one of the famous distributions of the Linux system."
+    },
+    {
+      "question": "8. The term 'Costless' when referring to Linux means:",
+      "options": [
+        "It has no maintenance",
+        "It is free of charge",
+        "It is very cheap",
+        "It has no support"
+      ],
+      "correctAnswer": "It is free of charge",
+      "hint": "لا تحتاج لدفع مقابل لاستخدامه.",
+      "englishHint": "You don't need to pay to use it."
+    },
+    {
+      "question": "9. What is the main goal of the Operating System?",
+      "options": [
+        "Write programs",
+        "Manage all system resources",
+        "Create files",
+        "Play games"
+      ],
+      "correctAnswer": "Manage all system resources",
+      "hint": "هو المسؤول عن إدارة كل موارد الكمبيوتر بكفاءة.",
+      "englishHint": "It is responsible for efficiently managing all computer resources."
+    },
+    {
+      "question": "10. Which is NOT a primary advantage of Linux?",
+      "options": [
+        "Reliability",
+        "Proprietary license",
+        "Stability",
+        "Open Source"
+      ],
+      "correctAnswer": "Proprietary license",
+      "hint": "لينكس ليس مملوكًا لشركة واحدة (Proprietary) بل مفتوح المصدر.",
+      "englishHint": "Linux is not owned by a single company (Proprietary) but is open source."
+    },
+    {
+      "question": "11. The Linux operating system is primarily used for:",
+      "options": [
+        "Desktop gaming",
+        "Web servers and supercomputers",
+        "Mobile phones exclusively",
+        "Word processing"
+      ],
+      "correctAnswer": "Web servers and supercomputers",
+      "hint": "قوته واستقراره تجعله الأفضل في البنية التحتية الكبيرة.",
+      "englishHint": "Its strength and stability make it the best for large infrastructure."
+    },
+    {
+      "question": "12. What does CLI stand for?",
+      "options": [
+        "Command Line Interface",
+        "Central Logic Index",
+        "Computer Language Input",
+        "Control Link Interface"
+      ],
+      "correctAnswer": "Command Line Interface",
+      "hint": "واجهة سطر الأوامر.",
+      "englishHint": "The interface based on typing commands."
+    },
+    {
+      "question": "13. In Linux, the software that provides the graphical menus and windows is often referred to as the:",
+      "options": [
+        "Kernel",
+        "Terminal",
+        "Desktop Environment",
+        "Bootloader"
+      ],
+      "correctAnswer": "Desktop Environment",
+      "hint": "مثل GNOME أو KDE.",
+      "englishHint": "Examples include GNOME or KDE."
+    },
+    {
+      "question": "14. What is a 'Distribution' in the context of Linux?",
+      "options": [
+        "A Linux application",
+        "A version of the Linux Kernel",
+        "A complete OS built around the Linux Kernel",
+        "A type of hardware"
+      ],
+      "correctAnswer": "A complete OS built around the Linux Kernel",
+      "hint": "مثل Ubuntu أو Debian.",
+      "englishHint": "It's a full package like Ubuntu or Debian."
+    },
+    {
+      "question": "15. Which system part manages RAM and CPU time for applications?",
+      "options": [
+        "Application Layer",
+        "Kernel",
+        "User Interface",
+        "Web Browser"
+      ],
+      "correctAnswer": "Kernel",
+      "hint": "النواة هي المسؤولة عن إدارة الموارد الحيوية.",
+      "englishHint": "The kernel is responsible for managing vital resources."
+    },
+    {
+      "question": "16. Why is Linux considered more reliable than many other operating systems?",
+      "options": [
+        "It has a smaller user base",
+        "Its source code is less complex",
+        "It rarely crashes and can run for years without needing a reboot",
+        "It is owned by a large corporation"
+      ],
+      "correctAnswer": "It rarely crashes and can run for years without needing a reboot",
+      "hint": "الاستقرار هو السمة المميزة له في بيئات السيرفر.",
+      "englishHint": "Stability is its hallmark in server environments."
+    },
+    {
+      "question": "17. Which term describes Linux's ability to be customized and modified by users?",
+      "options": [
+        "Proprietary",
+        "Closed Source",
+        "Open Source",
+        "Commercial"
+      ],
+      "correctAnswer": "Open Source",
+      "hint": "هي الميزة التي تسمح بالتعديل.",
+      "englishHint": "The feature that allows modification."
+    },
+    {
+      "question": "18. What connects the CPU, memory, and I/O devices?",
+      "options": [
+        "The Kernel",
+        "The System Bus",
+        "The Shell",
+        "The Hard Drive"
+      ],
+      "correctAnswer": "The System Bus",
+      "hint": "هي المسارات التي تنتقل فيها البيانات.",
+      "englishHint": "The pathways where data travels."
+    },
+    {
+      "question": "19. Which Linux distribution is often recommended for beginners?",
+      "options": [
+        "Gentoo",
+        "Arch Linux",
+        "Ubuntu",
+        "Fedora"
+      ],
+      "correctAnswer": "Ubuntu",
+      "hint": "يتميز بسهولة الاستخدام والدعم الكبير من المجتمع.",
+      "englishHint": "It is characterized by ease of use and great community support."
+    },
+    {
+      "question": "20. The Linux OS structure is mainly composed of the Kernel and the...",
+      "options": [
+        "BIOS",
+        "CMOS",
+        "Shell/GUI",
+        "Graphics Card"
+      ],
+      "correctAnswer": "Shell/GUI",
+      "hint": "تفاعل المستخدم يتم عبر هذه الواجهات.",
+      "englishHint": "User interaction is done through these interfaces."
+    }
+  ],
+  "audio": "materials-lectures/linux/sql-query-power-delete-drop.mp3",
+  "video": "https://youtu.be/OxL0B1F65W8?si=32NQ-38ab_6QRrFq"
+}

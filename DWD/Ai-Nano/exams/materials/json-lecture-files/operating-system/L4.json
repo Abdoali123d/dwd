@@ -1,0 +1,252 @@
+{
+  "id": "os_l4",
+  "title": "Lecture 4: Multiprocessor Systems and Modern OS Structures",
+  "number": 4,
+  "pdfFile": "../../materials-lectures/operating-system/L4.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: أنظمة المعالجات (CPUs) ⚙️</h3>\n<p class=\"mb-4 text-lg\">بنشوف إزاي المعالجات (CPUs) بتتوزع جوه الكمبيوتر، وده بيحدد مدى قوة النظام.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. أنظمة بمعالج واحد (Single Processor System):</h4>\n<p class=\"mb-4\">كمبيوتر تقليدي فيه CPU واحد بيعمل كل حاجة (شغل الـ OS وشغل المستخدمين). فيه ممكن يكون معالجات متخصصة بتساعده (زي GPU). \n</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. أنظمة متعددة المعالجات (Multiprocessor Systems / Parallel Systems):</h4>\n<p class=\"mb-4\">فيها **CPU أو أكتر** بيشاركوا الذاكرة الرئيسية وبيشتغلوا مع بعض. بيسموها كمان **أنظمة متوازية (Parallel)** أو **متصلة بإحكام (Tightly-coupled)**.</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n    <h5 class=\"font-semibold\">ميزاتها:</h5>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**زيادة الإنتاجية (Increased Throughput):** إنجاز شغل أكتر في نفس الوقت.</li>\n        <li>**اقتصادية (Economy of Scale):** توفير في التكلفة عشان المشاركة في الأجهزة الطرفية وإمدادات الطاقة.</li>\n        <li>**زيادة الموثوقية (Increased Reliability):** لو معالج عطل، النظام بيقدر يشتغل بالباقي (Fault Tolerance).</li>\n    </ul>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أنواع أنظمة المعالجات المتعددة:</h4>\n<ul class=\"list-none space-y-3 mr-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\">**Symmetric Multiprocessing (SMP):**\n        <p class=\"text-sm mt-1\">كل المعالجات متساوية وتشتغل معًا، ونواة نظام التشغيل (OS Kernel) بتشتغل على أي معالج فيهم. **(الأكثر استخدامًا)**.</p>\n    </li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\">**Asymmetric Multiprocessing:**\n        <p class=\"text-sm mt-1\">كل معالج له وظيفة محددة. معالج واحد هو اللي بيدير النظام (Master) والباقي بيساعده (Slave). (أقل شيوعًا).</p>\n    </li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: أنظمة التشغيل متعددة المهام 💡</h3>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. البرمجة المتعددة (Multiprogramming):</h4>\n<p class=\"mb-4\">الهدف: المحافظة على الـ CPU مشغول دايمًا. بيتم الاحتفاظ بعدة برامج في الذاكرة الرئيسية (RAM) في نفس الوقت. لما برنامج منهم بيضطر يستنى عملية I/O، الـ OS بيحول التنفيذ لبرنامج تاني، وده بيزود من استخدام الـ CPU.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. المشاركة الزمنية (Time-Sharing / Multitasking):</h4>\n<p class=\"mb-4\">الهدف: إعطاء شعور للمستخدم إن الـ CPU بيشتغل عشانه بس. الـ CPU بيقسم وقته على عدة برامج (Jobs) وكل برنامج بياخد شريحة زمنية صغيرة. لما بيخلص وقته، الـ OS بيعمل تبديل سياق (Context Switch) لبرنامج تاني. **النتيجة: استجابة سريعة (Short Response Time) للمستخدم**.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. الأنظمة الموزعة (Distributed Systems / Loosely Coupled):</h4>\n<p class=\"mb-4\">مجموعة من أجهزة الكمبيوتر المنفصلة (Nodes) اللي بتشتغل مع بعض على شبكة. كل جهاز له الذاكرة المحلية والـ OS الخاص بيه. أشهر مثال هو **الـ Clusters** اللي بتستخدم في الحوسبة عالية الأداء (HPC).</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: إدارة الملفات المتقدمة في Linux 📁</h3>\n<p class=\"mb-4 text-lg\">أوامر نسخ ونقل وحذف الملفات والمجلدات.</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">cp source destination</code>: لنسخ ملف (File) أو مجلد (Directory).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">cp -r source destination</code>: لنسخ مجلد ومحتوياته بالكامل (Recursively). **ضرورية لنسخ المجلدات!**</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">mv source destination</code>: لنقل ملف أو مجلد. **(تستخدم أيضًا لتغيير اسم الملف)**.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">rm file.txt</code>: لحذف ملف.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">rm -r directory_name</code>: لحذف مجلد ومحتوياته بالكامل (خطير جدًا!).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">ln -s source_file new_link</code>: لإنشاء رابط رمزي (Symbolic Link) لملف أو مجلد (اختصار).</div>\n</div>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Processor Systems ⚙️</h3>\n<p class=\"mb-4 text-lg\">We look at how processors (CPUs) are distributed within the computer, which determines the system's power.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Single Processor System:</h4>\n<p class=\"mb-4\">A traditional computer with one CPU doing everything (OS tasks and user tasks). It may have specialized processors assisting it (like the GPU).</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Multiprocessor Systems / Parallel Systems:</h4>\n<p class=\"mb-4\">Features **multiple CPUs or cores** sharing main memory and working together. They are also called **Parallel Systems** or **Tightly-coupled Systems**.</p>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n    <h5 class=\"font-semibold\">Advantages:</h5>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Increased Throughput:** Accomplishing more work in the same time.</li>\n        <li>**Economy of Scale:** Cost savings due to sharing peripheral devices and power supplies.</li>\n        <li>**Increased Reliability:** If one processor fails, the system can continue operating with the rest (Fault Tolerance).</li>\n    </ul>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Types of Multiprocessor Systems:</h4>\n<ul class=\"list-none space-y-3 ml-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\">**Symmetric Multiprocessing (SMP):**\n        <p class=\"text-sm mt-1\">All processors are equal and work together, and the OS Kernel runs on any of them. **(Most common)**.</p>\n    </li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\">**Asymmetric Multiprocessing:**\n        <p class=\"text-sm mt-1\">Each processor has a specific function. One processor manages the system (Master) and the others assist it (Slave). (Less common).</p>\n    </li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Multi-Tasking Operating Systems 💡</h3>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Multiprogramming:</h4>\n<p class=\"mb-4\">Goal: To keep the CPU busy at all times. Several programs are held in Main Memory (RAM) simultaneously. When one program has to wait for an I/O operation, the OS switches execution to another program, increasing CPU utilization.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Time-Sharing / Multitasking:</h4>\n<p class=\"mb-4\">Goal: To give the user the illusion that the CPU is dedicated to them alone. The CPU divides its time among several programs (Jobs), and each program gets a small time slice. When its time is up, the OS performs a Context Switch to another program. **Result: Short Response Time for the user**.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. Distributed Systems / Loosely Coupled:</h4>\n<p class=\"mb-4\">A collection of separate computers (Nodes) working together on a network. Each computer has its local memory and its own OS. The most famous example is **Clusters** used in High-Performance Computing (HPC).</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Advanced File Management in Linux 📁</h3>\n<p class=\"mb-4 text-lg\">Commands for copying, moving, and deleting files and directories.</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">cp source destination</code>: To copy a file or directory.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">cp -r source destination</code>: To copy a directory and its entire contents (Recursively). **Essential for copying directories!**</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">mv source destination</code>: To move a file or directory. **(Also used to rename a file)**.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">rm file.txt</code>: To delete a file.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">rm -r directory_name</code>: To delete a directory and its entire contents (Very dangerous!).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">ln -s source_file new_link</code>: To create a Symbolic Link to a file or directory (shortcut).</div>\n</div>",
+  "quiz": [
+    {
+      "question": "1. What is the primary goal of Multiprogramming?",
+      "options": [
+        "To allow only one user to use the system",
+        "To keep the CPU busy at all times",
+        "To provide a graphical interface",
+        "To install new software"
+      ],
+      "correctAnswer": "To keep the CPU busy at all times",
+      "hint": "عشان الـ CPU ميقعدش فاضي وهو مستني الـ I/O.",
+      "englishHint": "To prevent the CPU from being idle while waiting for I/O."
+    },
+    {
+      "question": "2. In a Tightly-coupled Multiprocessor system, the CPUs share the:",
+      "options": [
+        "Network cable",
+        "Local hard drives only",
+        "Main Memory and bus",
+        "User passwords"
+      ],
+      "correctAnswer": "Main Memory and bus",
+      "hint": "الذاكرة المشتركة هي الأساس.",
+      "englishHint": "Shared memory is the basis."
+    },
+    {
+      "question": "3. What is the key result of a successful Time-Sharing system?",
+      "options": [
+        "The system runs slower",
+        "Long response time",
+        "Short response time (< 1 second) for users",
+        "Only one program can run"
+      ],
+      "correctAnswer": "Short response time (< 1 second) for users",
+      "hint": "عشان المستخدم يحس إن النظام سريع.",
+      "englishHint": "To make the user feel the system is fast."
+    },
+    {
+      "question": "4. The concept of deleting a directory and its contents entirely is called:",
+      "options": [
+        "Shallow deletion",
+        "Recursive deletion",
+        "Safe deletion",
+        "Symbolic deletion"
+      ],
+      "correctAnswer": "Recursive deletion",
+      "hint": "الحذف المتكرر بيحذف كل ما بداخل المجلد.",
+      "englishHint": "Recursive deletion deletes everything inside the directory."
+    },
+    {
+      "question": "5. Which command is used to copy a directory and its contents recursively in Linux?",
+      "options": [
+        "copy -r",
+        "cp -r",
+        "mv -r",
+        "rm -r"
+      ],
+      "correctAnswer": "cp -r",
+      "hint": "الـ 'cp' للنسخ والـ 'r' للتكرار (Recursion).",
+      "englishHint": "'cp' for copy and 'r' for recursion."
+    },
+    {
+      "question": "6. A system where each processor has a specific task (Master/Slave) is called:",
+      "options": [
+        "Symmetric Multiprocessing",
+        "Asymmetric Multiprocessing",
+        "Single Processor",
+        "Distributed System"
+      ],
+      "correctAnswer": "Asymmetric Multiprocessing",
+      "hint": "غير متناظر، كل واحد له وظيفة محددة.",
+      "englishHint": "Asymmetric, each one has a specific function."
+    },
+    {
+      "question": "7. What is the Linux command used to rename a file?",
+      "options": [
+        "rename",
+        "mv",
+        "change",
+        "ln"
+      ],
+      "correctAnswer": "mv",
+      "hint": "أمر النقل بيعمل وظيفة تغيير الاسم كمان.",
+      "englishHint": "The move command also functions as rename."
+    },
+    {
+      "question": "8. What is the term for a system that can continue operating even if one CPU fails?",
+      "options": [
+        "Throughput",
+        "Economy of Scale",
+        "Time-Sharing",
+        "Fault Tolerance (Tolerance of failure)"
+      ],
+      "correctAnswer": "Fault Tolerance (Tolerance of failure)",
+      "hint": "الموثوقية وزيادة الاحتمال.",
+      "englishHint": "Reliability and increased possibility."
+    },
+    {
+      "question": "9. A system where computers work together over a network, each with its own memory, is called a:",
+      "options": [
+        "Single Processor System",
+        "Symmetric Multiprocessing System",
+        "Distributed System (Loosely Coupled)",
+        "Time-Sharing System"
+      ],
+      "correctAnswer": "Distributed System (Loosely Coupled)",
+      "hint": "الأجهزة مش مربوطة ببعض بإحكام.",
+      "englishHint": "The devices are not tightly coupled."
+    },
+    {
+      "question": "10. What does the `ln -s` command create?",
+      "options": [
+        "A new user",
+        "A directory",
+        "A hard link",
+        "A Symbolic Link (Shortcut)"
+      ],
+      "correctAnswer": "A Symbolic Link (Shortcut)",
+      "hint": "الـ 's' اختصار لـ 'symbolic'.",
+      "englishHint": "The 's' stands for 'symbolic'."
+    },
+    {
+      "question": "11. The mechanism used in Time-Sharing to switch between running programs is:",
+      "options": [
+        "System Bus",
+        "Context Switch",
+        "Bootstrap Loader",
+        "Multiprogramming"
+      ],
+      "correctAnswer": "Context Switch",
+      "hint": "التبديل بين سياق برنامج وآخر.",
+      "englishHint": "Switching between the context of one program and another."
+    },
+    {
+      "question": "12. What is the primary advantage of Symmetric Multiprocessing (SMP)?",
+      "options": [
+        "Only one CPU does all the work",
+        "The OS kernel only runs on the Master CPU",
+        "All CPUs are equal and can run any part of the OS",
+        "It is cheaper than a single processor system"
+      ],
+      "correctAnswer": "All CPUs are equal and can run any part of the OS",
+      "hint": "التناظر (Symmetry) يعني التساوي.",
+      "englishHint": "Symmetry means equality."
+    },
+    {
+      "question": "13. The Linux command to delete a file is:",
+      "options": [
+        "del file.txt",
+        "remove file.txt",
+        "rm file.txt",
+        "rmdir file.txt"
+      ],
+      "correctAnswer": "rm file.txt",
+      "hint": "اختصار لـ 'Remove'.",
+      "englishHint": "Short for 'Remove'."
+    },
+    {
+      "question": "14. What are Distributed Systems also known as?",
+      "options": [
+        "Tightly-coupled Systems",
+        "Parallel Systems",
+        "Loosely Coupled Systems",
+        "Single User Systems"
+      ],
+      "correctAnswer": "Loosely Coupled Systems",
+      "hint": "الأجهزة مش مرتبطة ببعضها بإحكام.",
+      "englishHint": "Devices are not tightly bound to each other."
+    },
+    {
+      "question": "15. What selects which jobs are brought into memory in a Multiprogramming system?",
+      "options": [
+        "CPU Scheduler",
+        "Job Scheduling",
+        "Device Queue",
+        "User"
+      ],
+      "correctAnswer": "Job Scheduling",
+      "hint": "جزء من الـ Long-Term Scheduler اللي بينظم الشغل.",
+      "englishHint": "Part of the Long-Term Scheduler that organizes the work."
+    },
+    {
+      "question": "16. Which of these is NOT an advantage of Multiprocessor Systems?",
+      "options": [
+        "Increased Throughput",
+        "Increased Reliability",
+        "Higher power consumption than single systems",
+        "Economy of Scale"
+      ],
+      "correctAnswer": "Higher power consumption than single systems",
+      "hint": "هي ميزة اقتصادية مش عيب.",
+      "englishHint": "It is an economic advantage, not a disadvantage."
+    },
+    {
+      "question": "17. Which command moves a file from the current directory to the /tmp directory?",
+      "options": [
+        "move file.txt /tmp",
+        "cp file.txt /tmp",
+        "mv file.txt /tmp",
+        "rm file.txt /tmp"
+      ],
+      "correctAnswer": "mv file.txt /tmp",
+      "hint": "أمر النقل (Move).",
+      "englishHint": "The move command."
+    },
+    {
+      "question": "18. What is required for a Time-Sharing system to feel interactive?",
+      "options": [
+        "Long response time",
+        "Short response time (< 1 second)",
+        "Only one user",
+        "No I/O devices"
+      ],
+      "correctAnswer": "Short response time (< 1 second)",
+      "hint": "لازم الاستجابة تكون سريعة جدًا.",
+      "englishHint": "The response must be very fast."
+    },
+    {
+      "question": "19. Sharing peripherals and power supplies is an example of which advantage of multiprocessing?",
+      "options": [
+        "Increased Throughput",
+        "Increased Reliability",
+        "Economy of Scale",
+        "Fault Tolerance"
+      ],
+      "correctAnswer": "Economy of Scale",
+      "hint": "توفير في التكلفة عشان المشاركة.",
+      "englishHint": "Cost savings due to sharing."
+    },
+    {
+      "question": "20. High-Performance Computing (HPC) often uses clusters for:",
+      "options": [
+        "High Availability",
+        "Running applications in parallel across nodes",
+        "Load Balancing only",
+        "Hot Standby"
+      ],
+      "correctAnswer": "Running applications in parallel across nodes",
+      "hint": "عشان يحلوا مسائل حسابية معقدة بسرعة.",
+      "englishHint": "To solve complex computational problems quickly."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

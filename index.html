@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="جامعة برج العرب التكنولوجية - BATU | منصة DWD Smart Campus للتعليم الجامعي الذكي. الكليات، البرامج الأكاديمية، الأخبار، والأنشطة الجامعية.">
+    <meta name="keywords"
+        content="جامعة برج العرب التكنولوجية, BATU, DWD Smart Campus, تعليم جامعي, كلية الصناعة والطاقة, كلية العلوم الصحية, IT, سكك حديد">
+    <title>جامعة برج العرب التكنولوجية | DWD Smart Campus</title>
+
+    <!-- Favicon & Theme -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#16a34a">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- LCP Optimization - MUST BE AT TOP -->
+    <link rel="preload" as="image" href="img/college.png" fetchpriority="high">
+
+    <!-- Fonts: Cairo + IBM Plex Sans Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
+    <script>
+        window.tailwind = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                        'ibm': ['IBM Plex Sans Arabic', 'sans-serif']
+                    },
+                    colors: {
+                        'batu': { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534' }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com" crossorigin="anonymous" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
+    
+    <!-- Critical Inline CSS -->
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #09090b;
+            --text-primary: #09090b;
+            --text-secondary: #27272a;
+            --text-muted: #52525b;
+            --text-card-primary: #ffffff;
+            --text-card-secondary: #d4d4d8;
+            --accent-green:#40c9a2;
+             /* #16a34a */
+            --border-card: rgba(255, 255, 255, 0.1);
+            --font-primary: 'IBM Plex Sans Arabic', sans-serif;
+            --font-heading: 'Cairo', sans-serif;
+            --backdrop-blur: blur(16px);
+            --radius-xl: 1.25rem;
+            --space-8: 2rem;
+        }
+        .dark {
+            --bg-primary: #0d1b2a;
+            --bg-secondary: #000000;
+            --bg-card: #123;
+            --text-primary: #2a1bfd;
+            --text-secondary: #cf9743;
+            --text-muted: #756c6c;
+            --text-card-primary: #09090b;
+            --text-card-secondary: #3f3f46;
+            --border-card: rgba(0, 0, 0, 0.05);
+        }
+        body { font-family: var(--font-primary); background: var(--bg-primary); color: var(--text-primary); margin: 0; line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .academic-header { background: rgba(17, 0, 255, 0.85); backdrop-filter: var(--backdrop-blur); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .dark .academic-header { background: rgba(9, 9, 11, 0.85); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Hero Title & Mesh Gradient Upgrade */
+        .hero-title { 
+            color: #0f172a; 
+            font-weight: 900 !important;
+            text-shadow: none;
+            transition: all 0.5s ease;
+        }
+        .dark .hero-title, .classic .hero-title { 
+            color: #ffffff !important; 
+            text-shadow: 0 0 40px rgba(255,255,255,0.35), 0 0 80px rgba(255,255,255,0.1);
+        }
+        
+        /* Premium Mesh Gradient Background - Ultra Smooth 8K */
+        .hero-glow-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.6; 
+            z-index: 0;
+            background-image: 
+                 radial-gradient(ellipse at 20% 50%, rgba(22, 163, 74, 0.08) 0%, transparent 50%),
+                 radial-gradient(ellipse at 80% 20%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                 radial-gradient(ellipse at 50% 80%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+        }
+
+        .hero-pill { background: #ffffff; color: #64748b; border: 1px solid #e2e8f0; }
+        .dark .hero-pill, .classic .hero-pill { background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
+        .hero-desc { color: #334155; font-weight: 500; }
+        .dark .hero-desc, .classic .hero-desc { color: #f1f5f9; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        .hero-pill { background: #ffffff; color: #64748b; border: 1px solid #e2e8f0; }
+        .dark .hero-pill, .classic .hero-pill { background: rgba(255,255,255,0.08); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
+        .hero-desc { color: #334155; font-weight: 500; }
+        .dark .hero-desc, .classic .hero-desc { color: #f1f5f9; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        /* REVEAL ANIMATIONS */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .staggered-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1); }
+        .staggered-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Header UI Refinement */
+        .academic-header { background: rgba(255, 255, 255, 0.9); }
+        .dark .academic-header, .classic .academic-header { background: rgba(9, 9, 11, 0.95); }
+        
+        /* Premium Login Button Styling (Shared) */
+        .btn-login-premium {
+            background: #0f172a !important;
+            color: #ffffff !important;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+        .btn-login-premium:hover {
+            background: #1e293b !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+        }
+        .dark .btn-login-premium, .classic .btn-login-premium {
+            background: #16a34a !important;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+        }
+        .dark .btn-login-premium:hover, .classic .btn-login-premium:hover {
+            background: #22c55e !important;
+            box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
+        }
+
+        /* Theme Toggle Coordination */
+        .theme-toggle-btn {
+            background: rgba(0,0,0,0.05);
+            color: #475569;
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .theme-toggle-btn:hover { background: rgba(0,0,0,0.1); color: #0f172a; }
+        .dark .theme-toggle-btn, .classic .theme-toggle-btn {
+            background: rgba(255,255,255,0.05);
+            color: #cbd5e1;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .dark .theme-toggle-btn:hover, .classic .theme-toggle-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+    </style>
+
+    <!-- Font Awesome (Deferred for perf) -->
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" media="print" onload="this.media='all'">
+    
+    <!-- Academic Design System -->
+    <link rel="stylesheet" href="css/academic-design.css">
+
+    <!-- PWA Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js?v=29');
+            });
+        }
+    </script>
+
+    <style>
+        html { scroll-padding-top: 80px; }
+
+        /* ═══ INFINITE MARQUEE (PURE CSS) ═══ */
+        .marquee-wrapper {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            display: flex;
+            direction: rtl; /* Use RTL as base, CSS flex will handle it */
+        }
+        .marquee-wrapper::before,
+        .marquee-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 100px;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .marquee-wrapper::before { right: 0; background: linear-gradient(to left, var(--bg-primary), transparent); }
+        .marquee-wrapper::after  { left: 0; background: linear-gradient(to right, var(--bg-primary), transparent); }
+
+        .marquee-container {
+            display: flex;
+            width: max-content;
+            animation: scroll-marquee 40s linear infinite;
+        }
+
+        .marquee-wrapper:hover .marquee-container {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-marquee {
+            0%   { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(50%, 0, 0); } /* Translate positive for RTL */
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 2rem;
+            padding-left: 2rem; /* The gap between the two identical tracks */
+        }
+
+        .program-card {
+            flex: 0 0 380px;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            direction: rtl; 
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+            cursor: default;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+        }
+        .program-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        .program-card .card-accent {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--accent-green);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .program-card:hover .card-accent { transform: scaleX(1); }
+
+        /* ═══ HERO GRAIN ═══ */
+        .hero-grain {
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ═══ REFINED REVEAL ═══ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ═══ GLOW ═══ */
+        .hero-glow {
+            position: absolute; border-radius: 50%;
+            filter: blur(140px); pointer-events: none;
+            opacity: 0.12; z-index: 0;
+        }
+        .dark .hero-glow { opacity: 0.06; }
+
+        /* ═══ STAT COUNTER ═══ */
+        .stat-block {
+            text-align: center; padding: 2.5rem 1rem;
+        }
+        .stat-number-xl {
+            font-family: 'Cairo', sans-serif;
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--accent-green), #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label-sm {
+            font-size: 0.85rem; font-weight: 600; margin-top: 0.75rem;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* ═══ NEWS CARD ═══ */
+        .news-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-card);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+        .news-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+        }
+        .news-card-img { overflow: hidden; }
+        .news-card-img img { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .news-card:hover .news-card-img img { transform: scale(1.06); }
+
+        /* ═══ SOCIAL — Brand Colors ═══ */
+        .social-brand {
+            width: 2.75rem; height: 2.75rem;
+            border-radius: 0.75rem;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 1.15rem;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            text-decoration: none;
+        }
+        .social-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 25%; right: 25%;
+            height: 3px; border-radius: 2px;
+            background: currentColor;
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .social-brand:hover {
+            transform: translateY(-5px);
+        }
+        .social-brand:hover::after { transform: scaleX(1); }
+        .social-fb  { background: rgba(24,119,242,0.1); color: #1877F2; }
+        .social-fb:hover  { background: rgba(24,119,242,0.2); }
+        .social-li  { background: rgba(10,102,194,0.1); color: #0A66C2; }
+        .social-li:hover  { background: rgba(10,102,194,0.2); }
+        .social-yt  { background: rgba(255,0,0,0.1); color: #FF0000; }
+        .social-yt:hover  { background: rgba(255,0,0,0.2); }
+        .social-ig  { background: rgba(225,48,108,0.1); color: #E1306C; }
+        .social-ig:hover  { background: rgba(225,48,108,0.2); }
+        .social-tt  { background: rgba(0,0,0,0.1); color: var(--text-card-primary); }
+        .social-tt:hover  { background: rgba(0,0,0,0.2); }
+
+        /* ═══ SECTION DIVIDER ═══ */
+        .section-line {
+            width: 60px; height: 4px; border-radius: 2px;
+            background: var(--accent-green);
+            margin: 0 auto 1.5rem;
+        }
+
+        /* ═══ ACTIVITY ICONS ═══ */
+        .activity-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .activity-card:hover { transform: translateY(-6px); }
+
+        /* ═══ MOBILE PERFORMANCE ═══ */
+        @media (max-width: 768px) {
+            .stars, .earth-globe, .bg-shapes, .hero-grain, .hero-glow { display: none !important; animation: none !important; }
+            .marquee-container { animation: none !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 20px; width: 100vw; gap: 1rem; }
+            .marquee-track { display: contents; } /* Unwrap track so cards are direct children of container */
+            .program-card { scroll-snap-align: center; flex: 0 0 85vw; margin-right: 1.5rem !important; }
+            .marquee-wrapper::before, .marquee-wrapper::after { display: none; }
+        }
+    </style>
+    <script src="/js/content-protection.js" defer></script>
+</head>
+
+<body class="font-ibm">
+
+
+    <!-- ═══════════════════════════════════════════
+         HEADER / NAVIGATION
+    ═══════════════════════════════════════════ -->
+    <header class="academic-header" id="main-header">
+        <div class="container">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="/" class="flex items-center gap-4 no-underline" style="color: var(--text-primary)">
+                    <img src="img/logo.png" alt="BATU Logo" class="h-12 w-auto">
+                    <div class="hidden sm:block">
+                        <span class="font-cairo font-black text-lg block leading-tight">جامعة برج العرب</span>
+                        <span class="text-xs font-bold" style="color: var(--accent-green)">التكنولوجية</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="#home" class="nav-link-academic">الرئيسية</a>
+                    <a href="#about" class="nav-link-academic">عن الجامعة</a>
+                    <a href="#programs" class="nav-link-academic">البرامج</a>
+                    <a href="#news" class="nav-link-academic">الأخبار</a>
+                    <a href="#contact" class="nav-link-academic">تواصل معنا</a>
+                </nav>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-3">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="تبديل وضع الألوان الداكن والفاتح" title="تبديل الوضع">
+                        <i class="fas fa-sun" id="theme-icon" aria-hidden="true"></i>
+                    </button>
+                    <!-- Login -->
+                    <a href="login.html" class="btn btn-login-premium h-12 px-6 rounded-xl flex items-center gap-2 font-bold" aria-label="تسجيل الدخول للمنصة">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                        <span class="hidden sm:inline">دخول المنصة</span>
+                    </a>
+                    <!-- Mobile Menu -->
+                    <button id="mobile-menu-btn" class="md:hidden theme-toggle-btn" aria-label="فتح القائمة الرئيسية للجوال">
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Nav -->
+            <nav id="mobile-nav" class="hidden md:hidden pb-4 flex flex-col gap-2">
+                <a href="#home" class="nav-link-academic">الرئيسية</a>
+                <a href="#about" class="nav-link-academic">عن الجامعة</a>
+                <a href="#programs" class="nav-link-academic">البرامج</a>
+                <a href="#news" class="nav-link-academic">الأخبار</a>
+                <a href="#contact" class="nav-link-academic">تواصل معنا</a>
+                <a href="login.html" class="nav-link-academic" style="color: var(--accent-green)">دخول المنصة</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main id="main-content" style="opacity: 1;">
+
+    <!-- ═══════════════════════════════════════════
+         HERO SECTION
+    ═══════════════════════════════════════════ -->
+    <section id="home" class="relative overflow-hidden flex items-center" style="min-height: 100vh; padding: 8rem 0 4rem;">
+        <div class="hero-grain"></div>
+        <div class="hero-glow-container">
+
+        </div>
+
+        <div class="container relative z-10">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Text Column -->
+                <div>
+                    <div class="hero-pill inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold mb-10 tracking-wider"
+                         style="letter-spacing: 0.1em; text-transform: uppercase;">
+                        <span class="w-2 h-2 rounded-full inline-block" style="background: #16a34a;"></span>
+                        BORG AL ARAB TECHNOLOGICAL UNIVERSITY
+                    </div>
+
+                    <h1 class="hero-title staggered-reveal font-cairo font-black leading-[1.05] mb-8" style="font-size: clamp(2.8rem, 6vw, 5rem);">
+                        نصنع مستقبل التعليم<br>
+                        <span style="color: #16a34a">التكنولوجي</span> في مصر
+                    </h1>
+
+                    <p class="hero-desc staggered-reveal text-lg md:text-xl leading-relaxed max-w-lg font-medium mb-12" style="line-height: 1.9;">
+                        تعليم تطبيقي متميز يربط بين المعرفة الأكاديمية والخبرة الصناعية.
+                        انضم إلى أكثر من 10,000 طالب يبنون مستقبلهم المهني.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="login.html" class="btn btn-login-premium btn-lg rounded-xl shadow-lg transition-transform hover:-translate-y-1" style="padding: 1rem 2rem;">
+                            <i class="fas fa-sign-in-alt"></i>
+                            دخول المنصة التعليمية
+                        </a>
+                        <a href="#programs" class="btn btn-secondary btn-lg rounded-xl transition-transform hover:-translate-y-1" style="background: var(--bg-card); color: var(--text-card-primary); border-color: var(--border-card); padding: 1rem 2rem;">
+                            <i class="fas fa-book-open"></i>
+                            تصفح البرامج
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Image Column -->
+                <div class="hidden md:block staggered-reveal">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl" style="border: 1px solid var(--border-card);">
+                        <!-- CRITICAL LCP ELEM -->
+                        <img src="img/college.png" alt="حرم جامعة برج العرب التكنولوجية" class="w-full h-auto object-cover" 
+                             style="aspect-ratio: 16/10;" width="600" height="375" fetchpriority="high" loading="eager" decoding="sync">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-8">
+                            <p class="text-white/80 text-sm font-bold">حرم جامعة برج العرب التكنولوجية — الإسكندرية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         STATISTICS
+    ═══════════════════════════════════════════ -->
+    <section style="padding: 4rem 0;">
+        <div class="container">
+            <h2 class="sr-only">إحصائيات الجامعة</h2>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-0" style="border: 1px solid var(--border-card); border-radius: 1.5rem; background: var(--bg-card); overflow: hidden;">
+                <div class="stat-block reveal" style="border-left: 1px solid var(--border-card);">
+                    <div class="stat-number-xl" data-target="2">0</div>
+                    <div class="stat-label-sm" style="color: var(--text-card-muted)">كليات</div>
+                </div>
+                <div class="stat-block reveal reveal-delay-1" style="border-left: 1px solid var(--border-card);">
+                    <div class="stat-number-xl" data-target="10">0</div>
+                    <div class="stat-label-sm" style="color: var(--text-card-muted)">برنامج أكاديمي</div>
+                </div>
+                <div class="stat-block reveal reveal-delay-2" style="border-left: 1px solid var(--border-card);">
+                    <div class="stat-number-xl" data-target="10000">0</div>
+                    <div class="stat-label-sm" style="color: var(--text-card-muted)">طالب وطالبة</div>
+                </div>
+                <div class="stat-block reveal reveal-delay-3">
+                    <div class="stat-number-xl" data-target="4">0</div>
+                    <div class="stat-label-sm" style="color: var(--text-card-muted)">سنوات دراسية</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         ABOUT / LEADERSHIP
+    ═══════════════════════════════════════════ -->
+    <section id="about" class="flex flex-col items-center justify-center" style="min-height: 100vh; padding: 6rem 0; background: var(--bg-secondary);">
+        <div class="container">
+            <!-- About University Section -->
+            <div class="text-center mb-16 reveal">
+                <div class="section-line"></div>
+                <h2 class="font-cairo font-black mb-6" style="font-size: clamp(2rem, 4vw, 3rem);">عن الجامعة</h2>
+                <p class="text-base font-medium max-w-3xl mx-auto leading-loose" style="color: var(--text-muted); font-size: 1.1rem;">
+                    جامعة برج العرب التكنولوجية هي جامعة حكومية مصرية، إحدى الجامعات التكنولوجية التي تم إنشاؤها لتلبية احتياجات سوق العمل من التكنولوجيين والفنيين المهرة في مختلف التخصصات، ودعم الصناعة الوطنية تماشياً مع رؤية مصر 2030 لتقديم تعليم تكنولوجي متميز يواكب التطور العالمي.
+                </p>
+            </div>
+
+            <!-- Leadership Section -->
+            <div class="text-center mb-16 reveal">
+                <div class="section-line"></div>
+                <h2 class="font-cairo font-black mb-3" style="font-size: clamp(2rem, 4vw, 3rem);">كلمة القيادة الجامعية</h2>
+                <p class="text-base font-medium max-w-md mx-auto" style="color: var(--text-muted)">رسائل من قيادات جامعة برج العرب التكنولوجية</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- President -->
+                <div class="academic-card reveal" style="padding: 2.5rem; border: 1px solid var(--border-card); background: var(--bg-card); border-radius: 1.5rem; transition: transform 0.3s ease;">
+                    <div class="flex items-center gap-6 mb-6">
+                        <img src="img/mohamedmorsy.jpg" alt="صورة الأستاذ الدكتور محمد مرسي الجوهري"
+                             class="w-20 h-20 rounded-2xl object-cover flex-shrink-0 shadow-md" style="border: 3px solid var(--accent-green)" decoding="async">
+                        <div>
+                            <h3 class="font-cairo font-black text-lg mb-1" style="color: var(--text-primary)">أ.د/ محمد مرسي الجوهري</h3>
+                            <p class="text-sm font-bold" style="color: var(--accent-green) !important;">رئيس الجامعة</p>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed text-sm font-medium" style="color: var(--text-muted)">
+                        "تسعى جامعة برج العرب التكنولوجية لتخريج جيل قادر على المنافسة في سوق العمل المحلي والدولي، مسلحاً بأحدث ما توصلت إليه التكنولوجيا، من خلال منظومة تعليمية متكاملة تجمع بين الجانب الأكاديمي والتدريب الميداني."
+                    </p>
+                </div>
+
+                <!-- Dean -->
+                <div class="academic-card reveal reveal-delay-1" style="padding: 2.5rem; border: 1px solid var(--border-card); background: var(--bg-card); border-radius: 1.5rem; transition: transform 0.3s ease;">
+                    <div class="flex items-center gap-6 mb-6">
+                        <img src="img/alac arpha.jpg" alt="صورة الدكتور علاء عرفة"
+                             class="w-20 h-20 rounded-2xl object-cover flex-shrink-0 shadow-md" style="border: 3px solid #2563eb" loading="lazy" decoding="async">
+                        <div>
+                            <h3 class="font-cairo font-black text-lg mb-1" style="color: var(--text-primary)">د/ علاء عرفة</h3>
+                            <p class="text-sm font-bold" style="color: #2563eb !important;">عميد كلية الصناعة والطاقة</p>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed text-sm font-medium" style="color: var(--text-muted)">
+                        "كلية الصناعة والطاقة تضم تكنولوجيا السكك الحديدية، وتكنولوجيا المعلومات، وتكنولوجيا التشغيل وصيانة ماكينات الغزل والنسيج، وتكنولوجيا الصناعات الغذائية، وتكنولوجيا الجرارات والمعدات الزراعية."
+                    </p>
+                </div>
+
+                <!-- Head of IT -->
+                <div class="academic-card reveal reveal-delay-2" style="padding: 2.5rem; border: 1px solid var(--border-card); background: var(--bg-card); border-radius: 1.5rem; transition: transform 0.3s ease;">
+                    <div class="flex items-center gap-6 mb-6">
+                        <img src="img/osama.jpg" alt="صورة الدكتور أسامة النحاس"
+                             class="w-20 h-20 rounded-2xl object-cover flex-shrink-0 shadow-md" style="border: 3px solid #8b5cf6" loading="lazy" decoding="async">
+                        <div>
+                            <h3 class="font-cairo font-black text-lg mb-1" style="color: var(--text-primary)">د/ أسامة النحاس</h3>
+                            <p class="text-sm font-bold" style="color: #8b5cf6 !important;">رئيس قسم تكنولوجيا المعلومات</p>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed text-sm font-medium" style="color: var(--text-muted)">
+                        "مرحبًا بكم في القسم. أود أن أوضح أن دراسة تكنولوجيا المعلومات لم تعد مجرد مجال أكاديمي، بل أصبحت جزءًا أساسيًا في حياتنا. التطور في هذا المجال يحدث بسرعة كبيرة، ليس فقط شهرياً، بل بشكل لحظي."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         PROGRAMS — INFINITE MARQUEE PURE CSS
+    ═══════════════════════════════════════════ -->
+    <section id="programs" class="relative flex items-center" style="min-height: 100vh; padding: 6rem 0;">
+        <div class="w-full">
+            <div class="container mb-16">
+                <div class="text-center reveal">
+                    <div class="section-line"></div>
+                    <h2 class="font-cairo font-black mb-3" style="font-size: clamp(2rem, 4vw, 3rem);">البرامج الأكاديمية</h2>
+                    <p class="text-base font-medium max-w-lg mx-auto" style="color: var(--text-muted)">10 برامج تخصصية مصممة لسوق العمل — تتحرك تلقائياً، أوقفها بالتمرير فوقها</p>
+                </div>
+            </div>
+
+            <!-- Marquee (Optimized DOM: 6 Cards + 1 Clone Track) -->
+            <div class="marquee-wrapper reveal" id="marquee-wrapper">
+                <div class="marquee-container">
+                    <!-- Track 1 -->
+                    <div class="marquee-track">
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(37,99,235,0.1); color: #2563eb"><i class="fas fa-laptop-code"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا المعلومات</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">هندسة البرمجيات، إدارة الشبكات، الأنظمة المدمجة، وعلوم البيانات.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(217,119,6,0.1); color: #d97706"><i class="fas fa-train"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا السكك الحديدية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">أنظمة الإشارات والاتصالات، التحكم الآلي في القطارات، وتشغيل شبكة النقل.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(16,185,129,0.1); color: #10b981"><i class="fas fa-tshirt"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الغزل والنسيج</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">تكنولوجيا تشغيل وصيانة ماكينات الغزل والنسيج وتقنيات الإنتاج المتقدمة.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(220,38,38,0.1); color: #dc2626"><i class="fas fa-apple-alt"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الصناعات الغذائية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">كيمياء وميكروبيولوجيا الأغذية وتقنيات الحفظ والتصنيع والجودة.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(22,163,74,0.1); color: #16a34a"><i class="fas fa-tractor"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الجرارات والمعدات الزراعية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">الجوانب الميكانيكية والإلكترونية للآلات الزراعية والزراعة الذكية.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(124,58,237,0.1); color: #7c3aed"><i class="fas fa-tooth"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا معامل الأسنان</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">تصنيع أطقم الأسنان والتركيبات بأحدث التقنيات الرقمية والطبية.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(14,165,233,0.1); color: #0ea5e9"><i class="fas fa-pills"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الإنتاج الدوائي</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">مراقبة الجودة والإنتاج لمعامل الأدوية وتطبيق معايير التصنيع الجيد.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(236,72,153,0.1); color: #ec4899"><i class="fas fa-heartbeat"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا الرعاية الصحية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">إعداد تقنيين متخصصين ومؤهلين لتقديم الرعاية الصحية المتقدمة.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(139,92,246,0.1); color: #8b5cf6"><i class="fas fa-file-medical-alt"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">إدارة المعلومات الصحية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">جمع وتنظيم وتحليل البيانات الطبية لدعم المستشفيات والمنشآت الصحية.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(59,130,246,0.1); color: #3b82f6"><i class="fas fa-microscope"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">العلوم الصحية الأساسية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">دراسة الأسس العلمية الطبية وتأهيل الخريجين للعمل في المختبرات والمنشآت.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                    </div>
+                    <!-- Track 2 (Cloned via HTML) -->
+                    <div class="marquee-track" aria-hidden="true">
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(37,99,235,0.1); color: #2563eb"><i class="fas fa-laptop-code"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا المعلومات</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">هندسة البرمجيات، إدارة الشبكات، الأنظمة المدمجة، وعلوم البيانات.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(217,119,6,0.1); color: #d97706"><i class="fas fa-train"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا السكك الحديدية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">أنظمة الإشارات والاتصالات، التحكم الآلي في القطارات، وتشغيل شبكة النقل.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(16,185,129,0.1); color: #10b981"><i class="fas fa-tshirt"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الغزل والنسيج</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">تكنولوجيا تشغيل وصيانة ماكينات الغزل والنسيج وتقنيات الإنتاج المتقدمة.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(220,38,38,0.1); color: #dc2626"><i class="fas fa-apple-alt"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الصناعات الغذائية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">كيمياء وميكروبيولوجيا الأغذية وتقنيات الحفظ والتصنيع والجودة.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(22,163,74,0.1); color: #16a34a"><i class="fas fa-tractor"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الجرارات والمعدات الزراعية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">الجوانب الميكانيكية والإلكترونية للآلات الزراعية والزراعة الذكية.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(124,58,237,0.1); color: #7c3aed"><i class="fas fa-tooth"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا معامل الأسنان</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">تصنيع أطقم الأسنان والتركيبات بأحدث التقنيات الرقمية والطبية.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(14,165,233,0.1); color: #0ea5e9"><i class="fas fa-pills"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">الإنتاج الدوائي</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">مراقبة الجودة والإنتاج لمعامل الأدوية وتطبيق معايير التصنيع الجيد.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(236,72,153,0.1); color: #ec4899"><i class="fas fa-heartbeat"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">تكنولوجيا الرعاية الصحية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">إعداد تقنيين متخصصين ومؤهلين لتقديم الرعاية الصحية المتقدمة.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(139,92,246,0.1); color: #8b5cf6"><i class="fas fa-file-medical-alt"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">إدارة المعلومات الصحية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">جمع وتنظيم وتحليل البيانات الطبية لدعم المستشفيات والمنشآت الصحية.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                        <div class="program-card">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-2xl" style="background: rgba(59,130,246,0.1); color: #3b82f6"><i class="fas fa-microscope"></i></div>
+                            <h3 class="font-cairo font-black text-xl mb-3" style="color: var(--text-card-primary)">العلوم الصحية الأساسية</h3>
+                            <p class="text-sm leading-relaxed mb-6" style="color: var(--text-card-secondary)">دراسة الأسس العلمية الطبية وتأهيل الخريجين للعمل في المختبرات والمنشآت.</p>
+                            <div class="card-accent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         NEWS
+    ═══════════════════════════════════════════ -->
+    <section id="news" class="flex items-center" style="background: var(--bg-secondary); min-height: 100vh; padding: 6rem 0;">
+        <div class="container">
+            <div class="flex items-center gap-4 mb-16 reveal">
+                <span class="w-1.5 h-12 rounded-full" style="background: var(--accent-green)"></span>
+                <div>
+                    <h2 class="font-cairo font-black mb-1" style="font-size: clamp(2rem, 4vw, 3rem);">الأخبار والقرارات</h2>
+                    <p class="text-sm font-medium" style="color: var(--text-muted)">أحدث الأخبار والقرارات الجامعية</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="news-card reveal shadow-md">
+                    <div class="news-card-img h-56 relative">
+                        <img src="img/batu_british_mou.jpg"
+                             alt="توقيع مذكرة تفاهم مع الجانب البريطاني" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                        <div class="absolute top-4 right-4 px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg" style="background: var(--accent-green)">تعاون دولي</div>
+                    </div>
+                    <div class="p-7">
+                        <div class="text-sm mb-3 flex items-center gap-2 font-bold" style="color: var(--text-card-muted)"><i class="far fa-calendar"></i> 17 يونيو 2025</div>
+                        <h3 class="font-cairo font-black text-lg mb-3" style="color: var(--text-card-primary)">مذكرة تفاهم لتأسيس مركز متقدم في السكك الحديدية</h3>
+                        <p class="text-sm leading-relaxed" style="color: var(--text-card-secondary)">بطولة الأستاذ الدكتور محمد مرسي الجوهري وقعت جامعة برج العرب مذكرة تفاهم مع الجانب البريطاني لدعم التدريب وتطوير برامج السكك الحديدية.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="news-card reveal reveal-delay-1 shadow-md">
+                    <div class="news-card-img h-56 relative">
+                        <img src="img/itClub.png"
+                             alt="صورة تعبيرية لأنشطة طلابية" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                        <div class="absolute top-4 right-4 px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg" style="background: #2563eb">أنشطة طلابية</div>
+                    </div>
+                    <div class="p-7">
+                        <div class="text-sm mb-3 flex items-center gap-2 font-bold" style="color: var(--text-card-muted)"><i class="far fa-calendar"></i> 25 ديسمبر 2025</div>
+                        <h3 class="font-cairo font-black text-lg mb-3" style="color: var(--text-card-primary)">فوز فريق IT بالمركز الأول في مسابقات الإبتكار</h3>
+                        <p class="text-sm leading-relaxed" style="color: var(--text-card-secondary)">حصد فريق قسم تكنولوجيا المعلومات المركز الأول بعد منافسة قوية في مسابقة الروبوتات والبرمجيات المتقدمة.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="academic-card reveal reveal-delay-2 shadow-md" style="border-top: 4px solid #dc2626; padding: 2rem;">
+                    <h3 class="font-cairo font-black text-xl mb-6 flex items-center gap-3" style="color: #dc2626 !important">
+                        <i class="fas fa-calendar-alt text-2xl"></i> مواعيد الفاينال
+                    </h3>
+                    <ul class="space-y-4 text-base font-medium">
+                        <li class="flex justify-between pb-3" style="border-bottom: 1px solid var(--border-card)">
+                            <span>الفرقة الأولى</span>
+                            <span class="font-bold">15 يناير 2026</span>
+                        </li>
+                        <li class="flex justify-between pb-3" style="border-bottom: 1px solid var(--border-card)">
+                            <span>الفرقة الثانية (IT)</span>
+                            <span class="font-bold">17 يناير 2026</span>
+                        </li>
+                        <li class="flex justify-between pb-3">
+                            <span>الفرقة الثالثة</span>
+                            <span class="font-bold">20 يناير 2026</span>
+                        </li>
+                    </ul>
+                    <a href="login.html" class="btn btn-secondary w-full mt-6 py-3 font-bold text-base hover:-translate-y-1 transition-transform" style="background: var(--bg-primary); color: var(--text-primary); border-color: var(--border-card);">
+                        <i class="fas fa-table"></i> عرض الجدول الدراسي
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         ACTIVITIES
+    ═══════════════════════════════════════════ -->
+    <section class="flex items-center" style="min-height: 80vh; padding: 6rem 0;">
+        <div class="container">
+            <div class="text-center mb-16 reveal">
+                <div class="section-line"></div>
+                <h2 class="font-cairo font-black mb-3" style="font-size: clamp(2rem, 4vw, 3rem);">الأنشطة الجامعية</h2>
+                <p class="text-base font-medium" style="color: var(--text-muted)">أنشطة رياضية وتقافية تثري الحياة الجامعية</p>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-8">
+                <div class="activity-card reveal">
+                    <div class="text-5xl mb-5" aria-hidden="true">♟️</div>
+                    <h3 class="font-cairo font-black text-xl mb-2" style="color: var(--text-card-primary)">الشطرنج</h3>
+                    <p class="text-sm" style="color: var(--text-card-secondary)">تحسين التفكير الاستراتيجي والتحليلي</p>
+                </div>
+                <div class="activity-card reveal reveal-delay-1">
+                    <div class="text-5xl mb-5" aria-hidden="true">🏓</div>
+                    <h3 class="font-cairo font-black text-xl mb-2" style="color: var(--text-card-primary)">تنس الطاولة</h3>
+                    <p class="text-sm" style="color: var(--text-card-secondary)">الحفاظ على النشاط واللياقة والتنافسية</p>
+                </div>
+                <div class="activity-card reveal reveal-delay-2">
+                    <div class="text-5xl mb-5" aria-hidden="true">⚽</div>
+                    <h3 class="font-cairo font-black text-xl mb-2" style="color: var(--text-card-primary)">كرة القدم</h3>
+                    <p class="text-sm" style="color: var(--text-card-secondary)">العمل الجماعي واللياقة البدنية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════════
+         FOOTER
+    ═══════════════════════════════════════════ -->
+    <footer id="contact" class="academic-footer" style="background: var(--bg-card); color: var(--text-card-secondary); border-top: none;">
+        <div class="container pt-16">
+            <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
+                <div class="lg:col-span-1">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="img/logo.png" alt="BATU Logo" class="h-12 bg-white rounded-lg p-1">
+                        <span class="font-cairo font-black text-2xl" style="color: var(--text-card-primary)">BATU</span>
+                    </div>
+                    <p class="leading-relaxed text-sm mb-6">جامعة برج العرب التكنولوجية — تعليم تطبيقي متميز يربط بين المعرفة الأكاديمية والخبرة الصناعية لتخريج جيل جاهز لسوق العمل.</p>
+                </div>
+
+                <div>
+                    <span class="font-cairo font-black text-lg mb-6 block" style="color: var(--text-card-primary)">روابط سريعة</span>
+                    <ul class="space-y-3 text-sm font-medium">
+                        <li><a href="#home" style="color: inherit;" class="hover:text-green-500 transition-colors">الرئيسية</a></li>
+                        <li><a href="#programs" style="color: inherit;" class="hover:text-green-500 transition-colors">البرامج الأكاديمية</a></li>
+                        <li><a href="#news" style="color: inherit;" class="hover:text-green-500 transition-colors">الأخبار والقرارات</a></li>
+                        <li><a href="login.html" class="font-bold text-green-500 hover:text-green-400 transition-colors">دخول المنصة →</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <span class="font-cairo font-black text-lg mb-6 block" style="color: var(--text-card-primary)">تواصل معنا</span>
+                    <ul class="space-y-4 text-sm font-medium">
+                        <li class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-green-500 mt-1" aria-hidden="true"></i>الحي الأول، برج العرب الجديدة، الإسكندرية، مصر</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-phone text-green-500" aria-hidden="true"></i>01285512241</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-envelope text-green-500" aria-hidden="true"></i>info@batechu.edu.eg</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <span class="font-cairo font-black text-lg mb-6 block" style="color: var(--text-card-primary)">تابعنا على</span>
+                    <p class="text-sm mb-6">انضم لشبكتنا على مواقع التواصل الاجتماعي.</p>
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="social-brand social-fb" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" class="social-brand social-li" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                        <a href="#" class="social-brand social-yt" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                        <a href="#" class="social-brand social-ig" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" class="social-brand social-tt" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t py-8 text-center text-sm font-medium" style="border-color: var(--border-card);">
+                <p class="mb-2" style="color: var(--text-card-muted)">© 2025 جامعة برج العرب التكنولوجية — BATU. جميع الحقوق محفوظة.</p>
+                <div class="flex items-center justify-center gap-2" style="color: var(--text-card-muted)">
+                    <span>صنع بـ ❤️ بواسطة</span>
+                    <a href="#" class="font-bold hover:underline" style="color: #16a34a">Abdallah Mohamed Ali</a>
+                    <span class="mx-1">|</span>
+                    <span>Powered by DWD Smart Systems</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════
+         SCRIPTS
+    ═══════════════════════════════════════════ -->
+    <script>
+        // ── Theme Logic (Stabilized) ──
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        function getThemeMode() {
+            return localStorage.getItem('dwd-theme') || 'dark';
+        }
+
+        function applyTheme(mode) {
+            html.classList.remove('dark', 'classic');
+            if (mode === 'system') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                html.classList.toggle('dark', prefersDark);
+                themeIcon.className = 'fas fa-desktop';
+            } else if (mode === 'light') {
+                themeIcon.className = 'fas fa-sun';
+            } else if (mode === 'classic') {
+                html.classList.add('classic');
+                themeIcon.className = 'fas fa-leaf';
+            } else {
+                html.classList.add('dark');
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        applyTheme(getThemeMode());
+
+        themeToggle.addEventListener('click', () => {
+            const current = getThemeMode();
+            let next;
+            if (current === 'dark') next = 'light';
+            else if (current === 'light') next = 'classic';
+            else next = 'dark';
+            localStorage.setItem('dwd-theme', next);
+            applyTheme(next);
+        });
+
+        // ── Reveal on Scroll ──
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .staggered-reveal').forEach(el => revealObs.observe(el));
+
+        // ── Mobile Menu ──
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-nav').classList.toggle('hidden');
+        });
+
+        // ── Counter Animation ──
+        const counters = document.querySelectorAll('.stat-number-xl');
+        const counterObs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    let current = 0;
+                    const step = Math.max(1, Math.floor(target / 60));
+                    const timer = setInterval(() => {
+                        current += step;
+                        if (current >= target) { current = target; clearInterval(timer); }
+                        el.textContent = current.toLocaleString('ar-EG');
+                    }, 25);
+                    counterObs.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(c => counterObs.observe(c));
+
+    </script>
+</body>
+</html>

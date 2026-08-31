@@ -1,0 +1,10 @@
+{
+  "https://cdn.tailwindcss.com": "sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K",
+  "https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js": "sha384-nLoOnA/BDh8A/jxqtckg4DumuCGOBYUnNJLZdQz/zfYNp3wcjGSoWTAzgko06G/2",
+  "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js": "sha384-ztbLCS0Qe+xdkZU1lZIS81/tLEdaq5oHITH180tHGIFYWfg4+nIHfU3sru95qyGR",
+  "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js": "sha384-VDNmEWo1dfspnFEx9zTUaHNhDEdFPVAmGShh01rKx/nWPx5naU4mIL2bK4/O2eB7",
+  "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js": "sha384-3PnuaiwQlU07xSOjft3Wri+yLg32KAY/WBJnvDJpXO8zV83JlnW3dITT5WJLojUh",
+  "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js": "sha384-DhxhYObIMeMNGyAG7iK11OHzBIKyEIeRL0ad1iFPAOwZB8iirUlTT0O/WJJUk8+o",
+  "https://unpkg.com/swup@4": "sha384-SQcRQHke9VCdSV4AJCYzTQlV8KJldKo8Zz0jARJaEkCJNSMBzsxEwShjDMvvK+Aq",
+  "https://ui-avatars.com/api/": "sha384-ZHOcX2dg1bFkQoeZg3UVFLj79uvo5mP3igUBR8W0ZYaoNM6207E7aLo7S3k5WRV7"
+}

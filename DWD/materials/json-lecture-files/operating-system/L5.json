@@ -1,0 +1,252 @@
+{
+  "id": "os_l5",
+  "title": "Lecture 5: OS Services and System Calls",
+  "number": 5,
+  "pdfFile": "../../materials-lectures/operating-system/L5.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: خدمات نظام التشغيل (OS Services) 🛠️</h3>\n<p class=\"mb-4 text-lg\">نظام التشغيل بيقدم مجموعة من الخدمات عشان يساعد المستخدمين والبرامج على استخدام الكمبيوتر بسهولة وكفاءة.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">خدمات للمستخدم (Helping the User):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li>**واجهة المستخدم (User Interface - UI):** الطريقة اللي المستخدم بيتفاعل بيها (CLI، GUI، Batch).</li>\n    <li>**تنفيذ البرامج (Program Execution):** تحميل البرنامج وتشغيله وإنهاؤه.</li>\n    <li>**عمليات الإدخال/الإخراج (I/O Operations):** يتيح للبرامج الوصول للأجهزة الطرفية بأمان.</li>\n    <li>**التعامل مع نظام الملفات (File-System Manipulation):** قراءة، كتابة، حذف، وتنظيم الملفات والمجلدات.</li>\n    <li>**اكتشاف الأخطاء (Error Detection):** مراقبة الـ CPU والذاكرة وأجهزة الإدخال/الإخراج لتصحيح الأخطاء.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">خدمات لضمان كفاءة النظام (Ensuring Efficiency):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li>**توزيع الموارد (Resource Allocation):** توزيع موارد الـ CPU والذاكرة والأجهزة على العمليات المختلفة بعدالة وكفاءة.</li>\n    <li>**المحاسبة (Accounting):** تتبع استخدام المستخدمين والمشاريع المختلفة لموارد النظام (وقت الـ CPU، الذاكرة، إلخ).</li>\n    <li>**الحماية والأمان (Protection and Security):**\n         <ul class=\"list-disc list-inside ml-6 mt-1\">\n             <li>**الحماية (Protection):** التحكم في وصول العمليات والمستخدمين للموارد المحددة.</li>\n             <li>**الأمان (Security):** حماية النظام من الاختراقات الخارجية، والتأكد من هوية المستخدم (Authentication).</li>\n         </ul>\n    </li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: نداءات النظام (System Calls) 📞</h3>\n<p class=\"mb-4 text-lg\">نداءات النظام هي **واجهة البرمجة (Programming Interface)** بين برامج المستخدم ونواة نظام التشغيل (Kernel). هي الطريقة الوحيدة اللي برنامج في وضع المستخدم (User Mode) يقدر يطلب بيها خدمة من وضع النواة (Kernel Mode) بأمان.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">كيف يعمل نداء النظام؟</h4>\n<ol class=\"list-decimal list-inside space-y-2 mr-6\">\n    <li>البرنامج بيجهز **البارامترات (Parameters)** المطلوبة للخدمة.</li>\n    <li>البرنامج بيضع رقم النداء (System Call Number) في سجل خاص بالـ CPU.</li>\n    <li>بيحصل **مقاطعة (Trap)** للـ CPU اللي بتنقل التنفيذ لوضع النواة (Kernel Mode).</li>\n    <li>نواة النظام بتستخدم رقم النداء كـ **مفتاح (Index)** للوصول للدالة المناسبة في جدول نداءات النظام.</li>\n    <li>النواة بتنفذ الخدمة المطلوبة، وترجع النتيجة للبرنامج، وترجع التنفيذ لوضع المستخدم (User Mode).</li>\n</ol>\n\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">طرق تمرير البارامترات (Parameter Passing):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li>**بالسجلات (Registers):** الأسرع والأكثر شيوعًا، لكن محدودة جدًا في عدد البارامترات.</li>\n    <li>**بالجدول (Table/Block):** لو البارامترات كتير، بيتم تخزينها في جدول في الذاكرة، وبيتمرر عنوان الجدول ده في سجل واحد للـ Kernel.</li>\n    <li>**بالـ Stack (مكدس):** بيتم وضع البارامترات على مكدس (Stack) في الذاكرة، وعنوانه بيتمرر.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: هياكل نظام التشغيل المتقدمة 🧱</h3>\n<p class=\"mb-4 text-lg\">لمراجعة كيف يتم بناء نواة النظام لتحقيق الكفاءة وسهولة التطوير.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. الهيكل البسيط (Simple Structure - مثال DOS):</h4>\n<p class=\"mb-4\">نواة واحدة (Monolithic) بس كل شيء فيها مفتوح للكل، وصعب جدًا صيانتها وتطويرها.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. الهيكل الطبقي (Layered Approach - نادر الاستخدام):</h4>\n<p class=\"mb-4\">تقسيم النظام لطبقات، كل طبقة بتقدم خدمات للطبقة اللي فوقيها بس. (صعب جدًا تعريف كل طبقة ووظيفتها بالضبط).</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. وحدات النواة القابلة للتحميل (Loadable Kernel Modules - مثال Linux):</h4>\n<p class=\"mb-4\">دمج بين النواة المتجانسة (Monolithic) والنواة المصغرة (Microkernel). النواة الأساسية فيها الحد الأدنى من الوظائف، وبتكون ديناميكية: بنقدر نحمل ونحذف وحدات (Modules) إضافية (زي الدرايفرات) وقت التشغيل حسب الحاجة. **وده اللي بيستخدمه Linux و Windows الحديثة**.</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: إدارة المستخدمين والمجموعات في Linux 👤</h3>\n<p class=\"mb-4 text-lg\">أوامر متقدمة للتحكم الكامل في حسابات المستخدمين والمجموعات من الـ CLI.</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo useradd -m name</code>: لإنشاء مستخدم جديد **مع** مجلد شخصي (<code>-m</code>).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo passwd name</code>: لإنشاء أو تغيير كلمة مرور للمستخدم.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo userdel -r name</code>: لحذف مستخدم **ومسح** مجلده الشخصي وملفاته (<code>-r</code>).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo groupadd group_name</code>: لإنشاء مجموعة جديدة.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo usermod -aG group user</code>: لإضافة مستخدم لمجموعة إضافية (Secondary Group) من غير ما تغير مجموعته الأساسية.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">cat /etc/passwd</code>: لعرض ملف كل المستخدمين المسجلين في النظام.</div>\n</div>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Operating System Services 🛠️</h3>\n<p class=\"mb-4 text-lg\">The OS provides a set of services to help users and programs utilize the computer easily and efficiently.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Services for the User (Helping the User):</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li>**User Interface (UI):** The way the user interacts (CLI, GUI, Batch).</li>\n    <li>**Program Execution:** Loading, running, and terminating a program.</li>\n    <li>**I/O Operations:** Allows programs to access peripheral devices safely.</li>\n    <li>**File-System Manipulation:** Reading, writing, deleting, and organizing files and directories.</li>\n    <li>**Error Detection:** Monitoring the CPU, memory, and I/O devices to correct errors.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Services for System Efficiency (Ensuring Efficiency):</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li>**Resource Allocation:** Distributing CPU time, memory, and devices among different processes fairly and efficiently.</li>\n    <li>**Accounting:** Tracking the use of system resources (CPU time, memory, etc.) by different users and projects.</li>\n    <li>**Protection and Security:**\n         <ul class=\"list-disc list-inside ml-6 mt-1\">\n             <li>**Protection:** Controlling the access of processes and users to specified resources.</li>\n             <li>**Security:** Protecting the system from external intrusions and verifying user identity (Authentication).</li>\n         </ul>\n    </li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: System Calls 📞</h3>\n<p class=\"mb-4 text-lg\">System Calls are the **Programming Interface** between user programs and the OS Kernel. It is the only way a program in User Mode can safely request a service from Kernel Mode.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">How does a System Call work?</h4>\n<ol class=\"list-decimal list-inside space-y-2 ml-6\">\n    <li>The program prepares the required **Parameters** for the service.</li>\n    <li>The program places the System Call Number in a special CPU register.</li>\n    <li>A **Trap** occurs to the CPU, which transfers execution to Kernel Mode.</li>\n    <li>The OS Kernel uses the System Call Number as an **Index** to access the appropriate function in the System Call table.</li>\n    <li>The Kernel executes the requested service, returns the result to the program, and restores execution to User Mode.</li>\n</ol>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Parameter Passing Methods:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li>**Via Registers:** Fastest and most common, but very limited in the number of parameters.</li>\n    <li>**Via Table/Block:** If parameters are numerous, they are stored in a table in memory, and the address of this table is passed in a single register to the Kernel.</li>\n    <li>**Via Stack:** Parameters are pushed onto a Stack in memory, and its address is passed.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Advanced OS Structures 🧱</h3>\n<p class=\"mb-4 text-lg\">A review of how the OS kernel is built to achieve efficiency and ease of development.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Simple Structure (e.g., DOS):</h4>\n<p class=\"mb-4\">A single kernel (Monolithic) but everything in it is open to everyone, making it very difficult to maintain and develop.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Layered Approach (Rarely Used):</h4>\n<p class=\"mb-4\">Dividing the system into layers, each layer providing services only to the layer above it. (Very difficult to define each layer and its exact function).</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. Loadable Kernel Modules (e.g., Linux):</h4>\n<p class=\"mb-4\">A hybrid between Monolithic and Microkernel. The core kernel has a minimum set of functions and is dynamic: we can load and unload additional modules (like drivers) at runtime as needed. **This is what modern Linux and Windows use**.</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Linux User and Group Management 👤</h3>\n<p class=\"mb-4 text-lg\">Advanced commands for full control over user and group accounts from the CLI.</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo useradd -m name</code>: To create a new user **with** a home directory (<code>-m</code>).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo passwd name</code>: To create or change a password for the user.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo userdel -r name</code>: To delete a user **and remove** their home directory and files (<code>-r</code>).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo groupadd group_name</code>: To create a new group.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">sudo usermod -aG group user</code>: To add a user to a secondary group without changing their primary group.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">cat /etc/passwd</code>: To display the file of all registered users on the system.</div>\n</div>",
+  "quiz": [
+    {
+      "question": "1. What is the fundamental interface between a running program and the OS Kernel?",
+      "options": [
+        "Interrupt Vector",
+        "System Call",
+        "Local Buffer",
+        "Device Driver"
+      ],
+      "correctAnswer": "System Call",
+      "hint": "هي الطريقة الوحيدة اللي البرنامج بيطلب بيها خدمة من النواة.",
+      "englishHint": "It is the only way a program requests a service from the kernel."
+    },
+    {
+      "question": "2. Which OS service tracks the use of system resources by different users or projects?",
+      "options": [
+        "I/O Operations",
+        "Error Detection",
+        "Accounting",
+        "File-System Manipulation"
+      ],
+      "correctAnswer": "Accounting",
+      "hint": "المحاسبة لتتبع الاستخدام.",
+      "englishHint": "Accounting for tracking usage."
+    },
+    {
+      "question": "3. Which parameter passing method is generally the fastest but has limited capacity?",
+      "options": [
+        "Via Registers",
+        "Via Stack",
+        "Via Table/Block",
+        "Via Hard Disk"
+      ],
+      "correctAnswer": "Via Registers",
+      "hint": "السجلات سريعة لكن محدودة.",
+      "englishHint": "Registers are fast but limited."
+    },
+    {
+      "question": "4. What is the process that allows the OS to load and unload modules (like drivers) dynamically at runtime?",
+      "options": [
+        "Simple Structure",
+        "Layered Approach",
+        "Loadable Kernel Modules",
+        "Asymmetric Multiprocessing"
+      ],
+      "correctAnswer": "Loadable Kernel Modules",
+      "hint": "النظام اللي بيستخدمه Linux و Windows الحديثة.",
+      "englishHint": "The system used by modern Linux and Windows."
+    },
+    {
+      "question": "5. What happens immediately after a program makes a System Call?",
+      "options": [
+        "The system restarts",
+        "A Trap (Interrupt) occurs to switch to Kernel Mode",
+        "The CPU switches to User Mode",
+        "The file is deleted"
+      ],
+      "correctAnswer": "A Trap (Interrupt) occurs to switch to Kernel Mode",
+      "hint": "الـ Trap هي المقاطعة اللي بتنقل الوضع.",
+      "englishHint": "The Trap is the interrupt that switches the mode."
+    },
+    {
+      "question": "6. Which Linux command creates a new group?",
+      "options": [
+        "group new",
+        "groupadd",
+        "newgroup",
+        "addgroup"
+      ],
+      "correctAnswer": "groupadd",
+      "hint": "اختصار لـ 'Group Add'.",
+      "englishHint": "Short for 'Group Add'."
+    },
+    {
+      "question": "7. The System Call Interface uses a table indexed by ________ to invoke kernel functions.",
+      "options": [
+        "User ID",
+        "Process ID",
+        "A number associated with each system call",
+        "Memory address"
+      ],
+      "correctAnswer": "A number associated with each system call",
+      "hint": "كل System Call بيكون له رقم فريد بيحدد مكانه في الجدول.",
+      "englishHint": "Each System Call has a unique number that determines its location in the table."
+    },
+    {
+      "question": "8. What is the main drawback of the Simple Structure (Monolithic) for OS development?",
+      "options": [
+        "It is too slow",
+        "It is hard to maintain and modify due to everything being open",
+        "It uses too many CPU registers",
+        "It does not support I/O operations"
+      ],
+      "correctAnswer": "It is hard to maintain and modify due to everything being open",
+      "hint": "صعوبة الصيانة والتطوير.",
+      "englishHint": "Difficulty of maintenance and development."
+    },
+    {
+      "question": "9. Which command deletes a user *and* their home directory in Linux?",
+      "options": [
+        "userdel ali",
+        "useradd -r ali",
+        "userdel -r ali",
+        "rm -r /home/ali"
+      ],
+      "correctAnswer": "userdel -r ali",
+      "hint": "الـ '-r' هي اللي بتحذف المجلد الشخصي (Remove home directory).",
+      "englishHint": "The '-r' deletes the home directory."
+    },
+    {
+      "question": "10. Which interface relies solely on writing text commands?",
+      "options": [
+        "GUI",
+        "Batch Interface",
+        "CLI",
+        "System Call Interface"
+      ],
+      "correctAnswer": "CLI",
+      "hint": "واجهة سطر الأوامر.",
+      "englishHint": "Command Line Interface."
+    },
+    {
+      "question": "11. If a program passes parameters by storing them in memory and passing the address in a register, this is used when:",
+      "options": [
+        "There are very few parameters",
+        "Parameters are passed via stack",
+        "There are many parameters",
+        "Registers are not available"
+      ],
+      "correctAnswer": "There are many parameters",
+      "hint": "لما يكون عدد البارامترات كبير وما يكفيش السجلات.",
+      "englishHint": "When the number of parameters is large and registers are insufficient."
+    },
+    {
+      "question": "12. What is the role of the 'Protection' service in the OS?",
+      "options": [
+        "To check user passwords",
+        "To control the access of processes to specific resources",
+        "To backup all user files",
+        "To speed up the network connection"
+      ],
+      "correctAnswer": "To control the access of processes to specific resources",
+      "hint": "الحماية بتنظم الوصول الداخلي للموارد.",
+      "englishHint": "Protection regulates internal access to resources."
+    },
+    {
+      "question": "13. The Linux command to add user 'ali' to the secondary group 'sudo' is:",
+      "options": [
+        "useradd -g sudo ali",
+        "usermod -aG sudo ali",
+        "groupadd -aG ali sudo",
+        "adduser -s ali sudo"
+      ],
+      "correctAnswer": "usermod -aG sudo ali",
+      "hint": "الـ '-aG' تعني 'Append to Group'.",
+      "englishHint": "'-aG' means 'Append to Group'."
+    },
+    {
+      "question": "14. A system where commands and data are entered as a single 'batch' without direct user interaction is called a:",
+      "options": [
+        "GUI",
+        "Batch Interface",
+        "Time-Sharing System",
+        "Microkernel System"
+      ],
+      "correctAnswer": "Batch Interface",
+      "hint": "واجهة الدُفعة.",
+      "englishHint": "The Batch Interface."
+    },
+    {
+      "question": "15. The OS service that ensures the system is always running correctly and fixes problems is:",
+      "options": [
+        "Resource Allocation",
+        "Accounting",
+        "Error Detection",
+        "File-System Manipulation"
+      ],
+      "correctAnswer": "Error Detection",
+      "hint": "اكتشاف الأخطاء.",
+      "englishHint": "Error Detection."
+    },
+    {
+      "question": "16. Which file contains a list of all users registered on the Linux system?",
+      "options": [
+        "/etc/group",
+        "/etc/shadow",
+        "/etc/passwd",
+        "/home/users.txt"
+      ],
+      "correctAnswer": "/etc/passwd",
+      "hint": "الملف ده هو اللي فيه قايمة كل المستخدمين ومعلوماتهم الأساسية.",
+      "englishHint": "This file contains the list of all users and their basic information."
+    },
+    {
+      "question": "17. How do most modern OSes like Linux and Windows handle extensibility?",
+      "options": [
+        "Simple Structure",
+        "Strict Layering",
+        "Pure Microkernel",
+        "Loadable Kernel Modules"
+      ],
+      "correctAnswer": "Loadable Kernel Modules",
+      "hint": "النواة الأساسية + وحدات بتتحمل وقت الحاجة.",
+      "englishHint": "Core kernel + modules loaded when needed."
+    },
+    {
+      "question": "18. What is needed for user authentication according to the lecture?",
+      "options": [
+        "IP Address",
+        "User ID and Password",
+        "MAC Address",
+        "Fingerprint only"
+      ],
+      "correctAnswer": "User ID and Password",
+      "hint": "عشان نتأكد من هوية المستخدم.",
+      "englishHint": "To verify the user's identity."
+    },
+    {
+      "question": "19. Passing parameters by storing them in memory and passing the address in a register is used when:",
+      "options": [
+        "There are very few parameters",
+        "Parameters are passed via stack",
+        "There are many parameters",
+        "Registers are not available"
+      ],
+      "correctAnswer": "There are many parameters",
+      "hint": "لما البارامترات تكون كتير ومتكفيش في الـ Registers.",
+      "englishHint": "When parameters are numerous and do not fit in registers."
+    },
+    {
+      "question": "20. The System Call Interface uses a table indexed by ________ to invoke kernel functions.",
+      "options": [
+        "User ID",
+        "Process ID",
+        "A number associated with each system call",
+        "Memory address"
+      ],
+      "correctAnswer": "A number associated with each system call",
+      "hint": "كل System Call بيكون له رقم فريد.",
+      "englishHint": "Each System Call has a unique number."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

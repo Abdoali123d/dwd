@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التدريب الميداني | BATU</title>
+    <!-- Force Cache Refresh -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <script>
+        let _supabase = null;
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g,
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag]));
+        }
+    </script>
+    <!-- Supabase & Auth -->
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../js/supabase_client.js"></script>
+    <script src="../../js/security-utils.js"></script>
+    <script type="module" src="../../js/secure_connect.js"></script>
+
+    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com" data-swup-ignore-script></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Cairo', 'sans-serif'] },
+                    colors: {
+                        primary: '#06b6d4',
+                        secondary: '#a855f7',
+                        success: '#10b981',
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Progress Circle */
+        .progress-circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-circle-bg {
+            stroke: rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-circle-path {
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Timeline */
+        .timeline-track {
+            position: absolute;
+            top: 24px;
+            bottom: 24px;
+            right: 23px;
+            /* Adjusted for RTL */
+            width: 2px;
+            background: linear-gradient(to bottom, #334155, rgba(51, 65, 85, 0.1));
+        }
+
+        /* Robot Animation */
+        #robot-runner {
+            position: fixed;
+            bottom: 0;
+            right: -150px;
+            width: 120px;
+            height: 120px;
+            z-index: 50;
+            pointer-events: none;
+            filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.4));
+            transition: right 8s linear;
+        }
+
+        .running-anim {
+            animation: runScreen 8s linear infinite;
+            /* Adjusted for RTL: right to left */
+        }
+
+        @keyframes runScreen {
+            0% {
+                right: -150px;
+                transform: scaleX(1);
+            }
+
+            45% {
+                transform: scaleX(1);
+            }
+
+            50% {
+                right: 110%;
+                transform: scaleX(1);
+            }
+
+            50.01% {
+                right: 110%;
+                transform: scaleX(-1);
+            }
+
+            /* Flip for return? No, verify RTL */
+            100% {
+                right: 110%;
+            }
+
+            /* Just one way for now */
+        }
+    </style>
+    <link rel="manifest" href="../../manifest.json">
+    <script src="/js/content-protection.js" defer></script>
+</head>
+
+<body class="antialiased font-sans">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-40 w-full glass-panel border-b-0 border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                        <i class="fas fa-cube text-white text-lg animate-float"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white tracking-tight">منصة التدريب الميداني</h1>
+                        <p class="text-[10px] text-slate-400 font-medium tracking-wide opacity-80">جامعة برج العرب
+                            التكنولوجية</p>
+                    </div>
+                </div>
+
+                <!-- Profile Actions -->
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex flex-col items-end mr-4">
+                        <span id="nav-user-name" class="text-sm font-bold text-white">جاري التحميل...</span>
+                        <span id="nav-user-id" class="text-xs text-cyan-400 font-mono">...</span>
+                    </div>
+                    <div class="relative group">
+                        <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full opacity-50 group-hover:opacity-100 transition duration-300 blur">
+                        </div>
+                        <img id="nav-user-avatar" alt="صورة المستخدم" loading="lazy"
+                            src="https://ui-avatars.com/api/?name=User&background=0f172a&color=fff"
+                            onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=User&background=0f172a&color=fff';"
+                            class="relative w-10 h-10 rounded-full border-2 border-slate-900 object-cover">
+                    </div>
+                    <a href="https://dwd-edu.vercel.app/login.html" onclick="localStorage.clear(); sessionStorage.clear();"
+                        class="p-2 text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5">
+                        <i class="fas fa-power-off text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Sidebar (Stats) -->
+            <div class="lg:col-span-4 space-y-6">
+                <!-- Progress Card -->
+                <div class="glass-card rounded-3xl p-8 text-center relative overflow-hidden group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500">
+                    </div>
+
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-8">إجمالي التقدم</h2>
+
+                    <div class="relative w-48 h-48 mx-auto mb-8">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <!-- Background Circle -->
+                            <circle class="progress-circle-bg" cx="50" cy="50" r="45" fill="none" stroke-width="8">
+                            </circle>
+                            <!-- Progress Path -->
+                            <circle id="progress-path" class="progress-circle progress-circle-path" cx="50" cy="50"
+                                r="45" fill="none" stroke-width="8" stroke="url(#gradient-segment)"
+                                stroke-dasharray="283" stroke-dashoffset="283"></circle>
+
+                            <defs>
+                                <linearGradient id="gradient-segment" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#22d3ee" />
+                                    <stop offset="100%" stop-color="#a855f7" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="stat-completed" class="text-5xl font-black text-white tracking-tighter">0</span>
+                            <span class="text-xs text-slate-400 font-medium mt-1">أسبوع مكتمل</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-2xl bg-slate-800/50 border border-white/5">
+                            <div class="text-2xl font-bold text-cyan-400">12</div>
+                            <div class="text-[10px] text-slate-500">المطلوب</div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-800/50 border border-white/5">
+                            <div id="stat-remaining" class="text-2xl font-bold text-purple-400">12</div>
+                            <div class="text-[10px] text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Timeline -->
+            <div class="lg:col-span-8">
+                <div class="glass-card rounded-3xl p-8 min-h-[600px]">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                            <span class="w-2 h-8 rounded-full bg-cyan-500"></span>
+                            سجل التدريبات
+                        </h2>
+                        <button onclick="initDashboard()"
+                            class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+
+                    <div id="timeline-container" class="relative">
+                        <!-- Content injected by JS -->
+                        <div class="flex flex-col items-center justify-center py-20 text-center animate-pulse">
+                            <i class="fas fa-circle-notch fa-spin text-4xl text-cyan-500 mb-4"></i>
+                            <h3 class="text-lg font-medium text-slate-300">جاري مزامنة البيانات...</h3>
+                            <p class="text-sm text-slate-500">يرجى الانتظار لحظات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Robot Mascot -->
+    <div id="robot-display"
+        style="position:fixed; bottom:0; right:-200px; width:150px; z-index:999; pointer-events:none;">
+    </div>
+
+    <!-- Main App Script -->
+    <script>
+        // --- Training Data Loading & Rendering ---
+        async function waitForSupabase(retries = 20) {
+            for (let i = 0; i < retries; i++) {
+                if (window.appSupabaseClient) {
+                    _supabase = window.appSupabaseClient;
+                    return true;
+                }
+                await new Promise(r => setTimeout(r, 300));
+            }
+            return false;
+        }
+
+        async function initDashboard() {
+            const ready = await waitForSupabase();
+            if (!ready) {
+                console.error('[Training] Supabase client never loaded.');
+                document.getElementById('timeline-container').innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-400 mb-4"></i>
+                        <h3 class="text-lg font-medium text-red-300">فشل الاتصال بالنظام</h3>
+                        <p class="text-sm text-slate-500">تأكد من اتصالك بالإنترنت وأعد المحاولة</p>
+                    </div>`;
+                return;
+            }
+
+            // Load user info from localStorage
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    const ac_id = currentUser.academic_id || currentUser.user_metadata?.academic_id || '';
+                    document.getElementById('nav-user-name').textContent = escapeHTML(currentUser.name || 'مستخدم');
+                    document.getElementById('nav-user-id').textContent = escapeHTML(ac_id || '...');
+                    if (currentUser.photoURL) {
+                        const avatar = document.getElementById('nav-user-avatar');
+                        avatar.src = currentUser.photoURL;
+                        avatar.onerror = function () { this.onerror = null; this.src = 'https://ui-avatars.com/api/?name=User&background=0f172a&color=fff'; };
+                    }
+                }
+                
+                const finalAcId = currentUser?.academic_id || currentUser?.user_metadata?.academic_id;
+                // Load trainings for this student
+                if (currentUser && finalAcId) {
+                    await loadTrainings(finalAcId);
+                } else {
+                    await loadTrainings(null);
+                }
+            } catch (e) {
+                console.error('[Training] Init error:', e);
+                await loadTrainings(null);
+            }
+        }
+
+        async function loadTrainings(academicId) {
+            const container = document.getElementById('timeline-container');
+
+            try {
+                let query = _supabase
+                    .from('trainings')
+                    .select(`*, users!inner(name, full_name, academic_id)`)
+                    .order('created_at', { ascending: true });
+
+                // If student, filter by their academic_id
+                if (academicId) {
+                    query = query.eq('users.academic_id', academicId);
+                }
+
+                const { data, error } = await query;
+
+                if (error) {
+                    console.error('[Training] Fetch error:', error);
+                    // Fallback: try without join (simpler query)
+                    const fallback = await _supabase
+                        .from('trainings')
+                        .select('*')
+                        .order('created_at', { ascending: true });
+
+                    if (fallback.error) {
+                        container.innerHTML = `
+                            <div class="flex flex-col items-center justify-center py-20 text-center">
+                                <i class="fas fa-database text-4xl text-red-400 mb-4"></i>
+                                <h3 class="text-lg font-medium text-red-300">خطأ في تحميل البيانات</h3>
+                                <p class="text-sm text-slate-500">${escapeHTML(fallback.error.message)}</p>
+                            </div>`;
+                        return;
+                    }
+
+                    renderTimeline(fallback.data || [], container);
+                    return;
+                }
+
+                renderTimeline(data || [], container);
+
+            } catch (err) {
+                console.error('[Training] Unexpected error:', err);
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                        <i class="fas fa-bug text-4xl text-yellow-400 mb-4"></i>
+                        <h3 class="text-lg font-medium text-yellow-300">حدث خطأ غير متوقع</h3>
+                        <p class="text-sm text-slate-500">حاول إعادة تحميل الصفحة</p>
+                    </div>`;
+            }
+        }
+
+        function renderTimeline(trainings, container) {
+            if (!trainings || trainings.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                        <i class="fas fa-inbox text-5xl text-slate-600 mb-4"></i>
+                        <h3 class="text-lg font-medium text-slate-400">لا توجد تدريبات مسجلة بعد</h3>
+                        <p class="text-sm text-slate-600">ستظهر تدريباتك هنا عندما يقوم المشرف بتسجيلها</p>
+                    </div>`;
+
+                // Reset stats
+                document.getElementById('stat-completed').textContent = '0';
+                document.getElementById('stat-remaining').textContent = '12';
+                return;
+            }
+
+            const totalRequired = 12;
+            const completedCount = trainings
+                .filter(t => t.status === 'completed')
+                .reduce((sum, t) => sum + (parseInt(t.weeks_count) || 1), 0);
+            const remaining = Math.max(0, totalRequired - completedCount);
+            const progressPercent = Math.min(100, (completedCount / totalRequired) * 100);
+
+            // Update stats
+            document.getElementById('stat-completed').textContent = completedCount;
+            document.getElementById('stat-remaining').textContent = remaining;
+
+            // Animate progress circle
+            const progressPath = document.getElementById('progress-path');
+            if (progressPath) {
+                const circumference = 2 * Math.PI * 45; // r=45
+                const offset = circumference - (progressPercent / 100) * circumference;
+                setTimeout(() => { progressPath.style.strokeDashoffset = offset; }, 300);
+            }
+
+            // Build timeline HTML
+            let html = '<div class="relative pr-8">';
+            html += '<div class="timeline-track"></div>';
+
+            trainings.forEach((t, index) => {
+                const userObj = t.users || {};
+                const studentName = escapeHTML(userObj.name || userObj.full_name || t.student_name || 'طالب');
+                const title = escapeHTML(t.title || 'تدريب');
+                const location = escapeHTML(t.location || 'غير محدد');
+                const weeksCount = parseInt(t.weeks_count) || 1;
+                const status = t.status || 'pending';
+                const date = t.created_at ? new Date(t.created_at).toLocaleDateString('ar-EG') : '---';
+                const description = escapeHTML(t.description || '');
+
+                const statusConfig = {
+                    completed: { color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/30', icon: 'fa-check-circle', label: 'مكتمل' },
+                    in_progress: { color: 'text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/30', icon: 'fa-spinner fa-spin', label: 'جاري التنفيذ' },
+                    pending: { color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/30', icon: 'fa-clock', label: 'قيد الانتظار' }
+                };
+                const s = statusConfig[status] || statusConfig.pending;
+
+                html += `
+                    <div class="relative flex gap-6 mb-8 animate-slide-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="flex-shrink-0 z-10 w-12 h-12 rounded-2xl ${s.bg} border flex items-center justify-center">
+                            <i class="fas ${s.icon} ${s.color}"></i>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 flex-1 hover:border-cyan-500/30">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-white font-bold text-sm">${title}</h3>
+                                <span class="text-[10px] ${s.color} font-bold px-2 py-1 rounded-lg ${s.bg} border">${s.label}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 text-xs text-slate-400">
+                                <div><i class="fas fa-map-marker-alt text-cyan-500 ml-1"></i> ${location}</div>
+                                <div><i class="fas fa-calendar text-purple-500 ml-1"></i> ${date}</div>
+                                <div><i class="fas fa-layer-group text-yellow-500 ml-1"></i> ${weeksCount} أسابيع</div>
+                                <div><i class="fas fa-user text-green-500 ml-1"></i> ${studentName}</div>
+                            </div>
+                            ${description ? `<p class="mt-3 text-xs text-slate-500 border-t border-white/5 pt-3">${description}</p>` : ''}
+                        </div>
+                    </div>`;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // --- PWA Service Worker ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => { });
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data && event.data.type === 'FORCE_RELOAD') {
+                        // Soft refresh handled by app — no reload
+                    }
+                });
+            });
+        }
+
+        // --- Initialize on DOM Ready ---
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

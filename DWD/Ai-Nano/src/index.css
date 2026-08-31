@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ════════════════════════════════════════
+   🟣  Scrollbar — thin & elegant purple
+   ════════════════════════════════════════ */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #7c3aed #0f0f23;
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6d28d9, #9333ea, #c084fc);
+    border-radius: 99px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5b21b6, #7c3aed, #a855f7);
+}
+
+/* No horizontal scrollbar ever inside sidebar */
+aside,
+nav,
+[data-sidebar] {
+    overflow-x: hidden !important;
+}
+
+/* ════════════════════════════════════════
+   🎨  Canvas background — always behind
+   ════════════════════════════════════════ */
+canvas#nano-bg {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ════════════════════════════════════════
+   🎤  Mic pulse animation
+   ════════════════════════════════════════ */
+@keyframes mic-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+    }
+
+    50% {
+        box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+    }
+}
+
+.mic-active {
+    animation: mic-pulse 1s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   ✨  Theme polish — smooth transitions
+   ════════════════════════════════════════ */
+body,
+#root {
+    transition: background-color 0.4s ease, color 0.3s ease;
+}
+
+/* Focus rings — better accessibility */
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+input:focus-visible {
+    outline: 2px solid #7c3aed;
+    outline-offset: 2px;
+}
+
+/* Smooth hover micro-animations */
+button {
+    transition: background-color 0.2s ease, transform 0.15s ease,
+        box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+/* Message bubble text — always readable */
+.msg-bot {
+    color: #f1f5f9;
+    /* slate-100 */
+}
+
+.msg-user {
+    color: #ffffff;
+}
+
+/* Glow on active nav item */
+.nav-active-glow {
+    box-shadow: 0 4px 24px rgba(37, 99, 235, 0.25);
+}

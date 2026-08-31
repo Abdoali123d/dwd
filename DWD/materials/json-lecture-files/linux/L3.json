@@ -1,0 +1,252 @@
+{
+  "id": "linux_l3",
+  "title": "Lecture 3: Linux Command Line Interface (CLI) Fundamentals",
+  "number": 3,
+  "pdfFile": "../../materials-lectures/linux/l3.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: واجهة المستخدم (UI) 🖥️</h3>\n<p class=\"mb-4 text-lg\">واجهة المستخدم (UI) هي النقطة اللي بيحصل فيها التفاعل والتواصل بين الإنسان والكمبيوتر.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">ما هو الـ \"Shell\"؟</h4>\n<p class=\"mb-4\">الـ Shell هو برنامج بياخد الأوامر منك (عن طريق الكيبورد) ويديها لنظام التشغيل عشان ينفذها. حاليًا، فيه نوعين من الـ Shell:</p>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>GUI (Graphical User Interface):</strong> الواجهة الرسومية اللي بنستخدم فيها الأيقونات والأزرار والماوس.</li>\n    <li><strong>CLI (Command Line Interface):</strong> واجهة سطر الأوامر اللي بنكتب فيها أوامر نصية.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">لماذا نحتاج سطر الأوامر (CLI)؟</h4>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>بعض المهام لا يمكن تنفيذها إلا عبر CLI (مثل الإعدادات المتقدمة للخادم).</li>\n        <li>الـ CLI أسرع وأكثر كفاءة في إنجاز المهام المتكررة (Automation).</li>\n        <li>قدرة على عرض تفاصيل دقيقة ومعلومات خلفية عن النظام.</li>\n        <li>قدرة على إدارة النظام عن بعد بكفاءة عالية (Remote Access).</li>\n    </ul>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: أساسيات سطر الأوامر (CLI) ⌨️</h3>\n<p class=\"mb-4 text-lg\">الجزء ده بيعرفك على أهم الأوامر الأساسية في التعامل مع النظام والملفات والمجلدات.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. الأوامر الأساسية:</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-emerald-400\"><strong><code>whoami</code>:</strong> بيعرفك مين هو المستخدم اللي شغال حاليًا.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-emerald-400\"><strong><code>pwd</code>:</strong> بيعرض لك المسار الكامل للمجلد اللي أنت واقف فيه دلوقتي (Present Working Directory).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-emerald-400\"><strong><code>ls</code>:</strong> بيعرض محتويات المجلد اللي أنت فيه (Files and folders).</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. الانتقال داخل النظام:</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd</code>:</strong> أمر تغيير المجلد (Change Directory). ده أهم أمر عشان تتحرك بين المجلدات.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd ..</code>:</strong> بيرجعك خطوة للمجلد اللي كان قبله.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd ~</code>:</strong> بيرجعك للمجلد الرئيسي الخاص بالمستخدم الحالي (Home Directory).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd /</code>:</strong> بيرجعك لجذر النظام (Root Directory) وهو أعلى مكان في كل الملفات.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. الحصول على المساعدة:</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong><code>man [command]</code>:</strong> بيعرض لك كتيب المساعدة الكامل (Manual Page) لأي أمر.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong>مفتاح الخروج:</strong> للخروج من صفحة الـ <code>man</code>، اضغط على حرف <strong><code>q</code></strong> (اختصار لـ Quit).</li>\n</ul>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: The User Interface (UI) 🖥️</h3>\n<p class=\"mb-4 text-lg\">The User Interface (UI) is the point where interaction and communication occur between a human and a computer.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">What is the \"Shell\"?</h4>\n<p class=\"mb-4\">The Shell is a program that takes commands from you (via the keyboard) and passes them to the operating system for execution. Currently, there are two types of Shells:</p>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>GUI (Graphical User Interface):</strong> The graphical interface where we use icons, buttons, and the mouse.</li>\n    <li><strong>CLI (Command Line Interface):</strong> The command-line interface where we type text commands.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Why do we need the Command Line (CLI)?</h4>\n<div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>Some tasks can only be performed via CLI (such as advanced server settings).</li>\n        <li>The CLI is faster and more efficient for repetitive tasks (Automation).</li>\n        <li>Ability to display precise details and background information about the system.</li>\n        <li>Ability to manage the system remotely with high efficiency (Remote Access).</li>\n    </ul>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Command Line Fundamentals (CLI) ⌨️</h3>\n<p class=\"mb-4 text-lg\">This part introduces you to the most essential commands for interacting with the system, files, and folders.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Basic Commands:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-emerald-400\"><strong><code>whoami</code>:</strong> Tells you who the currently logged-in user is.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-emerald-400\"><strong><code>pwd</code>:</strong> Displays the full path of the directory you are currently in (Present Working Directory).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-emerald-400\"><strong><code>ls</code>:</strong> Lists the contents of the current directory (Files and folders).</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Moving Within the System:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd</code>:</strong> The Change Directory command. This is the most important command for moving between directories.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd ..</code>:</strong> Moves you one step back to the parent directory.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd ~</code>:</strong> Returns you to the current user's main directory (Home Directory).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>cd /</code>:</strong> Returns you to the Root Directory, the highest level in the entire file system.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. Getting Help:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong><code>man [command]</code>:</strong> Displays the full Manual Page (help documentation) for any command.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong>Exit Key:</strong> To exit the <code>man</code> page, press the <strong><code>q</code></strong> key (short for Quit).</li>\n</ul>",
+  "quiz": [
+    {
+      "question": "1. What does the acronym CLI stand for?",
+      "options": [
+        "Code Line Interface",
+        "Command Line Interface",
+        "Computer Logic Interface",
+        "Core Linux Integrator"
+      ],
+      "correctAnswer": "Command Line Interface",
+      "hint": "اختصار لواجهة سطر الأوامر.",
+      "englishHint": "Abbreviation for the command-line interface."
+    },
+    {
+      "question": "2. What is the main function of the 'Shell'?",
+      "options": [
+        "To manage hardware only",
+        "To execute graphics",
+        "To take user commands and pass them to the OS",
+        "To check the battery level"
+      ],
+      "correctAnswer": "To take user commands and pass them to the OS",
+      "hint": "هو الواجهة بينك وبين النواة (Kernel).",
+      "englishHint": "It is the interface between you and the Kernel."
+    },
+    {
+      "question": "3. Which command shows you the current user's identity?",
+      "options": [
+        "ls",
+        "pwd",
+        "whoami",
+        "cd"
+      ],
+      "correctAnswer": "whoami",
+      "hint": "من اسمها: 'من أنا'.",
+      "englishHint": "From its name: 'who am I'."
+    },
+    {
+      "question": "4. The <code>pwd</code> command displays the:",
+      "options": [
+        "Current date",
+        "Current user's password",
+        "Present Working Directory (Full Path)",
+        "System performance status"
+      ],
+      "correctAnswer": "Present Working Directory (Full Path)",
+      "hint": "اختصار لـ 'Print Working Directory'.",
+      "englishHint": "Abbreviation for 'Print Working Directory'."
+    },
+    {
+      "question": "5. Which command is used to list the contents of a directory?",
+      "options": [
+        "list",
+        "cd",
+        "ls",
+        "man"
+      ],
+      "correctAnswer": "ls",
+      "hint": "اختصار لـ 'List'.",
+      "englishHint": "Abbreviation for 'List'."
+    },
+    {
+      "question": "6. The <code>cd</code> command is used to:",
+      "options": [
+        "Create a new directory",
+        "Delete a file",
+        "Change Directory",
+        "Copy a file"
+      ],
+      "correctAnswer": "Change Directory",
+      "hint": "اختصار لـ 'Change Directory'.",
+      "englishHint": "Abbreviation for 'Change Directory'."
+    },
+    {
+      "question": "7. What does the <code>cd ..</code> command do?",
+      "options": [
+        "Moves to the root directory",
+        "Moves to the user's home directory",
+        "Moves one level up (to the parent directory)",
+        "Deletes the current directory"
+      ],
+      "correctAnswer": "Moves one level up (to the parent directory)",
+      "hint": "النقطتين دايماً بتعني المجلد الأب.",
+      "englishHint": "The two dots always mean the parent directory."
+    },
+    {
+      "question": "8. Why is the CLI often preferred for advanced server management?",
+      "options": [
+        "It supports more colors",
+        "It is always cheaper",
+        "It offers greater control and is more efficient for remote access",
+        "It requires a mouse"
+      ],
+      "correctAnswer": "It offers greater control and is more efficient for remote access",
+      "hint": "التحكم عن بعد بيكون أسهل وأسرع.",
+      "englishHint": "Remote control is easier and faster."
+    },
+    {
+      "question": "9. Which command provides detailed help documentation for another command?",
+      "options": [
+        "help",
+        "man",
+        "info",
+        "read"
+      ],
+      "correctAnswer": "man",
+      "hint": "اختصار لكلمة 'Manual'.",
+      "englishHint": "Abbreviation for 'Manual'."
+    },
+    {
+      "question": "10. What does the command <code>cd ~</code> do?",
+      "options": [
+        "Moves to the root directory",
+        "Moves to the desktop folder",
+        "Moves to the user's Home Directory",
+        "Creates a new directory named ~"
+      ],
+      "correctAnswer": "Moves to the user's Home Directory",
+      "hint": "علامة التيلدا (~) بترمز للمجلد الرئيسي للمستخدم.",
+      "englishHint": "The tilde symbol (~) refers to the user's home directory."
+    },
+    {
+      "question": "11. A key advantage of using CLI is its ability to automate tasks, known as:",
+      "options": [
+        "Scripting",
+        "Gaming",
+        "Graphics Rendering",
+        "Networking"
+      ],
+      "correctAnswer": "Scripting",
+      "hint": "كتابة الأوامر في ملف واحد عشان تتنفذ لوحدها.",
+      "englishHint": "Writing commands in a single file to be executed automatically."
+    },
+    {
+      "question": "12. What is an example of a GUI element?",
+      "options": [
+        "A text command",
+        "An icon or a button",
+        "A system log file",
+        "A configuration setting"
+      ],
+      "correctAnswer": "An icon or a button",
+      "hint": "الواجهة الرسومية بتعتمد على المرئيات.",
+      "englishHint": "The graphical interface relies on visuals."
+    },
+    {
+      "question": "13. What is the full path for the Root Directory in Linux?",
+      "options": [
+        "/home/user",
+        "/root",
+        "/",
+        "/system"
+      ],
+      "correctAnswer": "/",
+      "hint": "علامة السلاش الواحدة.",
+      "englishHint": "The single slash symbol."
+    },
+    {
+      "question": "14. If you are in `/home/abdullah` and run <code>cd ..</code>, where will you be?",
+      "options": [
+        "/home/abdullah",
+        "/",
+        "/home",
+        "/root"
+      ],
+      "correctAnswer": "/home",
+      "hint": "العودة خطوة للخلف للمجلد الأب.",
+      "englishHint": "Moving one step back to the parent directory."
+    },
+    {
+      "question": "15. What is another term for GUI?",
+      "options": [
+        "Text-based interface",
+        "Visual interface",
+        "Kernel interface",
+        "Command interface"
+      ],
+      "correctAnswer": "Visual interface",
+      "hint": "بتعتمد على الرؤية والصور.",
+      "englishHint": "It relies on sight and images."
+    },
+    {
+      "question": "16. Which of the following is NOT a reason to use the CLI?",
+      "options": [
+        "Automation",
+        "Advanced server control",
+        "Getting full system details",
+        "Changing desktop wallpaper with a mouse"
+      ],
+      "correctAnswer": "Changing desktop wallpaper with a mouse",
+      "hint": "هذه مهمة يتم إنجازها عادةً في الواجهة الرسومية.",
+      "englishHint": "This task is typically completed in the graphical interface."
+    },
+    {
+      "question": "17. To move directly to the highest level of the file system (Root), which command is used?",
+      "options": [
+        "cd /",
+        "cd ..",
+        "cd root",
+        "cd \\"
+      ],
+      "correctAnswer": "cd /",
+      "hint": "العلامة دي بترجعك لأصل النظام كله.",
+      "englishHint": "This symbol takes you back to the root of the entire system."
+    },
+    {
+      "question": "18. How do you exit the <code>man</code> command details page?",
+      "options": [
+        "Press 'e'",
+        "Press 'x'",
+        "Press 'q'",
+        "Press 'Esc'"
+      ],
+      "correctAnswer": "Press 'q'",
+      "hint": "اختصار لكلمة 'Quit'.",
+      "englishHint": "Abbreviation for 'Quit'."
+    },
+    {
+      "question": "19. CLI is also known as a 'console user interface' or...",
+      "options": [
+        "Graphical user interface",
+        "Picture user interface",
+        "Character user interface",
+        "Standard user interface"
+      ],
+      "correctAnswer": "Character user interface",
+      "hint": "لأنها بتعتمد على الحروف (Characters).",
+      "englishHint": "Because it relies on characters."
+    },
+    {
+      "question": "20. Another reason to use the CLI is...",
+      "options": [
+        "To use the mouse",
+        "To see icons and menus",
+        "To know more details in the background",
+        "To make the computer faster"
+      ],
+      "correctAnswer": "To know more details in the background",
+      "hint": "بتوريك حاجات بتحصل في الخلفية مش بتظهر في الـ GUI.",
+      "englishHint": "It shows you things happening in the background that don't appear in the GUI."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

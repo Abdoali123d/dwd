@@ -1,0 +1,250 @@
+{
+  "id": "os_l2",
+  "title": "Lecture 2: Computer System Structure & I/O Interrupts",
+  "number": 2,
+  "pdfFile": "../../materials-lectures/operating-system/L2.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: بنية نظام الكمبيوتر والذاكرة 🚀</h3>\n<p class=\"mb-4 text-lg\">لما بنشغل الكمبيوتر، أول حاجة بتحصل هي تحميل برنامج الـ **Bootstrap**. ده برنامج صغير متخزن بشكل دائم (عادة في **ROM** أو **Firmware**) وظيفته إنه يعمل تهيئة لكل أجزاء النظام (زي الـ CPU والـ Memory) وبعدين يحمل **نواة نظام التشغيل (Kernel)** ويبدأ تشغيلها.</p>\n \n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">تنظيم نظام الكمبيوتر:</h4>\n<p class=\"mb-4\">النظام بيتكون من:</p>\n<ul class=\"list-disc list-inside space-y-1 mr-6\">\n    <li>**CPU أو أكتر:** بتقوم بالمعالجة وتنفيذ التعليمات.</li>\n    <li>**متحكمات الأجهزة (Device Controllers):** كل جهاز (زي الهارد ديسك أو الكيبورد) له متحكم خاص بيه بيحافظ على المخزن المحلي بتاعه (**Local Buffer**).</li>\n    <li>**ناقل مشترك (Common Bus):** بيربط الـ CPUs والمتحكمات بالذاكرة المشتركة (**Shared Memory**).</li>\n    <li>**تنفيذ متزامن (Concurrent Execution):** الـ CPU والأجهزة بيشتغلوا في نفس الوقت وبيتنافسوا على الوصول للذاكرة.</li>\n</ul>\n\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">آلية عمل الإدخال/الإخراج (I/O Operation):</h4>\n<ul class=\"list-disc list-inside space-y-1 mr-6\">\n    <li>الـ **متحكم (Controller)** بينقل البيانات بين الجهاز بتاعه والمخزن المؤقت المحلي (**Local Buffer**).</li>\n    <li>الـ **CPU** بينقل البيانات بين الـ **Main Memory** والـ **Local Buffer** الخاص بالمتحكم.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: المقاطعات (Interrupts) - كيف يتفاعل الـ OS مع الهاردوير؟ 🧠</h3>\n<p class=\"mb-4 text-lg\">المقاطعة هي **إشارة (Signal)** بتيجي للـ CPU عشان توقف شغله مؤقتًا وتنبهه إن فيه حدث مهم حصل محتاج اهتمام فوري. دي الآلية الأساسية اللي بيشتغل بيها نظام التشغيل.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">دورة المقاطعة (Interrupt Cycle):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li>**ما بعد كل أمر:** بعد ما الـ CPU يخلص تنفيذ أمر، بيشوف إذا كان فيه أي مقاطعات وصلته ولا لأ.</li>\n    <li>**الحفظ:** لو فيه مقاطعة، بيتم **حفظ حالة الـ CPU (CPU State)** (زي محتويات السجلات والـ Program Counter) عشان يعرف يرجع يكمل شغله بعد ما يخلص المقاطعة.</li>\n    <li>**التنفيذ:** بيتم تحويل التنفيذ إلى كود خاص اسمه **Interrupt Handler** أو **Interrupt Service Routine (ISR)** وده الكود اللي بيعالج الحدث اللي عمل المقاطعة (زي إن فيه داتا وصلت من الهارد ديسك).</li>\n    <li>**الاستئناف:** بعد ما الـ ISR يخلص، بيتم **استرجاع حالة الـ CPU المحفوظة** والـ CPU بيرجع يكمل شغله من حيث ما وقف.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">جدول توجيه المقاطعات (Interrupt Vector):</h4>\n<p class=\"mb-4\">عشان الـ OS يعرف إيه الـ ISR المناسب لكل مقاطعة، بيستخدم **جدول (Vector)** بيحتوي على عناوين الـ ISRs المختلفة. كل مقاطعة بيكون لها رقم فريد بيحدد مكان الكود المناسب ليها في الجدول ده.</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: وضع التشغيل (Operation Modes) والحماية 🛡️</h3>\n<p class=\"mb-4 text-lg\">عشان نظام التشغيل يحمي نفسه ويحمي أجزاء النظام الحرجة من برامج المستخدمين اللي ممكن تعمل مشاكل، فيه وضعين للتشغيل:</p>\n\n<ul class=\"list-none space-y-3 mr-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\">**1. وضع النواة (Kernel Mode / Supervisor Mode / System Mode):**\n        <p class=\"text-sm mt-1\">ده الوضع اللي بتشتغل فيه **نواة نظام التشغيل (OS Kernel)**. في الوضع ده، الـ CPU بيكون عنده **صلاحيات كاملة** لتنفيذ أي أمر، بما في ذلك الأوامر اللي بتتعامل مباشرة مع الهاردوير (Privileged Instructions).</p>\n    </li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\">**2. وضع المستخدم (User Mode):**\n        <p class=\"text-sm mt-1\">ده الوضع اللي بتشتغل فيه **برامج المستخدم العادية** (زي المتصفحات والألعاب). في الوضع ده، بتكون الصلاحيات **محدودة**، وممنوع تنفيذ الأوامر الخطيرة اللي بتأثر على استقرار النظام.</p>\n    </li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">من User Mode إلى Kernel Mode: System Calls</h4>\n<p class=\"mb-4\">لما برنامج مستخدم بيحتاج خدمة حرجة (زي قراءة ملف من الهارد ديسك أو طباعة)، بيعمل حاجة اسمها **System Call**، وده بيؤدي لـ **مقاطعة (Interrupt)** بتحول النظام من **User Mode** لـ **Kernel Mode** عشان نواة النظام هي اللي تنفذ الأمر الخطير ده بأمان.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">حماية المؤقت (Timer Protection):</h4>\n<p class=\"mb-4\">نظام التشغيل بيستخدم مؤقت (Timer) عشان يضمن إن ولا برنامج مستخدم ياخد وقت الـ CPU كله ويسيطر عليه. المؤقت ده بيعمل **مقاطعة** بعد وقت معين، ويخلي الـ OS ياخد قرار بـ \"التبديل\" لبرنامج تاني.</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: الأوامر الأساسية في Linux (تطبيق عملي) 💻</h3>\n<p class=\"mb-4 text-lg\">نظام Linux هو مثال ممتاز لنظام تشغيل بيستخدم كل المفاهيم دي. تعالوا نشوف شوية أوامر أساسية مهمة للمحاضرات الجاية:</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">man command</code>: لعرض دليل شامل ومفصل لأي أمر في لينكس (Manual).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">history</code>: لعرض كل الأوامر اللي كتبتها قبل كده.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">clear</code>: لتنظيف الشاشة وإزالة كل الأوامر القديمة.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">Ctrl+C</code>: لإيقاف العملية اللي شغالة حاليًا بالقوة (Interrupting a process).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">ls -a</code>: لعرض كل الملفات في المجلد الحالي بما في ذلك الملفات المخفية (Hidden files).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">whoami</code>: لمعرفة اسم المستخدم الحالي اللي أنت داخل بيه.</div>\n</div>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Computer System Structure & Memory 🚀</h3>\n<p class=\"mb-4 text-lg\">When the computer starts, the first thing that happens is the loading of the **Bootstrap** program. This is a small, permanently stored program (usually in **ROM** or **Firmware**) whose function is to initialize all system components (like CPU and Memory) and then load the **Operating System Kernel** to start its execution.</p>\n \n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Computer System Organization:</h4>\n<p class=\"mb-4\">The system consists of:</p>\n<ul class=\"list-disc list-inside space-y-1 ml-6\">\n    <li>**One or more CPUs:** Performs processing and instruction execution.</li>\n    <li>**Device Controllers:** Each device (like the hard disk or keyboard) has its own controller that maintains its **Local Buffer**.</li>\n    <li>**Common Bus:** Connects CPUs and controllers to **Shared Memory**.</li>\n    <li>**Concurrent Execution:** The CPU and devices work simultaneously and compete for memory access.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">I/O Operation Mechanism:</h4>\n<ul class=\"list-disc list-inside space-y-1 ml-6\">\n    <li>The **Controller** transfers data between its device and its **Local Buffer**.</li>\n    <li>The **CPU** transfers data between **Main Memory** and the controller's **Local Buffer**.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Interrupts - How does the OS interact with Hardware? 🧠</h3>\n<p class=\"mb-4 text-lg\">An Interrupt is a **Signal** sent to the CPU to temporarily halt its current work and alert it that an important event has occurred that needs immediate attention. This is the fundamental mechanism by which the operating system operates.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">The Interrupt Cycle:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li>**After Each Instruction:** After the CPU finishes executing an instruction, it checks if any interrupts have arrived.</li>\n    <li>**Saving:** If an interrupt is present, the **CPU State** (like register contents and Program Counter) is **saved** so it can resume its work after the interrupt is handled.</li>\n    <li>**Execution:** Control is transferred to a specific code called the **Interrupt Handler** or **Interrupt Service Routine (ISR)**, which processes the event that caused the interrupt (e.g., data arrived from the hard disk).</li>\n    <li>**Resumption:** After the ISR finishes, the **saved CPU State is restored**, and the CPU returns to continue its work from where it stopped.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Interrupt Vector:</h4>\n<p class=\"mb-4\">To allow the OS to know the appropriate ISR for each interrupt, it uses a **Vector (Table)** containing the addresses of the different ISRs. Each interrupt has a unique number that identifies the location of its appropriate code in this table.</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Operation Modes and Protection 🛡️</h3>\n<p class=\"mb-4 text-lg\">To protect itself and critical system parts from potentially problematic user programs, the OS uses two operation modes:</p>\n\n<ul class=\"list-none space-y-3 ml-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\">**1. Kernel Mode / Supervisor Mode / System Mode:**\n        <p class=\"text-sm mt-1\">This is the mode in which the **OS Kernel** runs. In this mode, the CPU has **full privileges** to execute any instruction, including those that interact directly with the hardware (Privileged Instructions).</p>\n    </li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\">**2. User Mode:**\n        <p class=\"text-sm mt-1\">This is the mode in which **normal user applications** run (like browsers and games). In this mode, privileges are **limited**, and dangerous instructions that could compromise system stability are forbidden.</p>\n    </li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">From User Mode to Kernel Mode: System Calls</h4>\n<p class=\"mb-4\">When a user program needs a critical service (like reading a file from the hard disk or printing), it makes a **System Call**, which results in an **Interrupt** that switches the system from **User Mode** to **Kernel Mode** so the OS kernel can execute the sensitive command safely.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Timer Protection:</h4>\n<p class=\"mb-4\">The OS uses a Timer to ensure no single user program hogs the entire CPU time. This Timer generates an **Interrupt** after a set time, prompting the OS to decide on a \"switch\" to another program.</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Essential Linux Commands (Practical Application) 💻</h3>\n<p class=\"mb-4 text-lg\">The Linux system is an excellent example of an operating system that uses all these concepts. Let's look at some essential commands important for the upcoming lectures:</p>\n\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><code class=\"font-mono text-lg text-cyan-300\">man command</code>: To display a comprehensive manual for any Linux command.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\"><code class=\"font-mono text-lg text-cyan-300\">history</code>: To display all commands you've typed before.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-blue-400\"><code class=\"font-mono text-lg text-cyan-300\">clear</code>: To clear the screen and remove all previous commands.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-green-400\"><code class=\"font-mono text-lg text-cyan-300\">Ctrl+C</code>: To forcefully stop the currently running process (Interrupting a process).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-red-400\"><code class=\"font-mono text-lg text-cyan-300\">ls -a</code>: To display all files in the current directory, including hidden files.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-purple-400\"><code class=\"font-mono text-lg text-cyan-300\">whoami</code>: To find out the name of the current logged-in user.</div>\n</div>",
+  "quiz": [
+    {
+      "question": "1. What is the small program loaded first during computer startup, before the OS Kernel?",
+      "options": [
+        "Interrupt Handler",
+        "Bootstrap Program",
+        "System Call",
+        "Device Driver"
+      ],
+      "correctAnswer": "Bootstrap Program",
+      "hint": "هو أول كود بيتنفذ وبيكون في الـ ROM.",
+      "englishHint": "It is the first code executed and is located in ROM."
+    },
+    {
+      "question": "2. The signal that alerts the CPU to stop its current task and handle an event is called a(n):",
+      "options": [
+        "System Call",
+        "Bootstrap",
+        "Interrupt",
+        "Daemon"
+      ],
+      "correctAnswer": "Interrupt",
+      "hint": "هي إشارة التنبيه للـ CPU.",
+      "englishHint": "It is the alert signal to the CPU."
+    },
+    {
+      "question": "3. Which mode grants the OS Kernel full authority to execute any instruction?",
+      "options": [
+        "User Mode",
+        "Normal Mode",
+        "Kernel Mode",
+        "Safe Mode"
+      ],
+      "correctAnswer": "Kernel Mode",
+      "hint": "هذا هو وضع المشرف (Supervisor).",
+      "englishHint": "This is the Supervisor mode."
+    },
+    {
+      "question": "4. What must the CPU save before executing an Interrupt Service Routine (ISR)?",
+      "options": [
+        "The entire contents of the Hard Disk",
+        "The state of the CPU (registers, Program Counter)",
+        "The list of all open applications",
+        "The network configuration"
+      ],
+      "correctAnswer": "The state of the CPU (registers, Program Counter)",
+      "hint": "عشان يقدر يرجع ويكمل شغله منين ما وقف.",
+      "englishHint": "So it can return and resume its work from where it stopped."
+    },
+    {
+      "question": "5. A program that needs to read a file must make a _______ to switch from User Mode to Kernel Mode.",
+      "options": [
+        "Interrupt Vector",
+        "Device Controller",
+        "System Call",
+        "Local Buffer"
+      ],
+      "correctAnswer": "System Call",
+      "hint": "هي الطريقة اللي بيطلب بيها البرنامج خدمة من النواة.",
+      "englishHint": "It is the method for the program to request a service from the kernel."
+    },
+    {
+      "question": "6. The code that executes when an interrupt occurs is called the:",
+      "options": [
+        "Bootstrap Loader",
+        "Interrupt Service Routine (ISR)",
+        "User Application",
+        "File System"
+      ],
+      "correctAnswer": "Interrupt Service Routine (ISR)",
+      "hint": "هو المعالج أو المناول (Handler) للمقاطعة.",
+      "englishHint": "It is the handler for the interrupt."
+    },
+    {
+      "question": "7. What component stores I/O data temporarily before the CPU can access it?",
+      "options": [
+        "Main Memory (RAM)",
+        "Program Counter",
+        "Local Buffer (in the controller)",
+        "Control Bus"
+      ],
+      "correctAnswer": "Local Buffer (in the controller)",
+      "hint": "كل جهاز له مخزن مؤقت خاص بيه.",
+      "englishHint": "Every device has its own temporary store."
+    },
+    {
+      "question": "8. What is the purpose of the Timer Protection mechanism in the OS?",
+      "options": [
+        "To speed up the network",
+        "To ensure no single program monopolizes the CPU",
+        "To manage files on the disk",
+        "To check for hardware failures"
+      ],
+      "correctAnswer": "To ensure no single program monopolizes the CPU",
+      "hint": "لحماية الـ CPU من الاستحواذ عليه.",
+      "englishHint": "To protect the CPU from being monopolized."
+    },
+    {
+      "question": "9. In which mode do normal user applications run?",
+      "options": [
+        "Kernel Mode",
+        "System Mode",
+        "User Mode",
+        "Supervisor Mode"
+      ],
+      "correctAnswer": "User Mode",
+      "hint": "هو وضع الصلاحيات المحدودة.",
+      "englishHint": "It is the limited privileges mode."
+    },
+    {
+      "question": "10. What does the `man` command do in Linux?",
+      "options": [
+        "Manages users",
+        "Displays the manual for a command",
+        "Moves files",
+        "Checks memory status"
+      ],
+      "correctAnswer": "Displays the manual for a command",
+      "hint": "اختصار لـ Manual.",
+      "englishHint": "Short for Manual."
+    },
+    {
+      "question": "11. Where are the addresses of the Interrupt Service Routines (ISRs) stored?",
+      "options": [
+        "In the CPU registers",
+        "In the Interrupt Vector table",
+        "On the hard disk",
+        "In the device controller"
+      ],
+      "correctAnswer": "In the Interrupt Vector table",
+      "hint": "الجدول اللي بيوجه لكل مقاطعة الـ ISR الخاص بيها.",
+      "englishHint": "The table that directs each interrupt to its specific ISR."
+    },
+    {
+      "question": "12. What does the `ls -a` command show in Linux?",
+      "options": [
+        "All commands run in the past",
+        "Files only in the current directory",
+        "All files including hidden ones",
+        "The user's home directory"
+      ],
+      "correctAnswer": "All files including hidden ones",
+      "hint": "الـ 'a' اختصار لـ 'all'.",
+      "englishHint": "The 'a' stands for 'all'."
+    },
+    {
+      "question": "13. The main difference between User Mode and Kernel Mode is:",
+      "options": [
+        "The ability to connect to the internet",
+        "The use of the graphical interface",
+        "The ability to execute privileged instructions",
+        "The speed of the CPU"
+      ],
+      "correctAnswer": "The ability to execute privileged instructions",
+      "hint": "الأوامر الحرجة لا يمكن تنفيذها إلا في وضع النواة.",
+      "englishHint": "Critical instructions can only be executed in Kernel Mode."
+    },
+    {
+      "question": "14. What ensures that the CPU and I/O devices can access shared memory simultaneously?",
+      "options": [
+        "The Common Bus",
+        "The Local Buffer",
+        "The Timer",
+        "The Program Counter"
+      ],
+      "correctAnswer": "The Common Bus",
+      "hint": "هو المسار المشترك للبيانات.",
+      "englishHint": "It is the common pathway for data."
+    },
+    {
+      "question": "15. The state of the CPU includes registers and the:",
+      "options": [
+        "Hard disk status",
+        "Network speed",
+        "Program Counter",
+        "Local buffer address"
+      ],
+      "correctAnswer": "Program Counter",
+      "hint": "بيحدد الأمر التالي اللي هيتنفذ.",
+      "englishHint": "It determines the next instruction to be executed."
+    },
+    {
+      "question": "16. What is the code executed in response to an interrupt?",
+      "options": [
+        "Bootstrapping code",
+        "System Call",
+        "Interrupt Service Routine",
+        "Device Driver"
+      ],
+      "correctAnswer": "Interrupt Service Routine",
+      "hint": "هو الكود اللي بيتنفذ لما تحصل مقاطعة معينة.",
+      "englishHint": "It is the code executed when a specific interrupt occurs."
+    },
+    {
+      "question": "17. What does the bootstrap program load after initializing the system?",
+      "options": [
+        "Application programs",
+        "Device drivers",
+        "Operating system kernel",
+        "User data"
+      ],
+      "correctAnswer": "Operating system kernel",
+      "hint": "بيحمل قلب نظام التشغيل.",
+      "englishHint": "It loads the core of the operating system."
+    },
+    {
+      "question": "18. Competing for memory cycles happens between:",
+      "options": [
+        "Users only",
+        "Applications only",
+        "CPU and device controllers",
+        "OS and bootstrap program"
+      ],
+      "correctAnswer": "CPU and device controllers",
+      "hint": "كلهم بيحتاجوا يوصلوا للذاكرة.",
+      "englishHint": "All of them need to access memory."
+    },
+    {
+      "question": "19. True or False: Interrupts improve CPU utilization.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "hint": "لأنها بتخلي الـ CPU يشتغل بدل ما يستنى.",
+      "englishHint": "Because it allows the CPU to work instead of waiting."
+    },
+    {
+      "question": "20. The `Ctrl+C` command in Linux generates an interrupt to:",
+      "options": [
+        "Change the user password",
+        "Stop the currently running process",
+        "Open a new terminal window",
+        "View the command history"
+      ],
+      "correctAnswer": "Stop the currently running process",
+      "hint": "هي إشارة الإيقاف (Termination signal).",
+      "englishHint": "It is the termination signal."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

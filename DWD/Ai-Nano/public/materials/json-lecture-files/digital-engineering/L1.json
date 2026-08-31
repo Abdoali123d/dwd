@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/DE/L1.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: أهمية المنطق الرقمي ومجالاته 💡</h3>\n    <p class=\"mb-4 text-lg\">معظم الأجهزة الإلكترونية الحديثة بتعتمد على نظامين متكاملين: **الهاردوير (Hardware)** و **السوفتوير (Software)**. مادة تصميم المنطق الرقمي (Digital Logic Design) بتركز على فهم وتصميم **الهاردوير** أو الدوائر الإلكترونية اللي بتنفذ أوامر السوفتوير.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">تطبيقات المنطق الرقمي:</h4>\n    <p class=\"mb-4\">بيدخل في تصميم حاجات كتير جدًا حوالينا زي:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n      <li>**الكمبيوترات:** (CPUs, Busses, Peripherals).</li>\n      <li>**الشبكات والاتصالات:** (الهواتف، المودم، الراوترات).</li>\n      <li>**المنتجات المدمجة (Embedded):** (السيارات، الألعاب، الأجهزة المنزلية، أجهزة الترفيه زي MP3 Players و PlayStation).</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: الأنظمة الرقمية مقابل التناظرية 📊</h3>\n    <p class=\"mb-4 text-lg\">الأنظمة بتتعامل مع الإشارات (Signals) بطريقتين:</p>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n      <li>**الإشارات التناظرية (Analog Signal):** قيمتها بتتغير بشكل **مستمر** مع الوقت (زي موجة الصوت).</li>\n      <li>**الإشارات الرقمية (Digital Signal):** قيمتها بتاخد قيم **متقطعة (Discrete)** ومحددة فقط (زي 0 أو 1).</li>\n    </ul>\n        <p class=\"mt-4 text-lg\">الكمبيوتر بيعتبر جهاز **رقمي (Digital)** لأنه في مستواه الأساسي بيتعامل مع قيمتين بس (0 و 1)، واللي بيمثلوا حالة التشغيل (on) والإيقاف (off) للترانزستورات اللي جواه.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">ما هو تصميم المنطق (Logic Design)؟</h4>\n    <p class=\"mb-4\">هو عملية حل مشكلة معينة عن طريق اختيار وتجميع مكونات إلكترونية متاحة (زي البوابات المنطقية) لتحقيق وظيفة محددة، مع مراعاة عوامل زي الحجم والتكلفة واستهلاك الطاقة.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: البوابات المنطقية والمستويات المنطقية  GATE</h3>\n    <p class=\"mb-4 text-lg\">الوحدات الأساسية لبناء أي دائرة رقمية هي **البوابات المنطقية (Logic Gates)**. دي مكونات إلكترونية بتقوم بعمليات منطقية بسيطة.</p>\n    <p class=\"mb-4 text-lg\">أشهر 3 بوابات أساسية هي:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n      <li>**AND:** بتطلع 1 لو كل المداخل 1.</li>\n      <li>**OR:** بتطلع 1 لو أي مدخل (أو أكتر) بـ 1.</li>\n      <li>**NOT (Inverter):** بتعكس المدخل (0 تبقى 1، و 1 تبقى 0).</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">المستويات المنطقية (Logic Levels):</h4>\n    <p class=\"mb-4\">في الدوائر الرقمية، بنمثل القيمتين (0 و 1) باستخدام مستويات **جهد (Voltage)** مختلفة:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n      <li>**Logic 1 (High):** بيمثلها مدى جهد عالي (مثلًا من 2 فولت لـ 5 فولت).</li>\n      <li>**Logic 0 (Low):** بيمثلها مدى جهد منخفض (مثلًا من 0 فولت لـ 0.8 فولت).</li>\n      <li>المنطقة اللي في النص (بين 0.8 و 2 فولت) بنحاول نتجنبها إلا أثناء الانتقال بين الحالتين.</li>\n    </ul>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: أنظمة الأعداد (Number Systems) 🔢</h3>\n    <p class=\"mb-4 text-lg\">مراجعة سريعة لأنظمة الأعداد المختلفة المستخدمة في الهندسة الرقمية وكيفية التحويل بينها وبين النظام العشري (Decimal).</p>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n      <li>**النظام العشري (Decimal - Base 10):** أساسه 10 (0-9). بنستخدمه في حياتنا اليومية. مثال: $(345)_{10} = 3 \\times 10^2 + 4 \\times 10^1 + 5 \\times 10^0$.</li>\n      <li>**النظام الثنائي (Binary - Base 2):** أساسه 2 (0, 1). لغة الكمبيوتر الأساسية. مثال: $(1101)_2 = 1 \\times 2^3 + 1 \\times 2^2 + 0 \\times 2^1 + 1 \\times 2^0 = (13)_{10}$.\n          <ul class=\"list-disc list-inside ml-6 mt-1\">\n              <li>**التحويل من عشري لثنائي:** القسمة المتكررة على 2 وأخذ الباقي من أسفل لأعلى.</li>\n              <li>**التحويل من ثنائي لعشري:** ضرب كل رقم في 2 مرفوعة لأس موقعه (بدءًا من 0 من اليمين) وجمع النواتج.</li>\n          </ul>\n      </li>\n      <li>**النظام الثماني (Octal - Base 8):** أساسه 8 (0-7). مثال: $(17)_8 = 1 \\times 8^1 + 7 \\times 8^0 = (15)_{10}$.\n          <ul class=\"list-disc list-inside ml-6 mt-1\">\n              <li>**التحويل من عشري لثماني:** القسمة المتكررة على 8 وأخذ الباقي.</li>\n              <li>**التحويل من ثماني لعشري:** ضرب كل رقم في 8 مرفوعة لأس موقعه وجمع النواتج.</li>\n          </ul>\n      </li>\n       <li>**النظام السداسي عشري (Hexadecimal - Base 16):** أساسه 16 (0-9, A=10, B=11, C=12, D=13, E=14, F=15). يستخدم بكثرة في البرمجة. مثال: $(1F)_{16} = 1 \\times 16^1 + 15 \\times 16^0 = (31)_{10}$.\n           <ul class=\"list-disc list-inside ml-6 mt-1\">\n              <li>**التحويل من عشري لسداسي عشري:** القسمة المتكررة على 16 وأخذ الباقي (مع تحويل 10-15 للحروف A-F).</li>\n              <li>**التحويل من سداسي عشري لعشري:** ضرب كل رقم/حرف في 16 مرفوعة لأس موقعه وجمع النواتج.</li>\n          </ul>\n      </li>\n    </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Importance and Applications of Digital Logic 💡</h3>\n    <p class=\"mb-4 text-lg\">Most modern electronic devices rely on two integrated systems: **Hardware** and **Software**. Digital Logic Design focuses on understanding and designing the **Hardware** or electronic circuits that execute software commands.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Applications of Digital Logic:</h4>\n    <p class=\"mb-4\">It's involved in designing many things around us, such as:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n      <li>**Computers:** (CPUs, Busses, Peripherals).</li>\n      <li>**Networking and Communications:** (Phones, modems, routers).</li>\n      <li>**Embedded Products:** (Cars, toys, appliances, entertainment devices like MP3 Players and PlayStation).</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Digital vs. Analog Systems 📊</h3>\n    <p class=\"mb-4 text-lg\">Systems handle signals in two ways:</p>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n      <li>**Analog Signal:** Its value varies **continuously** over time (like a sound wave).</li>\n      <li>**Digital Signal:** Its value takes only **discrete**, specific values (like 0 or 1).</li>\n    </ul>\n        <p class=\"mt-4 text-lg\">A computer is considered a **digital** machine because, at its most basic level, it deals with only two values (0 and 1), representing the 'on' and 'off' states of the transistors inside it.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">What is Logic Design?</h4>\n    <p class=\"mb-4\">It's the process of solving a specific problem by selecting and assembling available electronic components (like logic gates) to achieve a desired function, while meeting criteria like size, cost, or power consumption.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Logic Gates and Logic Levels GATE</h3>\n    <p class=\"mb-4 text-lg\">The basic building blocks of any digital circuit are **Logic Gates**. These are electronic components that perform simple logical operations.</p>\n    <p class=\"mb-4 text-lg\">The 3 most fundamental gates are:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n      <li>**AND:** Outputs 1 if all inputs are 1.</li>\n      <li>**OR:** Outputs 1 if any input (or more) is 1.</li>\n      <li>**NOT (Inverter):** Inverts the input (0 becomes 1, 1 becomes 0).</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Logic Levels:</h4>\n    <p class=\"mb-4\">In digital circuits, the two values (0 and 1) are represented using different **Voltage** levels:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n      <li>**Logic 1 (High):** Represented by a high voltage range (e.g., 2V to 5V).</li>\n      <li>**Logic 0 (Low):** Represented by a low voltage range (e.g., 0V to 0.8V).</li>\n      <li>The intermediate region (between 0.8V and 2V) is generally avoided except during state transitions.</li>\n    </ul>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Number Systems 🔢</h3>\n    <p class=\"mb-4 text-lg\">A quick review of different number systems used in digital engineering and how to convert between them and the Decimal system.</p>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n      <li>**Decimal (Base 10):** Base 10 (0-9). Used in everyday life. Example: $(345)_{10} = 3 \\times 10^2 + 4 \\times 10^1 + 5 \\times 10^0$.</li>\n      <li>**Binary (Base 2):** Base 2 (0, 1). The computer's native language. Example: $(1101)_2 = 1 \\times 2^3 + 1 \\times 2^2 + 0 \\times 2^1 + 1 \\times 2^0 = (13)_{10}$.\n          <ul class=\"list-disc list-inside ml-6 mt-1\">\n              <li>**Decimal to Binary Conversion:** Repeated division by 2, taking remainders from bottom up.</li>\n              <li>**Binary to Decimal Conversion:** Multiply each digit by 2 raised to its position power (starting from 0 on the right) and sum the results.</li>\n          </ul>\n      </li>\n      <li>**Octal (Base 8):** Base 8 (0-7). Example: $(17)_8 = 1 \\times 8^1 + 7 \\times 8^0 = (15)_{10}$.\n          <ul class=\"list-disc list-inside ml-6 mt-1\">\n              <li>**Decimal to Octal Conversion:** Repeated division by 8, taking remainders.</li>\n              <li>**Octal to Decimal Conversion:** Multiply each digit by 8 raised to its position power and sum.</li>\n          </ul>\n      </li>\n       <li>**Hexadecimal (Base 16):** Base 16 (0-9, A=10, B=11, C=12, D=13, E=14, F=15). Widely used in programming. Example: $(1F)_{16} = 1 \\times 16^1 + 15 \\times 16^0 = (31)_{10}$.\n           <ul class=\"list-disc list-inside ml-6 mt-1\">\n              <li>**Decimal to Hex Conversion:** Repeated division by 16, taking remainders (converting 10-15 to A-F).</li>\n              <li>**Hex to Decimal Conversion:** Multiply each digit/letter by 16 raised to its position power and sum.</li>\n          </ul>\n      </li>\n    </ul>\n  ",
+  "quiz": [
+    {
+      "question": "1. Digital Logic Design primarily focuses on designing:",
+      "options": [
+        "Software Programs",
+        "Hardware Circuits",
+        "User Interfaces",
+        "Network Protocols"
+      ],
+      "correctAnswer": "Hardware Circuits",
+      "hint": "هي المادة اللي بتعلمنا تصميم الدوائر الإلكترونية."
+    },
+    {
+      "question": "2. Which type of signal varies continuously over time?",
+      "options": [
+        "Digital Signal",
+        "Binary Signal",
+        "Discrete Signal",
+        "Analog Signal"
+      ],
+      "correctAnswer": "Analog Signal",
+      "hint": "الإشارة التناظرية ليس لها قيم متقطعة."
+    },
+    {
+      "question": "3. Computers are digital machines because they fundamentally distinguish between:",
+      "options": [
+        "Many voltage levels",
+        "Only 0s and 1s",
+        "Analog and digital signals",
+        "Software and hardware"
+      ],
+      "correctAnswer": "Only 0s and 1s",
+      "hint": "النظام الثنائي هو لغة الكمبيوتر الأساسية."
+    },
+    {
+      "question": "4. What are the basic building blocks used to build digital circuits?",
+      "options": [
+        "Transistors",
+        "Resistors",
+        "Logic Gates",
+        "Capacitors"
+      ],
+      "correctAnswer": "Logic Gates",
+      "hint": "الوحدات الأساسية زي AND, OR, NOT."
+    },
+    {
+      "question": "5. Which logic gate inverts its input?",
+      "options": [
+        "AND",
+        "OR",
+        "XOR",
+        "NOT"
+      ],
+      "correctAnswer": "NOT",
+      "hint": "بوابة العاكس."
+    },
+    {
+      "question": "6. In digital circuits, Logic 1 is typically represented by:",
+      "options": [
+        "Low voltage range",
+        "High voltage range",
+        "Zero voltage",
+        "Alternating voltage"
+      ],
+      "correctAnswer": "High voltage range",
+      "hint": "المستوى المنطقي العالي."
+    },
+    {
+      "question": "7. Which number system uses base 2?",
+      "options": [
+        "Decimal",
+        "Octal",
+        "Hexadecimal",
+        "Binary"
+      ],
+      "correctAnswer": "Binary",
+      "hint": "النظام الثنائي (0 و 1)."
+    },
+    {
+      "question": "8. What is the decimal equivalent of the binary number (101)₂ ?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correctAnswer": "5",
+      "hint": "(1 * 2²) + (0 * 2¹) + (1 * 2⁰) = 4 + 0 + 1 = 5."
+    },
+    {
+      "question": "9. Which number system uses digits 0-7?",
+      "options": [
+        "Decimal",
+        "Octal",
+        "Hexadecimal",
+        "Binary"
+      ],
+      "correctAnswer": "Octal",
+      "hint": "النظام الثماني."
+    },
+    {
+      "question": "10. Which number system uses digits 0-9 and letters A-F?",
+      "options": [
+        "Decimal",
+        "Octal",
+        "Hexadecimal",
+        "Binary"
+      ],
+      "correctAnswer": "Hexadecimal",
+      "hint": "النظام السداسي عشري (أساس 16)."
+    },
+    {
+      "question": "11. What is the binary equivalent of the decimal number (13)₁₀ ?",
+      "options": [
+        "1110",
+        "1011",
+        "1101",
+        "1001"
+      ],
+      "correctAnswer": "1101",
+      "hint": "استخدم طريقة القسمة المتكررة على 2."
+    },
+    {
+      "question": "12. What is the decimal equivalent of the octal number (17)₈ ?",
+      "options": [
+        "17",
+        "15",
+        "25",
+        "9"
+      ],
+      "correctAnswer": "15",
+      "hint": "(1 * 8¹) + (7 * 8⁰) = 8 + 7 = 15."
+    },
+    {
+      "question": "13. What is the decimal equivalent of the hexadecimal number (1F)₁₆ ?",
+      "options": [
+        "115",
+        "20",
+        "31",
+        "16"
+      ],
+      "correctAnswer": "31",
+      "hint": "F = 15. (1 * 16¹) + (15 * 16⁰) = 16 + 15 = 31."
+    },
+    {
+      "question": "14. How is the decimal number (45)₁₀ represented in binary?",
+      "options": [
+        "101101",
+        "110101",
+        "101011",
+        "111001"
+      ],
+      "correctAnswer": "101101",
+      "hint": "القسمة على 2: 45->1, 22->0, 11->1, 5->1, 2->0, 1->1."
+    },
+    {
+      "question": "15. How is the decimal number (23)₁₀ represented in octal?",
+      "options": [
+        "32",
+        "27",
+        "72",
+        "23"
+      ],
+      "correctAnswer": "27",
+      "hint": "23 / 8 = 2 remainder 7. Result is 27."
+    },
+    {
+      "question": "16. How is the decimal number (127)₁₀ represented in hexadecimal?",
+      "options": [
+        "7F",
+        "F7",
+        "8F",
+        "F8"
+      ],
+      "correctAnswer": "7F",
+      "hint": "127 / 16 = 7 remainder 15 (F). Result is 7F."
+    },
+    {
+      "question": "17. Digital signals assume __________ values.",
+      "options": [
+        "Continuous",
+        "Infinite",
+        "Discrete",
+        "Random"
+      ],
+      "correctAnswer": "Discrete",
+      "hint": "قيم متقطعة ومحددة."
+    },
+    {
+      "question": "18. Which logic gate outputs 1 only if *both* inputs are 1?",
+      "options": [
+        "OR",
+        "NOT",
+        "XOR",
+        "AND"
+      ],
+      "correctAnswer": "AND",
+      "hint": "بوابة 'و' المنطقية."
+    },
+    {
+      "question": "19. Which logic gate outputs 1 if *either* input is 1?",
+      "options": [
+        "OR",
+        "NOT",
+        "XNOR",
+        "AND"
+      ],
+      "correctAnswer": "OR",
+      "hint": "بوابة 'أو' المنطقية."
+    },
+    {
+      "question": "20. The range of voltage from 0V to 0.8V typically represents:",
+      "options": [
+        "Logic 1",
+        "Logic 0",
+        "Intermediate region",
+        "Error state"
+      ],
+      "correctAnswer": "Logic 0",
+      "hint": "المستوى المنطقي المنخفض."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

@@ -1,0 +1,254 @@
+[
+  {
+    "id": "linux",
+    "title": "Linux",
+    "icon": "🐧",
+    "color": "border-[#00D1A7]",
+    "description": "تعلم أساسيات نظام التشغيل لينكس ومهارات سطر الأوامر.",
+    "lectures": [
+      {
+        "id": "linux_l1",
+        "title": "Lecture 1: Introduction to LINUX OS",
+        "number": 1,
+        "dataFile": "./json-lecture-files/linux/L1.json"
+      },
+      {
+        "id": "linux_l2",
+        "title": "Lecture 2: Linux Desktop and Users",
+        "number": 2,
+        "dataFile": "./json-lecture-files/linux/L2.json"
+      },
+      {
+        "id": "linux_l3",
+        "title": "Lecture 3: UI and Command Line Skills",
+        "number": 3,
+        "dataFile": "./json-lecture-files/linux/L3.json"
+      },
+      {
+        "id": "linux_l4",
+        "title": "Lecture 4: Working with Files via CLI",
+        "number": 4,
+        "dataFile": "./json-lecture-files/linux/L4.json"
+      },
+      {
+        "id": "linux_l5",
+        "title": "Lecture 5: User and Group Management",
+        "number": 5,
+        "dataFile": "./json-lecture-files/linux/L5.json"
+      }
+    ]
+  },
+  {
+    "id": "os",
+    "title": "Operating System",
+    "icon": "🖥️",
+    "color": "border-[#3F5EFB]",
+    "description": "فهم المفاهيم الأساسية لأنظمة التشغيل.",
+    "lectures": [
+      {
+        "id": "os_l1",
+        "title": "Lecture 1: Introduction to Operating Systems",
+        "number": 1,
+        "dataFile": "./json-lecture-files/operating-system/L1.json"
+      },
+      {
+        "id": "os_l2",
+        "title": "Lecture 2: Computer System Organization and Interrupts",
+        "number": 2,
+        "dataFile": "./json-lecture-files/operating-system/L2.json"
+      },
+      {
+        "id": "os_l3",
+        "title": "Lecture 3: I/O Structure, Storage, and Caching",
+        "number": 3,
+        "dataFile": "./json-lecture-files/operating-system/L3.json"
+      },
+      {
+        "id": "os_l4",
+        "title": "Lecture 4: System Architecture and OS Structure",
+        "number": 4,
+        "dataFile": "./json-lecture-files/operating-system/L4.json"
+      },
+      {
+        "id": "os_l5",
+        "title": "Lecture 5: Operating System Services and System Calls",
+        "number": 5,
+        "dataFile": "./json-lecture-files/operating-system/L5.json"
+      }
+    ]
+  },
+  {
+    "id": "database",
+    "title": "Data Base",
+    "icon": "💾",
+    "color": "border-[#FFC72C]",
+    "description": "تعلم تصميم قواعد البيانات و SQL وإدارة البيانات.",
+    "lectures": [
+      {
+        "id": "db_l1",
+        "title": "Lecture 1: Introduction to Data Base",
+        "number": 1,
+        "dataFile": "./json-lecture-files/data-base/L1.json"
+      },
+      {
+        "id": "db_l2",
+        "title": "Lecture 2: Database Relationships and MS Access Basics",
+        "number": 2,
+        "dataFile": "./json-lecture-files/data-base/L2.json"
+      },
+      {
+        "id": "db_l3",
+        "title": "Lecture 3: Database Relationships (1-to-1 & 1-to-Many)",
+        "number": 3,
+        "dataFile": "./json-lecture-files/data-base/L3.json"
+      },
+      {
+        "id": "db_l4",
+        "title": "Lecture 4: Many-to-Many Relationships & Integrity",
+        "number": 4,
+        "dataFile": "./json-lecture-files/data-base/L4.json"
+      },
+      {
+        "id": "db_l5",
+        "title": "Lecture 5: Introduction to SQL",
+        "number": 5,
+        "dataFile": "./json-lecture-files/data-base/L5.json"
+      },
+      {
+        "id": "db_l6",
+        "title": "Lecture 6",
+        "number": 6,
+        "dataFile": "./json-lecture-files/data-base/L6.json"
+      },
+      {
+        "id": "db_l7",
+        "title": "Lecture 7",
+        "number": 7,
+        "dataFile": "./json-lecture-files/data-base/L7.json"
+      },
+      {
+        "id": "db_l8",
+        "title": "Lecture 8",
+        "number": 8,
+        "dataFile": "./json-lecture-files/data-base/L8.json"
+      }
+    ]
+  },
+  {
+    "id": "cpp",
+    "title": "C++ Programming",
+    "icon": "💻",
+    "color": "border-[#E53935]",
+    "description": "إتقان أساسيات ومواضيع متقدمة في برمجة C++.",
+    "lectures": [
+      {
+        "id": "cpp_l1",
+        "title": "Lecture 1: Intro, I/O, Variables & Data Types",
+        "number": 1,
+        "dataFile": "./json-lecture-files/cpp/L1.json"
+      },
+      {
+        "id": "cpp_l2",
+        "title": "Lecture 2: Input, Arithmetic Operations & Modulus",
+        "number": 2,
+        "dataFile": "./json-lecture-files/cpp/L2.json"
+      },
+      {
+        "id": "cpp_l3",
+        "title": "Lecture 3: Increment/Decrement, Operator Precedence & Logical Operators",
+        "number": 3,
+        "dataFile": "./json-lecture-files/cpp/L3.json"
+      },
+      {
+        "id": "cpp_l4",
+        "title": "Lecture 4: Conditional Statements & Loops",
+        "number": 4,
+        "dataFile": "./json-lecture-files/cpp/L4.json"
+      },
+      {
+        "id": "cpp_l5",
+        "title": "Lecture 5: Increment/Decrement, Loop Control & Intro to Arrays",
+        "number": 5,
+        "dataFile": "./json-lecture-files/cpp/L5.json"
+      }
+    ]
+  },
+  {
+    "id": "web",
+    "title": "WEB 1",
+    "icon": "🌐",
+    "color": "border-[#A020F0]",
+    "description": "مقدمة في تطوير الويب، HTML، CSS، و JavaScript.",
+    "lectures": [
+      {
+        "id": "web_l1",
+        "title": "Lecture 1: Introduction to Web Development",
+        "number": 1,
+        "dataFile": "./json-lecture-files/web-1/L1.json"
+      },
+      {
+        "id": "web_l2",
+        "title": "Lecture 2: HTML5 Structure, Elements & CSS Basics",
+        "number": 2,
+        "dataFile": "./json-lecture-files/web-1/L2.json"
+      },
+      {
+        "id": "web_l3",
+        "title": "Lecture 3: HTML Forms & CSS Intro (Box Model)",
+        "number": 3,
+        "dataFile": "./json-lecture-files/web-1/L3.json"
+      },
+      {
+        "id": "web_l4",
+        "title": "Lecture 4: CSS Display, Combinators & Opacity",
+        "number": 4,
+        "dataFile": "./json-lecture-files/web-1/L4.json"
+      },
+      {
+        "id": "web_l5",
+        "title": "Lecture 5: UI Frameworks (Bootstrap 5)",
+        "number": 5,
+        "dataFile": "./json-lecture-files/web-1/L5.json"
+      }
+    ]
+  },
+  {
+    "id": "digital",
+    "title": "Digital Engineering",
+    "icon": "🔩",
+    "color": "border-[#E0E0E0]",
+    "description": "استكشاف عالم الدوائر الرقمية وتصميم المنطق.",
+    "lectures": [
+      {
+        "id": "digital_l1",
+        "title": "Lecture 1: Introduction to Digital Logic & Number Systems",
+        "number": 1,
+        "dataFile": "./json-lecture-files/digital-engineering/L1.json"
+      },
+      {
+        "id": "digital_l2",
+        "title": "Lecture 2: Logic Gates and Boolean Algebra Basics",
+        "number": 2,
+        "dataFile": "./json-lecture-files/digital-engineering/L2.json"
+      },
+      {
+        "id": "digital_l3",
+        "title": "Lecture 3: Truth Tables",
+        "number": 3,
+        "dataFile": "./json-lecture-files/digital-engineering/L3.json"
+      },
+      {
+        "id": "digital_l4",
+        "title": "Lecture 4: Minterms, Maxterms, SOP & POS",
+        "number": 4,
+        "dataFile": "./json-lecture-files/digital-engineering/L4.json"
+      },
+      {
+        "id": "digital_l5",
+        "title": "Lecture 5: De Morgan, Duality, Simplification & K-Maps",
+        "number": 5,
+        "dataFile": "./json-lecture-files/digital-engineering/L5.json"
+      }
+    ]
+  }
+]

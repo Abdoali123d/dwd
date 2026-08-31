@@ -1,0 +1,252 @@
+{
+  "id": "linux_l2",
+  "title": "Lecture 2: Using the Graphical Interface and Managing Users",
+  "number": 2,
+  "pdfFile": "../../materials-lectures/linux/l2.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: مكونات واجهة النظام 🖥️</h3>\n<p class=\"mb-4 text-lg\">تغطي المحاضرة في بدايتها مجموعة من النقاط المتعلقة بالتفاعل اليومي مع النظام واستعراض المكونات الأساسية لواجهة مستخدم سطح مكتب لينكس (اوبنتو):</p>\n<ul class=\"list-disc list-inside space-y-2 mr-6\">\n    <li><strong>التاريخ (The date):</strong> عرض التاريخ والتقويم والإشعارات.</li>\n    <li><strong>الأنشطة (Activities):</strong> لفتح التطبيقات والوصول للنوافذ.</li>\n    <li><strong>معلومات النظام (System Informations):</strong> للتحكم في الشبكة، البلوتوث، الصوت، إلخ.</li>\n    <li><strong>الملفات والمجلدات (Files and Folders):</strong> للوصول للملفات.</li>\n    <li><strong>شريط التمرير (Scroll bar).</strong></li>\n    <li><strong>متجر البرامج (Download Software):</strong> لتنزيل برامج جديدة.</li>\n    <li><strong>أيقونات البرامج (Open programs):</strong> لفتح البرامج.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: إدارة المستخدمين 👥</h3>\n<p class=\"mb-4 text-lg\">يركز الجزء الأكبر والأكثر أهمية في المحاضرة على مفهوم المستخدمين والصلاحيات في نظام لينكس (Ubuntu)، وهو أساس الأمان في هذا النظام.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أنواع المستخدمين:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\">\n        <strong class=\"text-white block mb-1\">1. المدير (Administrator):</strong>\n        <ul class=\"list-none space-y-1 text-sm opacity-80\">\n            <li>✅ صلاحيات كاملة.</li>\n            <li>✅ يمكنه تثبيت وإزالة البرامج.</li>\n            <li>✅ يمكنه إضافة وإزالة المستخدمين الآخرين.</li>\n            <li>✅ تحكم كامل في كل إعدادات النظام.</li>\n        </ul>\n    </div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\">\n        <strong class=\"text-white block mb-1\">2. المستخدم العادي (Standard User):</strong>\n        <ul class=\"list-none space-y-1 text-sm opacity-80\">\n            <li>❌ صلاحيات محدودة.</li>\n            <li>❌ لا يمكنه تثبيت البرامج دون إذن المدير.</li>\n            <li>✅ يمكنه تعديل إعدادات خاصة به فقط (مثل الخلفية، ملفاته الشخصية).</li>\n            <li>✅ الأمان أعلى في الاستخدام اليومي لأنه لا يملك صلاحيات تخريب النظام.</li>\n        </ul>\n    </div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">خطوات إنشاء مستخدم جديد (عبر الواجهة الرسومية):</h4>\n<ol class=\"list-decimal list-inside space-y-2 mr-6 mt-4\">\n    <li>افتح تطبيق **الإعدادات (Settings)**.</li>\n    <li>اذهب إلى **المستخدمون (Users)**.</li>\n    <li>اضغط على **إضافة مستخدم (Add User)**.</li>\n    <li>**فتح القفل:** يجب عليك أولًا فتح القفل بإدخال كلمة مرور المدير (Administrator Password) لتتمكن من إضافة مستخدم.</li>\n    <li>**تحديد النوع:** اختر نوع الحساب: **قياسي (Standard)** أو **مسؤول (Administrator)**.</li>\n    <li>أدخل **اسم المستخدم (Username)** و **اسم العرض (Full Name)**.</li>\n    <li>**تعيين كلمة المرور:** اختر إما تعيين كلمة مرور فورًا أو السماح للمستخدم بإنشائها عند أول تسجيل دخول.</li>\n</ol>\n\n<p class=\"mt-4 p-4 bg-gray-700/50 rounded-lg border border-gray-600\">\n    <strong class=\"text-red-400\">نقطة أمان مهمة:</strong> في لينكس، لا يُنصح بالعمل على حساب المدير بشكل دائم. الأفضل هو استخدام حساب عادي، وعند الحاجة لإجراء مهمة تتطلب صلاحيات، تطلب النظام كلمة مرور المدير مؤقتًا (وهو ما يُعرف بـ <code>sudo</code> في سطر الأوامر).\n</p>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: System Interface Components 🖥️</h3>\n<p class=\"mb-4 text-lg\">The lecture begins by covering a set of points related to daily interaction with the system and reviewing the basic components of the Linux desktop user interface (Ubuntu):</p>\n<ul class=\"list-disc list-inside space-y-2 ml-6\">\n    <li><strong>The Date:</strong> Displaying the date, calendar, and notifications.</li>\n    <li><strong>Activities:</strong> For opening applications and accessing windows.</li>\n    <li><strong>System Informations:</strong> For controlling the network, Bluetooth, sound, etc.</li>\n    <li><strong>Files and Folders:</strong> For accessing files.</li>\n    <li><strong>Scroll bar.</strong></li>\n    <li><strong>Download Software:</strong> For downloading new programs.</li>\n    <li><strong>Open Programs Icons:</strong> For quickly launching applications.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: User Management 👥</h3>\n<p class=\"mb-4 text-lg\">The largest and most important part of the lecture focuses on the concept of users and permissions in the Linux system (Ubuntu), which is the foundation of security in this system.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Types of Users:</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\">\n        <strong class=\"text-white block mb-1\">1. Administrator:</strong>\n        <ul class=\"list-none space-y-1 text-sm opacity-80\">\n            <li>✅ Full permissions.</li>\n            <li>✅ Can install and remove software.</li>\n            <li>✅ Can add and remove other users.</li>\n            <li>✅ Complete control over all system settings.</li>\n        </ul>\n    </div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-yellow-400\">\n        <strong class=\"text-white block mb-1\">2. Standard User:</strong>\n        <ul class=\"list-none space-y-1 text-sm opacity-80\">\n            <li>❌ Limited permissions.</li>\n            <li>❌ Cannot install software without Admin permission.</li>\n            <li>✅ Can modify only personal settings (like background, personal files).</li>\n            <li>✅ Higher security for daily use as they lack privileges to harm the system.</li>\n        </ul>\n    </div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Steps to Create a New User (via GUI):</h4>\n<ol class=\"list-decimal list-inside space-y-2 ml-6 mt-4\">\n    <li>Open the **Settings** application.</li>\n    <li>Go to **Users**.</li>\n    <li>Click on **Add User**.</li>\n    <li>**Unlock:** You must first unlock the settings by entering the **Administrator Password** to be able to add a user.</li>\n    <li>**Set Type:** Choose the account type: **Standard** or **Administrator**.</li>\n    <li>Enter the **Username** and **Full Name**.</li>\n    <li>**Set Password:** Choose either to set a password immediately or allow the user to create one on the first login.</li>\n</ol>\n\n<p class=\"mt-4 p-4 bg-gray-700/50 rounded-lg border border-gray-600\">\n    <strong class=\"text-red-400\">Important Security Note:</strong> In Linux, it is not recommended to consistently operate under the Administrator account. It is better to use a Standard account, and when a task requires elevated privileges, the system will temporarily request the Administrator password (which is known as <code>sudo</code> in the command line).\n</p>",
+  "quiz": [
+    {
+      "question": "1. What is the primary purpose of the 'Activities' button in the Linux desktop interface?",
+      "options": [
+        "To check the time",
+        "To open applications and manage windows",
+        "To adjust volume settings",
+        "To change the screen resolution"
+      ],
+      "correctAnswer": "To open applications and manage windows",
+      "hint": "هو مركز التحكم لفتح النوافذ والبرامج.",
+      "englishHint": "It is the control center for opening windows and programs."
+    },
+    {
+      "question": "2. Which type of user has complete control over the entire Linux system?",
+      "options": [
+        "Standard User",
+        "Guest User",
+        "Limited Account",
+        "Administrator"
+      ],
+      "correctAnswer": "Administrator",
+      "hint": "هو المستخدم الذي يملك جميع الصلاحيات (Superuser).",
+      "englishHint": "It is the user with all privileges (Superuser)."
+    },
+    {
+      "question": "3. To add a new user in the graphical interface, the first necessary step is usually to...",
+      "options": [
+        "Reboot the system",
+        "Unlock the settings with the Administrator password",
+        "Download a specific application",
+        "Run the 'whoami' command"
+      ],
+      "correctAnswer": "Unlock the settings with the Administrator password",
+      "hint": "أي تعديل في إعدادات النظام الأساسية يحتاج صلاحيات.",
+      "englishHint": "Any modification to basic system settings requires privileges."
+    },
+    {
+      "question": "4. A Standard User can modify the files of...",
+      "options": [
+        "The Administrator",
+        "Other Standard Users",
+        "The Operating System Core",
+        "Themselves (their personal files) only"
+      ],
+      "correctAnswer": "Themselves (their personal files) only",
+      "hint": "الأمان في لينكس يمنع المستخدم العادي من الوصول لملفات غيره.",
+      "englishHint": "Security in Linux prevents a standard user from accessing others' files."
+    },
+    {
+      "question": "5. What is the most important reason for using a Standard User account for daily work?",
+      "options": [
+        "It is faster",
+        "It is more secure and reduces the risk of damaging the system",
+        "It uses less RAM",
+        "It requires fewer updates"
+      ],
+      "correctAnswer": "It is more secure and reduces the risk of damaging the system",
+      "hint": "صلاحياته المحدودة تحميك من الأخطاء والبرامج الضارة.",
+      "englishHint": "Its limited privileges protect you from errors and malicious software."
+    },
+    {
+      "question": "6. Which part of the system interface typically controls network and sound settings?",
+      "options": [
+        "Files and Folders",
+        "System Informations Area",
+        "Sidebar icons",
+        "Scroll bar"
+      ],
+      "correctAnswer": "System Informations Area",
+      "hint": "هي المنطقة اللي بتظهر فيها أيقونات الشبكة والصوت والبطارية.",
+      "englishHint": "The area where network, sound, and battery icons appear."
+    },
+    {
+      "question": "7. What can an Administrator do that a Standard User generally cannot?",
+      "options": [
+        "Change the desktop wallpaper",
+        "Browse the internet",
+        "Install system-wide software",
+        "Write documents"
+      ],
+      "correctAnswer": "Install system-wide software",
+      "hint": "هذه المهمة تتطلب صلاحيات المدير.",
+      "englishHint": "This task requires administrator privileges."
+    },
+    {
+      "question": "8. What is 'sudo' in the context of Linux permissions?",
+      "options": [
+        "A file compression tool",
+        "A command that temporarily grants admin privileges to a standard user",
+        "A method for backing up data",
+        "A type of graphical interface"
+      ],
+      "correctAnswer": "A command that temporarily grants admin privileges to a standard user",
+      "hint": "هي اختصار لـ 'Superuser Do'.",
+      "englishHint": "It stands for 'Superuser Do'."
+    },
+    {
+      "question": "9. Where would you go to download new applications in the GUI?",
+      "options": [
+        "Files and Folders",
+        "System Informations",
+        "Software Center / Store",
+        "Activities"
+      ],
+      "correctAnswer": "Software Center / Store",
+      "hint": "المكان المخصص لمتجر التطبيقات.",
+      "englishHint": "The dedicated place for the application store."
+    },
+    {
+      "question": "10. Which piece of information is NOT typically found in the top bar of the Linux desktop?",
+      "options": [
+        "The date",
+        "Network connection status",
+        "User profile picture",
+        "Detailed CPU usage percentage"
+      ],
+      "correctAnswer": "Detailed CPU usage percentage",
+      "hint": "هذا يحتاج لبرنامج مراقبة منفصل (Monitoring tool).",
+      "englishHint": "This requires a separate monitoring tool."
+    },
+    {
+      "question": "11. What is the main security concept emphasized by the two types of user accounts?",
+      "options": [
+        "Speed",
+        "Economy",
+        "Separation of Privileges",
+        "Compatibility"
+      ],
+      "correctAnswer": "Separation of Privileges",
+      "hint": "تقليل الصلاحيات للحد من الضرر المحتمل.",
+      "englishHint": "Reducing privileges to limit potential harm."
+    },
+    {
+      "question": "12. If a Standard User wants to install a new program, what must they do?",
+      "options": [
+        "Log out and log back in",
+        "Enter the Administrator's password when prompted",
+        "Delete the program folder first",
+        "Use the 'Activities' menu only"
+      ],
+      "correctAnswer": "Enter the Administrator's password when prompted",
+      "hint": "النظام هيطلب إذن المدير.",
+      "englishHint": "The system will ask for the administrator's permission."
+    },
+    {
+      "question": "13. The main difference between a Standard and an Administrator account lies in their:",
+      "options": [
+        "Desktop background",
+        "Internet speed",
+        "System permissions",
+        "Username length"
+      ],
+      "correctAnswer": "System permissions",
+      "hint": "الصلاحيات هي الفارق الجوهري.",
+      "englishHint": "Permissions are the essential difference."
+    },
+    {
+      "question": "14. Where do you typically access the files and folders on the system?",
+      "options": [
+        "The 'System Informations' menu",
+        "The 'Files' application icon",
+        "The date and time display",
+        "The Scroll bar"
+      ],
+      "correctAnswer": "The 'Files' application icon",
+      "hint": "تطبيق مدير الملفات (File Manager).",
+      "englishHint": "The File Manager application."
+    },
+    {
+      "question": "15. Which action requires Administrator privileges?",
+      "options": [
+        "Changing your account picture",
+        "Renaming a file in your home folder",
+        "Adding a new System Font",
+        "Viewing the system calendar"
+      ],
+      "correctAnswer": "Adding a new System Font",
+      "hint": "إضافة خط للنظام كله مش ليك لوحدك.",
+      "englishHint": "Adding a font for the whole system, not just for you."
+    },
+    {
+      "question": "16. After creating a new user, a strong security practice is to set their password to...",
+      "options": [
+        "Their full name",
+        "Their birth date",
+        "A strong, complex, unique password",
+        "An empty string"
+      ],
+      "correctAnswer": "A strong, complex, unique password",
+      "hint": "أفضل ممارسة أمنية.",
+      "englishHint": "Best security practice."
+    },
+    {
+      "question": "17. What is another common term for a Standard User account?",
+      "options": [
+        "Root account",
+        "Guest account",
+        "Superuser",
+        "Limited account"
+      ],
+      "correctAnswer": "Limited account",
+      "hint": "صلاحياته بتكون محدودة للأمان.",
+      "englishHint": "Its privileges are limited for security."
+    },
+    {
+      "question": "18. What is an option for setting a password when creating a new user?",
+      "options": [
+        "Generate a random password",
+        "Use '1234' as default",
+        "No password is required",
+        "Use the admin's password"
+      ],
+      "correctAnswer": "Generate a random password",
+      "hint": "النظام ممكن يخترعلك واحدة قوية.",
+      "englishHint": "The system can create a strong one for you."
+    },
+    {
+      "question": "19. To change a 'Normal user' to an 'Administrator', you must first...",
+      "options": [
+        "Log in as that user",
+        "Delete the user and recreate them",
+        "Unlock the settings with an admin password",
+        "Run the 'whoami' command"
+      ],
+      "correctAnswer": "Unlock the settings with an admin password",
+      "hint": "أي تعديل كبير محتاج صلاحيات المدير.",
+      "englishHint": "Any major modification requires administrator privileges."
+    },
+    {
+      "question": "20. Program icons on the sidebar are used to...",
+      "options": [
+        "Show the time",
+        "Change the language",
+        "Open programs",
+        "View activity logs"
+      ],
+      "correctAnswer": "Open programs",
+      "hint": "دي اختصارات عشان تفتح البرامج بسرعة.",
+      "englishHint": "These are shortcuts to open programs quickly."
+    }
+  ],
+  "audio": "materials-lectures/linux/sql-query-power-delete-drop.mp3",
+  "video": "https://youtu.be/OxL0B1F65W8?si=32NQ-38ab_6QRrFq"
+}

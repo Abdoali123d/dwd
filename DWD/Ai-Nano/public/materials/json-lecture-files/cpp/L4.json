@@ -1,0 +1,227 @@
+{
+  "pdfFile": "../../materials-lectures/cpp/L4.pdf",
+  "tutorialFile": "W4T4C++.pdf",
+  "activityFile": "W4Activityc++.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: الجمل الشرطية (Conditional Statements) 🤔</h3>\n    <p class=\"mb-4 text-lg\">الجمل الشرطية بتسمح للبرنامج إنه ياخد قرارات وينفذ أجزاء معينة من الكود بناءً على تحقق شرط معين (Boolean expression - true or false).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. جملة <code class=\"font-mono text-white\">if</code>:</h4>\n    <p class=\"mb-4\">بتنفذ الكود اللي جواها فقط لو الشرط كان صحيح (true).</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nif (condition) {\n  // Code to execute if condition is true\n}\n    </code></pre>\n    \n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. جملة <code class=\"font-mono text-white\">if...else</code>:</h4>\n    <p class=\"mb-4\">بتنفذ كود معين لو الشرط صحيح، وكود تاني لو الشرط خطأ (false).</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nif (condition) {\n  // Code if true\n} else {\n  // Code if false\n}\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. جملة <code class=\"font-mono text-white\">if...else if...else</code>:</h4>\n    <p class=\"mb-4\">بتسمح باختبار عدة شروط بالترتيب. أول شرط صحيح بيتحقق، بيتم تنفيذ الكود بتاعه، ولو مفيش أي شرط صحيح، بيتم تنفيذ الكود اللي في <code class=\"font-mono text-white\">else</code> (لو موجودة).</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nif (condition1) {\n  // Code if condition1 is true\n} else if (condition2) {\n  // Code if condition2 is true\n} else {\n  // Code if no condition is true\n}\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">معاملات المقارنة والعوامل المنطقية:</h4>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li><code class=\"font-mono text-white\">==</code> (يساوي), <code class=\"font-mono text-white\">!=</code> (لا يساوي)</li>\n            <li><code class=\"font-mono text-white\">></code> (أكبر من), <code class=\"font-mono text-white\"><</code> (أصغر من)</li>\n            <li><code class=\"font-mono text-white\">>=</code> (أكبر من أو يساوي), <code class=\"font-mono text-white\"><=</code> (أصغر من أو يساوي)</li>\n            <li><code class=\"font-mono text-white\">&&</code> (AND - و): لازم الشرطين يكونوا true.</li>\n            <li><code class=\"font-mono text-white\">||</code> (OR - أو): يكفي شرط واحد يكون true.</li>\n            <li><code class=\"font-mono text-white\">!</code> (NOT - ليس): بتعكس قيمة الشرط.</li>\n        </ul>\n         <p class=\"mt-3 text-yellow-400\">**تحذير:** استخدام <code class=\"font-mono text-white\">=</code> (assignment) بدل <code class=\"font-mono text-white\">==</code> (comparison) في جملة if هو خطأ شائع بيأدي لنتائج غير متوقعة.</p>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: حلقات التكرار (Loops) 🔄</h3>\n    <p class=\"mb-4 text-lg\">الحلقات بتستخدم لتكرار تنفيذ جزء معين من الكود عدد محدد من المرات أو حتى يتحقق شرط معين.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. حلقة <code class=\"font-mono text-white\">for</code>:</h4>\n    <p class=\"mb-4\">هي الأنسب لما نكون عارفين عدد مرات التكرار مسبقًا.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nfor (initialization; condition; update) {\n  // Code to repeat\n}\n// initialization: بتتعمل مرة واحدة في الأول (تعريف عداد مثلًا int i = 0)\n// condition: بيتم اختباره قبل كل تكرار (زي i < 5)\n// update: بيحصل بعد كل تكرار (زي i++)\n    </code></pre>\n    \n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. حلقة <code class=\"font-mono text-white\">while</code>:</h4>\n    <p class=\"mb-4\">بتكرر الكود طالما الشرط صحيح (true). بيتم اختبار الشرط **قبل** كل تكرار.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\ninitialization;\nwhile (condition) {\n  // Code to repeat\n  update;\n}\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. حلقة <code class=\"font-mono text-white\">do...while</code>:</h4>\n    <p class=\"mb-4\">شبه <code class=\"font-mono text-white\">while</code>، لكنها بتنفذ الكود **مرة واحدة على الأقل** وبعدين تختبر الشرط. بتكرر طالما الشرط صحيح.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\ninitialization;\ndo {\n  // Code to repeat\n  update;\n} while (condition);\n    </code></pre>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Conditional Statements 🤔</h3>\n    <p class=\"mb-4 text-lg\">Conditional statements allow a program to make decisions and execute specific blocks of code based on whether a certain condition (a Boolean expression - true or false) is met.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. The <code class=\"font-mono text-white\">if</code> Statement:</h4>\n    <p class=\"mb-4\">Executes the code block inside it only if the condition is true.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nif (condition) {\n  // Code to execute if condition is true\n}\n    </code></pre>\n    \n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. The <code class=\"font-mono text-white\">if...else</code> Statement:</h4>\n    <p class=\"mb-4\">Executes one block of code if the condition is true, and another block if the condition is false.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nif (condition) {\n  // Code if true\n} else {\n  // Code if false\n}\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. The <code class=\"font-mono text-white\">if...else if...else</code> Statement:</h4>\n    <p class=\"mb-4\">Allows testing multiple conditions in sequence. The code block of the first condition that evaluates to true is executed. If none of the conditions are true, the code in the final <code class=\"font-mono text-white\">else</code> block (if present) is executed.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nif (condition1) {\n  // Code if condition1 is true\n} else if (condition2) {\n  // Code if condition2 is true\n} else {\n  // Code if no condition is true\n}\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Comparison and Logical Operators:</h4>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li><code class=\"font-mono text-white\">==</code> (Equal to), <code class=\"font-mono text-white\">!=</code> (Not equal to)</li>\n            <li><code class=\"font-mono text-white\">></code> (Greater than), <code class=\"font-mono text-white\"><</code> (Less than)</li>\n            <li><code class=\"font-mono text-white\">>=</code> (Greater than or equal to), <code class=\"font-mono text-white\"><=</code> (Less than or equal to)</li>\n            <li><code class=\"font-mono text-white\">&&</code> (Logical AND): Both conditions must be true.</li>\n            <li><code class=\"font-mono text-white\">||</code> (Logical OR): At least one condition must be true.</li>\n            <li><code class=\"font-mono text-white\">!</code> (Logical NOT): Reverses the truth value of a condition.</li>\n        </ul>\n        <p class=\"mt-3 text-yellow-400\">**Warning:** Using <code class=\"font-mono text-white\">=</code> (assignment) instead of <code class=\"font-mono text-white\">==</code> (comparison) in an if statement is a common mistake that leads to unexpected results.</p>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Loops 🔄</h3>\n    <p class=\"mb-4 text-lg\">Loops are used to repeat a block of code a specified number of times or until a certain condition is met.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. The <code class=\"font-mono text-white\">for</code> Loop:</h4>\n    <p class=\"mb-4\">Best used when the number of iterations is known beforehand.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nfor (initialization; condition; update) {\n  // Code to repeat\n}\n// initialization: Done once at the beginning (e.g., int i = 0)\n// condition: Checked before each iteration (e.g., i < 5)\n// update: Happens after each iteration (e.g., i++)\n    </code></pre>\n    \n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. The <code class=\"font-mono text-white\">while</code> Loop:</h4>\n    <p class=\"mb-4\">Repeats the code block as long as the condition is true. The condition is checked **before** each iteration.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\ninitialization;\nwhile (condition) {\n  // Code to repeat\n  update;\n}\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">3. The <code class=\"font-mono text-white\">do...while</code> Loop:</h4>\n    <p class=\"mb-4\">Similar to <code class=\"font-mono text-white\">while</code>, but it executes the code block **at least once** before checking the condition. It repeats as long as the condition is true.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\ninitialization;\ndo {\n  // Code to repeat\n  update;\n} while (condition);\n    </code></pre>\n  ",
+  "quiz": [
+    {
+      "question": "1. Which statement executes code only if a condition is true?",
+      "options": [
+        "if",
+        "else",
+        "while",
+        "for"
+      ],
+      "correctAnswer": "if",
+      "hint": "أبسط جملة شرطية."
+    },
+    {
+      "question": "2. Which operator checks if two values are *exactly* equal?",
+      "options": [
+        "=",
+        "==",
+        "!=",
+        "=>"
+      ],
+      "correctAnswer": "==",
+      "hint": "علامتين يساوي للمقارنة."
+    },
+    {
+      "question": "3. The `else` block executes when:",
+      "options": [
+        "The `if` condition is true",
+        "The `if` condition is false",
+        "Always",
+        "Never"
+      ],
+      "correctAnswer": "The `if` condition is false",
+      "hint": "بتتنفذ لو الشرط الأولاني متحققش."
+    },
+    {
+      "question": "4. To check multiple conditions in sequence, you use:",
+      "options": [
+        "if...if...if",
+        "if...else if...else",
+        "switch",
+        "only if"
+      ],
+      "correctAnswer": "if...else if...else",
+      "hint": "بتسمحلك تختبر كذا احتمال بالترتيب."
+    },
+    {
+      "question": "5. Which logical operator requires *both* conditions to be true?",
+      "options": [
+        "|| (OR)",
+        "&& (AND)",
+        "! (NOT)",
+        "!="
+      ],
+      "correctAnswer": "&& (AND)",
+      "hint": "زي 'و' في اللغة العادية."
+    },
+    {
+      "question": "6. Which logical operator requires *at least one* condition to be true?",
+      "options": [
+        "|| (OR)",
+        "&& (AND)",
+        "! (NOT)",
+        "=="
+      ],
+      "correctAnswer": "|| (OR)",
+      "hint": "زي 'أو' في اللغة العادية."
+    },
+    {
+      "question": "7. What is the purpose of a loop in programming?",
+      "options": [
+        "To stop the program",
+        "To repeat a block of code",
+        "To define variables",
+        "To check conditions once"
+      ],
+      "correctAnswer": "To repeat a block of code",
+      "hint": "عشان تكرر الأوامر."
+    },
+    {
+      "question": "8. Which loop is best when you know the exact number of iterations?",
+      "options": [
+        "while",
+        "do...while",
+        "if",
+        "for"
+      ],
+      "correctAnswer": "for",
+      "hint": "هي الأنسب للتكرار بعدد مرات معلوم."
+    },
+    {
+      "question": "9. In a `for` loop `for(int i=0; i<5; i++)`, how many times will the loop body execute?",
+      "options": [
+        "4",
+        "5",
+        "6",
+        "0"
+      ],
+      "correctAnswer": "5",
+      "hint": "هتتنفذ لما i تكون بـ 0, 1, 2, 3, 4."
+    },
+    {
+      "question": "10. Which part of the `for` loop executes only once at the beginning?",
+      "options": [
+        "condition",
+        "update",
+        "initialization",
+        "loop body"
+      ],
+      "correctAnswer": "initialization",
+      "hint": "الجزء اللي بيعرف العداد (زي int i=0)."
+    },
+    {
+      "question": "11. The `while` loop checks its condition:",
+      "options": [
+        "After each iteration",
+        "Before each iteration",
+        "Only once at the start",
+        "Only once at the end"
+      ],
+      "correctAnswer": "Before each iteration",
+      "hint": "بتختبر الأول، لو الشرط صح تنفذ."
+    },
+    {
+      "question": "12. Which loop guarantees its body executes at least once?",
+      "options": [
+        "for",
+        "while",
+        "if",
+        "do...while"
+      ],
+      "correctAnswer": "do...while",
+      "hint": "لأنها بتنفذ الأول وبعدين تختبر الشرط."
+    },
+    {
+      "question": "13. What is the operator `%` used for (e.g., `num % 2 == 0`)?",
+      "options": [
+        "Division",
+        "Multiplication",
+        "Modulo (remainder)",
+        "Exponentiation"
+      ],
+      "correctAnswer": "Modulo (remainder)",
+      "hint": "باقي القسمة. بنستخدمها لمعرفة إذا كان الرقم زوجي أو فردي."
+    },
+    {
+      "question": "14. If `x = 10`, what is the value of `x >= 10`?",
+      "options": [
+        "true",
+        "false",
+        "10",
+        "Error"
+      ],
+      "correctAnswer": "true",
+      "hint": "هل 10 أكبر من أو تساوي 10؟ نعم."
+    },
+    {
+      "question": "15. If `a = 5` and `b = 10`, what is `a > 2 && b < 15`?",
+      "options": [
+        "true",
+        "false"
+      ],
+      "correctAnswer": "true",
+      "hint": "هل (5 أكبر من 2) *و* (10 أصغر من 15)؟ نعم، الشرطين صح."
+    },
+    {
+      "question": "16. If `a = 5` and `b = 10`, what is `a == 10 || b == 10`?",
+      "options": [
+        "true",
+        "false"
+      ],
+      "correctAnswer": "true",
+      "hint": "هل (5 تساوي 10) *أو* (10 تساوي 10)؟ نعم، الشرط التاني صح."
+    },
+    {
+      "question": "17. What is the output of `for(int i=1; i<=3; i++) { cout << i; }`?",
+      "options": [
+        "12",
+        "123",
+        "012",
+        "1234"
+      ],
+      "correctAnswer": "123",
+      "hint": "هيعد من 1 لحد 3."
+    },
+    {
+      "question": "18. What is the output of `int i=5; while(i>3) { cout << i; i--; }`?",
+      "options": [
+        "54",
+        "543",
+        "43",
+        "5"
+      ],
+      "correctAnswer": "54",
+      "hint": "هيشتغل لما i=5 و i=4، ويقف لما i=3."
+    },
+    {
+      "question": "19. What is the output of `int x=6; do { cout << x; } while (x<5);`?",
+      "options": [
+        "5",
+        "6",
+        "No output",
+        "Infinite loop"
+      ],
+      "correctAnswer": "6",
+      "hint": "do...while بتنفذ مرة واحدة على الأقل حتى لو الشرط غلط من الأول."
+    },
+    {
+      "question": "20. What is a common mistake when using `if` for comparison?",
+      "options": [
+        "Using `==` instead of `=`",
+        "Using `!=` instead of `==`",
+        "Using `=` instead of `==`",
+        "Using `>` instead of `<`"
+      ],
+      "correctAnswer": "Using `=` instead of `==`",
+      "hint": "علامة = واحدة للتخصيص، علامتين == للمقارنة."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

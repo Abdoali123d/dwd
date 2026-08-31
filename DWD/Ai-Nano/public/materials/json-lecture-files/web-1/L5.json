@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/web-1/L5.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: مقدمة لأُطر عمل واجهة المستخدم (UI Frameworks) 🖼️</h3>\n    <p class=\"mb-4 text-lg\">إطار عمل واجهة المستخدم (UI Framework) هو مجموعة من الأدوات والمكتبات اللي بتوفر للمطورين مكونات وتخطيطات واجهة مُصممة مسبقًا وجاهزة للاستخدام. الهدف منها هو تسريع عملية التطوير وتوحيد شكل وتجربة المستخدم.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">أمثلة شائعة:</h4>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><strong>Bootstrap:</strong> واحد من أشهر وأقدم أُطر العمل، معروف بمكوناته الجاهزة زي الأزرار والنماذج وأشرطة التنقل ونظام الشبكة (Grid System) القوي.</li>\n        <li>(أمثلة أخرى زي Tailwind CSS, Materialize, Foundation...)</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: Bootstrap 5 (الإصدار الأحدث) 🅱️</h3>\n    <p class=\"mb-4 text-lg\">Bootstrap هو أشهر إطار عمل مجاني لـ CSS، بيساعد في بناء مواقع ويب متجاوبة (Responsive) ومتوافقة مع الموبايل أولاً (Mobile-first) بسهولة وسرعة. بيعتمد على HTML, CSS, و JavaScript.</p>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**الإصدارات:** مر Bootstrap بعدة إصدارات (3, 4, وحاليًا 5).</li>\n        <li>**Bootstrap 5:** هو أحدث إصدار، لكنه **لا يدعم** متصفح Internet Explorer 11 والإصدارات الأقدم.</li>\n        <li>**مجاني ومفتوح المصدر:** تقدر تنزله وتستخدمه في مشاريعك بحرية.</li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">كيفية تضمين Bootstrap 5 في مشروعك (عن طريق CDN):</h4>\n    <p class=\"mb-4\">أسهل طريقة هي استخدام روابط الـ CDN (Content Delivery Network). ده بيخلي المتصفح يحمل ملفات Bootstrap من سيرفرات قريبة وسريعة بدل ما تحملها عندك.</p>\n    <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>أنشئ ملف <code class=\"text-white bg-slate-700 px-1 rounded\">index.html</code> عادي.</li>\n        <li>أضف وسم <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;meta name=\"viewport\" ...&gt;</code> داخل الـ <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;head&gt;</code> عشان تضمن سلوك متجاوب صحيح على الموبايل.</li>\n        <li>\n            أضف رابط ملف الـ CSS بتاع Bootstrap داخل الـ <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;head&gt;</code>:\n            <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\"&gt;</code></pre>\n            <span class=\"text-xs text-slate-400\">(ملاحظة: رقم الإصدار 5.3.2 ممكن يتغير، استخدم أحدث رابط من موقع Bootstrap الرسمي)</span>\n        </li>\n        <li>\n            أضف رابط ملف الـ JavaScript بتاع Bootstrap (اللي بيشمل Popper.js اللازم لبعض المكونات) **قبل** قفل وسم الـ <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;/body&gt;</code>:\n            <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"&gt;&lt;/script&gt;</code></pre>\n        </li>\n    </ol>\n     <p class=\"mt-4 text-lg\">بمجرد إضافة الروابط دي، تقدر تبدأ تستخدم كلاسات ومكونات Bootstrap في الـ HTML بتاعك.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: مميزات Bootstrap الأساسية ✨</h3>\n    <p class=\"mb-4 text-lg\">Bootstrap بيقدم 3 حاجات أساسية بتسهل الشغل جدًا:</p>\n    <ul class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>\n            <strong>مكونات جاهزة (Pre-built Components):</strong>\n            <p class=\"mb-2\">قطع واجهة مستخدم جاهزة للاستخدام مكتوبة بـ HTML, CSS, و JavaScript. أمثلة:</p>\n                        <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                <li>Accordion, Alerts, Badge, Breadcrumb, Buttons, Card, Carousel, Navbar, Modal, Pagination, وغيرها كتير...</li>\n            </ul>\n            <p class=\"mt-2\">مثال لكود زر بسيط:</p>\n            <pre class=\"bg-slate-800 p-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;button type=\"button\" class=\"btn btn-primary\"&gt;Primary&lt;/button&gt;\n&lt;button type=\"button\" class=\"btn btn-success\"&gt;Success&lt;/button&gt;</code></pre>\n        </li>\n        <li>\n            <strong>كلاسات CSS مُصممة مسبقًا (Pre-designed CSS Classes):</strong>\n            <p class=\"mb-2\">مجموعة كبيرة من الكلاسات المساعدة (Utility Classes) اللي بتعمل وظائف تنسيق محددة، زي التحكم في الـ Margins والـ Padding.</p>\n            <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">m-*</code> لـ margin, <code class=\"text-white bg-slate-700 px-1 rounded\">p-*</code> لـ padding.</li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">mt-*</code> (margin-top), <code class=\"text-white bg-slate-700 px-1 rounded\">pb-*</code> (padding-bottom), <code class=\"text-white bg-slate-700 px-1 rounded\">ms-*</code> (margin-start/left), <code class=\"text-white bg-slate-700 px-1 rounded\">pe-*</code> (padding-end/right).</li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">mx-*</code> (margin left & right), <code class=\"text-white bg-slate-700 px-1 rounded\">py-*</code> (padding top & bottom).</li>\n                <li>الرقم (<code class=\"text-white bg-slate-700 px-1 rounded\">*</code>) بيكون من 0 لـ 5 بيحدد حجم المسافة. <code class=\"text-white bg-slate-700 px-1 rounded\">auto</code> ممكن تستخدم مع الـ margin الأفقي للتوسيط.</li>\n            </ul>\n             <p class=\"mt-2\">مثال لتوسيط عنصر:</p>\n            <pre class=\"bg-slate-800 p-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;div class=\"mx-auto p-2\" style=\"width: 200px;\"&gt;Centered element&lt;/div&gt;</code></pre>\n        </li>\n        <li>\n            <strong>نظام الشبكة (Grid System):</strong>\n             <p class=\"mb-2\">نظام قوي جدًا مبني على Flexbox بيسمح بتقسيم الصفحة لـ **12 عمود** وهمي. بنستخدمه لعمل تخطيطات (Layouts) متجاوبة بسهولة.</p>\n                          <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                <li><strong>الحاويات (Containers):</strong>\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li><code class=\"text-white bg-slate-700 px-1 rounded\">.container</code>: بيدي عرض ثابت بيتغير حسب حجم الشاشة وبيكون فيه هوامش على الجانبين.</li>\n                         <li><code class=\"text-white bg-slate-700 px-1 rounded\">.container-fluid</code>: بياخد 100% من عرض الشاشة دايمًا.</li>\n                    </ul>\n                 </li>\n                 <li><strong>الصفوف (Rows):</strong> بنستخدم كلاس <code class=\"text-white bg-slate-700 px-1 rounded\">.row</code> عشان نحط جواه الأعمدة.</li>\n                 <li><strong>الأعمدة (Columns):</strong> بنستخدم كلاسات بتبدأ بـ <code class=\"text-white bg-slate-700 px-1 rounded\">.col-</code>.\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li><code class=\"text-white bg-slate-700 px-1 rounded\">.col</code>: بيخلي الأعمدة اللي جوه الـ row تتقسم بالتساوي تلقائيًا.</li>\n                        <li><code class=\"text-white bg-slate-700 px-1 rounded\">.col-{number}</code>: بيحدد عدد الأعمدة الوهمية اللي العمود ده هياخدها (من 1 لـ 12). مثال: <code class=\"text-white bg-slate-700 px-1 rounded\">.col-4</code> بياخد 4 أعمدة من الـ 12 (يعني تلت العرض).</li>\n                        <li><strong>الكلاسات المتجاوبة (Responsive Classes):</strong> بنضيف حجم الشاشة (breakpoint) عشان نحدد سلوك العمود في الشاشات المختلفة:\n                            <ul class=\"list-disc list-inside ml-18 mt-1\">\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-</code> (Extra small &lt; 576px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-sm-</code> (Small &ge; 576px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-md-</code> (Medium &ge; 768px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-lg-</code> (Large &ge; 992px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-xl-</code> (Extra large &ge; 1200px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-xxl-</code> (Extra extra large &ge; 1400px)</li>\n                             </ul>\n                         </li>\n                         <li>مثال لـ 4 أعمدة متساوية بتبدأ تكون جنب بعض من أول الشاشات الصغيرة (sm):\n                            <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;div class=\"row\"&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 1&lt;/div&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 2&lt;/div&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 3&lt;/div&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 4&lt;/div&gt;\n&lt;/div&gt;</code></pre>\n                             <p class=\"mt-1 text-xs text-slate-400\">(في الشاشات الأصغر من sm، الأعمدة دي هتبقى تحت بعضها تلقائيًا).</p>\n                         </li>\n                         <li>مثال لعمودين غير متساويين (4 و 8):\n                             <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;div class=\"row\"&gt;\n  &lt;div class=\"col-sm-4\"&gt;Col 1 (4)&lt;/div&gt;\n  &lt;div class=\"col-sm-8\"&gt;Col 2 (8)&lt;/div&gt;\n&lt;/div&gt;</code></pre>\n                        </li>\n                    </ul>\n                 </li>\n            </ul>\n        </li>\n    </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Introduction to UI Frameworks 🖼️</h3>\n    <p class=\"mb-4 text-lg\">A User Interface (UI) Framework is a collection of tools and libraries that provide developers with pre-designed and pre-built interface components and layouts. Their goal is to speed up development and ensure a consistent look and user experience.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Common Examples:</h4>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><strong>Bootstrap:</strong> One of the most popular and oldest frameworks, known for its ready-to-use components like buttons, forms, navbars, and a powerful Grid System.</li>\n        <li>(Other examples include Tailwind CSS, Materialize, Foundation...)</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Bootstrap 5 (Latest Version) 🅱️</h3>\n    <p class=\"mb-4 text-lg\">Bootstrap is the most famous free CSS framework, helping build responsive, mobile-first websites easily and quickly. It relies on HTML, CSS, and JavaScript.</p>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><strong>Versions:</strong> Bootstrap has gone through several versions (3, 4, and currently 5).</li>\n        <li>**Bootstrap 5:** Is the newest version, but it **does not support** Internet Explorer 11 and older.</li>\n        <li>**Free and Open-Source:** You can download and use it freely in your projects.</li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">How to Include Bootstrap 5 (via CDN):</h4>\n    <p class=\"mb-4\">The easiest way is using CDN (Content Delivery Network) links. This allows the browser to load Bootstrap files from nearby, fast servers instead of you hosting them.</p>\n    <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>Create a standard <code class=\"text-white bg-slate-700 px-1 rounded\">index.html</code> file.</li>\n        <li>Add the <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;meta name=\"viewport\" ...&gt;</code> tag inside the <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;head&gt;</code> for proper responsive behavior on mobile.</li>\n        <li>\n            Add the Bootstrap CSS link inside the <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;head&gt;</code>:\n            <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\"&gt;</code></pre>\n             <span class=\"text-xs text-slate-400\">(Note: Version number 5.3.2 might change; use the latest link from the official Bootstrap site)</span>\n       </li>\n        <li>\n            Add the Bootstrap JavaScript bundle link (which includes Popper.js, needed for some components) **before** the closing <code class=\"text-white bg-slate-700 px-1 rounded\">&lt;/body&gt;</code> tag:\n            <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js\"&gt;&lt;/script&gt;</code></pre>\n        </li>\n    </ol>\n     <p class=\"mt-4 text-lg\">Once these links are added, you can start using Bootstrap classes and components in your HTML.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Core Bootstrap Features ✨</h3>\n    <p class=\"mb-4 text-lg\">Bootstrap offers 3 main things that significantly simplify development:</p>\n    <ul class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>\n            <strong>Pre-built Components:</strong>\n            <p class=\"mb-2\">Ready-to-use UI pieces written in HTML, CSS, and JavaScript. Examples:</p>\n                        <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                <li>Accordion, Alerts, Badge, Breadcrumb, Buttons, Card, Carousel, Navbar, Modal, Pagination, etc.</li>\n            </ul>\n             <p class=\"mt-2\">Example button code:</p>\n            <pre class=\"bg-slate-800 p-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;button type=\"button\" class=\"btn btn-primary\"&gt;Primary&lt;/button&gt;\n&lt;button type=\"button\" class=\"btn btn-success\"&gt;Success&lt;/button&gt;</code></pre>\n        </li>\n        <li>\n            <strong>Pre-designed CSS Utility Classes:</strong>\n            <p class=\"mb-2\">A large set of helper classes that perform specific styling tasks, like controlling Margins and Padding.</p>\n            <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">m-*</code> for margin, <code class=\"text-white bg-slate-700 px-1 rounded\">p-*</code> for padding.</li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">mt-*</code> (margin-top), <code class=\"text-white bg-slate-700 px-1 rounded\">pb-*</code> (padding-bottom), <code class=\"text-white bg-slate-700 px-1 rounded\">ms-*</code> (margin-start/left), <code class=\"text-white bg-slate-700 px-1 rounded\">pe-*</code> (padding-end/right).</li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">mx-*</code> (margin left & right), <code class=\"text-white bg-slate-700 px-1 rounded\">py-*</code> (padding top & bottom).</li>\n                <li>The number (<code class=\"text-white bg-slate-700 px-1 rounded\">*</code>) ranges from 0 to 5, indicating the size of the space. <code class=\"text-white bg-slate-700 px-1 rounded\">auto</code> can be used for horizontal margins for centering.</li>\n            </ul>\n             <p class=\"mt-2\">Example for centering an element:</p>\n            <pre class=\"bg-slate-800 p-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;div class=\"mx-auto p-2\" style=\"width: 200px;\"&gt;Centered element&lt;/div&gt;</code></pre>\n        </li>\n        <li>\n            <strong>Grid System:</strong>\n             <p class=\"mb-2\">A powerful system built with Flexbox that divides the page into a **12-column** grid. Used to create responsive layouts easily.</p>\n                          <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                <li><strong>Containers:</strong>\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                         <li><code class=\"text-white bg-slate-700 px-1 rounded\">.container</code>: Provides a fixed-width container that changes at different screen sizes, with side margins.</li>\n                         <li><code class=\"text-white bg-slate-700 px-1 rounded\">.container-fluid</code>: Always takes up 100% of the screen width.</li>\n                    </ul>\n                 </li>\n                 <li><strong>Rows:</strong> Use the <code class=\"text-white bg-slate-700 px-1 rounded\">.row</code> class to contain columns.</li>\n                 <li><strong>Columns:</strong> Use classes starting with <code class=\"text-white bg-slate-700 px-1 rounded\">.col-</code>.\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li><code class=\"text-white bg-slate-700 px-1 rounded\">.col</code>: Automatically divides columns equally within a row.</li>\n                        <li><code class=\"text-white bg-slate-700 px-1 rounded\">.col-{number}</code>: Specifies how many of the 12 grid columns this column should span (1-12). E.g., <code class=\"text-white bg-slate-700 px-1 rounded\">.col-4</code> spans 4 columns (one-third width).</li>\n                        <li><strong>Responsive Classes:</strong> Add screen size breakpoints to define column behavior on different devices:\n                            <ul class=\"list-disc list-inside ml-18 mt-1\">\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-</code> (Extra small &lt; 576px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-sm-</code> (Small &ge; 576px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-md-</code> (Medium &ge; 768px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-lg-</code> (Large &ge; 992px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-xl-</code> (Extra large &ge; 1200px)</li>\n                                <li><code class=\"text-white bg-slate-700 px-1 rounded\">col-xxl-</code> (Extra extra large &ge; 1400px)</li>\n                             </ul>\n                         </li>\n                         <li>Example of 4 equal columns stacking on small screens (sm):\n                            <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;div class=\"row\"&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 1&lt;/div&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 2&lt;/div&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 3&lt;/div&gt;\n  &lt;div class=\"col-sm-3\"&gt;Col 4&lt;/div&gt;\n&lt;/div&gt;</code></pre>\n                             <p class=\"mt-1 text-xs text-slate-400\">(On screens smaller than 'sm', these columns will stack vertically automatically).</p>\n                         </li>\n                         <li>Example of two unequal columns (4 and 8):\n                             <pre class=\"bg-slate-800 p-2 mt-1 rounded text-white font-mono text-sm overflow-x-auto\"><code>&lt;div class=\"row\"&gt;\n  &lt;div class=\"col-sm-4\"&gt;Col 1 (4)&lt;/div&gt;\n  &lt;div class=\"col-sm-8\"&gt;Col 2 (8)&lt;/div&gt;\n&lt;/div&gt;</code></pre>\n                        </li>\n                    </ul>\n                 </li>\n            </ul>\n        </li>\n    </ul>\n  ",
+  "questions": [
+    {
+      "question": "1. What is a UI Framework?",
+      "options": [
+        "A programming language",
+        "A database system",
+        "A set of tools and libraries with pre-built UI components",
+        "A web server"
+      ],
+      "correctAnswer": "A set of tools and libraries with pre-built UI components",
+      "hint": "هو صندوق أدوات جاهز لتصميم الواجهات."
+    },
+    {
+      "question": "2. Which of the following is mentioned as a very popular UI framework?",
+      "options": [
+        "React",
+        "Angular",
+        "Bootstrap",
+        "Vue"
+      ],
+      "correctAnswer": "Bootstrap",
+      "hint": "هو أشهر إطار عمل مجاني لـ CSS."
+    },
+    {
+      "question": "3. Bootstrap helps create websites that are responsive and:",
+      "options": [
+        "Desktop-only",
+        "Mobile-first",
+        "Server-side rendered",
+        "Database-driven"
+      ],
+      "correctAnswer": "Mobile-first",
+      "hint": "مصمم ليعمل بشكل ممتاز على الموبايل أولاً ثم يتكيف مع الشاشات الأكبر."
+    },
+    {
+      "question": "4. Which version of Bootstrap is the newest mentioned in the lecture?",
+      "options": [
+        "Version 3",
+        "Version 4",
+        "Version 5",
+        "Version 6"
+      ],
+      "correctAnswer": "Version 5",
+      "hint": "الإصدار الخامس هو الأحدث."
+    },
+    {
+      "question": "5. What browser is explicitly NOT supported by Bootstrap 5?",
+      "options": [
+        "Google Chrome",
+        "Mozilla Firefox",
+        "Microsoft Edge",
+        "Internet Explorer 11"
+      ],
+      "correctAnswer": "Internet Explorer 11",
+      "hint": "المتصفحات القديمة جدًا غير مدعومة."
+    },
+    {
+      "question": "6. What technologies does Bootstrap primarily utilize?",
+      "options": [
+        "Python, Django, SQL",
+        "HTML, CSS, JavaScript",
+        "Java, Spring, Hibernate",
+        "C#, .NET, SQL Server"
+      ],
+      "correctAnswer": "HTML, CSS, JavaScript",
+      "hint": "هو إطار عمل للـ Front-end."
+    },
+    {
+      "question": "7. What is the easiest way to include Bootstrap in a project, as shown in the lecture?",
+      "options": [
+        "Download source files",
+        "Use npm install",
+        "Use CDN links",
+        "Compile from Sass"
+      ],
+      "correctAnswer": "Use CDN links",
+      "hint": "استخدام روابط شبكة توصيل المحتوى."
+    },
+    {
+      "question": "8. Where should the Bootstrap CSS <link> tag be placed in HTML?",
+      "options": [
+        "Inside <body>",
+        "After <body>",
+        "Inside <head>",
+        "Inside <script>"
+      ],
+      "correctAnswer": "Inside <head>",
+      "hint": "ملفات التنسيق توضع في الـ head."
+    },
+    {
+      "question": "9. Where should the Bootstrap JavaScript <script> tag usually be placed?",
+      "options": [
+        "Inside <head>",
+        "Before <body>",
+        "Just before the closing </body> tag",
+        "After </html>"
+      ],
+      "correctAnswer": "Just before the closing </body> tag",
+      "hint": "يوضع في آخر الـ body لضمان تحميل عناصر الصفحة أولاً."
+    },
+    {
+      "question": "10. Buttons, Cards, Navbar, and Carousel are examples of Bootstrap's:",
+      "options": [
+        "Grid System",
+        "Utility Classes",
+        "Pre-built Components",
+        "Color Palette"
+      ],
+      "correctAnswer": "Pre-built Components",
+      "hint": "مكونات واجهة مستخدم جاهزة."
+    },
+    {
+      "question": "11. The classes `mt-3`, `pb-2`, `mx-auto` are examples of Bootstrap's:",
+      "options": [
+        "Grid System",
+        "Pre-built Components",
+        "JavaScript Plugins",
+        "Utility Classes"
+      ],
+      "correctAnswer": "Utility Classes",
+      "hint": "كلاسات مساعدة للتحكم في التنسيقات مثل المسافات."
+    },
+    {
+      "question": "12. What does `mx-auto` typically do?",
+      "options": [
+        "Adds maximum margin",
+        "Sets top and bottom margin to auto",
+        "Centers a block element horizontally",
+        "Removes all margins"
+      ],
+      "correctAnswer": "Centers a block element horizontally",
+      "hint": "بتظبط الـ margin يمين وشمال تلقائيًا لتوسيط العنصر."
+    },
+    {
+      "question": "13. The Bootstrap grid system is built using which CSS layout module?",
+      "options": [
+        "Floats",
+        "Tables",
+        "Flexbox",
+        "Grid"
+      ],
+      "correctAnswer": "Flexbox",
+      "hint": "يعتمد على Flexbox لمرونته وقوته."
+    },
+    {
+      "question": "14. How many columns does the Bootstrap grid system allow across the page?",
+      "options": [
+        "8",
+        "10",
+        "12",
+        "16"
+      ],
+      "correctAnswer": "12",
+      "hint": "النظام القياسي يقسم العرض إلى 12 عمودًا."
+    },
+    {
+      "question": "15. Which container class provides a fixed width that changes at different breakpoints?",
+      "options": [
+        ".container-fluid",
+        ".container-fixed",
+        ".container",
+        ".container-responsive"
+      ],
+      "correctAnswer": ".container",
+      "hint": "الحاوية ذات العرض المتغير حسب حجم الشاشة."
+    },
+    {
+      "question": "16. Which container class always takes up 100% of the width?",
+      "options": [
+        ".container",
+        ".container-fluid",
+        ".container-full",
+        ".container-100"
+      ],
+      "correctAnswer": ".container-fluid",
+      "hint": "الحاوية اللي تملأ الشاشة بالكامل."
+    },
+    {
+      "question": "17. What is the purpose of the .row class in the Bootstrap grid?",
+      "options": [
+        "To define a single column",
+        "To act as a wrapper for columns",
+        "To set the background color",
+        "To create a container"
+      ],
+      "correctAnswer": "To act as a wrapper for columns",
+      "hint": "الأعمدة يجب أن توضع داخل صف."
+    },
+    {
+      "question": "18. Which class prefix is used for medium devices (screen width >= 768px)?",
+      "options": [
+        ".col-sm-",
+        ".col-md-",
+        ".col-lg-",
+        ".col-xs-"
+      ],
+      "correctAnswer": ".col-md-",
+      "hint": "md اختصار لـ Medium."
+    },
+    {
+      "question": "19. In the example `<div class=\"col-sm-4\">`, what does '4' represent?",
+      "options": [
+        "The width in pixels",
+        "The number of rows",
+        "The number of grid columns the element should span (out of 12)",
+        "The font size"
+      ],
+      "correctAnswer": "The number of grid columns the element should span (out of 12)",
+      "hint": "يعني العمود ده هياخد 4 أعمدة من الـ 12 المتاحين."
+    },
+    {
+      "question": "20. If you have `<div class=\"row\"><div class=\"col\">1</div><div class=\"col\">2</div></div>`, how will the columns be sized?",
+      "options": [
+        "The first takes 1 column, the second takes 2",
+        "They will stack vertically",
+        "They will be sized equally to fill the row",
+        "It will cause an error"
+      ],
+      "correctAnswer": "They will be sized equally to fill the row",
+      "hint": "استخدام .col لوحده بيخلي Bootstrap يقسم المساحة بالتساوي."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/DB/L3.pdf",
+  "tutorialFile": "W3T3DB.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: أنواع العلاقات بين الجداول 🔗</h3>\n    <p class=\"mb-4 text-lg\">العلاقات هي اللي بتربط الجداول ببعضها في قاعدة البيانات عشان نقدر نسترجع بيانات مترابطة بكفاءة ونحافظ على سلامتها.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. علاقة رأس برأس (One-to-One Relationship - 1:1)</h4>\n    <p class=\"mb-4\">في النوع ده، كل سجل (Row) في الجدول الأول بيرتبط بسجل **واحد فقط** في الجدول التاني، والعكس صحيح.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">مثال:</h4>\n        <p>جدول الموظفين (Employee) وجدول بيانات المرتبات (Payroll). كل موظف له بيانات مرتب واحدة فقط، وكل بيانات مرتب مرتبطة بموظف واحد فقط. بيتم الربط باستخدام مفتاح أساسي (PK) في جدول ومفتاح أجنبي (FK) مطابق له في الجدول التاني (أو ممكن يكون PK في الجدولين).</p>\n            </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. علاقة رأس بأطراف (One-to-Many Relationship - 1:M)</h4>\n    <p class=\"mb-4\">دي العلاقة الأكثر شيوعًا. هنا، كل سجل في الجدول الأول (جدول الـ One) ممكن يرتبط **بأكتر من سجل** في الجدول التاني (جدول الـ Many)، لكن كل سجل في جدول الـ Many بيرتبط بسجل **واحد فقط** في جدول الـ One.</p>\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">مثال:</h4>\n        <p>جدول العملاء (Customers) وجدول الطلبات (Orders). العميل الواحد (One) ممكن يكون عنده أكتر من طلب (Many)، لكن كل طلب (Many) بيكون جاي من عميل واحد بس (One).</p>\n        <p class=\"mt-2\">بيتم الربط عن طريق وضع المفتاح الأساسي (PK) بتاع جدول الـ One (زي CustomerID) كمفتاح أجنبي (FK) في جدول الـ Many (جدول Orders).</p>\n              </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">المفاتيح (Keys):</h4>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**المفتاح الأساسي (Primary Key - PK):** عمود بيحدد كل سجل بشكل فريد (زي ID).</li>\n        <li>**المفتاح الأجنبي (Foreign Key - FK):** عمود في جدول بيشاور على المفتاح الأساسي (PK) في جدول تاني عشان يربطهم ببعض.</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: تطبيق العلاقات في MS Access 🖱️</h3>\n    <p class=\"mb-4 text-lg\">خطوات عملية لإنشاء الجداول والعلاقات في برنامج Microsoft Access.</p>\n    <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>إنشاء قاعدة بيانات جديدة (Blank database).</li>\n        <li>إنشاء الجداول (زي Customers و Orders) باستخدام وضع التصميم (Design View).\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>تحديد أسماء الحقول (Field Name) وأنواع البيانات (Data Type) لكل جدول.</li>\n                <li>تحديد المفتاح الأساسي (Primary Key) لكل جدول (زي ID في Customers).</li>\n                <li>حفظ (Save) كل جدول بالاسم بتاعه.</li>\n            </ul>\n        </li>\n        <li>**استخدام Lookup Wizard لربط الجداول (في علاقة 1:M):**\n             <ul class=\"list-disc list-inside ml-6 mt-1 space-y-1\">\n                 <li>في جدول الـ Many (زي Orders)، عند تصميم حقل المفتاح الأجنبي (زي customer_id)، نختار Data Type يكون **Lookup Wizard**.</li>\n                 <li>نختار الاختيار الأول: \"I want the lookup field to get the values from another table or query\".</li>\n                 <li>نختار جدول الـ One (زي Customers).</li>\n                 <li>نختار الحقل اللي هنربط بيه من جدول الـ One (عادة بيكون الـ PK وهو ID).</li>\n                 <li>نختار الترتيب (Sort) لو محتاجين.</li>\n                 <li>**مهم:** نعلم على **\"Enable Data Integrity\"** عشان نضمن إن البيانات متناسقة (مينفعش نضيف طلب لعميل مش موجود). وممكن نختار Cascade Update/Delete لو عايزين التعديل/الحذف يتسمّع في الجدول المرتبط.</li>\n                 <li>نضغط Finish ونحفظ الجدول.</li>\n             </ul>\n        </li>\n        <li>**إنشاء العلاقات يدويًا:**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>من قائمة \"Database Tools\"، نختار \"Relationships\".</li>\n                 <li>نضيف الجداول اللي عايزين نربطها (Show Table).</li>\n                 <li>نسحب المفتاح الأساسي (PK) من جدول الـ One ونرميه فوق المفتاح الأجنبي (FK) المطابق في جدول الـ Many.</li>\n                 <li>في الشاشة اللي هتظهر (Edit Relationships)، نتأكد من الحقول ونعلم على \"Enforce Referential Integrity\" ونضغط Create.</li>\n             </ul>\n        </li>\n    </ol>\n    <p class=\"mt-4 text-lg\">بمجرد إنشاء العلاقة بشكل صحيح، هنلاقي خط بيربط بين الجدولين في شاشة الـ Relationships بيوضح نوع العلاقة (1 لـ ∞ في حالة One-to-Many).</p>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Types of Relationships Between Tables 🔗</h3>\n    <p class=\"mb-4 text-lg\">Relationships link tables in a database, allowing efficient retrieval of related data and maintaining data integrity.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. One-to-One Relationship (1:1)</h4>\n    <p class=\"mb-4\">In this type, each record (Row) in the first table is associated with **only one** record in the second table, and vice versa.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Example:</h4>\n        <p>An Employee table and a Payroll table. Each employee has only one set of payroll data, and each payroll entry corresponds to only one employee. The link is made using a Primary Key (PK) in one table and a matching Foreign Key (FK) in the other (or potentially PKs in both).</p>\n            </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. One-to-Many Relationship (1:M)</h4>\n    <p class=\"mb-4\">This is the most common relationship type. Here, each record in the first table (the 'One' side) can be associated with **multiple records** in the second table (the 'Many' side), but each record in the 'Many' table is associated with **only one** record in the 'One' table.</p>\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Example:</h4>\n        <p>A Customers table and an Orders table. One customer (One) can have multiple orders (Many), but each order (Many) belongs to only one customer (One).</p>\n        <p class=\"mt-2\">The link is established by placing the Primary Key (PK) of the 'One' table (e.g., CustomerID) as a Foreign Key (FK) in the 'Many' table (Orders table).</p>\n              </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Keys:</h4>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Primary Key (PK):** A column that uniquely identifies each record (e.g., ID).</li>\n        <li>**Foreign Key (FK):** A column in one table that refers to the Primary Key (PK) in another table, linking them.</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Implementing Relationships in MS Access 🖱️</h3>\n    <p class=\"mb-4 text-lg\">Practical steps to create tables and relationships in Microsoft Access.</p>\n    <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>Create a new Blank database.</li>\n        <li>Create tables (e.g., Customers, Orders) using Design View.\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Define Field Names and Data Types for each table.</li>\n                <li>Set the Primary Key for each table (e.g., ID in Customers).</li>\n                <li>Save each table with its name.</li>\n            </ul>\n        </li>\n        <li>**Using the Lookup Wizard to link tables (for 1:M relationships):**\n             <ul class=\"list-disc list-inside ml-6 mt-1 space-y-1\">\n                 <li>In the 'Many' table (e.g., Orders), when designing the Foreign Key field (e.g., customer_id), choose **Lookup Wizard** as the Data Type.</li>\n                 <li>Select the first option: \"I want the lookup field to get the values from another table or query.\"</li>\n                 <li>Choose the 'One' table (e.g., Customers).</li>\n                 <li>Select the field to link from the 'One' table (usually the PK, which is ID).</li>\n                 <li>Choose a sort order if needed.</li>\n                 <li>**Important:** Check **\"Enable Data Integrity\"** to ensure data consistency (prevents adding an order for a non-existent customer). Optionally, enable Cascade Update/Delete if needed.</li>\n                 <li>Click Finish and save the table.</li>\n             </ul>\n        </li>\n        <li>**Creating Relationships Manually:**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>From the \"Database Tools\" tab, choose \"Relationships\".</li>\n                 <li>Add the tables you want to link (Show Table).</li>\n                 <li>Drag the Primary Key (PK) from the 'One' table and drop it onto the corresponding Foreign Key (FK) in the 'Many' table.</li>\n                 <li>In the \"Edit Relationships\" dialog, verify the fields, check \"Enforce Referential Integrity\", and click Create.</li>\n             </ul>\n        </li>\n    </ol>\n    <p class=\"mt-4 text-lg\">Once the relationship is correctly created, a line connecting the tables will appear in the Relationships window, indicating the type of relationship (1 to ∞ for One-to-Many).</p>\n  ",
+  "quiz": [
+    {
+      "question": "1. What type of relationship exists when one customer can have multiple orders?",
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "Self Relationship"
+      ],
+      "correctAnswer": "One-to-Many",
+      "hint": "العميل الواحد (One) له طلبات كتير (Many)."
+    },
+    {
+      "question": "2. In a One-to-One relationship, how many records in Table B can relate to one record in Table A?",
+      "options": [
+        "Zero",
+        "One",
+        "Two",
+        "Many"
+      ],
+      "correctAnswer": "One",
+      "hint": "كل سجل في الجدول الأول يرتبط بسجل واحد فقط في التاني."
+    },
+    {
+      "question": "3. What is the main purpose of a Primary Key (PK)?",
+      "options": [
+        "To link tables",
+        "To store addresses",
+        "To uniquely identify each record",
+        "To sort data"
+      ],
+      "correctAnswer": "To uniquely identify each record",
+      "hint": "هو المعرف الفريد لكل صف."
+    },
+    {
+      "question": "4. What does FK stand for?",
+      "options": [
+        "File Key",
+        "Format Key",
+        "Foreign Key",
+        "First Key"
+      ],
+      "correctAnswer": "Foreign Key",
+      "hint": "المفتاح اللي بيربط بجدول تاني."
+    },
+    {
+      "question": "5. In the Customers/Orders example, `CustomerID` in the Orders table is a:",
+      "options": [
+        "Primary Key",
+        "Foreign Key",
+        "Candidate Key",
+        "Super Key"
+      ],
+      "correctAnswer": "Foreign Key",
+      "hint": "هو بيشاور على المفتاح الأساسي في جدول العملاء."
+    },
+    {
+      "question": "6. In the Customers/Orders example, `ID` in the Customers table is a:",
+      "options": [
+        "Primary Key",
+        "Foreign Key",
+        "Composite Key",
+        "Alternate Key"
+      ],
+      "correctAnswer": "Primary Key",
+      "hint": "هو المعرف الفريد لكل عميل."
+    },
+    {
+      "question": "7. What concept ensures that a Foreign Key value must match an existing Primary Key value?",
+      "options": [
+        "Data Redundancy",
+        "Data Duplication",
+        "Data Integrity (Referential)",
+        "Data Abstraction"
+      ],
+      "correctAnswer": "Data Integrity (Referential)",
+      "hint": "سلامة البيانات أو التكامل المرجعي."
+    },
+    {
+      "question": "8. Which MS Access wizard helps create a dropdown list to select values from another table?",
+      "options": [
+        "Form Wizard",
+        "Query Wizard",
+        "Report Wizard",
+        "Lookup Wizard"
+      ],
+      "correctAnswer": "Lookup Wizard",
+      "hint": "المعالج اللي بيساعد في ربط الحقل بجدول تاني."
+    },
+    {
+      "question": "9. In MS Access, where do you go to visually define relationships between tables?",
+      "options": [
+        "Table Design",
+        "Query Design",
+        "Database Tools -> Relationships",
+        "External Data"
+      ],
+      "correctAnswer": "Database Tools -> Relationships",
+      "hint": "المكان المخصص لعرض وإنشاء العلاقات."
+    },
+    {
+      "question": "10. When creating a relationship in Access, what should you check to prevent adding orders for non-existent customers?",
+      "options": [
+        "Cascade Update",
+        "Cascade Delete",
+        "Enforce Referential Integrity",
+        "Join Type"
+      ],
+      "correctAnswer": "Enforce Referential Integrity",
+      "hint": "فرض التكامل المرجعي لضمان صحة الربط."
+    },
+    {
+      "question": "11. How is a One-to-Many relationship typically represented in the Access Relationships window?",
+      "options": [
+        "1 - 1",
+        "1 - ∞",
+        "∞ - ∞",
+        "A dotted line"
+      ],
+      "correctAnswer": "1 - ∞",
+      "hint": "علامة اللانهاية (∞) بتكون ناحية جدول الـ Many."
+    },
+    {
+      "question": "12. To create a relationship manually in Access, you drag the PK from the 'One' side and drop it onto the:",
+      "options": [
+        "Table name on the 'Many' side",
+        "PK on the 'Many' side",
+        "FK on the 'Many' side",
+        "Any field on the 'Many' side"
+      ],
+      "correctAnswer": "FK on the 'Many' side",
+      "hint": "بنسحب المفتاح الأساسي ونرميه فوق المفتاح الأجنبي المطابق ليه."
+    },
+    {
+      "question": "13. What is the data type typically used for a Primary Key field like 'ID' in Access?",
+      "options": [
+        "Short Text",
+        "Number",
+        "AutoNumber",
+        "Date/Time"
+      ],
+      "correctAnswer": "AutoNumber",
+      "hint": "بيخلي أكسس يرقم السجلات تلقائيًا بشكل فريد."
+    },
+    {
+      "question": "14. After designing a table structure in Access Design View, what must you do before closing it?",
+      "options": [
+        "Run a query",
+        "Import data",
+        "Save the table",
+        "Create a form"
+      ],
+      "correctAnswer": "Save the table",
+      "hint": "لازم تحفظ التصميم الأول."
+    },
+    {
+      "question": "15. In the Employee/Cars (1:1) example, `employee-id` in the `cars` table acts as a:",
+      "options": [
+        "Primary Key only",
+        "Foreign Key only",
+        "Both Primary Key and Foreign Key",
+        "Neither"
+      ],
+      "correctAnswer": "Both Primary Key and Foreign Key",
+      "hint": "في علاقة 1:1، المفتاح الأجنبي ممكن يكون هو نفسه المفتاح الأساسي للجدول التاني."
+    },
+    {
+      "question": "16. Selecting 'Cascade Update Related Fields' means:",
+      "options": [
+        "Deleting related records",
+        "Updating the PK will update the related FKs",
+        "Preventing updates",
+        "Creating duplicate records"
+      ],
+      "correctAnswer": "Updating the PK will update the related FKs",
+      "hint": "لو غيرت الـ ID بتاع العميل، الـ ID بتاعه يتغير تلقائيًا في كل طلباته."
+    },
+    {
+      "question": "17. Selecting 'Cascade Delete Related Records' means:",
+      "options": [
+        "Deleting the PK will delete related FK records",
+        "Preventing deletion",
+        "Updating related records",
+        "Archiving records"
+      ],
+      "correctAnswer": "Deleting the PK will delete related FK records",
+      "hint": "لو مسحت عميل، كل طلباته تتمسح معاه."
+    },
+    {
+      "question": "18. When using the Lookup Wizard in Access, which field from the 'Customers' table should you select to include in the 'Orders' table's lookup field?",
+      "options": [
+        "Customer-name",
+        "Email",
+        "address",
+        "id"
+      ],
+      "correctAnswer": "id",
+      "hint": "بنختار الحقل اللي بيربط الجدولين (المفتاح الأساسي)."
+    },
+    {
+      "question": "19. What is the benefit of enabling Data Integrity?",
+      "options": [
+        "Faster queries",
+        "Less storage space",
+        "Ensures consistency between related tables",
+        "Allows duplicate PKs"
+      ],
+      "correctAnswer": "Ensures consistency between related tables",
+      "hint": "بيحافظ على صحة البيانات وترابطها."
+    },
+    {
+      "question": "20. The relationship between 'Book' and 'Author' where one author can write many books is:",
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "Self-Referencing"
+      ],
+      "correctAnswer": "One-to-Many",
+      "hint": "المؤلف الواحد (One) له كتب كتير (Many)."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/DE/L4.pdf",
+  "tutorialFile": "W4T4DE.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: مقدمة لتصميم الدوائر المنطقية 📝</h3>\n    <p class=\"mb-4 text-lg\">في تصميم الدوائر المنطقية، الخطوة الأولى هي الحصول على **جدول الحقيقة (Truth Table)** اللي بيوصف وظيفة الدايرة (إيه الخرج المطلوب لكل دخل محتمل). الخطوة التالية هي تحويل جدول الحقيقة ده لمعادلة رياضية (Boolean Equation) نقدر ننفذها باستخدام البوابات المنطقية (Logic Gates).</p>\n    <p class=\"mb-4 text-lg\">بنستخدم مفهومي الـ **Minterms** والـ **Maxterms** عشان نعمل التحويل ده.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: الحدود الدنيا (Minterms) ومجموع المضروبات (SOP) ➕</h3>\n    <p class=\"mb-4 text-lg\">الـ **Minterm** (يرمز له بـ <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">m</code></code>) هو حد ضرب (Product Term - AND) بيشمل كل متغيرات الدخل (Inputs)، إما بشكله العادي أو معكوسه (<code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A</code></code> أو <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A'</code></code>). كل Minterm بيساوي **1** لتركيبة دخل **واحدة فقط** وبيساوي 0 لباقي التركيبات.</p>\n        <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">كيفية تكوين الـ Minterm:</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li>لو المتغير قيمته **0** في تركيبة الدخل، بنحطه **معكوس** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A'</code></code>) في الحد.</li>\n            <li>لو المتغير قيمته **1**، بنحطه **عادي** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">B</code></code>) في الحد.</li>\n            <li>بنضرب (AND) كل المتغيرات (بشكلها العادي أو المعكوس) مع بعضها.</li>\n        </ul>\n        <p class=\"mt-2\">مثال (3 متغيرات A, B, C): لو الدخل (A=0, B=1, C=0)، الـ Minterm هيكون <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A'BC'</code></code> (وده بنسميه m2).</p>\n        <p class=\"mt-1\">الرقم السفلي (index) للـ minterm هو القيمة العشرية لتركيبة الدخل الثنائية.</p>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">صيغة مجموع المضروبات (Sum of Products - SOP):</h4>\n    <p class=\"mb-4\">هي طريقة للتعبير عن الدالة المنطقية (f) عن طريق جمع (OR) كل الـ **Minterms** اللي الخرج بتاعها بيكون **1** في جدول الحقيقة.</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>بنحدد الصفوف اللي فيها f = 1.</li>\n        <li>بنكتب الـ Minterm المقابل لكل صف من دول.</li>\n        <li>بنعمل OR (+) بين كل الـ Minterms دي.</li>\n        <li>الصيغة الناتجة اسمها **الصيغة القانونية لمجموع المضروبات (Canonical Sum of Products)**.</li>\n        <li>ممكن نكتبها باختصار باستخدام الرمز Σ وعلامة m وأرقام الـ Minterms (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">f = Σm(2, 3, 5, 7)</code></code>). هذه تسمى **On-Set**.</li>\n        <li>الدائرة المنطقية اللي بتنفذ الـ SOP بتكون عبارة عن مجموعة بوابات AND (للـ Minterms) كلهم داخلين على بوابة OR واحدة في الآخر (AND-OR circuit). يمكن تحويلها لدائرة NAND-NAND باستخدام دي مورجان.</li>\n    </ul>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: الحدود العليا (Maxterms) ومضروب المجموعات (POS) ✖️</h3>\n    <p class=\"mb-4 text-lg\">الـ **Maxterm** (يرمز له بـ <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">M</code></code>) هو حد جمع (Sum Term - OR) بيشمل كل متغيرات الدخل، إما بشكله العادي أو معكوسه. كل Maxterm بيساوي **0** لتركيبة دخل **واحدة فقط** وبيساوي 1 لباقي التركيبات.</p>\n         <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">كيفية تكوين الـ Maxterm:</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li>لو المتغير قيمته **0** في تركيبة الدخل، بنحطه **عادي** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A</code></code>) في الحد.</li>\n            <li>لو المتغير قيمته **1**، بنحطه **معكوس** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">B'</code></code>) في الحد.</li>\n            <li>بنجمع (OR) كل المتغيرات (بشكلها العادي أو المعكوس) مع بعضها.</li>\n        </ul>\n        <p class=\"mt-2\">مثال (3 متغيرات A, B, C): لو الدخل (A=0, B=0, C=1)، الـ Maxterm هيكون <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A + B + C'</code></code> (وده بنسميه M1).</p>\n        <p class=\"mt-1\">الرقم السفلي (index) للـ maxterm هو أيضًا القيمة العشرية لتركيبة الدخل الثنائية.</p>\n        <p class=\"mt-1 text-yellow-400\">لاحظ أن Maxterm هو مكمل (complement) الـ Minterm لنفس رقم الصف: <code class=\"text-white bg-slate-700 px-1 rounded\">$M_i = (m_i)'$</code>.</p>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">صيغة مضروب المجموعات (Product of Sums - POS):</h4>\n    <p class=\"mb-4\">هي طريقة تانية للتعبير عن الدالة المنطقية (f) عن طريق ضرب (AND) كل الـ **Maxterms** اللي الخرج بتاعها بيكون **0** في جدول الحقيقة.</p>\n     <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>بنحدد الصفوف اللي فيها f = 0.</li>\n        <li>بنكتب الـ Maxterm المقابل لكل صف من دول.</li>\n        <li>بنعمل AND (· أو بدون علامة) بين كل الـ Maxterms دي.</li>\n        <li>الصيغة الناتجة اسمها **الصيغة القانونية لمضروب المجموعات (Canonical Product of Sums)**.</li>\n        <li>ممكن نكتبها باختصار باستخدام الرمز Π وعلامة M وأرقام الـ Maxterms (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">f = ΠM(0, 1, 4, 6)</code></code>). هذه تسمى **Off-Set**.</li>\n        <li>الدائرة المنطقية اللي بتنفذ الـ POS بتكون عبارة عن مجموعة بوابات OR (للـ Maxterms) كلهم داخلين على بوابة AND واحدة في الآخر (OR-AND circuit). يمكن تحويلها لدائرة NOR-NOR باستخدام دي مورجان.</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">العلاقة بين SOP و POS:</h4>\n    <p>مجموع الـ Minterms (On-Set) ومضروب الـ Maxterms (Off-Set) لنفس الدالة يمثلان نفس الوظيفة المنطقية ولكن بصيغتين مختلفتين. الأرقام المستخدمة في Σm هي الأرقام المفقودة من ΠM (والعكس صحيح) لنفس عدد المتغيرات.</p>\n     <p class=\"mt-2\">مثال: لو <code class=\"text-white bg-slate-700 px-1 rounded\">f = Σm(2, 3, 5, 7)</code>، يبقى <code class=\"text-white bg-slate-700 px-1 rounded\">f = ΠM(0, 1, 4, 6)</code>.</p>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Introduction to Logic Circuit Design 📝</h3>\n    <p class=\"mb-4 text-lg\">In logic circuit design, the first step is obtaining the **Truth Table** describing the circuit's function. The next step is converting this truth table into a Boolean Equation implementable with Logic Gates.</p>\n    <p class=\"mb-4 text-lg\">We use **Minterms** and **Maxterms** for this conversion.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Minterms and Sum of Products (SOP) ➕</h3>\n    <p class=\"mb-4 text-lg\">A **Minterm** (denoted by <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">m</code></code>) is a product term (AND) including all input variables, either in normal or complemented form (<code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A</code></code> or <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A'</code></code>). Each minterm equals **1** for exactly **one** input combination and 0 otherwise.</p>\n        <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Forming a Minterm:</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li>If a variable is **0**, use its **complement** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A'</code></code>).</li>\n            <li>If a variable is **1**, use its **normal form** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">B</code></code>).</li>\n            <li>AND all variables together.</li>\n        </ul>\n        <p class=\"mt-2\">Example (3 variables A, B, C): Input (A=0, B=1, C=0) -> Minterm is <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A'BC'</code></code> (m2).</p>\n        <p class=\"mt-1\">The minterm index is the decimal value of the binary input combination.</p>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Sum of Products (SOP) Form:</h4>\n    <p class=\"mb-4\">Expresses a logic function (f) by summing (ORing) all **Minterms** for which the function's output is **1** in the truth table.</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>Identify rows where f = 1.</li>\n        <li>Write the corresponding Minterm for each of these rows.</li>\n        <li>OR (+) all these Minterms together.</li>\n        <li>The result is the **Canonical Sum of Products**.</li>\n        <li>Shorthand notation: Σm with the indices of the minterms (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">f = Σm(2, 3, 5, 7)</code></code>). This is the **On-Set**.</li>\n        <li>The SOP circuit is an AND-OR structure (AND gates for minterms feeding into one OR gate). Can be converted to NAND-NAND using De Morgan's.</li>\n    </ul>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Maxterms and Product of Sums (POS) ✖️</h3>\n    <p class=\"mb-4 text-lg\">A **Maxterm** (denoted by <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">M</code></code>) is a sum term (OR) including all input variables, either in normal or complemented form. Each maxterm equals **0** for exactly **one** input combination and 1 otherwise.</p>\n         <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Forming a Maxterm:</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li>If a variable is **0**, use its **normal form** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A</code></code>).</li>\n            <li>If a variable is **1**, use its **complement** (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">B'</code></code>).</li>\n            <li>OR all the variables together.</li>\n        </ul>\n        <p class=\"mt-2\">Example (3 variables A, B, C): Input (A=0, B=0, C=1) -> Maxterm is <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">A + B + C'</code></code> (M1).</p>\n        <p class=\"mt-1\">The maxterm index is also the decimal value of the binary input combination.</p>\n        <p class=\"mt-1 text-yellow-400\">Note that a Maxterm is the complement of the Minterm for the same row index: <code class=\"text-white bg-slate-700 px-1 rounded\">$M_i = (m_i)'$</code>.</p>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Product of Sums (POS) Form:</h4>\n    <p class=\"mb-4\">Another way to express function (f) by multiplying (ANDing) all **Maxterms** for which the function's output is **0** in the truth table.</p>\n     <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>Identify rows where f = 0.</li>\n        <li>Write the corresponding Maxterm for each of these rows.</li>\n        <li>AND (· or juxtaposition) all these Maxterms together.</li>\n        <li>The result is the **Canonical Product of Sums**.</li>\n        <li>Shorthand notation: ΠM with the indices of the maxterms (e.g., <code class=\"text-white bg-slate-700 px-1 rounded\"><code class=\"text-white bg-slate-700 px-1 rounded\">f = ΠM(0, 1, 4, 6)</code></code>). This is the **Off-Set**.</li>\n        <li>The POS circuit is an OR-AND structure (OR gates for maxterms feeding into one AND gate). Can be converted to NOR-NOR using De Morgan's.</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Relationship between SOP and POS:</h4>\n    <p>The Sum of Minterms (On-Set) and the Product of Maxterms (Off-Set) for the same function represent the same logic, just in different forms. The indices used in Σm are precisely those missing from ΠM (and vice versa) for the given number of variables.</p>\n    <p class=\"mt-2\">Example: If <code class=\"text-white bg-slate-700 px-1 rounded\">f = Σm(2, 3, 5, 7)</code>, then <code class=\"text-white bg-slate-700 px-1 rounded\">f = ΠM(0, 1, 4, 6)</code>.</p>\n  ",
+  "quiz": [
+    {
+      "question": "1. A Minterm is a _______ term that equals 1 for exactly one input combination.",
+      "options": [
+        "Sum (OR)",
+        "Product (AND)",
+        "NOT",
+        "XOR"
+      ],
+      "correctAnswer": "Product (AND)",
+      "hint": "الـ Minterm هو حاصل ضرب (AND) للمتغيرات."
+    },
+    {
+      "question": "2. For inputs A=1, B=0, C=1, what is the corresponding Minterm (m)?",
+      "options": [
+        "A'BC",
+        "A+B'+C",
+        "AB'C",
+        "A'+B+C'"
+      ],
+      "correctAnswer": "AB'C",
+      "hint": "الـ 1 يبقى عادي، الـ 0 يبقى معكوس، ونعمل بينهم AND."
+    },
+    {
+      "question": "3. The Sum of Products (SOP) form is obtained by ORing the Minterms where the function output is:",
+      "options": [
+        "0",
+        "1",
+        "0 or 1",
+        "Undefined"
+      ],
+      "correctAnswer": "1",
+      "hint": "بنجمع الـ Minterms اللي بتخلي الخرج 1."
+    },
+    {
+      "question": "4. The shorthand notation f = Σm(1, 4, 7) represents:",
+      "options": [
+        "Product of Sums",
+        "Sum of Products",
+        "A single Maxterm",
+        "A single Minterm"
+      ],
+      "correctAnswer": "Sum of Products",
+      "hint": "الرمز Σm يعني مجموع الـ Minterms."
+    },
+    {
+      "question": "5. A Maxterm is a _______ term that equals 0 for exactly one input combination.",
+      "options": [
+        "Sum (OR)",
+        "Product (AND)",
+        "NOT",
+        "XOR"
+      ],
+      "correctAnswer": "Sum (OR)",
+      "hint": "الـ Maxterm هو حاصل جمع (OR) للمتغيرات."
+    },
+    {
+      "question": "6. For inputs A=1, B=0, C=1, what is the corresponding Maxterm (M)?",
+      "options": [
+        "A'BC",
+        "A+B'+C",
+        "AB'C",
+        "A'+B+C'"
+      ],
+      "correctAnswer": "A'+B+C'",
+      "hint": "الـ 1 يبقى معكوس، الـ 0 يبقى عادي، ونعمل بينهم OR."
+    },
+    {
+      "question": "7. The Product of Sums (POS) form is obtained by ANDing the Maxterms where the function output is:",
+      "options": [
+        "0",
+        "1",
+        "0 or 1",
+        "Undefined"
+      ],
+      "correctAnswer": "0",
+      "hint": "بنضرب الـ Maxterms اللي بتخلي الخرج 0."
+    },
+    {
+      "question": "8. The shorthand notation f = ΠM(0, 2, 5) represents:",
+      "options": [
+        "Product of Sums",
+        "Sum of Products",
+        "A set of Minterms",
+        "A truth table"
+      ],
+      "correctAnswer": "Product of Sums",
+      "hint": "الرمز ΠM يعني مضروب الـ Maxterms."
+    },
+    {
+      "question": "9. What is the relationship between Minterm mᵢ and Maxterm Mᵢ for the same row i?",
+      "options": [
+        "Mᵢ = mᵢ",
+        "Mᵢ = (mᵢ)'",
+        "Mᵢ = mᵢ + 1",
+        "They are unrelated"
+      ],
+      "correctAnswer": "Mᵢ = (mᵢ)'",
+      "hint": "الـ Maxterm هو مكمل (complement) الـ Minterm."
+    },
+    {
+      "question": "10. An AND-OR circuit directly implements which form?",
+      "options": [
+        "POS",
+        "SOP",
+        "NOR-NOR",
+        "NAND-NAND"
+      ],
+      "correctAnswer": "SOP",
+      "hint": "بوابات AND للـ products وبوابة OR للـ sum."
+    },
+    {
+      "question": "11. An OR-AND circuit directly implements which form?",
+      "options": [
+        "POS",
+        "SOP",
+        "NOR-NOR",
+        "NAND-NAND"
+      ],
+      "correctAnswer": "POS",
+      "hint": "بوابات OR للـ sums وبوابة AND للـ product."
+    },
+    {
+      "question": "12. Given F(A,B,C) = A'B'C' + A'BC + AB'C + ABC from Tutorial Q1(a). Write this using Σm notation.",
+      "options": [
+        "Σm(0, 3, 5, 7)",
+        "Σm(1, 2, 4, 6)",
+        "Σm(0, 1, 2, 3)",
+        "Σm(4, 5, 6, 7)"
+      ],
+      "correctAnswer": "Σm(0, 3, 5, 7)",
+      "hint": "حول كل حد بولياني للرقم العشري المقابل له (A'B'C' -> 000 -> 0, etc.)."
+    },
+    {
+      "question": "13. Given F(A,B,C) = (A+B+C')(A+B'+C')(A'+B+C) from Tutorial Q1(b) POS form. What are the missing Maxterm indices (where F=1)?",
+      "options": [
+        "M(0, 2, 5, 6, 7)",
+        "M(1, 3, 4)",
+        "M(0, 2, 5, 6)",
+        "M(0, 2, 4, 5, 6, 7)"
+      ],
+      "correctAnswer": "M(0, 2, 4, 5, 6, 7)",
+      "hint": "هذه هي الـ Maxterms للـ Off-Set (f=0). الـ On-Set (f=1) هو الأرقام الباقية."
+    },
+    {
+      "question": "14. If f(x,y,z) = Σm(1, 2, 3, 7), what is the equivalent POS form (Off-Set)?",
+      "options": [
+        "ΠM(0, 4, 5, 6)",
+        "ΠM(1, 2, 3, 7)",
+        "Σm(0, 4, 5, 6)",
+        "ΠM(0, 1, 2, 3)"
+      ],
+      "correctAnswer": "ΠM(0, 4, 5, 6)",
+      "hint": "الـ Off-Set يحتوي على الأرقام المفقودة من الـ On-Set (من 0 إلى 7)."
+    },
+    {
+      "question": "15. The term 'Canonical Form' (SOP or POS) implies that each term includes:",
+      "options": [
+        "Only one variable",
+        "At least one variable",
+        "All input variables",
+        "No variables"
+      ],
+      "correctAnswer": "All input variables",
+      "hint": "الصيغة القانونية لازم كل حد فيها يحتوي على كل المتغيرات."
+    },
+    {
+      "question": "16. How many minterms are possible for a function with 4 variables?",
+      "options": [
+        "4",
+        "8",
+        "16",
+        "32"
+      ],
+      "correctAnswer": "16",
+      "hint": "عدد الـ minterms (أو maxterms) يساوي 2^n حيث n عدد المتغيرات."
+    },
+    {
+      "question": "17. The On-Set of a function lists the minterm indices where the output is:",
+      "options": [
+        "0",
+        "1",
+        "0 or 1",
+        "Undefined"
+      ],
+      "correctAnswer": "1",
+      "hint": "مجموعة الـ minterms التي 'تشغل' الدالة."
+    },
+    {
+      "question": "18. The Off-Set of a function lists the maxterm indices where the output is:",
+      "options": [
+        "0",
+        "1",
+        "0 or 1",
+        "Undefined"
+      ],
+      "correctAnswer": "0",
+      "hint": "مجموعة الـ maxterms التي 'تطفئ' الدالة."
+    },
+    {
+      "question": "19. Simplify x(x'+y) + x using Boolean algebra (Tutorial Q4.1).",
+      "options": [
+        "x",
+        "y",
+        "x+y",
+        "xy"
+      ],
+      "correctAnswer": "x",
+      "hint": "x(x'+y)+x = x·x' + x·y + x = 0 + xy + x = x(y+1) = x·1 = x. أو باستخدام قانون الامتصاص x+xy=x."
+    },
+    {
+      "question": "20. Simplify A·B·C + A' + A·B'·C using Boolean algebra (Tutorial Q4.3).",
+      "options": [
+        "A'+B+C",
+        "A'+AC",
+        "A'+C",
+        "A'"
+      ],
+      "correctAnswer": "A'+C",
+      "hint": "خذ A' عامل مشترك بين الحد الثاني والأول (باستخدام قانون الإضافة A'+A'BC = A'). ثم A' + AB'C = A'+B'C. وأخيرًا B'C + ABC = (B'+AB)C. حاول تبسيطها أكثر!"
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

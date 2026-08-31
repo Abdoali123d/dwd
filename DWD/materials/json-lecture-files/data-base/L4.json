@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/DB/L4.pdf",
+  "tutorialFile": "W4T4DB.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: تأكيد على التكامل المرجعي (Referential Integrity) 🛡️</h3>\n    <p class=\"mb-4 text-lg\">التكامل المرجعي هو مجموعة قواعد بيطبقها نظام إدارة قواعد البيانات (DBMS) عشان يضمن إن العلاقات بين الجداول تفضل صحيحة ومتناسقة طول الوقت. أهميته إنه بيمنع مشاكل زي:</p>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**السجلات اليتيمة (Orphan Records):** يعني تلاقي طلب (في جدول الطلبات) بيشاور على ID بتاع عميل اتمسح (من جدول العملاء). الطلب ده بقى يتيم ملوش أب.</li>\n        <li>**عدم التناسق (Inconsistency):** لو غيرت الـ ID بتاع عميل في جدول العملاء ونسيت تغيره في جدول الطلبات المرتبط بيه، كده البيانات بقت مش متناسقة.</li>\n    </ul>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">قواعد التكامل المرجعي (لما بتفعّلها):</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6 mt-2\">\n            <li><strong>عند الإضافة (Insert) في جدول الابن (Many):</strong> لازم قيمة المفتاح الأجنبي (FK) اللي هتدخلها تكون موجودة أصلًا كقيمة للمفتاح الأساسي (PK) في جدول الأب (One)، أو ممكن تسيبها فاضية (NULL) لو الحقل ده بيسمح بالـ NULL. (مينفعش تضيف طلب لعميل مش موجود).</li>\n            <li><strong>عند الحذف (Delete) من جدول الأب (One):</strong> مينفعش تحذف سجل (زي عميل) لو له سجلات مرتبطة بيه في جدول الابن (زي طلبات). النظام هيمنعك إلا لو كنت مفعل خاصية **Cascade Delete** (الحذف المتتالي)، وساعتها حذف الأب هيمسح كل أولاده المرتبطين بيه.</li>\n            <li><strong>عند التعديل (Update) للمفتاح الأساسي (PK) في جدول الأب (One):</strong> مينفعش تعدل قيمة الـ PK (زي ID العميل) لو فيه سجلات مرتبطة بيها في جدول الابن. النظام هيمنعك إلا لو كنت مفعل خاصية **Cascade Update** (التحديث المتتالي)، وساعتها تغيير الـ PK في الأب هيسمّع تلقائيًا في الـ FKs المرتبطة بيه في جدول الابن.</li>\n        </ul>\n        <p class=\"mt-3 text-sm italic\">تفعيل الـ Cascade مهم ولكن بحذر شديد لأنه ممكن يمسح أو يغير بيانات كتير مرة واحدة.</p>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: علاقة أطراف بأطراف (Many-to-Many - M:N) عمليًا 🧑‍🤝‍🧑</h3>\n    <p class=\"mb-4 text-lg\">علاقة زي \"الطلاب\" و \"المواد الدراسية\" (الطالب ممكن يسجل في كذا مادة، والمادة ممكن يسجل فيها كذا طالب) مينفعش نعملها مباشرة بـ PK و FK بس. لازم نعمل **جدول وسيط (Junction Table)** في النص يكسر العلاقة دي لعلاقتين One-to-Many.</p>\n    <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>**إنشاء الجداول الأساسية:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>جدول Students (StudentID [PK], Name, ...).</li>\n                <li>جدول Courses (CourseID [PK], CourseName, ...).</li>\n            </ul>\n        </li>\n        <li>**إنشاء الجدول الوسيط (Junction Table):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>نسميه مثلاً Enrollments (التسجيلات).</li>\n                <li>نضيف فيه حقلين أساسيين (على الأقل) كـ **مفاتيح أجنبية (FKs)** بيشاوروا على الجداول الأساسية:\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li>StudentID (نوعه Number، هيكون FK لجدول Students).</li>\n                        <li>CourseID (نوعه Number، هيكون FK لجدول Courses).</li>\n                    </ul>\n                </li>\n                <li>**مفتاح أساسي مركب (Composite Primary Key):** أهم خطوة إننا نخلي الحقلين دول (StudentID و CourseID) **مع بعض** هما المفتاح الأساسي للجدول الوسيط. في Access، بنحدد الحقلين في Design View وندوس على أيقونة المفتاح 🔑. ده بيضمن حاجتين: (1) كل صف يبقى فريد، (2) الطالب الواحد ميسجلش نفس المادة مرتين.</li>\n                <li>(اختياري) ممكن نضيف حقول تانية بتوصف العلاقة نفسها، زي تاريخ التسجيل (EnrollmentDate) أو الدرجة (Grade).</li>\n            </ul>\n        </li>\n        <li>**إنشاء العلاقات:**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>نفتح نافذة Relationships (من Database Tools).</li>\n                 <li>نضيف الجداول التلاتة (Students, Courses, Enrollments).</li>\n                 <li>نعمل علاقتين **One-to-Many**:\n                      <ul class=\"list-disc list-inside ml-12 mt-1\">\n                         <li>**الأولى:** نسحب StudentID من جدول Students ونرميه فوق StudentID في جدول Enrollments. نفعل Referential Integrity (ونختار Cascade Update/Delete لو مناسب) ونضغط Create.</li>\n                         <li>**الثانية:** نسحب CourseID من جدول Courses ونرميه فوق CourseID في جدول Enrollments. نفعل Referential Integrity ونضغط Create.</li>\n                      </ul>\n                 </li>\n                 <li>الشكل النهائي هيكون جدولين أساسيين (Students و Courses) بينهم الجدول الوسيط (Enrollments)، وكل جدول أساسي مربوط بالوسيط بعلاقة (1) لـ (∞).</li>\n             </ul>\n        </li>\n    </ol>\n        <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: مراجعة (من التوتوريال T4) 📝</h3>\n      <p class=\"mb-4 text-lg\">تأكيد على بعض المفاهيم والخطوات العملية من التوتوريال:</p>\n      <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**قاعدة البيانات (Database):** مجموعة منظمة من البيانات.</li>\n        <li>**الجدول (Table):** الوحدة الأساسية لتخزين البيانات في Access، بتتكون من صفوف (Records) وأعمدة (Fields).</li>\n        <li>**السجل (Record):** صف واحد في الجدول، بيمثل معلومة كاملة عن شيء معين (زي بيانات طالب واحد).</li>\n        <li>**الحقل (Field):** عمود واحد في الجدول، بيمثل معلومة محددة (زي اسم الطالب).</li>\n        <li>**DBMS:** نظام إدارة قواعد البيانات، البرنامج اللي بنستخدمه (زي Access).</li>\n        <li>**المفتاح الأساسي (PK):** حقل أو أكتر بيعرف كل سجل بشكل فريد ومبيتكررش.</li>\n        <li>**المفتاح الأجنبي (FK):** حقل في جدول بيشاور على PK في جدول تاني عشان يربطهم.</li>\n        <li>**العلاقات (Relationships):** طرق ربط الجداول (1:1, 1:M, M:N).</li>\n        <li>**التكامل المرجعي (Referential Integrity):** ضمان صحة العلاقات ومنع البيانات اليتيمة.</li>\n        <li>**Lookup Wizard:** أداة في Access بتساعد في إنشاء حقل FK وتعمل قائمة منسدلة عشان تختار القيمة من الجدول المرتبط.</li>\n        <li>**إنشاء علاقة:** بيتم من تاب Database Tools -> Relationships عن طريق سحب الـ PK وإفلاته فوق الـ FK.</li>\n        <li>**Design View:** طريقة عرض الجدول اللي بنصمم فيها هيكله (الحقول وأنواعها والـ PK).</li>\n        <li>**Junction Table:** الجدول الوسيط اللي بنستخدمه في علاقات M:N.</li>\n        <li>**Memo (Long Text):** نوع بيانات للنصوص الطويلة جدًا.</li>\n     </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Emphasis on Referential Integrity 🛡️</h3>\n    <p class=\"mb-4 text-lg\">Referential integrity is a set of rules enforced by the Database Management System (DBMS) to ensure that relationships between records in related tables remain valid and consistent. Its importance lies in preventing problems such as:</p>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**Orphan Records:** Occurs when a record in the child table (Many side) refers to a record in the parent table (One side) that no longer exists (e.g., an order pointing to a deleted customer).</li>\n        <li>**Inconsistency:** Occurs if changes made in one table are not reflected correctly in the related table (e.g., updating a customer ID in the Customers table but not in the Orders table).</li>\n    </ul>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Referential Integrity Rules (When Enforced):</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6 mt-2\">\n            <li><strong>On Insert (Child Table):</strong> The value entered into the Foreign Key (FK) column must already exist as a Primary Key (PK) value in the parent table, or the FK value must be NULL (if the column allows NULLs). You cannot add an order for a customer who doesn't exist.</li>\n            <li><strong>On Delete (Parent Table):</strong> You cannot delete a record from the parent table (e.g., a customer) if there are related records in the child table (e.g., orders for that customer). The DBMS will prevent the deletion unless **Cascade Delete** is enabled, which would automatically delete all related child records when the parent record is deleted.</li>\n            <li><strong>On Update (Parent Table PK):</strong> You cannot update the Primary Key value of a record in the parent table if there are related records in the child table referencing that PK. The DBMS will prevent the update unless **Cascade Update** is enabled, which would automatically update the FK values in all related child records to match the new PK value.</li>\n        </ul>\n        <p class=\"mt-3 text-sm italic\">Enabling cascade options is powerful but should be used cautiously as it can lead to widespread data changes or deletions.</p>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Implementing Many-to-Many (M:N) Relationships Practically 🧑‍🤝‍🧑</h3>\n    <p class=\"mb-4 text-lg\">Relationships like \"Students\" and \"Courses\" (a student can enroll in many courses, and a course can have many students) cannot be implemented directly with just a PK and FK. A **Junction Table** (also called linking or associative table) is needed in between to break the M:N relationship into two One-to-Many relationships.</p>\n    <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>**Create Base Tables:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Students table (StudentID [PK], Name, ...).</li>\n                <li>Courses table (CourseID [PK], CourseName, ...).</li>\n            </ul>\n        </li>\n        <li>**Create the Junction Table:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Name it appropriately, e.g., Enrollments.</li>\n                <li>Add (at least) two essential fields as **Foreign Keys (FKs)** referencing the base tables:\n                    <ul class=\"list-disc list-inside ml-12 mt-1\">\n                        <li>StudentID (Number type, FK referencing Students.StudentID).</li>\n                        <li>CourseID (Number type, FK referencing Courses.CourseID).</li>\n                    </ul>\n                </li>\n                <li>**Composite Primary Key:** Crucially, set both FK fields (StudentID and CourseID) together as the **Composite Primary Key** for the junction table. In Access, select both fields in Design View and click the Key icon 🔑. This serves two purposes: (1) uniquely identifies each enrollment record, and (2) prevents a student from enrolling in the exact same course more than once.</li>\n                <li>(Optional) Add other fields that describe the relationship itself, such as EnrollmentDate or Grade.</li>\n            </ul>\n        </li>\n        <li>**Create Relationships:**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>Open the Relationships window (Database Tools tab).</li>\n                 <li>Add all three tables (Students, Courses, Enrollments).</li>\n                 <li>Create two **One-to-Many** relationships:\n                      <ul class=\"list-disc list-inside ml-12 mt-1\">\n                         <li>**First:** Drag StudentID from the Students table (the 'One' side) and drop it onto StudentID in the Enrollments table (the 'Many' side). Enforce Referential Integrity (and choose cascade options if appropriate), then click Create.</li>\n                         <li>**Second:** Drag CourseID from the Courses table (the 'One' side) and drop it onto CourseID in the Enrollments table (the 'Many' side). Enforce Referential Integrity and click Create.</li>\n                      </ul>\n                 </li>\n                 <li>The final diagram will show the two base tables linked through the junction table, with (1) to (∞) symbols indicating the two One-to-Many relationships.</li>\n             </ul>\n        </li>\n    </ol>\n        <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Review (from Tutorial T4) 📝</h3>\n      <p class=\"mb-4 text-lg\">Reinforcing some concepts and practical steps from the tutorial:</p>\n      <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**Database:** An organized collection of data.</li>\n        <li>**Table:** The basic object in Access for storing data, consisting of rows (Records) and columns (Fields).</li>\n        <li>**Record:** A single row in a table, representing a complete set of information about one item (e.g., one student).</li>\n        <li>**Field:** A single column in a table, representing a specific piece of information (e.g., student's name).</li>\n        <li>**DBMS:** Database Management System, the software used (e.g., Access).</li>\n        <li>**Primary Key (PK):** Field(s) that uniquely identify each record; cannot contain duplicates.</li>\n        <li>**Foreign Key (FK):** Field in one table referencing the PK of another table to link them.</li>\n        <li>**Relationships:** Ways tables are linked (1:1, 1:M, M:N).</li>\n        <li>**Referential Integrity:** Ensures relationships are valid and prevents orphan data.</li>\n        <li>**Lookup Wizard:** Access tool to help create an FK field and provide a dropdown list for selecting values from the related table.</li>\n        <li>**Creating Relationship:** Done in the Relationships window (Database Tools tab) by dragging PK onto FK.</li>\n        <li>**Design View:** The view for defining table structure (fields, data types, PK).</li>\n        <li>**Junction Table:** Used to implement M:N relationships.</li>\n        <li>**Memo (Long Text):** Data type for very long text entries.</li>\n     </ul>\n  ",
+  "quiz": [
+    {
+      "question": "1. What is the primary purpose of Referential Integrity?",
+      "options": [
+        "To speed up queries",
+        "To ensure relationships between tables remain consistent",
+        "To create primary keys",
+        "To store large text"
+      ],
+      "correctAnswer": "To ensure relationships between tables remain consistent",
+      "hint": "وظيفتها الحفاظ على صحة وسلامة الربط بين الجداول."
+    },
+    {
+      "question": "2. An 'Orphan Record' occurs when:",
+      "options": [
+        "A primary key is duplicated",
+        "A foreign key refers to a non-existent primary key",
+        "A table has no primary key",
+        "A database is empty"
+      ],
+      "correctAnswer": "A foreign key refers to a non-existent primary key",
+      "hint": "سجل ابن فقد أباه."
+    },
+    {
+      "question": "3. If Referential Integrity is enforced, what happens if you try to delete a customer who has existing orders (without Cascade Delete)?",
+      "options": [
+        "Only the customer is deleted",
+        "The orders are also deleted",
+        "The deletion is prevented",
+        "The orders are updated"
+      ],
+      "correctAnswer": "The deletion is prevented",
+      "hint": "النظام بيمنع حذف الأب طالما له أولاد مرتبطين بيه."
+    },
+    {
+      "question": "4. What does 'Cascade Update Related Fields' do?",
+      "options": [
+        "Deletes related records",
+        "Prevents updates",
+        "Updates the FK when the corresponding PK is updated",
+        "Creates new records"
+      ],
+      "correctAnswer": "Updates the FK when the corresponding PK is updated",
+      "hint": "بيسمّع التغيير بتاع الـ PK في الـ FKs المرتبطة."
+    },
+    {
+      "question": "5. A relationship between 'Students' and 'Courses' (many students take many courses) is typically a:",
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "Self-Referencing"
+      ],
+      "correctAnswer": "Many-to-Many",
+      "hint": "الطالب لكذا كورس، والكورس لكذا طالب."
+    },
+    {
+      "question": "6. How is a Many-to-Many relationship implemented in a relational database?",
+      "options": [
+        "By linking PKs directly",
+        "Using a single table",
+        "Using a Junction Table",
+        "Using only Foreign Keys"
+      ],
+      "correctAnswer": "Using a Junction Table",
+      "hint": "لازم جدول وسيط يكسر العلاقة لاتنين 1:M."
+    },
+    {
+      "question": "7. What typically forms the Primary Key of a Junction Table (like 'Enrollments')?",
+      "options": [
+        "A single AutoNumber field",
+        "The combination of the Foreign Keys from the related tables",
+        "The student's name",
+        "The course name"
+      ],
+      "correctAnswer": "The combination of the Foreign Keys from the related tables",
+      "hint": "المفتاح بيكون مركب من المفتاحين الأجنبيين مع بعض."
+    },
+    {
+      "question": "8. In the M:N Students/Courses example, the 'Enrollments' table has a One-to-Many relationship with which table(s)?",
+      "options": [
+        "Only Students",
+        "Only Courses",
+        "Both Students and Courses",
+        "Neither"
+      ],
+      "correctAnswer": "Both Students and Courses",
+      "hint": "الجدول الوسيط هو الـ 'Many' في علاقتين 1:M."
+    },
+    {
+      "question": "9. Which Access tool helps create a dropdown list for a Foreign Key field?",
+      "options": [
+        "Query Builder",
+        "Form Wizard",
+        "Lookup Wizard",
+        "Report Designer"
+      ],
+      "correctAnswer": "Lookup Wizard",
+      "hint": "بيسهل اختيار القيمة من الجدول المرتبط."
+    },
+    {
+      "question": "10. In which Access view do you define fields, data types, and primary keys?",
+      "options": [
+        "Datasheet View",
+        "Layout View",
+        "Design View",
+        "PivotTable View"
+      ],
+      "correctAnswer": "Design View",
+      "hint": "طريقة عرض التصميم."
+    },
+    {
+      "question": "11. The 'Memo' data type in older Access versions is now called:",
+      "options": [
+        "Short Text",
+        "Number",
+        "Hyperlink",
+        "Long Text"
+      ],
+      "correctAnswer": "Long Text",
+      "hint": "نوع البيانات الخاص بالنصوص الطويلة."
+    },
+    {
+      "question": "12. Where can you view the overall relationship structure of your database in Access?",
+      "options": [
+        "Table Datasheet View",
+        "Query Design View",
+        "Database Tools -> Relationships",
+        "Form View"
+      ],
+      "correctAnswer": "Database Tools -> Relationships",
+      "hint": "النافذة اللي بتعرض كل الجداول والعلاقات بينها."
+    },
+    {
+      "question": "13. What is the benefit of setting a Composite Primary Key on the Junction Table's FKs?",
+      "options": [
+        "Faster sorting",
+        "Allows duplicate enrollments",
+        "Prevents a student from enrolling in the same course twice",
+        "Saves storage space"
+      ],
+      "correctAnswer": "Prevents a student from enrolling in the same course twice",
+      "hint": "بيضمن إن تركيبة (طالب + كورس) متتكررش."
+    },
+    {
+      "question": "14. If you update a CustomerID in the Customers table, and 'Cascade Update' is enabled, what happens in the Orders table?",
+      "options": [
+        "Nothing",
+        "An error occurs",
+        "The corresponding CustomerID FKs are automatically updated",
+        "The orders are deleted"
+      ],
+      "correctAnswer": "The corresponding CustomerID FKs are automatically updated",
+      "hint": "التحديث المتتالي بيضمن استمرار التناسق."
+    },
+    {
+      "question": "15. A 'Record' in a database table corresponds to a:",
+      "options": [
+        "Column",
+        "Field",
+        "Row",
+        "Data Type"
+      ],
+      "correctAnswer": "Row",
+      "hint": "السجل هو الصف."
+    },
+    {
+      "question": "16. A 'Field' in a database table corresponds to a:",
+      "options": [
+        "Row",
+        "Record",
+        "Table",
+        "Column"
+      ],
+      "correctAnswer": "Column",
+      "hint": "الحقل هو العمود."
+    },
+    {
+      "question": "17. A collection of related data organized for easy access and management is a:",
+      "options": [
+        "Spreadsheet",
+        "Text File",
+        "Database",
+        "Presentation"
+      ],
+      "correctAnswer": "Database",
+      "hint": "تعريف قاعدة البيانات."
+    },
+    {
+      "question": "18. Which relationship is implemented using a junction table?",
+      "options": [
+        "One-to-One",
+        "One-to-Many",
+        "Many-to-Many",
+        "All of the above"
+      ],
+      "correctAnswer": "Many-to-Many",
+      "hint": "العلاقة اللي بتحتاج كسرها بجدول وسيط."
+    },
+    {
+      "question": "19. When creating a M:N relationship in Access, how many 1:M relationships do you typically create?",
+      "options": [
+        "Zero",
+        "One",
+        "Two",
+        "Three"
+      ],
+      "correctAnswer": "Two",
+      "hint": "واحدة من كل جدول أساسي للجدول الوسيط."
+    },
+    {
+      "question": "20. The software used to create, manage, and query databases (like Access or MySQL) is called:",
+      "options": [
+        "OS",
+        "DBMS",
+        "API",
+        "IDE"
+      ],
+      "correctAnswer": "DBMS",
+      "hint": "نظام إدارة قواعد البيانات."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

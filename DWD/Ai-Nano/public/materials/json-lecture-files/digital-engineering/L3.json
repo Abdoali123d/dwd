@@ -1,0 +1,220 @@
+{
+  "pdfFile": "../../materials-lectures/DE/L3.pdf",
+  "tutorialFile": "W3T3DE.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: تصميم الدوائر المنطقية وجدول الحقيقة 📝</h3>\n    <p class=\"mb-4 text-lg\">عادةً ما نبدأ تصميم دائرة منطقية من **وصف لفظي (Word Description)** للوظيفة المطلوبة. الخطوة الأولى في التصميم هي تحويل هذا الوصف إلى **جدول الحقيقة (Truth Table)**.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">ما هو جدول الحقيقة؟</h4>\n    <p class=\"mb-4\">هو جدول يوضح قيمة **الخرج (Output)** للدائرة لكل **تركيبة ممكنة من قيم الدخل (Input Combinations)**.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">خطوات بناء جدول الحقيقة من وصف لفظي:</h4>\n    <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>**تحديد عدد المداخل (Inputs):** من الوصف، نعرف كم متغير دخل نحتاج. لو بنتعامل مع أرقام من 0-7، نحتاج 3 مداخل (لأن $2^3 = 8$).</li>\n        <li>**تحديد عدد الصفوف:** عدد الصفوف في جدول الحقيقة = $2^n$ حيث n هو عدد المداخل. (لـ 3 مداخل، نحتاج 8 صفوف).</li>\n        <li>**ملء جانب المداخل:** نكتب كل التركيبات الممكنة للمداخل. طريقة سهلة هي العد الثنائي من 0 إلى $2^n - 1$:\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>العمود الأيمن (الأقل أهمية - LSB): نملأه 0, 1, 0, 1, ...</li>\n                <li>العمود التالي: 0, 0, 1, 1, 0, 0, ...</li>\n                <li>العمود التالي: 0, 0, 0, 0, 1, 1, 1, 1, ... وهكذا.</li>\n            </ul>\n        </li>\n        <li>**ملء جانب المخارج (Output):** لكل صف (تركيبة دخل)، نحدد قيمة الخرج المطلوبة بناءً على الوصف اللفظي للدائرة.</li>\n    </ol>\n\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">مثال: كاشف الأعداد الأولية (Prime Number Detector) للأرقام 0-7</h4>\n         <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li><strong>المداخل:</strong> 3 (A, B, C) لتمثيل الأرقام من 000 (0) إلى 111 (7).</li>\n            <li><strong>الخرج:</strong> 1 (f) لو الرقم المقابل للمدخل عدد أولي (2, 3, 5, 7)، و 0 لو غير ذلك (0, 1, 4, 6).</li>\n            <li><strong>جدول الحقيقة الناتج:</strong> (كما هو موضح في المحاضرة) يوضح أن f=1 عند الصفوف المقابلة للأرقام 2 ($010_2$), 3 ($011_2$), 5 ($101_2$), 7 ($111_2$).</li>\n         </ul>\n             </div>\n    <p class=\"mt-4 text-lg\">جدول الحقيقة هو الخطوة الأولى الأساسية. الخطوة التالية (سنتعلمها لاحقًا) هي كيفية تحويل هذا الجدول إلى معادلة منطقية ثم إلى دائرة فعلية.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: بناء جدول الحقيقة من معادلة منطقية 🟰</h3>\n    <p class=\"mb-4 text-lg\">لو لدينا معادلة منطقية (Boolean Equation)، يمكننا بناء جدول الحقيقة الخاص بها.</p>\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">الخطوات:</h4>\n     <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>**تحديد عدد المداخل:** من المتغيرات الموجودة في المعادلة (مثل A, B, C).</li>\n        <li>**تحديد عدد الصفوف:** $2^n$.</li>\n        <li>**ملء جانب المداخل:** بنفس الطريقة السابقة (العد الثنائي).</li>\n        <li>**حساب الخرج لكل صف:** نعوض بقيم المداخل (0 أو 1) لكل صف في المعادلة المعطاة ونحسب قيمة الخرج (F) باستخدام قواعد الجبر البولياني (AND='.', OR='+', NOT=' ').</li>\n     </ol>\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n         <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">مثال: $F = A \\cdot B' + C$</h4>\n          <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li><strong>المداخل:</strong> 3 (A, B, C).</li>\n            <li><strong>الصفوف:</strong> 8.</li>\n            <li><strong>حساب الخرج:</strong>\n                <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                    <li>صف (000): $F = 0 \\cdot (0)' + 0 = 0 \\cdot 1 + 0 = 0 + 0 = 0$.</li>\n                    <li>صف (001): $F = 0 \\cdot (0)' + 1 = 0 \\cdot 1 + 1 = 0 + 1 = 1$.</li>\n                    <li>صف (010): $F = 0 \\cdot (1)' + 0 = 0 \\cdot 0 + 0 = 0 + 0 = 0$.</li>\n                    <li>صف (011): $F = 0 \\cdot (1)' + 1 = 0 \\cdot 0 + 1 = 0 + 1 = 1$.</li>\n                    <li>صف (100): $F = 1 \\cdot (0)' + 0 = 1 \\cdot 1 + 0 = 1 + 0 = 1$.</li>\n                    <li>صف (101): $F = 1 \\cdot (0)' + 1 = 1 \\cdot 1 + 1 = 1 + 1 = 1$.</li>\n                    <li>صف (110): $F = 1 \\cdot (1)' + 0 = 1 \\cdot 0 + 0 = 0 + 0 = 0$.</li>\n                    <li>صف (111): $F = 1 \\cdot (1)' + 1 = 1 \\cdot 0 + 1 = 0 + 1 = 1$.</li>\n                </ul>\n            </li>\n         </ul>\n              </div>\n\n     <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: جدول حقيقة الدالة الثنائية (Dual Function) ↔️</h3>\n     <p class=\"mb-4 text-lg\">الدالة الثنائية ($F^D$) لدالة معينة (F) نحصل عليها بتبديل عمليات AND (·) و OR (+) وتبديل الثوابت 0 و 1 (مع ترك المتغيرات كما هي).</p>\n     <p class=\"mb-4\">مثال: لو $F = A \\cdot B' + C$, فإن $F^D = (A + B') \\cdot C$.</p>\n     <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">كيفية الحصول على جدول حقيقة $F^D$ من جدول حقيقة F:</h4>\n     <p>طريقة مختصرة وسريعة:</p>\n      <ol class=\"list-decimal list-inside space-y-1 mr-6 text-sm\">\n         <li>نأخذ جدول حقيقة F.</li>\n         <li>نعكس ترتيب **الصفوف** تمامًا (الصف الأخير يصبح الأول، والذي قبله يصبح الثاني، وهكذا).</li>\n         <li>نعكس قيم عمود **الخرج F** في الجدول المعكوس (كل 0 يصبح 1، وكل 1 يصبح 0).</li>\n         <li>الجدول الناتج (بعد عكس الصفوف وعكس الخرج) هو جدول حقيقة $F^D$.</li>\n      </ol>\n      <p class=\"mt-2 text-sm italic\">(يمكن دائمًا التحقق من صحة الناتج بالتعويض المباشر في معادلة $F^D$ لكل صف)</p>\n\n     <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: جدول حقيقة دائرة مجهولة (Reverse Engineering) ❓</h3>\n     <p class=\"mb-4 text-lg\">لو لدينا \"صندوق أسود\" (Black Box) أو دائرة متكاملة (Chip) لا نعرف وظيفتها، ونريد استنتاج جدول الحقيقة الخاص بها.</p>\n           <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">الخطوات:</h4>\n      <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n          <li>**تحديد عدد المداخل (n):** نرى كم طرف دخل للدائرة.</li>\n          <li>**بناء جانب المداخل** في جدول الحقيقة (كل $2^n$ تركيبة ممكنة).</li>\n          <li>**تجريبيًا (Empirically):** نستخدم مصدر جهد ومفاتيح لتطبيق كل تركيبة دخل ممكنة على أطراف الدخل للدائرة.</li>\n          <li>**قياس الخرج:** لكل تركيبة دخل، نقيس قيمة الجهد عند طرف الخرج باستخدام جهاز قياس (مثل الفولتميتر أو LED بسيط). إذا كان الجهد عاليًا، نسجل الخرج 1، وإذا كان منخفضًا، نسجل 0.</li>\n          <li>نسجل قيم الخرج المقاسة في الجدول.</li>\n          <li>بعد تجربة كل تركيبات الدخل، يصبح لدينا جدول الحقيقة الكامل للدائرة المجهولة.</li>\n      </ol>\n      <p class=\"mt-2\">بمجرد الحصول على جدول الحقيقة، يمكننا المتابعة لاستنتاج المعادلة المنطقية ورسم الدائرة.</p>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Logic Circuit Design and Truth Tables 📝</h3>\n    <p class=\"mb-4 text-lg\">Often, designing a logic circuit starts from a **Word Description** of the required function. The first step in the design process is converting this description into a **Truth Table**.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">What is a Truth Table?</h4>\n    <p class=\"mb-4\">It's a table that shows the **Output** value of the circuit for every **possible combination of Input values**.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Steps to Build a Truth Table from a Word Description:</h4>\n    <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>**Determine the Number of Inputs (n):** From the description, identify how many input variables are needed. If dealing with numbers 0-7, 3 inputs are required ($2^3 = 8$).</li>\n        <li>**Determine the Number of Rows:** The number of rows in the truth table is $2^n$. (For 3 inputs, we need 8 rows).</li>\n        <li>**Fill the Input Side:** List all possible input combinations. An easy way is binary counting from 0 to $2^n - 1$:\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Rightmost column (LSB): Alternate 0, 1, 0, 1, ...</li>\n                <li>Next column: Alternate 0, 0, 1, 1, 0, 0, ...</li>\n                <li>Next column: Alternate 0, 0, 0, 0, 1, 1, 1, 1, ... and so on.</li>\n            </ul>\n        </li>\n        <li>**Fill the Output Side:** For each row (input combination), determine the required output value based on the circuit's word description.</li>\n    </ol>\n\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Example: Prime Number Detector for 0-7</h4>\n         <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li><strong>Inputs:</strong> 3 (A, B, C) to represent numbers from 000 (0) to 111 (7).</li>\n            <li><strong>Output:</strong> 1 (f) if the input number is prime (2, 3, 5, 7), and 0 otherwise (0, 1, 4, 6).</li>\n            <li><strong>Resulting Truth Table:</strong> (As shown in the lecture) indicates f=1 for rows corresponding to numbers 2 ($010_2$), 3 ($011_2$), 5 ($101_2$), and 7 ($111_2$).</li>\n         </ul>\n             </div>\n    <p class=\"mt-4 text-lg\">The truth table is the fundamental first step. The next step (learned later) is how to convert this table into a logic equation and then into an actual circuit.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Building a Truth Table from a Logic Equation 🟰</h3>\n    <p class=\"mb-4 text-lg\">If we are given a Boolean Equation, we can construct its corresponding truth table.</p>\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Steps:</h4>\n     <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>**Determine Number of Inputs (n):** From the variables in the equation (e.g., A, B, C).</li>\n        <li>**Determine Number of Rows:** $2^n$.</li>\n        <li>**Fill Input Side:** Same method as before (binary counting).</li>\n        <li>**Calculate Output for Each Row:** Substitute the input values (0s and 1s) for each row into the given equation and evaluate the output (F) using Boolean algebra rules (AND='.', OR='+', NOT=' ').</li>\n     </ol>\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n         <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Example: $F = A \\cdot B' + C$</h4>\n          <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li><strong>Inputs:</strong> 3 (A, B, C).</li>\n            <li><strong>Rows:</strong> 8.</li>\n            <li><strong>Calculate Output:</strong>\n                <ul class=\"list-disc list-inside ml-6 mt-1 text-sm\">\n                    <li>Row (000): $F = 0 \\cdot (0)' + 0 = 0 \\cdot 1 + 0 = 0$.</li>\n                    <li>Row (001): $F = 0 \\cdot (0)' + 1 = 0 \\cdot 1 + 1 = 1$.</li>\n                    <li>Row (010): $F = 0 \\cdot (1)' + 0 = 0 \\cdot 0 + 0 = 0$.</li>\n                    <li>Row (011): $F = 0 \\cdot (1)' + 1 = 0 \\cdot 0 + 1 = 1$.</li>\n                    <li>Row (100): $F = 1 \\cdot (0)' + 0 = 1 \\cdot 1 + 0 = 1$.</li>\n                    <li>Row (101): $F = 1 \\cdot (0)' + 1 = 1 \\cdot 1 + 1 = 1$.</li>\n                    <li>Row (110): $F = 1 \\cdot (1)' + 0 = 1 \\cdot 0 + 0 = 0$.</li>\n                    <li>Row (111): $F = 1 \\cdot (1)' + 1 = 1 \\cdot 0 + 1 = 1$.</li>\n                </ul>\n            </li>\n         </ul>\n              </div>\n\n     <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Truth Table of the Dual Function ↔️</h3>\n     <p class=\"mb-4 text-lg\">The Dual function ($F^D$) of a given function (F) is obtained by interchanging AND (·) and OR (+) operators and interchanging the constants 0 and 1 (leaving variables unchanged).</p>\n     <p class=\"mb-4\">Example: If $F = A \\cdot B' + C$, then $F^D = (A + B') \\cdot C$.</p>\n     <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">How to get the Truth Table of $F^D$ from F's Truth Table:</h4>\n     <p>A quick shortcut method:</p>\n      <ol class=\"list-decimal list-inside space-y-1 ml-6 text-sm\">\n         <li>Take the truth table of F.</li>\n         <li>Completely reverse the order of the **rows** (last row becomes first, etc.).</li>\n         <li>Invert the **output values (F)** in the reversed table (all 0s become 1s, all 1s become 0s).</li>\n         <li>The resulting table is the truth table for $F^D$.</li>\n      </ol>\n      <p class=\"mt-2 text-sm italic\">(You can always verify by direct substitution into the $F^D$ equation for each row).</p>\n\n     <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Truth Table of an Unknown Circuit (Reverse Engineering) ❓</h3>\n     <p class=\"mb-4 text-lg\">If we have a \"Black Box\" or an unknown integrated circuit (Chip) and want to determine its function.</p>\n           <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Steps:</h4>\n      <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n          <li>**Identify the number of inputs (n).**</li>\n          <li>**Construct the input side** of the truth table (all $2^n$ combinations).</li>\n          <li>**Empirically (Experimentally):** Apply each possible input combination to the circuit's input pins using voltage sources and switches.</li>\n          <li>**Measure the Output:** For each input combination, measure the voltage at the output pin using a measuring device (like a voltmeter or a simple LED). Record 1 for high voltage, 0 for low voltage.</li>\n          <li>Record the measured output values in the truth table.</li>\n          <li>After testing all input combinations, the complete truth table for the unknown circuit is obtained.</li>\n      </ol>\n      <p class=\"mt-2\">Once the truth table is known, we can deduce the logic equation and draw the circuit diagram.</p>\n  ",
+  "quiz": [
+    {
+      "question": "1. What is the first step in designing a logic circuit from a word description?",
+      "options": [
+        "Write the Boolean equation",
+        "Draw the circuit diagram",
+        "Construct the truth table",
+        "Simplify the function"
+      ],
+      "correctAnswer": "Construct the truth table",
+      "hint": "جدول الحقيقة هو الأساس لترجمة الوصف."
+    },
+    {
+      "question": "2. How many rows does a truth table have for a circuit with 4 inputs?",
+      "options": [
+        "4",
+        "8",
+        "16",
+        "32"
+      ],
+      "correctAnswer": "16",
+      "hint": "عدد الصفوف = 2 أس عدد المداخل (2^n)."
+    },
+    {
+      "question": "3. In a 3-input truth table (A, B, C - C is LSB), what is the input pattern for the 'B' column?",
+      "options": [
+        "01010101",
+        "00110011",
+        "00001111",
+        "11110000"
+      ],
+      "correctAnswer": "00110011",
+      "hint": "العمود التاني من اليمين بيتغير كل صفين."
+    },
+    {
+      "question": "4. For a 3-bit prime number detector (0-7), which input combination corresponds to the number 5?",
+      "options": [
+        "011",
+        "100",
+        "101",
+        "110"
+      ],
+      "correctAnswer": "101",
+      "hint": "التمثيل الثنائي للرقم 5."
+    },
+    {
+      "question": "5. For the prime number detector example, what should the output 'f' be when the input is ABC = 110 (decimal 6)?",
+      "options": [
+        "0",
+        "1",
+        "Don't care",
+        "Undefined"
+      ],
+      "correctAnswer": "0",
+      "hint": "الرقم 6 ليس عددًا أوليًا."
+    },
+    {
+      "question": "6. When building a truth table from the equation F = A' + B, what is F when A=1, B=0?",
+      "options": [
+        "0",
+        "1"
+      ],
+      "correctAnswer": "0",
+      "hint": "F = (1)' + 0 = 0 + 0 = 0."
+    },
+    {
+      "question": "7. For the equation F = A · B' + C, what is F when A=0, B=1, C=1?",
+      "options": [
+        "0",
+        "1"
+      ],
+      "correctAnswer": "1",
+      "hint": "F = 0 · (1)' + 1 = 0 · 0 + 1 = 0 + 1 = 1."
+    },
+    {
+      "question": "8. How is the Dual function (F^D) obtained from a function F?",
+      "options": [
+        "Invert all variables",
+        "Swap AND/OR operators and swap 0/1 constants",
+        "Invert the output",
+        "Reverse the order of operations"
+      ],
+      "correctAnswer": "Swap AND/OR operators and swap 0/1 constants",
+      "hint": "تبديل الجمع بالضرب والعكس، وتبديل الصفر بالواحد والعكس."
+    },
+    {
+      "question": "9. What is the dual of the function F = X + Y'Z ?",
+      "options": [
+        "X'(Y+Z')",
+        "X(Y'+Z)",
+        "X(Y'Z)",
+        "X+(Y'Z)"
+      ],
+      "correctAnswer": "X(Y'+Z)",
+      "hint": "استبدل + بـ · والعكس."
+    },
+    {
+      "question": "10. How can you obtain the truth table for F^D from the truth table for F?",
+      "options": [
+        "Invert the output column F",
+        "Reverse the input combinations",
+        "Reverse the row order AND invert the output column F",
+        "Keep it the same"
+      ],
+      "correctAnswer": "Reverse the row order AND invert the output column F",
+      "hint": "اعكس ترتيب الصفوف واعكس قيم الخرج."
+    },
+    {
+      "question": "11. If F=0 for inputs 000 and F=1 for inputs 111, what will F^D be for inputs 000 and 111 respectively?",
+      "options": [
+        "F^D(000)=0, F^D(111)=1",
+        "F^D(000)=1, F^D(111)=0",
+        "F^D(000)=1, F^D(111)=1",
+        "F^D(000)=0, F^D(111)=0"
+      ],
+      "correctAnswer": "F^D(000)=0, F^D(111)=1",
+      "hint": "صف 111 في F يصبح صف 000 في الجدول المعكوس، ونعكس الخرج F=1 ليصبح F^D=0. صف 000 في F يصبح صف 111 في الجدول المعكوس، ونعكس الخرج F=0 ليصبح F^D=1."
+    },
+    {
+      "question": "12. Determining the function of an unknown circuit by applying inputs and measuring outputs is called:",
+      "options": [
+        "Simulation",
+        "Synthesis",
+        "Verification",
+        "Reverse Engineering (Empirical method)"
+      ],
+      "correctAnswer": "Reverse Engineering (Empirical method)",
+      "hint": "الهندسة العكسية عن طريق التجربة."
+    },
+    {
+      "question": "13. How many input combinations need to be tested for an unknown 4-input circuit?",
+      "options": [
+        "4",
+        "8",
+        "16",
+        "Depends on the function"
+      ],
+      "correctAnswer": "16",
+      "hint": "2^4 = 16 تركيبة ممكنة."
+    },
+    {
+      "question": "14. A truth table completely describes the ________ behavior of a logic circuit.",
+      "options": [
+        "Timing",
+        "Power consumption",
+        "Input/Output",
+        "Physical size"
+      ],
+      "correctAnswer": "Input/Output",
+      "hint": "يوضح علاقة الدخل بالخرج لكل الحالات."
+    },
+    {
+      "question": "15. For a 3-bit odd parity checker (output=1 if odd number of 1s in input), what is the output for input ABC=101?",
+      "options": [
+        "0",
+        "1"
+      ],
+      "correctAnswer": "0",
+      "hint": "يوجد عدد زوجي من الوحايد (اثنين)."
+    },
+    {
+      "question": "16. For a 3-bit circuit where output=1 if N is divisible by 3 (N=ABC), what is the output for input ABC=110 (decimal 6)?",
+      "options": [
+        "0",
+        "1"
+      ],
+      "correctAnswer": "1",
+      "hint": "الرقم 6 يقبل القسمة على 3."
+    },
+    {
+      "question": "17. The first column (MSB) in a 3-input truth table follows the pattern:",
+      "options": [
+        "01010101",
+        "00110011",
+        "00001111",
+        "11110000"
+      ],
+      "correctAnswer": "00001111",
+      "hint": "أربع أصفار ثم أربع وحايد."
+    },
+    {
+      "question": "18. If a circuit has output F=1 only when A=0, B=1, C=1, the equation could be derived as:",
+      "options": [
+        "F = A'+B+C",
+        "F = A'BC",
+        "F = A+B'+C'",
+        "F = A+B+C"
+      ],
+      "correctAnswer": "F = A'BC",
+      "hint": "هذه هي الـ minterm الوحيدة التي تساوي 1."
+    },
+    {
+      "question": "19. If F = (A+B)' + A'(C+B'), what is F when A=0, B=1, C=0? (From Tutorial Q1)",
+      "options": [
+        "0",
+        "1"
+      ],
+      "correctAnswer": "1",
+      "hint": "F = (0+1)' + 0'(0+1') = 1' + 1(0+0) = 0 + 1(0) = 0 + 0 = 0. Wait, let's recheck: F = (0+1)' + 0'(0+1') = (1)' + 1(0+0) = 0 + 1(0) = 0 + 0 = 0. There might be an error in my calculation or the question's premise. Let's trace carefully: (A+B)' -> (0+1)' = 1' = 0. A' -> 0' = 1. C -> 0. B' -> 1' = 0. A'(C+B') -> 1(0+0) = 1(0) = 0. F = 0 + 0 = 0. Let's try A=0, B=0, C=0: F = (0+0)' + 0'(0+0') = 0' + 1(0+1) = 1 + 1(1) = 1+1 = 1. The result for A=0, B=1, C=0 should be 0."
+    },
+    {
+      "question": "20. The dual of F = X'(Y+Z') + 1 is:",
+      "options": [
+        "X'(Y'+Z) · 0",
+        "X'(Y'+Z)",
+        "X(Y'Z) + 0",
+        "X(Y'Z) · 0"
+      ],
+      "correctAnswer": "X'(Y'+Z) · 0",
+      "hint": "بدّل + بـ ·، بدّل · بـ +، بدّل 1 بـ 0، اترك المتغيرات والمعكوسات كما هي."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

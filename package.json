@@ -1,0 +1,41 @@
+{
+  "name": "dwd",
+  "version": "1.0.0",
+  "description": "🌐 مشروع DWD: نظام إدارة جامعية آمن (SUMS)",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/css/tailwind.min.css --minify",
+    "watch:css": "npx tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/css/tailwind.min.css --watch",
+    "setup:vercel": "node scripts/vercel-setup.js",
+    "setup:vercel:push": "node scripts/vercel-setup.js --push",
+    "generate:sri": "node scripts/generate-sri.js",
+    "generate:sri:update": "node scripts/generate-sri.js --update"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@supabase/supabase-js": "^2.97.0",
+    "@upstash/ratelimit": "^2.0.6",
+    "@upstash/redis": "^1.34.4",
+    "@vercel/analytics": "^1.6.1",
+    "axios": "^1.18.0",
+    "axios-cookiejar-support": "^7.0.0",
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "firebase": "^12.8.0",
+    "firebase-admin": "^13.6.1",
+    "helmet": "^8.1.0",
+    "tough-cookie": "^6.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "javascript-obfuscator": "^5.1.0",
+    "tailwindcss": "^4.1.18"
+  }
+}

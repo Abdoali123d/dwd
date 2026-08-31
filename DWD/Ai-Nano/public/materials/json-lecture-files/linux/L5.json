@@ -1,0 +1,252 @@
+{
+  "id": "linux_l5",
+  "title": "Lecture 5: Advanced User Management and Permissions (Sudo & Chmod)",
+  "number": 5,
+  "pdfFile": "../../materials-lectures/linux/l5.pdf",
+  "arabicSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: إدارة المستخدمين (Users) 👤</h3>\n<p class=\"mb-4 text-lg\">أوامر متقدمة للتحكم الكامل في حسابات المستخدمين من الـ CLI.</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo useradd name</code>: لإنشاء مستخدم (بدون مجلد شخصي).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo useradd -m name</code>: لإنشاء مستخدم <strong>مع</strong> مجلد شخصي (home directory).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo passwd name</code>: لإنشاء أو تغيير كلمة مرور للمستخدم. (مهم جدًا بعد إنشاء المستخدم).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo userdel name</code>: لحذف مستخدم (لكن ملفاته في <code class=\"text-white\">/home</code> تظل موجودة).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo userdel -r name</code>: لحذف مستخدم <strong>ومجلداته الشخصية</strong> بالكامل.</div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">تعديل المستخدمين (usermod):</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\"><strong><code>usermod -l newname oldname</code>:</strong> لتعديل اسم المستخدم (Login Name).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\"><strong><code>usermod -d /new/path name</code>:</strong> لتعديل المسار الأساسي (Home Directory) للمستخدم.</div>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: الصلاحيات (Permissions) في لينكس 🔑</h3>\n<p class=\"mb-4 text-lg\">في لينكس، لكل ملف 3 أنواع من الصلاحيات و 3 فئات مستخدمين.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. أنواع الصلاحيات (Modes):</h4>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong>Read (قراءة) <code>r</code> = 4:</strong> تسمح بعرض محتويات الملف (أو عرض محتويات المجلد).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong>Write (كتابة) <code>w</code> = 2:</strong> تسمح بالتعديل أو حذف الملف (أو إنشاء/حذف ملفات داخل المجلد).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-green-400\"><strong>Execute (تنفيذ) <code>x</code> = 1:</strong> تسمح بتشغيل الملف كبرنامج (أو الدخول إلى المجلد).</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. فئات المستخدمين (Classes):</h4>\n<ul class=\"list-disc list-inside space-y-2 mr-6 mt-4\">\n    <li><strong>Owner (المالك):</strong> <code class=\"text-white\">u</code>، وهو المستخدم الذي أنشأ الملف.</li>\n    <li><strong>Group (المجموعة):</strong> <code class=\"text-white\">g</code>، وهي المجموعة التي ينتمي إليها المالك.</li>\n    <li><strong>Others (الآخرون):</strong> <code class=\"text-white\">o</code>، وهو أي مستخدم آخر على النظام.</li>\n</ul>\n<p class=\"mt-4 text-sm text-gray-400\">ملاحظة: الصلاحيات دائمًا تظهر بالترتيب: (المالك) (المجموعة) (الآخرون).</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: أوامر تغيير الصلاحيات (Chmod) 🎛️</h3>\n<p class=\"mb-4 text-lg\">أمر <code class=\"text-white\">chmod</code> (Change Mode) هو قلب إدارة الصلاحيات.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. طريقة الحروف (Symbolic Mode):</h4>\n<p class=\"mb-4\">باستخدام الحروف (<code class=\"text-white\">u</code>, <code class=\"text-white\">g</code>, <code class=\"text-white\">o</code>) والإشارات (<code class=\"text-white\">+</code> إضافة، <code class=\"text-white\">-</code> حذف، <code class=\"text-white\">=</code> تعيين مطلق).</p>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod u+x file</code>:</strong> يضيف صلاحية التنفيذ للمالك.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod g-w file</code>:</strong> يحذف صلاحية الكتابة من المجموعة.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod o=r file</code>:</strong> يعيّن صلاحية القراءة فقط للآخرين.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod ug+rw file</code>:</strong> يضيف القراءة والكتابة للمالك والمجموعة.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. طريقة الأرقام (Octal Mode): </h4>\n<p class=\"mb-4\">تعتمد على القيمة العددية لكل صلاحية (<code class=\"text-white\">r=4</code>, <code class=\"text-white\">w=2</code>, <code class=\"text-white\">x=1</code>).</p>\n<p class=\"my-4 p-3 bg-indigo-700/50 rounded-lg\"><strong>مثال (755):</strong> <code>Owner=7</code> (<code class=\"text-white\">4+2+1</code> / rwx)، <code>Group=5</code> (<code class=\"text-white\">4+1</code> / r-x)، <code>Others=5</code> (<code class=\"text-white\">4+1</code> / r-x).</p>\n<ul class=\"list-none space-y-3 mr-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>chmod 777 file</code>:</strong> يمنح صلاحيات كاملة للجميع (Owner, Group, Others).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>chmod 644 file</code>:</strong> صلاحية القراءة والكتابة للمالك فقط، والقراءة للجميع.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>chmod 750 file</code>:</strong> صلاحيات كاملة للمالك، وقراءة وتنفيذ للمجموعة، ولا شيء للآخرين.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: أوامر تغيير الملكية (Chown & Chgrp) 👑</h3>\n<p class=\"mb-4 text-lg\">للتحكم في من يمتلك الملف أو المجلد، أو من تتبع المجموعة الأساسية للملف.</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chown newowner file</code>:</strong> لتغيير مالك الملف.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chgrp newgroup file</code>:</strong> لتغيير مجموعة الملف.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chown newowner:newgroup file</code>:</strong> لتغيير المالك والمجموعة في أمر واحد.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chown -R newowner folder</code>:</strong> لتغيير المالك للمجلد ومحتوياته بالكامل بشكل متكرر (Recursive).</div>\n</div>",
+  "englishSummary": "<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: User Management 👤</h3>\n<p class=\"mb-4 text-lg\">Advanced commands for full control over user accounts from the CLI.</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo useradd name</code>: To create a user (without a home directory).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo useradd -m name</code>: To create a user <strong>with</strong> a home directory.</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo passwd name</code>: To create or change a password for the user. (Crucial after creation).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo userdel name</code>: To delete a user (their files in <code class=\"text-white\">/home</code> remain).</div>\n    <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">sudo userdel -r name</code>: To delete a user <strong>and</strong> their home directories entirely.</div>\n</div>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Modifying Users (usermod):</h4>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\"><strong><code>usermod -l newname oldname</code>:</strong> To modify the username (Login Name).</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-emerald-400\"><strong><code>usermod -d /new/path name</code>:</strong> To modify the user's home directory path.</div>\n</div>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Permissions in Linux 🔑</h3>\n<p class=\"mb-4 text-lg\">In Linux, every file has 3 types of permissions and 3 user categories.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Permission Modes:</h4>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-red-400\"><strong>Read <code>r</code> = 4:</strong> Allows viewing file contents (or listing directory contents).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong>Write <code>w</code> = 2:</strong> Allows modification or deletion of the file (or creating/deleting files inside a directory).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-green-400\"><strong>Execute <code>x</code> = 1:</strong> Allows running the file as a program (or entering the directory).</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. User Classes:</h4>\n<ul class=\"list-disc list-inside space-y-2 ml-6 mt-4\">\n    <li><strong>Owner:</strong> <code class=\"text-white\">u</code>, The user who created the file.</li>\n    <li><strong>Group:</strong> <code class=\"text-white\">g</code>, The group the owner belongs to.</li>\n    <li><strong>Others:</strong> <code class=\"text-white\">o</code>, Any other user on the system.</li>\n</ul>\n<p class=\"mt-4 text-sm text-gray-400\">Note: Permissions always appear in the order: (Owner) (Group) (Others).</p>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Changing Permissions Commands (Chmod) 🎛️</h3>\n<p class=\"mb-4 text-lg\">The <code class=\"text-white\">chmod</code> (Change Mode) command is the heart of permission management.</p>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">1. Symbolic Mode:</h4>\n<p class=\"mb-4\">Using letters (<code class=\"text-white\">u</code>, <code class=\"text-white\">g</code>, <code class=\"text-white\">o</code>) and signs (<code class=\"text-white\">+</code> add, <code class=\"text-white\">-</code> remove, <code class=\"text-white\">=</code> absolute assignment).</p>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod u+x file</code>:</strong> Adds execute permission for the owner.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod g-w file</code>:</strong> Removes write permission from the group.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod o=r file</code>:</strong> Assigns read-only permission to others.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-cyan-400\"><strong><code>chmod ug+rw file</code>:</strong> Adds read and write for owner and group.</li>\n</ul>\n\n<h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">2. Octal Mode: </h4>\n<p class=\"mb-4\">Relies on the numerical value of each permission (<code class=\"text-white\">r=4</code>, <code class=\"text-white\">w=2</code>, <code class=\"text-white\">x=1</code>).</p>\n<p class=\"my-4 p-3 bg-indigo-700/50 rounded-lg\"><strong>Example (755):</strong> <code>Owner=7</code> (<code class=\"text-white\">4+2+1</code> / rwx), <code>Group=5</code> (<code class=\"text-white\">4+1</code> / r-x), <code>Others=5</code> (<code class=\"text-white\">4+1</code> / r-x).</p>\n<ul class=\"list-none space-y-3 ml-6 mt-4\">\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>chmod 777 file</code>:</strong> Grants full permissions to everyone (Owner, Group, Others).</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>chmod 644 file</code>:</strong> Read and write for owner only, and read for everyone else.</li>\n    <li class=\"p-3 bg-gray-700/50 rounded-lg border-l-4 border-yellow-400\"><strong><code>chmod 750 file</code>:</strong> Full permissions for owner, read and execute for group, and nothing for others.</li>\n</ul>\n\n<hr class=\"my-8 border-slate-700\">\n\n<h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Changing Ownership Commands (Chown & Chgrp) 👑</h3>\n<p class=\"mb-4 text-lg\">To control who owns the file or directory, or which primary group the file belongs to.</p>\n<div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chown newowner file</code>:</strong> To change the file owner.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chgrp newgroup file</code>:</strong> To change the file group.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chown newowner:newgroup file</code>:</strong> To change both owner and group in one command.</div>\n    <div class=\"glass-card p-4 rounded-lg border-l-4 border-pink-400\"><strong><code>chown -R newowner folder</code>:</strong> To recursively change the owner for the folder and its entire contents.</div>\n</div>",
+  "quiz": [
+    {
+      "question": "1. What is the command to create a user *without* a home directory?",
+      "options": [
+        "useradd name",
+        "useradd -m name",
+        "usermod -a name",
+        "useradd -d name"
+      ],
+      "correctAnswer": "useradd name",
+      "hint": "الأوبشن <code>-m</code> هو اللي بيعمل المجلد الشخصي.",
+      "englishHint": "The <code>-m</code> option is what creates the home folder."
+    },
+    {
+      "question": "2. The <code>sudo passwd name</code> command is mainly used for:",
+      "options": [
+        "Deleting the user's password",
+        "Changing the user's name",
+        "Creating or changing the user's password",
+        "Checking the user's login history"
+      ],
+      "correctAnswer": "Creating or changing the user's password",
+      "hint": "هذا الأمر لا يغير الاسم، يغير كلمة المرور فقط.",
+      "englishHint": "This command does not change the name, only the password."
+    },
+    {
+      "question": "3. Which option is required with <code>userdel</code> to also delete the user's home directory?",
+      "options": [
+        "-f",
+        "-a",
+        "-r",
+        "-h"
+      ],
+      "correctAnswer": "-r",
+      "hint": "<code>-r</code> تعني 'Recursive' (متكرر/شامل).",
+      "englishHint": "<code>-r</code> stands for 'Recursive'."
+    },
+    {
+      "question": "4. What does the <code>usermod -l newname oldname</code> command do?",
+      "options": [
+        "Links the two names",
+        "Changes the old username to the new username",
+        "Creates a new user named 'newname'",
+        "Deletes the 'oldname' user"
+      ],
+      "correctAnswer": "Changes the old username to the new username",
+      "hint": "<code>-l</code> تعني 'Login Name' (اسم الدخول).",
+      "englishHint": "<code>-l</code> stands for 'Login Name'."
+    },
+    {
+      "question": "5. What is the numerical value for the 'Read' (r) permission?",
+      "options": [
+        "1",
+        "2",
+        "4",
+        "8"
+      ],
+      "correctAnswer": "4",
+      "hint": "<code>r=4</code>، <code>w=2</code>، <code>x=1</code>.",
+      "englishHint": "<code>r=4</code>, <code>w=2</code>, <code>x=1</code>."
+    },
+    {
+      "question": "6. What is the numerical value for the 'Write' (w) permission?",
+      "options": [
+        "1",
+        "2",
+        "4",
+        "8"
+      ],
+      "correctAnswer": "2",
+      "hint": "القراءة 4، الكتابة 2، التنفيذ 1.",
+      "englishHint": "Read 4, Write 2, Execute 1."
+    },
+    {
+      "question": "7. The permission 'Execute' (x) has a numerical value of:",
+      "options": [
+        "1",
+        "2",
+        "4",
+        "8"
+      ],
+      "correctAnswer": "1",
+      "hint": "التنفيذ هو الأقل قيمة.",
+      "englishHint": "Execute is the lowest value."
+    },
+    {
+      "question": "8. Which user class is represented by the letter 'o'?",
+      "options": [
+        "Owner",
+        "Group",
+        "Others",
+        "Root"
+      ],
+      "correctAnswer": "Others",
+      "hint": "<code>u</code>: مالك، <code>g</code>: مجموعة، <code>o</code>: آخرون.",
+      "englishHint": "<code>u</code>: Owner, <code>g</code>: Group, <code>o</code>: Others."
+    },
+    {
+      "question": "9. The command <code>chmod u+x file</code> does what?",
+      "options": [
+        "Removes execute permission from everyone",
+        "Adds execute permission to the Owner",
+        "Adds read permission to the Group",
+        "Changes the file owner to 'x'"
+      ],
+      "correctAnswer": "Adds execute permission to the Owner",
+      "hint": "<code>u</code> للمالك، <code>+</code> لإضافة، <code>x</code> للتنفيذ.",
+      "englishHint": "<code>u</code> for Owner, <code>+</code> for Add, <code>x</code> for Execute."
+    },
+    {
+      "question": "10. Which command removes write permission from the group for a file?",
+      "options": [
+        "chmod g=w file",
+        "chmod g-w file",
+        "chmod u-w file",
+        "chmod o+w file"
+      ],
+      "correctAnswer": "chmod g-w file",
+      "hint": "<code>g</code> للمجموعة، <code>-</code> للحذف، <code>w</code> للكتابة.",
+      "englishHint": "<code>g</code> for Group, <code>-</code> for Remove, <code>w</code> for Write."
+    },
+    {
+      "question": "11. If a file has permissions 755 (rwxr-xr-x), what permission does the 'Group' have?",
+      "options": [
+        "rwx (Read, Write, Execute)",
+        "r-- (Read only)",
+        "r-x (Read and Execute)",
+        "--- (No permissions)"
+      ],
+      "correctAnswer": "r-x (Read and Execute)",
+      "hint": "<code>5 = 4 (r) + 1 (x)</code>.",
+      "englishHint": "<code>5 = 4 (r) + 1 (x)</code>."
+    },
+    {
+      "question": "12. What does <code>chmod 644 file</code> grant?",
+      "options": [
+        "Full permissions for everyone",
+        "rwxr--r--",
+        "rw-r--r--",
+        "r-xr-xr-x"
+      ],
+      "correctAnswer": "rw-r--r--",
+      "hint": "<code>6 = 4+2 (rw-)</code>، <code>4 = 4 (r--)</code>.",
+      "englishHint": "<code>6 = 4+2 (rw-)</code>, <code>4 = 4 (r--)</code>."
+    },
+    {
+      "question": "13. What is the meaning of <code>chmod 777 file</code>?",
+      "options": [
+        "No permissions for anyone",
+        "Read-only for everyone",
+        "Full permissions for everyone",
+        "Execute only for the owner"
+      ],
+      "correctAnswer": "Full permissions for everyone",
+      "hint": "الرقم 7 هو المجموع الأقصى للصلاحيات (4+2+1).",
+      "englishHint": "The number 7 is the maximum sum of permissions (4+2+1)."
+    },
+    {
+      "question": "14. Which command changes the owner of a file?",
+      "options": [
+        "chgrp",
+        "chown",
+        "chmod",
+        "usermod"
+      ],
+      "correctAnswer": "chown",
+      "hint": "اختصار لـ 'Change Owner'.",
+      "englishHint": "Abbreviation for 'Change Owner'."
+    },
+    {
+      "question": "15. Which command changes the group of a file?",
+      "options": [
+        "chgrp",
+        "chown",
+        "chmod",
+        "groupmod"
+      ],
+      "correctAnswer": "chgrp",
+      "hint": "اختصار لـ 'Change Group'.",
+      "englishHint": "Abbreviation for 'Change Group'."
+    },
+    {
+      "question": "16. What does the <code>chown -R newowner folder</code> command do?",
+      "options": [
+        "Renames the folder",
+        "Changes the owner of the folder only",
+        "Changes the owner of the folder and all its contents recursively",
+        "Changes the group only"
+      ],
+      "correctAnswer": "Changes the owner of the folder and all its contents recursively",
+      "hint": "الأوبشن <code>-R</code> بيطبق الأمر على المحتويات الداخلية للمجلد أيضًا.",
+      "englishHint": "The <code>-R</code> option applies the command to the folder's internal contents as well."
+    },
+    {
+      "question": "17. What is the meaning of the assignment operator <code>=</code> in symbolic mode (e.g., <code>chmod o=r file</code>)?",
+      "options": [
+        "Add the permission",
+        "Remove the permission",
+        "Set the permissions absolutely (overwrite existing)",
+        "Link the permission"
+      ],
+      "correctAnswer": "Set the permissions absolutely (overwrite existing)",
+      "hint": "<code>+</code> إضافة، <code>-</code> حذف، <code>=</code> تعيين مطلق.",
+      "englishHint": "<code>+</code> add, <code>-</code> remove, <code>=</code> absolute assignment."
+    },
+    {
+      "question": "18. What is the permission of a directory if its permissions string starts with 'd' (e.g., <code>drwxr-xr-x</code>)?",
+      "options": [
+        "File",
+        "Link",
+        "Directory",
+        "Pipe"
+      ],
+      "correctAnswer": "Directory",
+      "hint": "<code>d</code> اختصار لـ 'Directory'.",
+      "englishHint": "<code>d</code> is short for 'Directory'."
+    },
+    {
+      "question": "19. Which command changes the owner and group simultaneously?",
+      "options": [
+        "chown owner file; chgrp group file",
+        "chown owner/group file",
+        "chown owner:group file",
+        "chgrp owner:group file"
+      ],
+      "correctAnswer": "chown owner:group file",
+      "hint": "نقطتين رأسيتين (<code>:</code>) تفصل بين المالك والمجموعة.",
+      "englishHint": "A colon (<code>:</code>) separates the owner and the group."
+    },
+    {
+      "question": "20. If you see the permission string <code>rwxr-x---</code>, what does the triple <code>---</code> for Others mean?",
+      "options": [
+        "Read-only access",
+        "Full access",
+        "No access (No Read, No Write, No Execute)",
+        "Write access only"
+      ],
+      "correctAnswer": "No access (No Read, No Write, No Execute)",
+      "hint": "الشرطة <code>-</code> تعني غياب الصلاحية.",
+      "englishHint": "The dash <code>-</code> means the absence of permission."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

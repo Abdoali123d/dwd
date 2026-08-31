@@ -1,0 +1,25 @@
+/* SPA Transition Styles */
+html.is-changing .transition-fade {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* State when leaving: fast fade out + slight slide up */
+html.is-animating .transition-fade {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Loading state indicator (optional) */
+.swup-progress-bar {
+    height: 3px;
+    background-color: #38bdf8;
+    /* Primary blue */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    transition: width 0.3s ease-out;
+    
+}

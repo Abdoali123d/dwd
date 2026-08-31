@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Professor HUB | نظام الإدارة التعليمية الرقمي</title>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../js/sound-effects.js"></script>
+    <script src="https://cdn.tailwindcss.com" data-swup-ignore-script></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../js/supabase_client.js"></script>
+    <script type="module" src="../../js/secure_connect.js"></script>
+    <!-- SheetJS for Batch Import -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        @media (max-width: 1024px) {
+            .sidebar-open {
+                transform: translateX(0) !important;
+            }
+        }
+    </style>
+
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --accent: #3b82f6;
+            --bg-dark: #020617;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* تأثيرات البطاقات الزجاجية */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 242, 255, 0.15);
+        }
+
+        .input-field {
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid #1e293b;
+            border-radius: 18px;
+            padding: 14px 20px;
+            width: 100%;
+            color: white;
+            transition: 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            outline: none;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: #020617;
+            font-weight: 800;
+            padding: 14px 32px;
+            border-radius: 18px;
+            transition: 0.4s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-gradient:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .btn-gradient:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .sidebar-link {
+            transition: 0.4s;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #94a3b8;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.15) 0%, transparent 100%);
+            color: var(--primary);
+            border-right: 4px solid var(--primary);
+        }
+
+        .page-transition {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="flex min-h-screen">
+    <div id="swup-main" class="flex min-h-screen w-full relative">
+
+
+        <script src="../../js/security-utils.js"></script>
+        <script src="../../js/content-protection.js"></script>
+        <!-- زر المنيو للجوال (Hamburger Menu) -->
+        <button id="mobile-menu-btn" aria-label="فتح القائمة"
+            class="lg:hidden fixed top-6 right-6 z-[100] w-12 h-12 bg-slate-800 border border-white/10 rounded-xl flex items-center justify-center text-cyan-400 shadow-xl">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <!-- القائمة الجانبية (Sidebar) للتحكم في أقسام لوحة الأستاذ -->
+        <aside id="sidebar"
+            class="fixed lg:sticky top-0 right-0 z-[60] w-80 h-screen bg-[#020617] p-8 border-l border-white/5 transform translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            <div class="mb-14 flex items-center gap-4 animate__animated animate__fadeIn">
+                <div
+                    class="w-12 h-12 bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i class="fas fa-brain text-slate-900 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tight">PROFESSOR <span class="text-cyan-400">HUB</span></h1>
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Digital Education System
+                    </p>
+                </div>
+            </div>
+
+            <nav class="flex-1 space-y-2">
+                <button onclick="switchTab('tab-upload')" class="sidebar-link active" id="btn-upload">
+                    <i class="fas fa-layer-group"></i> المكتبة السحابية
+                </button>
+                <button onclick="switchTab('tab-materials')" class="sidebar-link" id="btn-materials">
+                    <i class="fas fa-book-open"></i> إدارة المقررات
+                </button>
+                <button onclick="switchTab('tab-students')" class="sidebar-link" id="btn-students">
+                    <i class="fas fa-user-graduate"></i> بوابة الطلاب
+                </button>
+                <a href="admin.html" class="sidebar-link" id="btn-schedule">
+                    <i class="fas fa-calendar-alt"></i> الجدول الذكي
+                </a>
+                <button onclick="switchTab('tab-submissions')" class="sidebar-link" id="btn-submissions">
+                    <i class="fas fa-tasks"></i> الواجبات المسلمة
+                </button>
+                <button onclick="switchTab('tab-training')" class="sidebar-link" id="btn-training">
+                    <i class="fas fa-briefcase"></i> سجل التدريب الميداني
+                </button>
+                <a href="../admin/analytics.html"
+                    class="sidebar-link bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20"
+                    id="btn-analytics">
+                    <i class="fas fa-chart-pie"></i> لوحة التحليلات
+                </a>
+                <button onclick="switchTab('tab-attendance')" class="sidebar-link" id="btn-attendance">
+                    <i class="fas fa-map-marker-alt"></i> سجل الحضور (GPS)
+                </button>
+                <button onclick="switchTab('tab-security')" class="sidebar-link" id="btn-security">
+                    <i class="fas fa-user-secret"></i> تنبيهات الأمان
+                    <span id="fraud-count-badge"
+                        class="hidden mr-auto bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-pulse">0</span>
+                </button>
+                <a href="/DWD/schedule/professor-manual.html" target="_blank" class="sidebar-link text-cyan-400"
+                    id="btn-manual">
+                    <i class="fas fa-book font-bold"></i> الكتالوج (دليل النظام)
+                </a>
+
+
+                <a href="grades-dashboard.html" class="sidebar-link" id="btn-schedule">
+                    <i class="fas fa-calendar-alt"></i> عرض ورصد درجات الطبه
+                </a>
+
+                <div class="my-8 h-px bg-slate-800/50 w-full"></div>
+
+                <a href="https://dwd-edu.vercel.app/login.html" onclick="localStorage.clear(); sessionStorage.clear();"
+                    class="sidebar-link text-red-400 hover:bg-red-500/10 hover:text-red-500">
+                    <i class="fas fa-power-off"></i> تسجيل الخروج
+                </a>
+            </nav>
+
+            <div class="p-4 glass-card bg-cyan-500/5 rounded-2xl border-cyan-500/20">
+                <div class="flex items-center gap-3">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                    </span>
+                    <span class="text-[10px] font-bold text-cyan-400">خادم Supabase: متصل</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- خلفية القائمة عند فتحها في الجوال -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] hidden lg:hidden"></div>
+
+        <main
+            class="flex-1 p-6 lg:p-12 min-h-screen overflow-y-auto bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-[#020617]">
+
+            <!-- قسم الإحصائيات السريعة -->
+            <header class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 animate__animated animate__fadeInDown">
+                <div class="glass-card p-8 flex items-center justify-between group">
+                    <div>
+                        <p class="text-slate-400 text-[10px] font-bold mb-1 uppercase tracking-widest">المحاضرات</p>
+                        <h3 id="stat-lectures" class="text-4xl font-black">0</h3>
+                    </div>
+                    <i
+                        class="fas fa-file-pdf text-5xl text-cyan-400 opacity-10 group-hover:opacity-40 transition-all"></i>
+                </div>
+                <div class="glass-card p-8 flex items-center justify-between group">
+                    <div>
+                        <p class="text-slate-400 text-[10px] font-bold mb-1 uppercase tracking-widest">الطلاب</p>
+                        <h3 id="stat-students" class="text-4xl font-black">0</h3>
+                    </div>
+                    <i
+                        class="fas fa-users text-5xl text-purple-400 opacity-10 group-hover:opacity-40 transition-all"></i>
+                </div>
+                <div class="glass-card p-8 flex items-center justify-between group">
+                    <div>
+                        <p class="text-slate-400 text-[10px] font-bold mb-1 uppercase tracking-widest">المواد</p>
+                        <h3 id="stat-materials" class="text-4xl font-black">0</h3>
+                    </div>
+                    <i
+                        class="fas fa-tags text-5xl text-emerald-400 opacity-10 group-hover:opacity-40 transition-all"></i>
+                </div>
+            </header>
+
+            <section id="tab-upload" class="page-transition space-y-8">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    <!-- نموذج رفع محاضرة جديدة (PDF) -->
+                    <div class="glass-card p-8 h-fit border-t-4 border-t-cyan-500">
+                        <h2 class="text-xl font-black mb-6 flex items-center gap-3"><i
+                                class="fas fa-plus-circle text-cyan-400"></i> رفع محاضرة جديدة</h2>
+                        <div class="space-y-5">
+                            <select id="up-mat-id" class="input-field"></select>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="up-title" placeholder="عنوان المحاضرة..." class="input-field">
+                                <input type="number" id="up-week" placeholder="رقم الأسبوع (مثال: 1)"
+                                    class="input-field" min="1" value="1" title="رقم الأسبوع لتنظيم المحتوى الدراسي">
+                            </div>
+                            <div
+                                class="relative group border-2 border-dashed border-slate-700 rounded-2xl p-8 text-center hover:border-cyan-400 transition-all">
+                                <input type="file" id="file-input" accept=".pdf,.docx"
+                                    class="absolute inset-0 opacity-0 cursor-pointer" onchange="validateFileSize(this)">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-slate-500 mb-2"></i>
+                                <p id="file-name-text" class="text-xs text-slate-400">اسحب الملف هنا</p>
+                            </div>
+                            <button onclick="handleFileUpload()" id="upload-btn" class="btn-gradient w-full py-4">
+                                نشر المحاضرة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- New Tutorial Upload Form -->
+                    <div class="glass-card p-8 h-fit border-t-4 border-t-purple-500">
+                        <h2 class="text-xl font-black mb-6 flex items-center gap-3"><i
+                                class="fas fa-plus-circle text-purple-400"></i> رفع درس تعليمي جديد</h2>
+                        <div class="space-y-5">
+                            <select id="tut-up-mat-id" class="input-field"></select>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="tut-up-title" placeholder="عنوان الدرس..." class="input-field">
+                                <input type="number" id="tut-up-week" placeholder="رقم الأسبوع (مثال: 1)"
+                                    class="input-field" min="1" value="1">
+                            </div>
+                            <div
+                                class="relative group border-2 border-dashed border-slate-700 rounded-2xl p-8 text-center hover:border-purple-400 transition-all">
+                                <input type="file" id="tut-file-input" accept=".pdf,.docx"
+                                    class="absolute inset-0 opacity-0 cursor-pointer" onchange="validateFileSize(this)">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-slate-500 mb-2"></i>
+                                <p id="tut-file-name-text" class="text-xs text-slate-400">اسحب الملف هنا</p>
+                            </div>
+                            <button onclick="handleTutorialUpload()" id="tut-upload-btn"
+                                class="btn-gradient w-full py-4"
+                                style="background: linear-gradient(135deg, #bd00ff 0%, #7c3aed 100%);">
+                                نشر الدرس التعليمي
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- New Assignment Upload Form -->
+                    <div class="glass-card p-7 h-fit border-t-4 border-t-emerald-500">
+                        <h2 class="text-xl font-black mb-6 flex items-center gap-3"><i
+                                class="fas fa-plus-circle text-emerald-400"></i> رفع واجب جديد</h2>
+                        <div class="space-y-5">
+                            <select id="assign-mat-id" class="input-field"></select>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="assign-title" placeholder="عنوان الواجب..." class="input-field">
+                                <input type="number" id="assign-week" placeholder="رقم الأسبوع (مثال: 1)"
+                                    class="input-field" min="1" value="1">
+                            </div>
+                            <textarea id="assign-description" placeholder="وصف الواجب..."
+                                class="input-field h-15"></textarea>
+                            <input type="datetime-local" id="assign-deadline" class="input-field">
+                            <div
+                                class="relative group border-2 border-dashed border-slate-700 rounded-2xl p-8 text-center hover:border-emerald-400 transition-all">
+                                <input type="file" id="assign-file-input" accept=".pdf,.docx"
+                                    class="absolute inset-0 opacity-0 cursor-pointer" onchange="validateFileSize(this)">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-slate-500 mb-2"></i>
+                                <p id="assign-file-name-text" class="text-xs text-slate-400">اسحب ملف الواجب هنا (PDF)
+                                </p>
+                            </div>
+                            <button onclick="handleAssignmentUpload()" id="assign-upload-btn"
+                                class="btn-gradient w-full py-3"
+                                style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                نشر الواجب
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="xl:col-span-3 glass-card p-8 ">
+                        <h2 class="text-xl font-black mb-6">المكتبة الرقمية (محاضرات)</h2>
+                        <div id="lectures-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                        <h2 class="text-xl font-black mb-6 mt-8">المكتبة الرقمية (دروس تعليمية)</h2>
+                        <div id="tutorials-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                        <h2 class="text-xl font-black mb-6 mt-8">الواجبات المنشورة</h2>
+                        <div id="assignments-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-materials" class="hidden page-transition space-y-8">
+                <div class="glass-card p-6 flex flex-col md:flex-row gap-4 items-end">
+                    <div class="flex-1 w-full">
+                        <label class="text-[10px] font-bold text-slate-500 mb-2 block uppercase mr-2">اسم المقرر
+                            الدراسي</label>
+                        <input type="text" id="new-mat-name" placeholder="مثلاً: هندسة البرمجيات" class="input-field">
+                    </div>
+                    <div class="w-full md:w-32">
+                        <label class="text-[10px] font-bold text-slate-500 mb-2 block uppercase mr-2">لون السمة</label>
+                        <input type="color" id="new-mat-color"
+                            class="h-[56px] w-full bg-slate-900 border-2 border-slate-700 rounded-2xl cursor-pointer"
+                            value="#00f2ff">
+                    </div>
+                    <button onclick="addNewMaterial()"
+                        class="btn-gradient px-10 h-[56px] w-full md:w-auto">إضافة</button>
+                </div>
+                <div id="materials-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </section>
+
+            <section id="tab-students" class="hidden page-transition space-y-8">
+                <!-- 1. إضافة طالب منفرد -->
+                <div class="glass-card p-6 border-t-2 border-t-cyan-500">
+                    <h3 class="text-lg font-black mb-4 text-cyan-400"><i class="fas fa-user-plus"></i> تسجيل طالب جديد
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <input type="text" id="new-std-name" placeholder="اسم الطالب" class="input-field">
+                        <input type="text" id="new-std-academic-id" placeholder="الرقم الأكاديمي" class="input-field">
+                        <input type="email" id="new-std-email" placeholder="البريد الإلكتروني" class="input-field">
+                        <input type="password" id="new-std-password" placeholder="كلمة المرور" class="input-field">
+                        <input type="text" id="new-std-group" placeholder="المجموعة (م1)" class="input-field">
+                        <button onclick="addNewStudent()" class="btn-gradient md:col-span-5 px-10 py-3">
+                            <i class="fas fa-plus ml-2"></i> تسجيل الطالب بالكامل
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. الاستيراد المجمع بملف Excel -->
+                <div class="glass-card p-6 border-t-2 border-t-purple-500">
+                    <h3 class="text-lg font-black mb-4 text-purple-400"><i class="fas fa-file-excel"></i> الاستيراد
+                        المجمع للطلاب (Excel/CSV)</h3>
+                    <div class="flex flex-col md:flex-row gap-4 items-center">
+                        <div
+                            class="relative group border border-dashed border-slate-700 rounded-xl p-4 flex-1 text-center hover:border-purple-400 transition-all cursor-pointer w-full">
+                            <input type="file" id="bulk-std-file" accept=".xlsx, .xls, .csv"
+                                class="absolute inset-0 opacity-0 cursor-pointer"
+                                onchange="document.getElementById('bulk-file-name').innerText = this.files[0]?.name || 'اختر ملف الإكسيل (Excel) من هنا'">
+                            <i class="fas fa-upload text-3xl text-slate-500 mb-2"></i>
+                            <p id="bulk-file-name" class="text-sm text-slate-400">اختر ملف الإكسيل (Excel) من هنا</p>
+                        </div>
+                        <button onclick="processBulkStudents()" class="btn-gradient px-10 py-5 w-full md:w-auto"
+                            style="background: linear-gradient(135deg, #bd00ff 0%, #7c3aed 100%);">
+                            <i class="fas fa-users-cog ml-2"></i> استيراد ورفع البيانات
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3"><i class="fas fa-info-circle"></i> الأعمدة المطلوبة بالترتيب
+                        أو بالاسم: (Email, Password, Name, Academic_ID, Role)</p>
+                </div>
+
+                <!-- 3. إضافة دكتور جديد -->
+                <div class="glass-card p-6 border-t-2 border-t-emerald-500">
+                    <h3 class="text-lg font-black mb-4 text-emerald-400"><i class="fas fa-user-tie"></i> إضافة عضو هيئة
+                        تدريس (Doctor)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="new-doc-name" placeholder="الاسم (مثال: د. أسامة)" class="input-field">
+                        <input type="email" id="new-doc-email" placeholder="البريد الإلكتروني" class="input-field">
+                        <input type="text" id="new-doc-password" placeholder="كلمة المرور الابتدائية"
+                            class="input-field">
+                        <button onclick="addNewDoctor()" class="btn-gradient px-10"
+                            style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                            <i class="fas fa-chalkboard-teacher ml-2"></i> إضافة دكتور
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card overflow-hidden">
+                    <div class="p-4 bg-white/5 border-b border-white/5 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-200">سجل المستخدمين المسجلين</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead class="bg-white/5 text-slate-400 text-[10px] uppercase">
+                                <tr>
+                                    <th class="p-5">الطالب</th>
+                                    <th class="p-5">الرقم الأكاديمي</th>
+                                    <th class="p-5">المجموعة</th>
+                                    <th class="p-5">الحالة</th>
+                                    <th class="p-5">إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-table" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-schedule" class="hidden page-transition space-y-8">
+                <div class="glass-card p-6 grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <select id="sch-day" class="input-field">
+                        <option>السبت</option>
+                        <option>الأحد</option>
+                        <option>الاثنين</option>
+                        <option>الثلاثاء</option>
+                        <option>الأربعاء</option>
+                        <option>الخميس</option>
+                    </select>
+                    <input type="text" id="sch-group" placeholder="المجموعة" class="input-field">
+                    <input type="text" id="sch-subject" placeholder="المادة" class="input-field">
+                    <input type="time" id="sch-start" class="input-field">
+                    <input type="time" id="sch-end" class="input-field">
+                    <button onclick="saveSchedule()" class="btn-gradient col-span-full py-4">تحديث الجدول
+                        الأسبوعي</button>
+                </div>
+                <div class="glass-card overflow-hidden">
+                    <table class="w-full text-right">
+                        <thead class="bg-white/5 text-slate-400 text-xs">
+                            <tr>
+                                <th class="p-5">اليوم</th>
+                                <th class="p-5">المحاضرة</th>
+                                <th class="p-5">الوقت</th>
+                                <th class="p-5">حذف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sch-table" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-submissions" class="hidden page-transition space-y-8">
+                <div class="glass-card overflow-hidden">
+                    <div class="flex justify-between items-center m-6">
+                        <h2 class="text-xl font-black">الواجبات المسلمة</h2>
+                        <button onclick="confirmClearAllSubmissions()"
+                            class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl transition font-bold text-sm flex items-center gap-2">
+                            <i class="fas fa-trash-alt"></i> تفريغ القائمة بالكامل
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead class="bg-white/5 text-slate-400 text-[10px] uppercase">
+                                <tr>
+                                    <th class="p-5">الطالب</th>
+                                    <th class="p-5">الواجب</th>
+                                    <th class="p-5">تاريخ التسليم</th>
+                                    <th class="p-5">الحالة</th>
+                                    <th class="p-5">الدرجة</th>
+                                    <th class="p-5">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissions-table" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Confirmation Modal -->
+                <div id="confirm-modal"
+                    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] hidden items-center justify-center p-4 animate__animated animate__fadeIn">
+                    <div
+                        class="glass-card w-full max-w-md p-8 text-center border-t-4 border-red-500 animate__animated animate__zoomIn">
+                        <div class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-exclamation-triangle text-4xl text-red-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-white mb-2">تنبيه هام!</h3>
+                        <p id="confirm-msg" class="text-slate-300 mb-8 font-bold">هل أنت متأكد يا دكتور أنك تريد حذف هذا
+                            العنصر؟</p>
+
+                        <div class="flex gap-4 justify-center">
+                            <button onclick="closeConfirmModal()"
+                                class="px-6 py-3 rounded-xl bg-slate-700 text-white font-bold hover:bg-slate-600 transition w-full">Cancel</button>
+                            <button id="confirm-action-btn"
+                                class="px-6 py-3 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition w-full">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-training" class="hidden page-transition space-y-8">
+                <div class="glass-card p-8 border-t-4 border-t-amber-500">
+                    <h2 class="text-xl font-black mb-6 flex items-center gap-3"><i
+                            class="fas fa-hard-hat text-amber-400"></i> تسجيل تدريب ميداني</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="md:col-span-2">
+                            <div class="flex items-end gap-2">
+                                <div class="flex-grow">
+                                    <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">اختر
+                                        الطالب</label>
+                                    <select id="train-student-id" class="input-field"></select>
+                                </div>
+                                <button onclick="loadStudentsForTraining()"
+                                    class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/50 p-3 rounded-xl hover:bg-cyan-500 hover:text-white transition-all"
+                                    title="تحديث القائمة">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">جهة التدريب
+                                (Title)</label>
+                            <input type="text" id="train-title" placeholder="مثلاً: تدريب صيفي بشركة WE"
+                                class="input-field">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">الموقع
+                                (Location)</label>
+                            <input type="text" id="train-location" placeholder="مثلاً: القرية الذكية"
+                                class="input-field">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">عدد الأسابيع</label>
+                            <input type="number" id="train-weeks" placeholder="4" class="input-field">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">الحالة</label>
+                            <select id="train-status" class="input-field">
+                                <option value="completed">مكتمل (معتمد)</option>
+                                <option value="pending">قيد الانتظار</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">الوصف /
+                                المهارات</label>
+                            <textarea id="train-description" placeholder="وصف التدريب والمهارات المكتسبة..."
+                                class="input-field h-24"></textarea>
+                        </div>
+                        <button onclick="saveTraining()" id="save-train-btn" class="btn-gradient md:col-span-2 py-4">
+                            حفظ وتسجيل التدريب
+                        </button>
+                    </div>
+                </div>
+                <!-- Trainings List Section -->
+                <div class="glass-card overflow-hidden mt-8">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                        <h3 class="font-bold text-white"><i class="fas fa-list-alt ml-2 text-amber-500"></i> سجل
+                            التدريبات المسجلة</h3>
+                        <button onclick="loadProfessorTrainings()"
+                            class="text-xs bg-white/5 hover:bg-white/10 px-3 py-1 rounded text-slate-400 transition">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead class="bg-white/5 text-slate-400 text-[10px] uppercase">
+                                <tr>
+                                    <th class="p-4">الطالب</th>
+                                    <th class="p-4">جهة التدريب</th>
+                                    <th class="p-4">الموقع</th>
+                                    <th class="p-4">الأسابيع</th>
+                                    <th class="p-4">التاريخ</th>
+                                    <th class="p-4">حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody id="prof-trainings-table" class="divide-y divide-white/5 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم الحضور والغياب -->
+            <section id="tab-attendance" class="hidden animate__animated animate__fadeIn space-y-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-3xl font-black text-white mb-2">سجل الحضور الذكي (Live Sessions)</h2>
+                        <p class="text-slate-400">إدارة جلسات الحضور وتحديد القاعات الجغرافية</p>
+                    </div>
+                </div>
+
+                <!-- Session Control Panel -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Controls -->
+                    <div class="glass-card p-8 lg:col-span-1 border-t-4 border-blue-500 h-fit">
+                        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                            <i class="fas fa-broadcast-tower text-blue-400"></i> إعداد الجلسة
+                        </h3>
+
+                        <div class="space-y-4">
+                            <!-- Status Indicator -->
+                            <div id="session-status"
+                                class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center hidden">
+                                <p class="text-xs text-slate-400 uppercase font-bold mb-1">الحالة</p>
+                                <p class="text-green-400 font-black text-xl animate-pulse">● بث مباشر نشط</p>
+                                <p id="session-timer" class="text-white font-mono mt-1">00:00</p>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">المادة</label>
+                                <select id="sess-subject" class="input-field">
+                                    <option value="">اختر المادة...</option>
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">القاعة /
+                                    الموقع</label>
+                                <div class="flex gap-2 mb-4">
+                                    <select id="sess-room" class="input-field flex-grow">
+                                        <option value="custom">📍 موقعي الحالي (GPS)</option>
+                                        <!-- Populated from 'rooms' table -->
+                                    </select>
+                                    <button onclick="saveCurrentRoom()"
+                                        class="bg-purple-500/20 text-purple-400 p-3 rounded-xl hover:bg-purple-500 hover:text-white transition"
+                                        title="حفظ الموقع الحالي">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Container for Room Deletion List -->
+                                <div id="rooms-list-container"
+                                    class="max-h-48 overflow-y-auto pr-2 rounded-lg bg-slate-900/30 border border-white/5 p-2">
+                                    <!-- Dynamic list of rooms with delete buttons will appear here -->
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold text-slate-400 uppercase mb-2 block">مدة التسجيل
+                                    (دقائق)</label>
+                                <input type="number" id="sess-duration" value="15" min="5" max="120"
+                                    class="input-field">
+                            </div>
+
+                            <button id="btn-start-session" onclick="startSession()"
+                                class="btn-gradient w-full py-4 justify-center">
+                                <i class="fas fa-play"></i> بدء التسجيل
+                            </button>
+
+                            <button id="btn-stop-session" onclick="stopSession()"
+                                class="btn-gradient w-full py-4 justify-center hidden bg-none bg-red-500 hover:bg-red-600 text-white">
+                                <i class="fas fa-stop"></i> إهاء الجلسة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Live Map & Stats -->
+                    <div class="glass-card p-1 lg:col-span-2 relative overflow-hidden flex flex-col">
+                        <div class="absolute top-4 right-4 z-10 flex gap-2">
+                            <span
+                                class="bg-slate-900/80 backdrop-blur px-3 py-1 rounded-lg text-xs font-bold text-white border border-white/10">
+                                <i class="fas fa-users text-cyan-400 mr-2"></i>الحضور: <span id="live-count"
+                                    class="text-cyan-400">0</span>
+                            </span>
+                        </div>
+                        <!-- We could put a map here, but for now let's focus on the list -->
+                        <div class="p-6 bg-slate-900/50 flex-grow overflow-y-auto h-[500px] mt-12">
+                            <h3
+                                class="text-sm font-bold text-slate-400 uppercase mb-4 sticky top-0 bg-slate-900/90 backdrop-blur py-2 z-10">
+                                <i class="fas fa-list-ul mr-2"></i> سجل الحضور المباشر
+                            </h3>
+                            <table class="w-full text-right">
+                                <thead class="text-xs text-slate-500 uppercase border-b border-white/10">
+                                    <tr>
+                                        <th class="pb-3 text-right">الطالب</th>
+                                        <th class="pb-3 text-right">المادة</th>
+                                        <th class="pb-3 text-right">الوقت</th>
+                                        <th class="pb-3 text-right">الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="live-attendance-table" class="text-sm divide-y divide-white/5">
+                                    <tr>
+                                        <td colspan="4" class="py-8 text-center text-slate-600">
+                                            لم يبدأ البث بعد...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card overflow-hidden mt-8">
+                    <div class="flex justify-between items-center p-6 border-b border-white/5">
+                        <h3 class="font-bold text-white">سجل المحاضرات السابقة</h3>
+                        <button onclick="loadAttendanceLogs()" class="btn-secondary text-xs">تحديث</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead>
+                                <tr
+                                    class="bg-white/5 border-b border-white/10 text-xs uppercase tracking-wider text-slate-400">
+                                    <th class="p-5 font-bold">الطالب</th>
+                                    <th class="p-5 font-bold">المحاضرة</th>
+                                    <th class="p-5 font-bold">الوقت</th>
+                                    <th class="p-5 font-bold">الحالة</th>
+                                    <th class="p-5 font-bold">الموقع</th>
+                                    <th class="p-5 font-bold">حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendance-table" class="divide-y divide-white/5 text-sm">
+                                <tr>
+                                    <td colspan="5" class="p-8 text-center text-slate-500">جاري التحميل...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SECURITY ALERTS TAB ========== -->
+            <section id="tab-security" class="hidden animate__animated animate__fadeIn">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-3xl font-black text-white mb-2">
+                            <i class="fas fa-shield-alt text-red-400 ml-2"></i>تنبيهات الأمان
+                        </h2>
+                        <p class="text-slate-400">مراقبة محاولات الغش والاحتيال في الوقت الفعلي</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="fraud-auto-refresh" class="text-[10px] text-green-400 font-mono"><i
+                                class="fas fa-circle text-[6px] animate-pulse ml-1"></i> تحديث تلقائي كل 10 ثوانٍ</span>
+                        <button onclick="loadFraudLogs()" class="btn-secondary">
+                            <i class="fas fa-sync-alt ml-2"></i> تحديث
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="glass-card p-4 border-r-4 border-red-500">
+                        <div class="text-xs text-slate-400 mb-1">GPS Spoofing</div>
+                        <div id="fraud-gps-count" class="text-2xl font-black text-red-400">0</div>
+                    </div>
+                    <div class="glass-card p-4 border-r-4 border-orange-500">
+                        <div class="text-xs text-slate-400 mb-1">Buddy Punching / Incognito</div>
+                        <div id="fraud-device-count" class="text-2xl font-black text-orange-400">0</div>
+                    </div>
+                    <div class="glass-card p-4 border-r-4 border-slate-500">
+                        <div class="text-xs text-slate-400 mb-1">إجمالي التنبيهات</div>
+                        <div id="fraud-total-count" class="text-2xl font-black text-white">0</div>
+                    </div>
+                </div>
+
+                <!-- Fraud Table -->
+                <div class="glass-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead>
+                                <tr
+                                    class="bg-red-500/5 border-b border-white/10 text-xs uppercase tracking-wider text-slate-400">
+                                    <th class="p-5 font-bold">الطالب</th>
+                                    <th class="p-5 font-bold">الرقم الأكاديمي</th>
+                                    <th class="p-5 font-bold">نوع المخالفة</th>
+                                    <th class="p-5 font-bold">التفاصيل</th>
+                                    <th class="p-5 font-bold">الوقت</th>
+                                    <th class="p-5 font-bold">إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fraud-table" class="divide-y divide-white/5 text-sm">
+                                <tr>
+                                    <td colspan="6" class="p-8 text-center text-slate-500">جاري التحميل...</td>
+                                </tr>
+                            </tbody>
+                            <!-- Script for Submissions Loading - v2.0.1 -->
+                            <script>
+                                // دالة لجلب كافة الواجبات التي سلمها الطلاب من قاعدة البيانات
+                                async function loadSubmissions() {
+                                    if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadSubmissions)"); return; }
+                                    // جلب الـ submissions مباشرة
+                                    const { data: submissions, error: subError } = await _supabase
+                                        .from('submissions')
+                                        .select('*')
+                                        .order('created_at', { ascending: false });
+
+                                    if (subError) {
+                                        console.error('Error loading submissions:', subError);
+                                        // REVIEW: Potential XSS - Check this line manually
+                                        document.getElementById('submissions-table').innerHTML = '<tr><td colspan="6" class="p-8 text-center text-red-400">خطأ في تحميل البيانات</td></tr>';
+                                        return;
+                                    }
+
+                                    // جلب الـ assignments بشكل منفصل لتجنب خطأ foreign key
+                                    const { data: assignments } = await _supabase
+                                        .from('assignments')
+                                        .select('id, title, material_id');
+
+                                    // جلب المواد
+                                    const { data: materials } = await _supabase
+                                        .from('materials')
+                                        .select('id, name, accent_color');
+
+                                    // إنشاء خرائط للبحث السريع
+                                    const assignmentsMap = {};
+                                    if (assignments) {
+                                        assignments.forEach(a => assignmentsMap[a.id] = a);
+                                    }
+                                    const materialsMap = {};
+                                    if (materials) {
+                                        materials.forEach(m => materialsMap[m.id] = m);
+                                    }
+
+                                    const tbody = document.getElementById('submissions-table');
+                                    tbody.textContent = '';
+
+                                    if (!submissions || submissions.length === 0) {
+                                        // REVIEW: Potential XSS - Check this line manually
+                                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-500">لا توجد تسليمات جديدة</td></tr>';
+                                        return;
+                                    }
+
+                                    // REVIEW: Potential XSS - Ensure variable is safe
+                                    tbody.innerHTML = submissions.map(sub => {
+                                        // Helper to get a clean Academic ID
+                                        let academicId = sub.student_academic_id;
+
+                                        // If it looks like a UID (contains letters and is long) or is missing, try to get from email
+                                        if (!academicId || (/[a-zA-Z]/.test(academicId) && academicId.length > 8)) {
+                                            if (sub.student_email) {
+                                                const match = sub.student_email.match(/^(\d+)/);
+                                                if (match) academicId = match[1];
+                                            }
+                                        }
+
+                                        // Last check: if still looks like UID, hide it
+                                        if (academicId && /[a-zA-Z]/.test(academicId) && academicId.length > 8) {
+                                            academicId = 'المعرف غير متوفر';
+                                        }
+
+                                        // Get assignment and material info
+                                        const assignment = assignmentsMap[sub.assignment_id];
+                                        const material = assignment ? materialsMap[assignment.material_id] : null;
+
+                                        const assignTitle = assignment?.title || 'واجب (غير معروف)';
+                                        const materialName = material?.name || '';
+                                        const materialColor = material?.accent_color || '#3b82f6';
+
+                                        return `
+                    <tr class="hover:bg-white/[0.02] transition">
+                        <td class="p-5">
+                            <div class="font-bold text-white">${escapeHTML(sub.student_name || 'غير معروف')}</div>
+                            <div class="text-[12px] text-cyan-400 font-mono font-bold tracking-wider">${escapeHTML(academicId || 'N/A')}</div>
+                        </td>
+                        <td class="p-5">
+                            <div class="font-bold" style="color: ${escapeHTML(materialColor)}">${escapeHTML(materialName || assignTitle)}</div>
+                            ${materialName ? `<div class="text-xs text-slate-500">${escapeHTML(assignTitle)}</div>` : ''}
+                        </td>
+                        <td class="p-5 text-xs text-slate-400 font-mono">${new Date(sub.created_at).toLocaleString('ar-EG')}</td>
+                        <td class="p-5">
+                            <span class="px-2 py-1 rounded text-[10px] font-bold ${getStatusColor(sub.status)}">
+                                ${getStatusText(sub.status)}
+                            </span>
+                        </td>
+                        <td class="p-5 font-bold text-yellow-400 font-mono">${sub.grade ? sub.grade + '/100' : '-'}</td>
+                        <td class="p-5 flex gap-2">
+                            <a href="${escapeHTML(sub.file_url || '#')}" target="_blank" rel="noopener" class="p-2 bg-slate-800 text-cyan-400 rounded-lg hover:bg-cyan-500 hover:text-white transition" title="تحميل الملف">
+                                <i class="fas fa-download"></i>
+                            </a>
+                            <button onclick="openGradeModal('${escapeHTML(sub.id)}', '${escapeHTML(sub.student_name || '')}', '${escapeHTML(assignTitle)}', '${escapeHTML(String(sub.grade || ''))}', '${escapeHTML(String(sub.feedback || ''))}')" 
+                                    class="p-2 bg-slate-800 text-yellow-400 rounded-lg hover:bg-yellow-500 hover:text-white transition" title="تقييم">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button onclick="confirmDeleteSubmission('${sub.id}')" 
+                                    class="p-2 bg-slate-800 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition" title="حذف">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `}).join('');
+                                }
+
+                                function getStatusColor(status) {
+                                    if (status === 'graded') return 'bg-green-500/10 text-green-500';
+                                    if (status === 'reviewed') return 'bg-blue-500/10 text-blue-500';
+                                    return 'bg-slate-700 text-slate-300';
+                                }
+
+                                function getStatusText(status) {
+                                    if (status === 'graded') return 'تم التقييم';
+                                    if (status === 'reviewed') return 'تمت المراجعة';
+                                    return 'قيد الانتظار';
+                                }
+
+                                // --- Delete Functionality ---
+                                let deleteTargetId = null;
+                                let isBulkDelete = false;
+
+                                function confirmDeleteSubmission(id) {
+                                    deleteTargetId = id;
+                                    isBulkDelete = false;
+                                    document.getElementById('confirm-msg').innerText = "هل أنت متأكد يا دكتور أنك تريد حذف هذا الواجب؟\nلن يمكن استعادته مرة أخرى.";
+                                    document.getElementById('confirm-action-btn').onclick = executeDelete;
+                                    document.getElementById('confirm-modal').classList.remove('hidden');
+                                    document.getElementById('confirm-modal').classList.add('flex');
+                                }
+
+                                function confirmClearAllSubmissions() {
+                                    deleteTargetId = null;
+                                    isBulkDelete = true;
+                                    document.getElementById('confirm-msg').innerText = "هل أنت متأكد يا دكتور أنك تريد تفريغ القائمة وحذف جميع الواجبات؟\n⚠️ هذا الإجراء سيحذف كل شيء ولا يمكن التراجع عنه!";
+                                    document.getElementById('confirm-action-btn').onclick = executeDelete;
+                                    document.getElementById('confirm-modal').classList.remove('hidden');
+                                    document.getElementById('confirm-modal').classList.add('flex');
+                                }
+
+                                function closeConfirmModal() {
+                                    document.getElementById('confirm-modal').classList.add('hidden');
+                                    document.getElementById('confirm-modal').classList.remove('flex');
+                                    deleteTargetId = null;
+                                    isBulkDelete = false;
+                                }
+
+                                async function executeDelete() {
+                                    const btn = document.getElementById('confirm-action-btn');
+                                    btn.disabled = true;
+                                    btn.innerText = 'جاري الحذف...';
+
+                                    try {
+                                        let error;
+
+                                        if (isBulkDelete) {
+                                            // Delete ALL submissions
+                                            // Note: Without a 'where' clause that filters significantly, delete operation might require specific policies or iterating.
+                                            // Assuming we want to delete ALL rows in 'submissions' table.
+                                            // Safest way often requires a filter, e.g., id is not null. 
+                                            const { error: err } = await _supabase
+                                                .from('submissions')
+                                                .delete()
+                                                .neq('id', '00000000-0000-0000-0000-000000000000'); // Hack to delete all
+                                            error = err;
+                                        } else {
+                                            // Delete single submission
+                                            const { error: err } = await _supabase
+                                                .from('submissions')
+                                                .delete()
+                                                .eq('id', deleteTargetId);
+                                            error = err;
+                                        }
+
+                                        if (error) throw error;
+
+                                        showToast(isBulkDelete ? 'تم تفريغ القائمة بنجاح' : 'تم حذف الواجب بنجاح');
+                                        closeConfirmModal();
+                                        loadSubmissions(); // Refresh table
+
+                                    } catch (err) {
+                                        console.error('Delete error:', err);
+                                        showToast('حدث خطأ أثناء الحذف: ' + err.message, true);
+                                    } finally {
+                                        btn.disabled = false;
+                                        btn.innerText = 'OK';
+                                        closeConfirmModal();
+                                    }
+                                }
+
+                                // (SwitchTab hook removed - Logic consolidated in main function below)
+
+                                // --- 4. إدارة التدريبات ---
+                                async function loadStudentsForTraining() {
+                                    // console.log("Fetching students from 'users' table...");
+
+                                    try {
+                                        // We will try fetching from 'users' via secure RPC
+                                        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+                                        const adminUid = window._currentFirebaseUid || currentUser.uid || currentUser.id;
+
+                                        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(adminUid);
+                                        let data = null, error = null;
+
+                                        if (isUUID) {
+                                            const res = await _supabase.rpc('get_students_for_admin', { p_admin_uid: adminUid });
+                                            data = res.data;
+                                            error = res.error;
+                                        } else {
+                                            // Skip RPC execution if not a UUID to avoid 'type integer does not match type uuid' console error
+                                            error = { message: 'Skipped RPC: Invalid UUID' };
+                                        }
+
+                                        if (!data || error) {
+                                            console.warn("RPC failed, falling back to direct users query...", error);
+                                            const { data: qData, error: qErr } = await _supabase
+                                                .from('users')
+                                                .select('id, full_name, name, academic_id')
+                                                .or('role.ilike.%student%,academic_id.not.is.null')
+                                                .order('academic_id', { ascending: true });
+                                            data = qData;
+                                            error = qErr;
+                                        }
+
+                                        if (!data || data.length === 0 || error) {
+                                            document.getElementById('train-student-id').innerHTML = '<option value="">لا يوجد طلاب - خطأ في الصلاحيات</option>';
+                                            return;
+                                        }
+
+                                        // Filter doctors out explicitly
+                                        const filteredData = data.filter(u => !(u.role || '').toLowerCase().includes('doctor'));
+                                        // console.log(`Loaded ${filteredData.length} students.`);
+                                        const options = '<option value="">اختر الطالب...</option>' +
+                                            filteredData.map(s => {
+                                                const displayName = s.full_name || s.name || 'طالب جديد';
+                                                return `<option value="${s.id}">${displayName} (${s.academic_id || 'بدون ID'})</option>`;
+                                            }).join('');
+
+                                        document.getElementById('train-student-id').innerHTML = options;
+
+                                    } catch (err) {
+                                        console.error("Unexpected error:", err);
+                                        alert("حدث خطأ غير متوقع: " + err.message);
+                                    }
+                                }
+
+                                // (Function removed: logic is handled in the main script block below)
+
+                                // --- 6. Security Alerts (Fraud Logs) ---
+                                async function loadFraudLogs() {
+                                    if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadFraudLogs)"); return; }
+                                    const tbody = document.getElementById('fraud-table');
+                                    if (!tbody) return;
+                                    tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-500"><i class="fas fa-spinner fa-spin ml-2"></i> جاري التحميل...</td></tr>';
+
+                                    const { data, error } = await _supabase
+                                        .from('fraud_logs')
+                                        .select('*')
+                                        .order('timestamp', { ascending: false })
+                                        .limit(100);
+
+                                    if (error) {
+                                        console.error('Fraud logs error:', error);
+                                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-red-400">فشل تحميل سجلات الأمان</td></tr>';
+                                        return;
+                                    }
+
+                                    if (!data || data.length === 0) {
+                                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-green-400"><i class="fas fa-check-circle ml-2"></i> لا توجد تنبيهات أمنية — النظام آمن</td></tr>';
+                                        updateFraudCounts([], 0, 0);
+                                        return;
+                                    }
+
+                                    const esc = escapeHTML; // Reuse global escapeHTML
+
+                                    let gpsCount = 0, deviceCount = 0;
+                                    data.forEach(log => {
+                                        if (log.fraud_type === 'GPS_SPOOF_DETECTED') gpsCount++;
+                                        else deviceCount++;
+                                    });
+
+                                    updateFraudCounts(data, gpsCount, deviceCount);
+
+                                    tbody.innerHTML = data.map(log => {
+                                        const isGPS = log.fraud_type === 'GPS_SPOOF_DETECTED';
+                                        const badgeColor = isGPS ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+                                        const badgeIcon = isGPS ? 'fa-satellite-dish' : 'fa-user-secret';
+                                        const friendlyType = isGPS ? 'GPS مزيف' : (log.fraud_type === 'BUDDY_PUNCH_ATTEMPT' ? 'Buddy Punching' : 'تجاوز Incognito');
+
+                                        let details = '';
+                                        let stdName = log.student_name || 'غير معروف';
+                                        let stdId = log.academic_id || 'N/A';
+
+                                        try {
+                                            const meta = typeof log.metadata === 'string' ? JSON.parse(log.metadata) : log.metadata;
+                                            if (meta) {
+                                                // Extract enhanced student info from new metadata format if standard log fields are missing
+                                                if (meta.StudentName && stdName === 'غير معروف') stdName = meta.StudentName;
+                                                if (meta.AcademicID && stdId === 'N/A') stdId = meta.AcademicID;
+
+                                                if (meta.reason) details = meta.reason;
+                                                else if (meta.fingerprint) details = 'Fingerprint: ' + meta.fingerprint.substring(0, 12) + '...';
+                                                else details = JSON.stringify(meta).substring(0, 60);
+                                            }
+                                        } catch (e) { details = String(log.metadata || '—').substring(0, 60); }
+
+                                        return `
+                        <tr class="hover:bg-white/[0.02] transition" id="fraud-row-${log.id}">
+                            <td class="p-5">
+                                <div class="font-bold text-white">${esc(stdName)}</div>
+                            </td>
+                            <td class="p-5 text-xs text-cyan-400 font-mono">${esc(stdId)}</td>
+                            <td class="p-5">
+                                <span class="px-3 py-1.5 rounded-lg text-[11px] font-bold border ${badgeColor}">
+                                    <i class="fas ${badgeIcon} ml-1"></i> ${friendlyType}
+                                </span>
+                            </td>
+                            <td class="p-5 text-xs text-slate-400 font-mono max-w-[200px] truncate" title="${esc(details)}">${esc(details)}</td>
+                            <td class="p-5 text-xs text-slate-400 font-mono">${new Date(log.timestamp).toLocaleString('ar-EG')}</td>
+                            <td class="p-5">
+                                <button onclick="dismissFraudLog(${log.id}, '${esc(log.student_id)}')" class="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-slate-700 hover:bg-emerald-600 text-slate-300 hover:text-white transition-colors" title="مسامحة وإزالة">
+                                    <i class="fas fa-trash-alt"></i> مسامحة
+                                </button>
+                            </td>
+                        </tr>`;
+                                    }).join('');
+                                }
+
+                                function updateFraudCounts(data, gps, device) {
+                                    const total = (data || []).length;
+                                    document.getElementById('fraud-gps-count').textContent = gps;
+                                    document.getElementById('fraud-device-count').textContent = device;
+                                    document.getElementById('fraud-total-count').textContent = total;
+                                    const badge = document.getElementById('fraud-count-badge');
+                                    if (badge) {
+                                        if (total > 0) { badge.textContent = total; badge.classList.remove('hidden'); }
+                                        else { badge.classList.add('hidden'); }
+                                    }
+                                }
+
+                                async function saveTraining() {
+                                    const studentId = document.getElementById('train-student-id').value;
+                                    const title = document.getElementById('train-title').value;
+                                    const location = document.getElementById('train-location').value;
+                                    const weeks = document.getElementById('train-weeks').value;
+                                    const status = document.getElementById('train-status').value;
+                                    const desc = document.getElementById('train-description').value;
+                                    const studentSelect = document.getElementById('train-student-id');
+                                    const studentName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
+
+                                    if (!studentId) return showToast("الرجاء اختيار الطالب", true);
+                                    if (!title) return showToast("الرجاء إدخال جهة التدريب", true);
+                                    if (!weeks) return showToast("الرجاء إدخال عدد الأسابيع", true);
+
+                                    const btn = document.getElementById('save-train-btn');
+                                    btn.disabled = true;
+                                    btn.innerText = 'جاري الحفظ...';
+
+                                    const { error } = await _supabase.from('trainings').insert([{
+                                        student_id: studentId,
+                                        student_name: studentName,
+                                        title: title,
+                                        location: location,
+                                        weeks_count: parseInt(weeks),
+                                        status: status,
+                                        description: desc,
+                                        created_at: new Date()
+                                    }]);
+
+                                    btn.disabled = false;
+                                    btn.innerText = 'حفظ وتسجيل التدريب';
+
+                                    if (error) {
+                                        console.error(error);
+                                        showToast("حدث خطأ أثناء الحفظ", true);
+                                    } else {
+                                        showToast("تم تسجيل التدريب بنجاح");
+                                        // Clear inputs
+                                        document.getElementById('train-title').value = '';
+                                        document.getElementById('train-location').value = '';
+                                        document.getElementById('train-weeks').value = '';
+                                        document.getElementById('train-description').value = '';
+                                        loadProfessorTrainings(); // Refresh the list
+                                    }
+                                }
+
+                                async function loadProfessorTrainings() {
+                                    if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadProfessorTrainings)"); return; }
+                                    const tbody = document.getElementById('prof-trainings-table');
+                                    tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-500">جاري التحميل...</td></tr>';
+
+                                    const { data, error } = await _supabase
+                                        .from('trainings')
+                                        .select('*, users(name, full_name, academic_id)')
+                                        .order('created_at', { ascending: false })
+                                        .limit(50);
+
+                                    if (error) {
+                                        console.error(error);
+                                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-red-500">فشل تحميل السجل</td></tr>';
+                                        return;
+                                    }
+
+                                    if (!data || data.length === 0) {
+                                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-500">لا توجد تدريبات مسجلة</td></tr>';
+                                        return;
+                                    }
+
+                                    tbody.innerHTML = data.map(t => {
+                                        const userObj = t.users || {};
+                                        const displayStudentName = userObj.name || userObj.full_name || t.student_name || 'غير معروف';
+
+                                        return `
+                        <tr class="hover:bg-white/[0.02]">
+                            <td class="p-4 font-bold text-white">${escapeHTML(displayStudentName)}</td>
+                            <td class="p-4 text-cyan-400">${escapeHTML(t.title)}</td>
+                            <td class="p-4 text-slate-400">${escapeHTML(t.location)}</td>
+                            <td class="p-4 font-mono text-yellow-500 text-center">${escapeHTML(t.weeks_count)}</td>
+                            <td class="p-4 text-xs text-slate-500 font-mono">${new Date(t.created_at).toLocaleDateString('ar-EG')}</td>
+                            <td class="p-4">
+                                <button onclick="deleteRow('trainings', '${escapeHTML(t.id)}')" class="text-red-500/40 hover:text-red-500 transition">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        `;
+                                    }).join('');
+                                }
+                            </script>
+
+
+                            <!-- Grading Modal -->
+                            <div id="grade-modal"
+                                class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden animate__animated animate__fadeIn">
+                                <div
+                                    class="glass-card w-full max-w-2xl p-8 border-t-4 border-blue-500 animate__animated animate__zoomIn">
+                                    <div class="flex justify-between items-center mb-6">
+                                        <h2 class="text-2xl font-black">تقييم الواجب</h2>
+                                        <button onclick="closeGradeModal()"
+                                            class="text-slate-500 hover:text-white text-3xl">&times;</button>
+                                    </div>
+                                    <p class="mb-1 text-sm">الطالب: <span id="modal-student-name"
+                                            class="font-bold"></span></p>
+                                    <p class="mb-6 text-sm">الواجب: <span id="modal-assignment-name"
+                                            class="font-bold"></span></p>
+
+                                    <div class="space-y-4">
+                                        <input type="hidden" id="modal-submission-id">
+                                        <div>
+                                            <label for="modal-grade"
+                                                class="text-xs font-bold text-slate-400 uppercase">الدرجة</label>
+                                            <input type="number" id="modal-grade" placeholder="ادخل الدرجة من 100"
+                                                class="input-field mt-1">
+                                        </div>
+                                        <div>
+                                            <label for="modal-feedback"
+                                                class="text-xs font-bold text-slate-400 uppercase">ملاحظات
+                                                (اختياري)</label>
+                                            <textarea id="modal-feedback" placeholder="اكتب ملاحظاتك للطالب هنا..."
+                                                class="input-field mt-1 h-32"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-8 flex justify-end gap-4">
+                                        <button onclick="closeGradeModal()"
+                                            class="bg-slate-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-700 transition-all">إلغاء</button>
+                                        <button onclick="saveGrade()" id="save-grade-btn" class="btn-gradient">حفظ
+                                            التقييم</button>
+                                    </div>
+                                </div>
+                            </div>
+
+        </main>
+
+        <div id="toast"
+            class="fixed bottom-10 left-10 transform translate-y-24 opacity-0 transition-all duration-500 bg-cyan-500 text-slate-900 px-8 py-4 rounded-2xl font-bold shadow-2xl z-[999] flex items-center gap-3">
+        </div>
+
+        <script>
+            // --- Global GPS Tracker (v6.0 FORCE FIX) ---
+            window.currentPosition = null;
+            if ("geolocation" in navigator) {
+                navigator.geolocation.watchPosition(
+                    pos => {
+                        window.currentPosition = pos;
+                        // console.log("GPS Updated:", pos.coords.latitude, pos.coords.longitude);
+                    },
+                    err => console.warn("GPS Watch Error:", err),
+                    { enableHighAccuracy: true, maximumAge: 0 }
+                );
+            }
+
+            // --- 1. إعدادات Supabase (Global Client) ---
+            // نعتمد على العميل الموحد الذي تم تهيئته في js/supabase_client.js
+
+            // دالة للحصول على العميل مع انتظار التهيئة
+            function getSupabase() {
+                return window.appSupabaseClient || window.supabase;
+            }
+
+            const BUCKET_NAME = "materials";
+            const ASSIGNMENTS_BUCKET = "materials";
+
+            // مراقب لانتظار تحميل Supabase إذا تأخر - (Updated for 50 attempts)
+            const waitForSupabase = (callback) => {
+                let attempts = 0;
+                if (getSupabase()) {
+                    _supabase = getSupabase();
+                    callback();
+                } else {
+                    const check = setInterval(() => {
+                        attempts++;
+                        if (getSupabase()) {
+                            clearInterval(check);
+                            _supabase = getSupabase();
+                            callback();
+                        } else if (attempts > 50) { // Extended Timeout (10s)
+                            console.warn("⚠️ Connection slow... checking...");
+                        }
+                    }, 200);
+                }
+            };
+
+            // متغير عالمي لاستخدام العميل
+            let _supabase = null;
+
+            // عند تحميل الصفحة، نجهز العميل ونحمل الإحصائيات
+            document.addEventListener('DOMContentLoaded', () => {
+                waitForSupabase(() => {
+                    // console.log("✅ Professor Dashboard: Supabase Connected");
+                    refreshAll();
+
+                    // Task 9: Real-time updates for Students and Training
+                    _supabase.channel('public:users')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, payload => {
+                            if (!document.getElementById('tab-students').classList.contains('hidden')) {
+                                loadStudents();
+                            }
+                        }).subscribe();
+
+                    _supabase.channel('public:trainings')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'trainings' }, payload => {
+                            if (!document.getElementById('tab-training').classList.contains('hidden')) {
+                                loadProfessorTrainings();
+                            }
+                        }).subscribe();
+                });
+            });
+
+            // Global Image Error Handler
+            document.addEventListener('error', function (e) {
+                if (e.target.tagName.toLowerCase() === 'img') {
+                    // Prevent infinite loop if placeholder fails
+                    if (e.target.dataset.fixed) return;
+                    e.target.dataset.fixed = "true";
+
+                    console.warn("🖼️ Image Load Error:", e.target.src);
+                    // Use UI Avatars as fallback
+                    e.target.src = 'https://ui-avatars.com/api/?name=IMG&background=cbd5e1&color=1e293b';
+                }
+            }, true);
+
+
+            // --- 2. وظائف النظام المساعدة ---
+            function showToast(msg, isError = false) {
+                const t = document.getElementById('toast');
+                // REVIEW: Potential XSS - Check this line manually
+                t.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${msg}`;
+                t.style.backgroundColor = isError ? '#f43f5e' : '#00f2ff';
+                t.classList.remove('translate-y-24', 'opacity-0');
+                setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
+            }
+
+            function switchTab(id) {
+                document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+                document.getElementById(id).classList.remove('hidden');
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                document.getElementById('btn-' + id.split('-')[1]).classList.add('active');
+
+                // Load Data for specific tabs
+                waitForSupabase(() => {
+                    if (id === 'tab-submissions') loadSubmissions();
+                    if (id === 'tab-training') loadStudentsForTraining();
+                    if (id === 'tab-attendance') {
+                        loadRooms(); // Fix: Load rooms for dropdown
+                        loadAttendanceLogs();
+                        if (window.attendanceInterval) clearInterval(window.attendanceInterval);
+                        window.attendanceInterval = setInterval(loadAttendanceLogs, 30000);
+                    } else {
+                        if (window.attendanceInterval) clearInterval(window.attendanceInterval);
+                    }
+                    if (id === 'tab-security') {
+                        loadFraudLogs();
+                        if (window.securityInterval) clearInterval(window.securityInterval);
+                        window.securityInterval = setInterval(loadFraudLogs, 10000);
+                    } else {
+                        if (window.securityInterval) clearInterval(window.securityInterval);
+                    }
+                });
+            }
+
+            async function updateStats() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (updateStats)"); return; }
+                const { count: l } = await _supabase.from('lectures').select('*', { count: 'exact', head: true });
+                const { count: s } = await _supabase.from('users').select('*', { count: 'exact', head: true }).or('role.ilike.%student%,academic_id.not.is.null');
+                const { count: m } = await _supabase.from('materials').select('*', { count: 'exact', head: true });
+                document.getElementById('stat-lectures').innerText = l || 0;
+                document.getElementById('stat-students').innerText = s || 0;
+                document.getElementById('stat-materials').innerText = m || 0;
+            }
+
+            // --- 3. إدارة المواد والمحاضرات ---
+            async function loadMaterials() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadMaterials)"); return; }
+                const { data } = await _supabase.from('materials').select('*').order('created_at', { ascending: false });
+                if (!data) return;
+
+                const options = '<option value="">اختر المادة...</option>' + data.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+                // تحديث قائمة الاختيار في الرفع
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('up-mat-id').innerHTML = options;
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('tut-up-mat-id').innerHTML = options;
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('assign-mat-id').innerHTML = options;
+
+
+                // تحديث عرض المواد
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('materials-list').innerHTML = data.map(m => `
+                <div class="glass-card p-8 border-b-4 relative" style="border-color: ${escapeHTML(m.accent_color)}">
+                    <button onclick="deleteRow('materials', '${escapeHTML(m.id)}')" class="absolute top-4 left-4 text-slate-600 hover:text-red-500"><i class="fas fa-times"></i></button>
+                    <div class="w-12 h-12 rounded-xl mb-4 flex items-center justify-center bg-white/5 text-2xl" style="color: ${escapeHTML(m.accent_color)}">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <h4 class="font-bold text-lg">${escapeHTML(m.name)}</h4>
+                </div>
+            `).join('');
+            }
+
+            async function addNewMaterial() {
+                const name = document.getElementById('new-mat-name').value;
+                const color = document.getElementById('new-mat-color').value;
+                if (!name) return showToast("أدخل اسم المادة", true);
+                const { error } = await _supabase.from('materials').insert([{ name, accent_color: color }]);
+                if (!error) { showToast("تمت الإضافة"); document.getElementById('new-mat-name').value = ''; refreshAll(); }
+            }
+
+            async function handleFileUpload() {
+                const file = document.getElementById('file-input').files[0];
+                const matId = document.getElementById('up-mat-id').value;
+                const title = document.getElementById('up-title').value;
+                const week = parseInt(document.getElementById('up-week').value) || 1;
+                const btn = document.getElementById('upload-btn');
+
+                if (!file || !matId || !title) return showToast("أكمل البيانات", true);
+
+                btn.disabled = true;
+                // REVIEW: Potential XSS - Check this line manually
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+
+                // 1. رفع الملف للـ Storage
+                const cleanName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+                const fPath = `lectures/${Date.now()}_${cleanName}`;
+                const { data: sData, error: sErr } = await _supabase.storage.from(BUCKET_NAME).upload(fPath, file);
+
+                if (sErr) { showToast("فشل الرفع: " + sErr.message, true); btn.disabled = false; return; }
+
+                // 2. الحصول على الرابط العام
+                const { data: urlData } = _supabase.storage.from(BUCKET_NAME).getPublicUrl(fPath);
+
+                // 3. التسجيل في قاعدة البيانات
+                const { error: dbErr } = await _supabase.from('lectures').insert([{
+                    material_id: matId,
+                    title: title,
+                    week_number: week,
+                    url: urlData.publicUrl
+                }]);
+
+                if (!dbErr) {
+                    showToast("تم نشر المحاضرة بنجاح");
+                    document.getElementById('up-title').value = '';
+                    document.getElementById('file-input').value = '';
+                    document.getElementById('file-name-text').innerText = "اسحب الملف هنا";
+                    refreshAll();
+                }
+                btn.disabled = false; btn.innerText = 'نشر المحتوى';
+            }
+
+            // دالة لرفع الدروس التعليمية (Tutorials)
+            async function handleTutorialUpload() {
+                const file = document.getElementById('tut-file-input').files[0];
+                const matId = document.getElementById('tut-up-mat-id').value;
+                const title = document.getElementById('tut-up-title').value;
+                const week = parseInt(document.getElementById('tut-up-week').value) || 1;
+                const btn = document.getElementById('tut-upload-btn');
+
+                if (!file || !matId || !title) return showToast("أكمل بيانات الدرس التعليمي", true);
+
+                btn.disabled = true;
+                // REVIEW: Potential XSS - Check this line manually
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+
+                // 1. رفع الملف للـ Storage في فولدر الدروس التعليمية
+                const cleanName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+                const fPath = `tutorials/${Date.now()}_${cleanName}`;
+                const { data: sData, error: sErr } = await _supabase.storage.from(BUCKET_NAME).upload(fPath, file);
+
+                if (sErr) {
+                    showToast("فشل رفع الدرس: " + sErr.message, true);
+                    btn.disabled = false;
+                    btn.textContent = 'نشر الدرس التعليمي';
+                    return;
+                }
+
+                // 2. الحصول على الرابط العام للملف المرفوع
+                const { data: urlData } = _supabase.storage.from(BUCKET_NAME).getPublicUrl(fPath);
+
+                // 3. تخزين بيانات الدرس في جدول 'tutorials'
+                const { error: dbErr } = await _supabase.from('tutorials').insert([{
+                    material_id: matId,
+                    title: title,
+                    week_number: week,
+                    url: urlData.publicUrl
+                }]);
+
+                if (!dbErr) {
+                    showToast("تم نشر الدرس التعليمي بنجاح");
+                    document.getElementById('tut-up-title').value = '';
+                    document.getElementById('tut-file-input').value = '';
+                    document.getElementById('tut-file-name-text').innerText = "اسحب الملف هنا";
+                    refreshAll();
+                } else {
+                    showToast("فشل الحفظ: " + dbErr.message, true);
+                }
+                btn.disabled = false;
+                btn.textContent = 'نشر الدرس التعليمي';
+            }
+
+
+            async function handleAssignmentUpload() {
+                const file = document.getElementById('assign-file-input').files[0];
+                const matId = document.getElementById('assign-mat-id').value;
+                const title = document.getElementById('assign-title').value;
+                const week = parseInt(document.getElementById('assign-week').value) || 1;
+                const description = document.getElementById('assign-description').value;
+                const deadline = document.getElementById('assign-deadline').value;
+                const btn = document.getElementById('assign-upload-btn');
+
+                if (!file || !matId || !title || !description || !deadline) {
+                    return showToast("أكمل جميع بيانات الواجب", true);
+                }
+
+                btn.disabled = true;
+                // REVIEW: Potential XSS - Check this line manually
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+
+                // 1. Upload file to Supabase Storage in 'assignments' bucket
+                // 1. Upload file to Supabase Storage in 'assignments' bucket
+                const cleanName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+                const fPath = `public/${Date.now()}_${cleanName}`; // Store in 'public' folder inside 'assignments' bucket
+                const { data: sData, error: sErr } = await _supabase.storage.from(ASSIGNMENTS_BUCKET).upload(fPath, file);
+
+                if (sErr) {
+                    showToast("فشل رفع الواجب: " + sErr.message, true);
+                    btn.disabled = false;
+                    btn.textContent = 'نشر الواجب';
+                    return;
+                }
+
+                // 2. Get public URL
+                const { data: urlData } = _supabase.storage.from(ASSIGNMENTS_BUCKET).getPublicUrl(fPath);
+
+                // 3. Insert into 'assignments' table
+                const { error: dbErr } = await _supabase.from('assignments').insert([{
+                    material_id: matId,
+                    title: title,
+                    week_number: week,
+                    description: description,
+                    deadline: deadline,
+                    file_url: urlData.publicUrl
+                }]);
+
+                if (!dbErr) {
+                    showToast("تم نشر الواجب بنجاح");
+                    document.getElementById('assign-mat-id').value = '';
+                    document.getElementById('assign-title').value = '';
+                    document.getElementById('assign-description').value = '';
+                    document.getElementById('assign-deadline').value = '';
+                    document.getElementById('assign-file-input').value = '';
+                    document.getElementById('assign-file-name-text').innerText = "اسحب ملف الواجب هنا (PDF)";
+                    refreshAll();
+                } else {
+                    showToast("فشل الحفظ: " + dbErr.message, true);
+                }
+                btn.disabled = false;
+                btn.textContent = 'نشر الواجب';
+            }
+
+
+
+            async function loadLectures() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadLectures)"); return; }
+                const { data, error } = await _supabase.from('lectures').select('*, materials!fk_lectures_material(name, accent_color)');
+                if (error) {
+                    console.error("Error loading lectures:", error);
+                    return;
+                }
+                const container = document.getElementById('lectures-list');
+                if (!data || data.length === 0) {
+                    // REVIEW: Potential XSS - Check this line manually
+                    container.innerHTML = '<p class="text-slate-500 text-center col-span-2 py-4">لا توجد محاضرات منشورة بعد.</p>';
+                    return;
+                }
+                // REVIEW: Potential XSS - Ensure variable is safe
+                // REVIEW: Potential XSS - Ensure variable is safe
+                container.innerHTML = data.map(l => `
+                <div class="glass-card p-4 flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-cyan-400">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-right">${escapeHTML(l.title)}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-white/5" style="color:${escapeHTML(l.materials?.accent_color)}">${escapeHTML(l.materials?.name || 'مادة محذوفة')}</span>
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-bold">الأسبوع ${l.week_number || 1}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="${escapeHTML(l.url)}" target="_blank" class="p-2 text-cyan-400 hover:bg-cyan-500/10 rounded-lg"><i class="fas fa-external-link-alt"></i></a>
+                        <button onclick="deleteRow('lectures', '${escapeHTML(l.id)}')" class="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            }
+
+            async function loadTutorials() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadTutorials)"); return; }
+                const { data, error } = await _supabase.from('tutorials').select('*, materials!fk_tutorials_material(name, accent_color)');
+                if (error) {
+                    console.error("Error loading tutorials:", error);
+                    return;
+                }
+                const container = document.getElementById('tutorials-list');
+                if (!data || data.length === 0) {
+                    // REVIEW: Potential XSS - Check this line manually
+                    container.innerHTML = '<p class="text-slate-500 text-center col-span-2 py-4">لا توجد دروس تعليمية منشورة بعد.</p>';
+                    return;
+                }
+                // REVIEW: Potential XSS - Ensure variable is safe
+                // REVIEW: Potential XSS - Ensure variable is safe
+                container.innerHTML = data.map(t => `
+                <div class="glass-card p-4 flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-purple-400">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-right">${escapeHTML(t.title)}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-white/5" style="color:${escapeHTML(t.materials?.accent_color)}">${escapeHTML(t.materials?.name || 'مادة محذوفة')}</span>
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 font-bold">الأسبوع ${t.week_number || 1}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="${escapeHTML(t.url)}" target="_blank" class="p-2 text-purple-400 hover:bg-purple-500/10 rounded-lg"><i class="fas fa-external-link-alt"></i></a>
+                        <button onclick="deleteRow('tutorials', '${escapeHTML(t.id)}')" class="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            }
+
+
+
+            async function loadAssignments() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadAssignments)"); return; }
+                const { data } = await _supabase.from('assignments').select('*, materials!fk_assignments_material(name, accent_color)').order('deadline', { ascending: true });
+                if (!data) return;
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('assignments-list').innerHTML = data.map(a => `
+                <div class="glass-card p-4 flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-emerald-400">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm">${escapeHTML(a.title)}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-white/5" style="color:${escapeHTML(a.materials?.accent_color)}">${escapeHTML(a.materials?.name)}</span>
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">الأسبوع ${a.week_number || 1}</span>
+                            </div>
+                            <p class="text-[9px] text-slate-400 mt-1">الموعد النهائي: ${new Date(a.deadline).toLocaleString()}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="${escapeHTML(a.file_url)}" target="_blank" class="p-2 text-emerald-400 hover:bg-emerald-500/10 rounded-lg"><i class="fas fa-download"></i></a>
+                        <button onclick="deleteRow('assignments', '${escapeHTML(a.id)}')" class="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            }
+
+
+
+            // --- 4. إدارة الطلاب والجدول ---
+            async function loadStudents() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadStudents)"); return; }
+                const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+                const adminUid = window._currentFirebaseUid || currentUser.uid || currentUser.id;
+
+                let { data, error } = await _supabase
+                    .rpc('get_students_for_admin', { p_admin_uid: adminUid });
+
+                if (error || !data) {
+                    console.warn("RPC failed, falling back to direct users query...", error);
+                    const { data: qData, error: qErr } = await _supabase
+                        .from('users')
+                        .select('id, full_name, name, academic_id')
+                        .or('role.ilike.%student%,academic_id.not.is.null')
+                        .order('academic_id', { ascending: true })
+                        .limit(50);
+                    data = qData;
+                }
+
+                if (!data) return;
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('students-table').innerHTML = data.map(s => {
+                    const displayName = s.full_name || s.name || 'غير معروف';
+                    return `
+                <tr>
+                    <td class="p-5 font-bold">${escapeHTML(displayName)}</td>
+                    <td class="p-5 text-cyan-400 font-mono">${escapeHTML(s.academic_id || 'N/A')}</td>
+                    <td class="p-5 text-slate-400">-</td>
+                    <td class="p-5">
+                        <span class="flex items-center gap-2 text-[10px] text-slate-500">
+                            <span class="h-1.5 w-1.5 rounded-full bg-slate-600"></span>
+                            غير متصل
+                        </span>
+                    </td>
+                    <td class="p-5"><button disabled class="text-slate-700 cursor-not-allowed cursor" title="محمي من قاعدة البيانات"><i class="fas fa-lock text-xs"></i></button></td>
+                </tr>
+            `}).join('');
+            }
+
+            async function addNewStudent() {
+                const name = document.getElementById('new-std-name').value;
+                const academicId = document.getElementById('new-std-academic-id').value;
+                const email = document.getElementById('new-std-email').value;
+                const password = document.getElementById('new-std-password').value;
+                const group = document.getElementById('new-std-group').value;
+
+                if (!name || !academicId || !email || !password) return showToast("أدخل بيانات الطالب كاملة", true);
+
+                if (typeof notifyUser !== 'undefined') {
+                    notifyUser('جاري العمل', 'جاري تسجيل الطالب بالخادم...', 'info');
+                } else {
+                    showToast("جاري تسجيل الطالب بالخادم...");
+                }
+
+                try {
+                    const response = await fetch('/api/bulk-import', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': 'XMLHttpRequest' },
+                        body: JSON.stringify({
+                            users: [{
+                                name: name,
+                                email: email,
+                                password: password,
+                                role: 'Student',
+                                academic_id: academicId,
+                                group: group
+                            }]
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok || result.failed > 0) {
+                        const errMsg = (result.errors && result.errors[0]) ? result.errors[0].error : result.error;
+                        throw new Error(errMsg || 'تعذر إضافة الطالب لقاعدة البيانات الرئيسية.');
+                    }
+
+                    showToast("تم تسجيل الطالب بنجاح!");
+                    document.getElementById('new-std-name').value = '';
+                    document.getElementById('new-std-academic-id').value = '';
+                    document.getElementById('new-std-email').value = '';
+                    document.getElementById('new-std-password').value = '';
+                    document.getElementById('new-std-group').value = '';
+                    refreshAll();
+
+                } catch (error) {
+                    console.error("Student Add Error:", error);
+                    showToast("خطأ: " + error.message, true);
+                }
+            }
+
+            async function loadSchedule() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (loadSchedule)"); return; }
+                const { data } = await _supabase.from('schedule').select('*').order('day');
+                if (!data) return;
+                // REVIEW: Potential XSS - Ensure variable is safe
+                document.getElementById('sch-table').innerHTML = data.map(r => `
+                <tr class="hover:bg-white/[0.02]">
+                    <td class="p-5 font-bold text-cyan-400">${escapeHTML(r.day)}</td>
+                    <td class="p-5">
+                        <div class="font-bold text-sm text-white">${escapeHTML(r.slot1)}</div>
+                        <div class="text-[9px] text-slate-500">${escapeHTML(r.group_name)}</div>
+                    </td>
+                    <td class="p-5 text-yellow-500 font-mono text-xs">${escapeHTML(r.slot2)} - ${escapeHTML(r.slot3)}</td>
+                    <td class="p-5"><button onclick="deleteRow('schedule', '${r.id}')" class="text-red-500/20 hover:text-red-500"><i class="fas fa-calendar-times"></i></button></td>
+                </tr>
+            `).join('');
+            }
+
+            async function saveSchedule() {
+                const payload = {
+                    day: document.getElementById('sch-day').value,
+                    group_name: document.getElementById('sch-group').value,
+                    slot1: document.getElementById('sch-subject').value,
+                    slot2: document.getElementById('sch-start').value,
+                    slot3: document.getElementById('sch-end').value
+                };
+                await _supabase.from('schedule').insert([payload]);
+                refreshAll();
+            }
+
+
+            // --- 4.5. إدارة جلسات الحضور (Dynamic Live Sessions) ---
+            let currentSessionId = null;
+            let sessionTimerInterval = null;
+
+            // Load saved rooms on startup
+            async function loadRooms() {
+                if (!_supabase) { console.warn("Supabase not ready for rooms"); return; }
+                const { data, error } = await _supabase.from('rooms').select('*').order('name');
+                const select = document.getElementById('sess-room');
+                const listContainer = document.getElementById('rooms-list-container');
+
+                // Base Options: Custom GPS + University Preset + New Location
+                let options = `
+                    <option value="custom">📍 موقعي الحالي (GPS)</option>
+                    <option value="university" data-lat="30.858467" data-lng="29.571205">🏫 مقر الجامعة (برج العرب)</option>
+                    <option value="alex" data-lat="31.247236" data-lng="30.016733">🏢 القاعة الإضافية (الإسكندرية)</option>
+                `;
+
+                let listHtml = '';
+
+                if (data && data.length > 0) {
+                    options += data.map(r => `<option value="${r.id}" data-lat="${r.latitude}" data-lng="${r.longitude}">🏢 ${escapeHTML(r.name)}</option>`).join('');
+
+                    listHtml = data.map(r => `
+                        <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded transition border-b border-white/5 last:border-0">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-map-marker-alt text-slate-400"></i>
+                                <span class="text-sm font-bold text-slate-200">${escapeHTML(r.name)}</span>
+                            </div>
+                            <button onclick="deleteRoom('${r.id}', this)" class="text-red-400 hover:text-red-500 p-1 rounded hover:bg-red-500/10 transition" title="حذف القاعة">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                } else {
+                    listHtml = '<p class="text-xs text-slate-500 text-center py-2">لا توجد قاعات مخصصة</p>';
+                }
+
+                select.innerHTML = options;
+                if (listContainer) listContainer.innerHTML = listHtml;
+            }
+
+            async function deleteRoom(id, btnElement) {
+                if (!confirm("هل أنت متأكد من حذف هذه القاعة المخصصة؟")) return;
+
+                // Optmistic UI update
+                if (btnElement) {
+                    const row = btnElement.closest('.flex.items-center.justify-between');
+                    if (row) row.remove();
+                }
+
+                const { error } = await _supabase.from('rooms').delete().eq('id', id);
+                if (error) {
+                    Swal.fire('خطأ', 'فشل الحذف: ' + error.message, 'error');
+                    loadRooms(); // Revert on failure
+                } else {
+                    showToast('تم الحذف بنجاح', false);
+                    // Add slight delay to ensure DB sync before full reload
+                    setTimeout(loadRooms, 500);
+                }
+            }
+
+            // Call this when tab is switched to attendance
+            function initAttendanceTab() {
+                loadRooms();
+                // Check if there is an active session for this professor (local check or DB check)
+                // For simplicity, we just reset UI. In a real app, we'd check DB for active session by this user.
+            }
+
+            async function saveCurrentRoom() {
+                if (!_supabase) { showToast("جاري الاتصال بقاعدة البيانات... انتظر لحظة", true); return; }
+
+                const name = prompt("أدخل اسم للقاعة (مثلاً: القاعة 301):");
+                if (!name) return;
+
+                let lat = null, lng = null;
+
+                const useGPS = confirm("هل تريد استخدام موقعك الحالي (GPS)؟\n\n- موافق (OK): استخدام GPS\n- إلغاء (Cancel): إدخال الإحداثيات يدوياً");
+
+                if (useGPS) {
+                    if (!navigator.geolocation) return showToast("المتصفح لا يدعم تحديد الموقع", true);
+
+                    if (window.currentPosition) {
+                        lat = window.currentPosition.coords.latitude;
+                        lng = window.currentPosition.coords.longitude;
+                    } else {
+                        try {
+                            showToast("جاري تحديد الموقع...", false);
+                            const pos = await new Promise((resolve, reject) =>
+                                navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 })
+                            );
+                            lat = pos.coords.latitude;
+                            lng = pos.coords.longitude;
+                        } catch (err) {
+                            return showToast("فشل تحديد الموقع: " + err.message, true);
+                        }
+                    }
+                } else {
+                    const inputLat = prompt("أدخل دائرة العرض (Latitude):", "30.858467");
+                    const inputLng = prompt("أدخل خط الطول (Longitude):", "29.571205");
+
+                    if (!inputLat || !inputLng) return showToast("تم إلغاء العملية", true);
+
+                    lat = parseFloat(inputLat);
+                    lng = parseFloat(inputLng);
+                }
+
+                if (lat === null || lng === null || isNaN(lat) || isNaN(lng)) {
+                    Swal.fire('خطأ', 'فشل الحصول على إحداثيات صحيحة', 'error');
+                    return;
+                }
+
+                const { data, error } = await _supabase.from('rooms').insert([{
+                    name: name,
+                    latitude: lat,
+                    longitude: lng,
+                    radius_meters: 100
+                }]).select();
+
+                if (!error && data && data[0]) {
+                    // Instant DOM append — no reload needed
+                    const select = document.getElementById('sess-room');
+                    const newOption = document.createElement('option');
+                    newOption.value = data[0].id;
+                    newOption.setAttribute('data-lat', data[0].latitude);
+                    newOption.setAttribute('data-lng', data[0].longitude);
+                    newOption.textContent = '🏢 ' + data[0].name;
+                    select.appendChild(newOption);
+                    select.value = data[0].id; // Auto-select the new room
+                    Swal.fire('تم الحفظ!', 'تم إضافة القاعة للقاعدة بنجاح', 'success');
+                } else if (error) {
+                    Swal.fire('فشل الحفظ', error.message, 'error');
+                }
+            }
+            async function startSession() {
+                if (!_supabase) return showToast("انتظر تحميل النظام...", true);
+
+                const subjectInput = document.getElementById('sess-subject');
+                const subjectName = subjectInput.value ? subjectInput.options[subjectInput.selectedIndex].text : "محاضرة عامة";
+                const duration = parseInt(document.getElementById('sess-duration').value) || 15;
+                const roomSelect = document.getElementById('sess-room');
+                const selectedRoom = roomSelect.value;
+
+                let lat = null, lng = null, roomName = "Unknown";
+                const btn = document.getElementById('btn-start-session');
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري البدء...';
+
+                try {
+                    if (selectedRoom === 'custom') {
+                        if (window.currentPosition) {
+                            lat = window.currentPosition.coords.latitude;
+                            lng = window.currentPosition.coords.longitude;
+                            roomName = "موقع مخصص (GPS)";
+                        } else {
+                            const pos = await new Promise((resolve, reject) =>
+                                navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 5000 })
+                            );
+                            lat = pos.coords.latitude;
+                            lng = pos.coords.longitude;
+                            roomName = "موقع مخصص (GPS)";
+                        }
+                    } else {
+                        const option = roomSelect.options[roomSelect.selectedIndex];
+                        if (!option) throw new Error("اختر قاعة صالحة");
+
+                        const latAttr = option.getAttribute('data-lat');
+                        const lngAttr = option.getAttribute('data-lng');
+
+                        if (!latAttr) throw new Error("لاتوجد إحداثيات لهذه القاعة (بيانات ناقصة)");
+
+                        lat = parseFloat(latAttr);
+                        lng = parseFloat(lngAttr);
+                        roomName = option.text;
+                    }
+
+                    if (!lat || !lng || isNaN(lat) || isNaN(lng)) throw new Error("الإحداثيات غير صالحة");
+
+                    // console.log('Starting Session:', subjectName, roomName, lat, lng);
+
+                    const startTime = new Date();
+                    const endTime = new Date(startTime.getTime() + duration * 60000);
+
+                    const { data, error } = await _supabase.from('attendance_sessions').insert([{
+                        subject_name: subjectName,
+                        room_name: roomName,
+                        latitude: lat,
+                        longitude: lng,
+                        radius_meters: 100,
+                        is_active: true,
+                        start_time: startTime.toISOString(),
+                        end_time: endTime.toISOString()
+                    }]).select().single();
+
+                    if (error) throw error;
+                    if (!data) throw new Error("لم يتم استلام معرف الجلسة");
+
+                    currentSessionId = data.id;
+
+                    showToast("تم بدء الجلسة بنجاح!", false);
+                    document.getElementById('session-status').classList.remove('hidden');
+                    document.getElementById('btn-start-session').classList.add('hidden');
+                    document.getElementById('btn-stop-session').classList.remove('hidden');
+
+                    startTimer(duration * 60);
+                    subscribeToLiveLogs(currentSessionId);
+
+                } catch (err) {
+                    console.error(err);
+                    Swal.fire('خطأ', err.message || "فشل بدء الجلسة", 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-play"></i> بدء التسجيل';
+                }
+            }
+            async function stopSession() {
+                if (!currentSessionId) return;
+
+                const btn = document.getElementById('btn-stop-session');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإيقاف...';
+
+                const { error } = await _supabase.from('attendance_sessions')
+                    .update({ is_active: false })
+                    .eq('id', currentSessionId);
+
+                if (!error) {
+                    showToast("تم إغلاق الجلسة.");
+                    resetSessionUI();
+                    // Unsubscribe
+                    _supabase.removeAllChannels();
+                } else {
+                    showToast("فشل إيقاف الجلسة", true);
+                }
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-stop"></i> إنهاء الجلسة';
+            }
+
+            function resetSessionUI() {
+                currentSessionId = null;
+                document.getElementById('session-status').classList.add('hidden');
+                document.getElementById('btn-start-session').classList.remove('hidden');
+                document.getElementById('btn-stop-session').classList.add('hidden');
+                if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+                document.getElementById('live-attendance-table').innerHTML = '<tr><td colspan="4" class="py-8 text-center text-slate-600">لم يبدأ البث بعد...</td></tr>';
+                document.getElementById('live-count').innerText = '0';
+            }
+
+            function startTimer(seconds) {
+                if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+                let remaining = seconds;
+                const timerEl = document.getElementById('session-timer');
+
+                sessionTimerInterval = setInterval(() => {
+                    remaining--;
+                    const m = Math.floor(remaining / 60).toString().padStart(2, '0');
+                    const s = (remaining % 60).toString().padStart(2, '0');
+                    timerEl.innerText = `${m}:${s}`;
+
+                    if (remaining <= 0) {
+                        clearInterval(sessionTimerInterval);
+                        stopSession(); // Auto-stop
+                        showToast("انتهى وقت الجلسة.");
+                    }
+                }, 1000);
+            }
+
+            function subscribeToLiveLogs(sessionId) {
+                const table = document.getElementById('live-attendance-table');
+                table.innerHTML = ''; // Clear previous
+                let count = 0;
+
+                const channel = _supabase.channel('live_attendance')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'attendance_logs', filter: `session_id=eq.${sessionId}` }, payload => {
+                        const log = payload.new;
+                        count++;
+                        document.getElementById('live-count').innerText = count;
+
+                        // Add new row with animation (XSS-safe)
+                        const newRow = `
+                            <tr class="animate__animated animate__fadeIn border-b border-white/5 bg-green-500/5">
+                                <td class="py-3 text-white font-bold">${escapeHTML(log.student_name)}
+                                    <span class="block text-[10px] text-slate-500 font-mono">${escapeHTML(log.academic_id)}</span>
+                                </td>
+                                <td class="py-3 text-cyan-400 text-xs">${escapeHTML(log.lecture_title) || '---'}</td>
+                                <td class="py-3 text-slate-400 text-xs font-mono">${new Date(log.created_at).toLocaleTimeString('ar-EG')}</td>
+                                <td class="py-3"><span class="text-green-400 text-xs"><i class="fas fa-check"></i></span></td>
+                            </tr>
+                        `;
+                        table.insertAdjacentHTML('afterbegin', newRow);
+                        // Play sound
+                        if (window.SoundManager && window.SoundManager.play) window.SoundManager.play('success');
+                    })
+                    .subscribe();
+            }
+
+            // Hook into loadMaterials to also update the session subject dropdown
+            const originalLoadMaterials = loadMaterials;
+            loadMaterials = async function () {
+                await originalLoadMaterials(); // Super call
+                // Now update session dropdown
+                const matSelect = document.getElementById('sess-subject');
+                // Copy options from up-mat-id
+                const source = document.getElementById('up-mat-id');
+                if (source) {
+                    // source.innerHTML already has the default option, so just copy it directly
+                    matSelect.innerHTML = source.innerHTML;
+                }
+            }
+
+            async function loadAttendanceLogs() {
+                // console.log("🔄 Loading Attendance Logs...");
+                if (!_supabase) {
+                    console.error("⚠️ Supabase client not ready in loadAttendanceLogs");
+                    showToast("خطأ: قاعدة البيانات غير متصلة", true);
+                    return;
+                }
+
+                const tbody = document.getElementById('attendance-table');
+                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-500">جاري التحميل...</td></tr>';
+
+                // Fetch latest 50 logs with debug info
+                const { data, error } = await _supabase
+                    .from('attendance_logs')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+
+                // console.log("📡 Attendance Logs Response:", { data, error });
+
+                if (error) {
+                    console.error("❌ Error fetching logs:", error);
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">
+                        فشل تحميل السجل: ${error.message}<br>
+                        <span class="text-xs text-slate-400">راجع الـ Console (F12) للتفاصيل</span>
+                    </td></tr>`;
+                    return;
+                }
+
+                if (!data || data.length === 0) {
+                    // console.warn("⚠️ No logs returned from DB");
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-500">لا توجد سجلات حضور حتى الآن</td></tr>';
+                    return;
+                }
+
+                // console.log(`✅ Loaded ${data.length} logs successfully.`);
+
+                tbody.innerHTML = data.map(log => `
+                    <tr class="hover:bg-white/[0.02] border-b border-white/5">
+                        <td class="p-4 font-bold text-white">
+                            ${escapeHTML(log.student_name)}
+                            <span class="block text-[10px] text-slate-500 font-mono">${escapeHTML(log.academic_id)}</span>
+                        </td>
+                        <td class="p-4 text-cyan-400 font-bold text-xs">${escapeHTML(log.lecture_title) || 'N/A'}</td>
+                        <td class="p-4 text-slate-400 font-mono text-xs">${new Date(log.created_at).toLocaleString('ar-EG')}</td>
+                        <td class="p-4">
+                            <span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20">
+                                <i class="fas fa-check-circle mr-1"></i> حاضر
+                            </span>
+                        </td>
+                        <td class="p-4 text-xs text-slate-500">
+                             ${log.distance_meters}m
+                        </td>
+                        <td class="p-4">
+                            <button onclick="deleteRow('attendance_logs', '${escapeHTML(log.id)}')" class="text-red-500/40 hover:text-red-500 transition">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+
+
+
+            async function saveTraining() {
+                const studentId = document.getElementById('train-student-id').value;
+                const title = document.getElementById('train-title').value;
+                const location = document.getElementById('train-location').value;
+                const weeks = document.getElementById('train-weeks').value;
+                const status = document.getElementById('train-status').value;
+                const description = document.getElementById('train-description').value;
+                const btn = document.getElementById('save-train-btn');
+
+                if (!studentId || !title || !weeks) {
+                    return showToast("أكمل البيانات المطلوبة (الطالب، جهة التدريب، عدد الأسابيع)", true);
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+                const { error } = await _supabase.from('trainings').insert([{
+                    student_id: studentId,
+                    title: title,
+                    location: location || null,
+                    weeks_count: parseInt(weeks),
+                    status: status,
+                    description: description || null
+                }]);
+
+                if (!error) {
+                    showToast("✅ تم تسجيل التدريب بنجاح");
+                    // Clear form
+                    document.getElementById('train-student-id').value = '';
+                    document.getElementById('train-title').value = '';
+                    document.getElementById('train-location').value = '';
+                    document.getElementById('train-weeks').value = '';
+                    document.getElementById('train-description').value = '';
+                    document.getElementById('train-status').value = 'completed';
+                } else {
+                    console.error("Training Save Error:", error);
+                    showToast("فشل حفظ التدريب: " + error.message, true);
+                }
+
+                btn.disabled = false;
+                btn.innerHTML = 'حفظ وتسجيل التدريب';
+            }
+
+            // --- 5. وظائف عامة ---
+            function escapeHTML(str) {
+                if (!str) return '';
+                return String(str).replace(/[&<>'"]/g,
+                    tag => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;'
+                    }[tag]));
+            }
+
+            async function deleteRow(table, id) {
+                if (confirm("حذف هذا السجل نهائياً؟")) {
+                    await _supabase.from(table).delete().eq('id', id);
+                    refreshAll();
+                }
+            }
+
+            function openGradeModal(submissionId, studentName, assignmentName, grade, feedback) {
+                document.getElementById('modal-submission-id').value = submissionId;
+                document.getElementById('modal-student-name').innerText = studentName;
+                document.getElementById('modal-assignment-name').innerText = assignmentName;
+                document.getElementById('modal-grade').value = grade;
+                document.getElementById('modal-feedback').value = feedback;
+                document.getElementById('grade-modal').classList.remove('hidden');
+            }
+
+
+            function closeGradeModal() {
+                document.getElementById('grade-modal').classList.add('hidden');
+            }
+
+            async function saveGrade() {
+                const submissionId = document.getElementById('modal-submission-id').value;
+                const grade = document.getElementById('modal-grade').value;
+                const feedback = document.getElementById('modal-feedback').value;
+                const btn = document.getElementById('save-grade-btn');
+
+                if (!grade) {
+                    showToast("الرجاء إدخال درجة", true);
+                    return;
+                }
+
+                btn.disabled = true;
+                // REVIEW: Potential XSS - Check this line manually
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                const { error } = await _supabase
+                    .from('submissions')
+                    .update({ grade: parseFloat(grade), feedback: feedback, status: 'graded' })
+                    .eq('id', submissionId);
+
+                if (error) {
+                    showToast("فشل حفظ التقييم: " + error.message, true);
+                } else {
+                    showToast("تم حفظ التقييم بنجاح!");
+                    closeGradeModal();
+                    refreshAll(); // To reload the submissions table
+                }
+
+                btn.disabled = false;
+                btn.textContent = 'حفظ التقييم';
+            }
+
+
+
+
+            function refreshAll() {
+                if (!_supabase) { console.warn("⚠️ Supabase: not ready yet (refreshAll)"); return; }
+                updateStats();
+                loadMaterials();
+                loadLectures();
+                loadTutorials();
+                loadAssignments();
+                loadStudents();
+                loadSchedule();
+                loadSubmissions();
+                loadAttendanceLogs();
+            }
+
+            document.getElementById('file-input').addEventListener('change', e => {
+                const name = e.target.files[0]?.name;
+                document.getElementById('file-name-text').innerText = name ? `جاهز: ${name} ` : "اسحب الملف هنا";
+            });
+
+
+            document.getElementById('tut-file-input').addEventListener('change', e => {
+                const name = e.target.files[0]?.name;
+                document.getElementById('tut-file-name-text').innerText = name ? `جاهز: ${name} ` : "اسحب الملف هنا";
+            });
+
+            document.getElementById('assign-file-input').addEventListener('change', e => {
+                const name = e.target.files[0]?.name;
+                document.getElementById('assign-file-name-text').innerText = name ? `جاهز: ${name}` : "اسحب ملف الواجب هنا (PDF)";
+            });
+
+            // --- تفاعلات القائمة الجانبية في الجوال ---
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('sidebar-open');
+                overlay.classList.toggle('hidden');
+            }
+
+            if (mobileBtn) mobileBtn.addEventListener('click', toggleSidebar);
+            if (overlay) overlay.addEventListener('click', toggleSidebar);
+
+            // غلق القائمة عند اختيار أي قسم
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) toggleSidebar();
+                });
+            });
+
+
+            async function refreshAll() {
+                if (!_supabase) { console.warn("Checking Supabase connection..."); return; }
+
+                // console.log("🔄 Refreshing Dashboard Data...");
+                await Promise.all([
+                    updateStats(),
+                    loadMaterials(),
+                    loadLectures(),
+                    loadTutorials(),
+                    loadAssignments(),
+                    loadStudents(),
+                    loadSchedule(),
+                    loadSubmissions(),
+                    loadProfessorTrainings(),
+                    loadFraudLogs()
+                ]);
+            }
+
+            // window.onload = refreshAll; // Deprecated, using DOMContentLoaded
+
+            // --- 6. Logout Function ---
+            function logout() {
+                if (window.logout) {
+                    window.logout();
+                } else {
+                    // Fallback
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.href = '/index.html';
+                }
+            }
+        </script>
+    </div>
+    <!-- Batch Import Modal -->
+    <div id="import-modal"
+        class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="glass-card w-full max-w-lg p-8 relative">
+            <button onclick="document.getElementById('import-modal').classList.add('hidden')"
+                class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i
+                    class="fas fa-times text-xl"></i></button>
+
+            <h2 class="text-2xl font-bold mb-2 text-white">استيراد درجات (Excel/CSV)</h2>
+            <p class="text-sm text-slate-400 mb-6">قم برفع ملف يحتوي على الأعمدة التالية: ID, Grade</p>
+
+            <div class="border-2 border-dashed border-slate-600 rounded-xl p-8 text-center cursor-pointer hover:bg-slate-800/50 transition"
+                onclick="document.getElementById('excel-file').click()">
+                <i class="fas fa-file-excel text-4xl text-green-500 mb-4"></i>
+                <p class="font-bold text-white">اضغط لاختيار الملف</p>
+                <input type="file" id="excel-file" accept=".xlsx, .csv" class="hidden" onchange="handleFile(this)">
+            </div>
+
+            <div id="import-preview" class="hidden mt-6 bg-slate-900/50 p-4 rounded-lg max-h-40 overflow-y-auto">
+                <!-- Preview Data -->
+            </div>
+
+            <button onclick="processImport()"
+                class="w-full mt-6 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition shadow-lg">
+                تأكيد الاستيراد
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Batch Import Logic ---
+        let importedData = [];
+
+        function handleFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                importedData = XLSX.utils.sheet_to_json(firstSheet);
+
+                // Show Preview
+                const preview = document.getElementById('import-preview');
+                preview.classList.remove('hidden');
+                // REVIEW: Potential XSS - Check this line manually
+                preview.innerHTML = `< p class='text-xs text-green-400 font-bold mb-2' > تم قراءة ${importedData.length} سجل:</p > ` +
+                    importedData.slice(0, 3).map(row => `< div class='text-xs text-slate-300' > ${JSON.stringify(row)}</div > `).join('');
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function processImport() {
+            if (importedData.length === 0) return alert('الرجاء اختيار ملف صالح أولاً.');
+
+            // Simulation of processing
+            alert(`جاري معالجة ${importedData.length} سجل... (هذه نسخة تجريبية)`);
+            document.getElementById('import-modal').classList.add('hidden');
+        }
+
+        // Add Button to UI
+        const btn = document.createElement('button');
+        // REVIEW: Potential XSS - Check this line manually
+        btn.innerHTML = '<i class="fas fa-file-import"></i>';
+        btn.className = "fixed bottom-24 right-6 bg-green-600 w-12 h-12 rounded-full shadow-xl flex items-center justify-center text-white z-50 hover:bg-green-500 transition";
+        btn.onclick = () => document.getElementById('import-modal').classList.remove('hidden');
+        btn.title = "استيراد ملف درجات";
+        document.body.appendChild(btn);
+
+    </script>
+
+    <!-- سكريبتات الاستيراد المجمع وإضافة دكتور -->
+    <script>
+        // دالة المساعدة لإظهار التنبيهات بطريقة أنيقة (SweetAlert إن وُجد، وإلا Alert)
+        function notifyUser(title, msg, type = 'success') {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire(title, msg || '', type);
+            } else {
+                alert(title + (msg ? '\\n' + msg : ''));
+            }
+        }
+
+        async function processBulkStudents() {
+            const fileInput = document.getElementById('bulk-std-file');
+            if (!fileInput.files.length) {
+                notifyUser('تنبيه', 'الرجاء اختيار ملف Excel أولاً.', 'warning');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "" });
+
+                    if (rawData.length < 2) {
+                        notifyUser('تنبيه', 'الملف فارغ أو لا يحتوي على بيانات.', 'warning');
+                        return;
+                    }
+
+                    const headers = rawData[0].map(h => String(h).toLowerCase().trim());
+
+                    const colMap = {
+                        name: headers.findIndex(h => h.includes('name') || h.includes('اسم') || h === 'full name' || h.includes('طالب')),
+                        email: headers.findIndex(h => h.includes('email') || h.includes('بريد') || h.includes('ايميل') || h === 'user'),
+                        password: headers.findIndex(h => h.includes('password') || h.includes('pass') || h.includes('رقم سري') || h.includes('كلمة')),
+                        academic_id: headers.findIndex(h => h.includes('id') || h.includes('academic') || h.includes('أكاديمي') || h.includes('جامعي') || h === 'code'),
+                        national_id: headers.findIndex(h => h.includes('national') || h.includes('قومي') || h.includes('بطاقة')),
+                        role: headers.findIndex(h => h.includes('role') || h.includes('دور') || h.includes('وظيفة') || h.includes('type')),
+                        group: headers.findIndex(h => h.includes('group') || h.includes('مجموعة') || h.includes('سكشن'))
+                    };
+
+                    if (colMap.name === -1 || colMap.academic_id === -1) {
+                        notifyUser('خطأ بالملف', 'الملف يجب أن يحتوي على أعمدة (الاسم، الرقم الأكاديمي) كحد أدنى.', 'error');
+                        return;
+                    }
+
+                    const usersToImport = [];
+                    for (let i = 1; i < rawData.length; i++) {
+                        const row = rawData[i];
+                        if (!row || row.length === 0) continue;
+
+                        const academicIdVal = colMap.academic_id !== -1 && row[colMap.academic_id] ? String(row[colMap.academic_id]).trim() : '';
+                        if (!academicIdVal) continue;
+
+                        const emailVal = colMap.email !== -1 && row[colMap.email] ? String(row[colMap.email]).trim() : `${academicIdVal}@batechu.com`;
+                        const nationalIdVal = colMap.national_id !== -1 && row[colMap.national_id] ? String(row[colMap.national_id]).trim() : '';
+                        const passwordVal = colMap.password !== -1 && row[colMap.password] ? String(row[colMap.password]).trim() : (nationalIdVal || academicIdVal);
+
+                        usersToImport.push({
+                            name: String(row[colMap.name]).trim(),
+                            email: emailVal,
+                            password: passwordVal,
+                            academic_id: academicIdVal,
+                            role: colMap.role !== -1 && row[colMap.role] ? String(row[colMap.role]).trim() : 'Student',
+                            group: colMap.group !== -1 && row[colMap.group] ? String(row[colMap.group]).trim() : ''
+                        });
+                    }
+
+                    if (usersToImport.length === 0) {
+                        notifyUser('خطأ', 'لم يتم العثور على مستخدمين صالحين في الملف.', 'error');
+                        return;
+                    }
+
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: 'جاري استيراد ' + usersToImport.length + ' مستخدم...',
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+                    } else {
+                        console.log('جاري استيراد ' + usersToImport.length + ' مستخدم...');
+                    }
+
+                    const response = await fetch('/api/bulk-import', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ users: usersToImport })
+                    });
+
+                    const responseText = await response.text();
+                    let result;
+                    try {
+                        result = JSON.parse(responseText);
+                    } catch (jsonErr) {
+                        throw new Error(responseText || 'خطأ داخلي في الخادم (Vercel). تحقق من مفاتيح البيئة.');
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(result.error || 'حدث خطأ في الخادم (Vercel).');
+                    }
+
+                    notifyUser('تمت العملية', `نجاح: ${result.success} - فشل: ${result.failed}`, result.failed > 0 ? 'warning' : 'success');
+
+                    if (result.failed > 0) {
+                        console.error('Errors in import:', result.errors);
+                    }
+
+                    fileInput.value = '';
+                    document.getElementById('bulk-file-name').innerText = 'اختر ملف الإكسيل (Excel) من هنا';
+
+                } catch (error) {
+                    console.error("Import Error:", error);
+                    const cleanedErrorMsg = error.message.replace(/<[^>]*>?/gm, '').substring(0, 150);
+                    notifyUser('خطأ تقني في الاستيراد', cleanedErrorMsg, 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function addNewDoctor() {
+            const name = document.getElementById('new-doc-name').value;
+            const email = document.getElementById('new-doc-email').value;
+            const password = document.getElementById('new-doc-password').value;
+
+            if (!name || !email || !password) {
+                notifyUser('تنبيه', 'الرجاء تعبئة جميع الحقول أولاً.', 'warning');
+                return;
+            }
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'جاري إنشاء حساب الدكتور...',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+            }
+
+            try {
+                const response = await fetch('/api/bulk-import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        users: [{
+                            name: name.trim(),
+                            email: email.trim(),
+                            password: password.trim(),
+                            role: 'Doctor',
+                            academic_id: 'N/A'
+                        }]
+                    })
+                });
+
+                const responseText = await response.text();
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (jsonErr) {
+                    throw new Error(responseText || 'خطأ داخلي في الخادم (Vercel لم يرجع استجابة صحيحة). حاول التحقق من مفاتيح البيئة.');
+                }
+
+                if (!response.ok || result.failed > 0) {
+                    const errMsg = (result.errors && result.errors[0]) ? result.errors[0].error : result.error;
+                    throw new Error(errMsg || 'تعذر إضافة الدكتور.');
+                }
+
+                notifyUser('ممتاز!', 'تمت إضافة عضو هيئة التدريس بنجاح.', 'success');
+
+                document.getElementById('new-doc-name').value = '';
+                document.getElementById('new-doc-email').value = '';
+                document.getElementById('new-doc-password').value = '';
+
+            } catch (error) {
+                console.error("Add Doc Error:", error);
+
+                // Show better SweetAlert parsing for long weird Vercel errors
+                const cleanedErrorMsg = error.message.replace(/<[^>]*>?/gm, '').substring(0, 150); // Clean HTML if any
+                notifyUser('أوبس! لم نتمكن من الإضافة', cleanedErrorMsg, 'error');
+            }
+        }
+    </script>
+
+    <script>
+        // Smart PWA Auto-Update System
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Register SW with version query string
+                navigator.serviceWorker.register('/sw.js?v=4.1.1')
+                    .then(registration => {
+                        console.log('[PWA] Service Worker registered');
+
+                        // Check for updates every 30 seconds
+                        setInterval(() => {
+                            registration.update();
+                        }, 30000);
+
+                        // Listen for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('[PWA] New version detected, installing...');
+
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    console.log('[PWA] New version activated, reloading...');
+                                    // Auto-reload to show new content
+                                    // window.location.reload();
+                                }
+                            });
+                        });
+
+                        // Initial update check
+                        registration.update();
+                    });
+
+                // Listen for reload messages from SW
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data && event.data.type === 'FORCE_RELOAD') {
+                        console.log('[PWA] Force reload requested by SW');
+                        // window.location.reload();
+                    }
+                });
+            });
+        }
+
+        // Global function for dismissing fraud logs
+        window.dismissFraudLog = async function (id, studentId) {
+            const result = await Swal.fire({
+                title: 'حذف التنبيه والتسامح مع الطالب؟',
+                text: 'مجرد مسح هذا السجل سيكفي ليتمكن الطالب من تسجيل الدخول من جديد. سيقوم النظام بفك حظر الـ 24 ساعة عنه تلقائياً بمجرد محاولته الدخول.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: 'نعم، مسامحة وحذف',
+                cancelButtonText: 'إلغاء',
+                background: '#1e293b',
+                color: '#fff'
+            });
+
+            if (!result.isConfirmed) return;
+
+            const { error } = await _supabase.from('fraud_logs').delete().eq('id', id);
+            if (error) {
+                console.error('Delete fraud log error:', error);
+                if (typeof showToast === 'function') showToast('فشل حذف التنبيه', true);
+                return;
+            }
+
+            // Animate removal
+            const row = document.getElementById('fraud-row-' + id);
+            if (row) {
+                row.style.transition = 'opacity 0.3s, transform 0.3s';
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(20px)';
+                setTimeout(() => { row.remove(); }, 300);
+            }
+            if (typeof showToast === 'function') showToast('تم مسامحة الطالب وحذف السجل بنجاح');
+
+            // Call loadFraudLogs to refresh the count and list if possible
+            if (typeof loadFraudLogs === 'function') loadFraudLogs();
+        };
+
+    </script>
+
+    <!-- Vercel Analytics -->
+    <script type="module">
+        import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+        inject();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/web-1/L1.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: ما هو تطوير الويب؟ 🌐</h3>\n    <p class=\"mb-4 text-lg\">تطوير الويب هو عملية إنشاء وصيانة مواقع وتطبيقات الويب على الإنترنت. بيعتمد على جزئين أساسيين بيشتغلوا مع بعض:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**الواجهة الأمامية (Front-end):** دي الجزء اللي المستخدم بيشوفه وبيتفاعل معاه مباشرة في المتصفح. بتمثل حوالي 20% من المجهود الكلي.</li>\n        <li>**الواجهة الخلفية (Back-end):** دي الجزء اللي شغال على السيرفر (الخادم)، مسئول عن منطق التشغيل، التعامل مع قواعد البيانات، والأمان. المستخدم مش بيشوفه مباشرة، وبيمثل حوالي 80% من المجهود.</li>\n    </ul>\n        <p class=\"mt-4 text-lg\">الاثنين بيتواصلوا مع بعض غالبًا عن طريق حاجة اسمها **API (Application Programming Interface)**.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: تقنيات الواجهة الأمامية الأساسية 🎨</h3>\n    <p class=\"mb-4 text-lg\">الواجهة الأمامية بتعتمد على ثلاث تقنيات أساسية عشان تشتغل وتظهر بشكل كويس:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**HTML (HyperText Markup Language):** الهيكل العظمي (Structure) للصفحة، الوسوم اللي بتحدد العناصر زي النصوص والصور والروابط.</li>\n        <li>**CSS (Cascading Style Sheets):** الشكل والمظهر (Style) للصفحة، الألوان، الخطوط، التنسيق، وكل ما يخص جماليات الموقع.</li>\n        <li>**JavaScript (JS):** التفاعل والحركة (Behavior) اللي بتخلي الموقع حي وديناميكي.</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: مقدمة لـ CSS 🖌️</h3>\n    <p class=\"mb-4 text-lg\">CSS هي اللي بتدي الحياة لصفحة HTML. هي لغة منفصلة بتشتغل مع HTML عشان تحدد شكل كل عنصر.\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">قاعدة CSS (Rule Set):</h4>\n    <p class=\"mb-4\"><code class=\"text-white\">Selector { Property: Value; }</code></p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**Selector (المُحدِّد):** بيشاور على العنصر اللي عايزين نغير شكله (زي <code class=\"text-white\">h1</code> أو <code class=\"text-white\">p</code>).</li>\n        <li>**Property (الخاصية):** اسم الخاصية اللي عايزين نغيرها (زي <code class=\"text-white\">color</code> أو <code class=\"text-white\">font-size</code>).</li>\n        <li>**Value (القيمة):** القيمة الجديدة للخاصية (زي <code class=\"text-white\">red</code> أو <code class=\"text-white\">20px</code>).</li>\n    </ul>\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">نموذج الصندوق (Box Model):</h4>\n    <p class=\"mb-4 text-lg\">كل عنصر في HTML بيعتبر كـ 'صندوق' يمكن التحكم في أبعاده ومساحاته عن طريق 4 طبقات (Content, Padding, Border, Margin). </p>\n",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: What is Web Development? 🌐</h3>\n    <p class=\"mb-4 text-lg\">Web development is the process of creating and maintaining websites and web applications on the internet. It relies on two fundamental parts working together:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Front-end:** The part the user sees and interacts with directly in the browser. It accounts for about 20% of the overall effort.</li>\n        <li>**Back-end:** The part running on the server, responsible for operational logic, database management, and security. The user does not see it directly and it accounts for about 80% of the effort.</li>\n    </ul>\n    <p class=\"mt-4 text-lg\">They often communicate with each other through an **API (Application Programming Interface)**.</p>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Essential Front-end Technologies 🎨</h3>\n    <p class=\"mb-4 text-lg\">The Front-end relies on three core technologies to function and display properly:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**HTML (HyperText Markup Language):** The Structure and backbone of the page, defining elements like text, images, and links.</li>\n        <li>**CSS (Cascading Style Sheets):** The Style and appearance of the page, including colors, fonts, layout, and overall aesthetics.</li>\n        <li>**JavaScript (JS):** The Behavior and interaction that makes the website dynamic and responsive.</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Introduction to CSS 🖌️</h3>\n    <p class=\"mb-4 text-lg\">CSS brings life to an HTML page. It is a separate language that works with HTML to define the appearance of every element.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">CSS Rule Set:</h4>\n    <p class=\"mb-4\"><code class=\"text-white\">Selector { Property: Value; }</code></p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Selector:** Points to the HTML element you want to style (e.g., <code class=\"text-white\">h1</code> or <code class=\"text-white\">p</code>).</li>\n        <li>**Property:** The name of the characteristic you want to change (e.g., <code class=\"text-white\">color</code> or <code class=\"text-white\">font-size</code>).</li>\n        <li>**Value:** The new setting for the property (e.g., <code class=\"text-white\">red</code> or <code class=\"text-white\">20px</code>).</li>\n    </ul>\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">The Box Model:</h4>\n    <p class=\"mb-4 text-lg\">Every HTML element is treated as a \"box\" styled using the CSS Box Model, which consists of 4 layers: Content, Padding, Border, and Margin. </p>\n",
+  "questions": [
+    {
+      "question": "1. What percentage of the overall effort is estimated to be for the Front-end?",
+      "options": [
+        "80%",
+        "50%",
+        "20%",
+        "100%"
+      ],
+      "correctAnswer": "20%",
+      "hint": "the Front-end is the part the user only sees."
+    },
+    {
+      "question": "2. What is the main purpose of the Back-end?",
+      "options": [
+        "Handling user interaction in the browser",
+        "Managing the database and security",
+        "Defining the page structure (HTML)",
+        "Styling the page elements (CSS)"
+      ],
+      "correctAnswer": "Managing the database and security",
+      "hint": "its job runs on the server."
+    },
+    {
+      "question": "3. What is the primary role of HTML?",
+      "options": [
+        "Page structure and content",
+        "Page style and layout",
+        "Page interaction and behavior",
+        "Server-side logic"
+      ],
+      "correctAnswer": "Page structure and content",
+      "hint": "the backbone."
+    },
+    {
+      "question": "4. What is the primary role of CSS?",
+      "options": [
+        "Page structure and content",
+        "Page style and layout",
+        "Page interaction and behavior",
+        "Server-side logic"
+      ],
+      "correctAnswer": "Page style and layout",
+      "hint": "the look and feel."
+    },
+    {
+      "question": "5. What is the primary role of JavaScript?",
+      "options": [
+        "Page structure and content",
+        "Page style and layout",
+        "Page interaction and behavior",
+        "Server-side logic"
+      ],
+      "correctAnswer": "Page interaction and behavior",
+      "hint": "interaction and movement."
+    },
+    {
+      "question": "6. What does HTML stand for?",
+      "options": [
+        "Home Tool Markup Language",
+        "Hyperlinks and Text Markup Language",
+        "HyperText Markup Language",
+        "Hyper Transfer Markup Language"
+      ],
+      "correctAnswer": "HyperText Markup Language",
+      "hint": "the H, T, M, and L."
+    },
+    {
+      "question": "7. Which HTML tag is used to create the largest heading?",
+      "options": [
+        "<h6>",
+        "<head>",
+        "<heading>",
+        "<h1>"
+      ],
+      "correctAnswer": "<h1>",
+      "hint": "the lower the number, the larger the heading size."
+    },
+    {
+      "question": "8. Which HTML tag defines a paragraph?",
+      "options": [
+        "<para>",
+        "<p>",
+        "<text>",
+        "<paragraph>"
+      ],
+      "correctAnswer": "<p>",
+      "hint": "abbreviation for Paragraph."
+    },
+    {
+      "question": "9. Which attribute is used to provide the URL for an image in the <img> tag?",
+      "options": [
+        "href",
+        "source",
+        "src",
+        "url"
+      ],
+      "correctAnswer": "src",
+      "hint": "abbreviation for Source."
+    },
+    {
+      "question": "10. Which attribute is used to provide alternative text for an image?",
+      "options": [
+        "title",
+        "text",
+        "alt",
+        "description"
+      ],
+      "correctAnswer": "alt",
+      "hint": "abbreviation for Alternative Text."
+    },
+    {
+      "question": "11. Which HTML tag is used to create an unordered list (with bullet points)?",
+      "options": [
+        "<ol>",
+        "<ul>",
+        "<list>",
+        "<li>"
+      ],
+      "correctAnswer": "<ul>",
+      "hint": "abbreviation for Unordered List."
+    },
+    {
+      "question": "12. What does CSS stand for?",
+      "options": [
+        "Computer Style Sheets",
+        "Creative Style Sheets",
+        "Cascading Style Sheets",
+        "Content Style Sheets"
+      ],
+      "correctAnswer": "Cascading Style Sheets",
+      "hint": "the C, S, and S."
+    },
+    {
+      "question": "13. In the CSS rule `h1 { color: blue; }`, what is `h1`?",
+      "options": [
+        "Declaration",
+        "Property",
+        "Value",
+        "Selector"
+      ],
+      "correctAnswer": "Selector",
+      "hint": "the target element for modification."
+    },
+    {
+      "question": "14. In the CSS rule `h1 { color: blue; }`, what is `blue`?",
+      "options": [
+        "Selector",
+        "Declaration",
+        "Property",
+        "Value"
+      ],
+      "correctAnswer": "Value",
+      "hint": "the new value for the property."
+    },
+    {
+      "question": "15. In the CSS rule `h1 { color: blue; }`, what is `color`?",
+      "options": [
+        "Selector",
+        "Declaration",
+        "Value",
+        "Property"
+      ],
+      "correctAnswer": "Property",
+      "hint": "the name of the property you want to change."
+    },
+    {
+      "question": "16. Which method of adding CSS uses the `style` attribute inside an HTML tag?",
+      "options": [
+        "External",
+        "Internal",
+        "Inline",
+        "Linked"
+      ],
+      "correctAnswer": "Inline",
+      "hint": "writing directly inside the tag."
+    },
+    {
+      "question": "17. Which HTML tag is used to link an External CSS file?",
+      "options": [
+        "<style>",
+        "<script>",
+        "<css>",
+        "<link>"
+      ],
+      "correctAnswer": "<link>",
+      "hint": "used in the <head> section."
+    },
+    {
+      "question": "18. What is the innermost layer of the CSS Box Model?",
+      "options": [
+        "Margin",
+        "Border",
+        "Padding",
+        "Content"
+      ],
+      "correctAnswer": "Content",
+      "hint": "the actual content of the element."
+    },
+    {
+      "question": "19. Which layer of the Box Model provides space *outside* the border?",
+      "options": [
+        "Margin",
+        "Border",
+        "Padding",
+        "Content"
+      ],
+      "correctAnswer": "Margin",
+      "hint": "the outer margin."
+    },
+    {
+      "question": "20. What is the space between the Content and the Border in the Box Model?",
+      "options": [
+        "Margin",
+        "Outline",
+        "Gutter",
+        "Padding"
+      ],
+      "correctAnswer": "Padding",
+      "hint": "the inner padding."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATU | نظام رصد الدرجات</title>
+    <script src="../../js/auth-guard.js"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../js/supabase_client.js"></script>
+    <script src="../../assets/js/chart.js"></script>
+    <script src="../../assets/js/sweetalert2.js"></script>
+    <script src="../../assets/js/tailwind.js"></script>
+    <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../../assets/css/sweetalert2-dark.css">
+    <link rel="manifest" href="../../manifest.json">
+
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #bd00ff;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: var(--bg-dark);
+            color: #fff;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(189, 0, 255, 0.1) 0%, transparent 20%);
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .input-glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff; transition: 0.3s;
+            padding: 10px; border-radius: 10px; width: 100%;
+        }
+        .input-glass:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+
+        /* Layout */
+        .grades-layout { display: flex; height: calc(100vh - 64px); }
+        .grades-sidebar { width: 260px; flex-shrink: 0; overflow-y: auto; display: flex; flex-direction: column; }
+        .grades-main { flex: 1; overflow-y: auto; padding: 1.5rem; }
+
+        /* Subject Tabs */
+        .subject-tab {
+            padding: 0.75rem 1rem; cursor: pointer;
+            transition: 0.2s; border-radius: 0.75rem;
+            display: flex; align-items: center; gap: 0.65rem;
+            font-weight: 600; font-size: 0.9rem; color: #94a3b8;
+        }
+        .subject-tab:hover { background: rgba(255,255,255,0.05); }
+        .subject-tab.active { background: rgba(0, 242, 255, 0.1); color: var(--primary); border: 1px solid rgba(0,242,255,0.2); }
+        .subject-tab .tab-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; transition: 0.2s;
+        }
+        .subject-tab.active .tab-icon { background: var(--primary); color: #000; }
+        .subject-tab:not(.active) .tab-icon { background: rgba(255,255,255,0.05); color: #64748b; }
+
+        /* Grade Inputs */
+        .grade-cell {
+            width: 55px; text-align: center; padding: 6px 4px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; border-radius: 6px; font-weight: 700;
+            font-size: 0.85rem; font-family: 'IBM Plex Sans Arabic';
+        }
+        .grade-cell:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(0,242,255,0.2); outline: none; }
+
+        .pass { color: #10b981; } .fail { color: #ef4444; }
+
+        /* Student View Cards */
+        .student-grade-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 1rem; padding: 1.5rem; transition: 0.3s;
+        }
+        .student-grade-card:hover { transform: translateY(-4px); }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: rgba(30,41,59,0.9); position: sticky; top: 0; z-index: 5; }
+        th { padding: 0.85rem 0.5rem; text-align: center; font-weight: 700; color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid rgba(0,242,255,0.2); }
+        td { padding: 0.6rem 0.5rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+        tbody tr:hover { background: rgba(0,242,255,0.05); }
+
+        /* Stat Cards */
+        .stat-card { padding: 1rem; border-radius: 0.75rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grades-sidebar { display: none; }
+            .grades-layout { flex-direction: column; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    </style>
+</head>
+
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="h-16 glass-panel z-50 flex items-center justify-between px-6 border-b border-slate-700">
+        <div class="flex items-center gap-4">
+            <a href="professor.html" class="text-slate-400 hover:text-white transition" title="عودة">
+                <i class="fas fa-arrow-right text-lg"></i>
+            </a>
+            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
+                BATU <span class="text-xs text-slate-400 font-normal">GRADING SYSTEM</span>
+            </h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <!-- Quick Add Button (Doctor) -->
+            <button id="quick-add-btn" onclick="toggleQuickAdd()" style="display:none;"
+                class="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">
+                <i class="fas fa-plus-circle"></i> رصد درجة سريعة
+            </button>
+            <button id="publish-btn" style="display:none;"
+                class="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500 hover:text-white transition font-bold text-sm">
+                <i class="fas fa-eye"></i> نشر للطلاب
+            </button>
+            <button id="excel-btn" style="display:none;"
+                class="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500 hover:text-white transition font-bold text-sm">
+                <i class="fas fa-file-excel"></i> Excel
+            </button>
+            <div class="text-right hidden md:block border-r border-slate-600 pr-4 mr-4">
+                <p class="text-xs text-slate-400">مرحباً يا دكتور</p>
+                <p class="text-sm font-bold text-white" id="navDocName">...</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ DOCTOR VIEW ═══ -->
+    <div id="doctor-view" class="grades-layout" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="grades-sidebar glass-panel border-l border-slate-700 p-4">
+            <div class="text-center py-3 border-b border-slate-700/50 mb-4">
+                <h2 class="text-slate-300 font-bold mb-1">المواد الدراسية</h2>
+                <p class="text-xs text-slate-500">اختر المادة</p>
+            </div>
+            <div id="subjectTabs" class="flex flex-col gap-2"></div>
+            <div class="mt-auto pt-4 border-t border-slate-700/50">
+                <div class="h-40 w-full relative"><canvas id="gradesChart"></canvas></div>
+                <div class="text-center mt-2 text-xs text-slate-400">نسبة النجاح</div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="grades-main">
+            <!-- Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+                <div class="stat-card glass-panel">
+                    <p class="text-slate-400 text-xs font-bold">إجمالي الطلاب</p>
+                    <h3 class="text-2xl font-black text-white" id="totalStudents">0</h3>
+                </div>
+                <div class="stat-card glass-panel">
+                    <p class="text-slate-400 text-xs font-bold">ناجح</p>
+                    <h3 class="text-2xl font-black pass" id="passCount">0</h3>
+                </div>
+                <div class="stat-card glass-panel">
+                    <p class="text-slate-400 text-xs font-bold">راسب</p>
+                    <h3 class="text-2xl font-black fail" id="failCount">0</h3>
+                </div>
+                <div class="stat-card glass-panel">
+                    <p class="text-slate-400 text-xs font-bold">متوسط الدرجات</p>
+                    <h3 class="text-2xl font-black text-cyan-400" id="avgGrade">0</h3>
+                </div>
+            </div>
+
+            <!-- Quick Add Panel (hidden) -->
+            <div id="quick-add-panel" class="glass-panel p-6 rounded-2xl mb-6" style="display:none;">
+                <h3 class="font-bold text-lg mb-4 text-cyan-400"><i class="fas fa-plus-circle ml-2"></i>رصد درجة سريعة</h3>
+                <form id="quickGradeForm" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div><label class="text-xs text-slate-400 block mb-1">الرقم الأكاديمي *</label><input type="text" id="qStudentId" class="input-glass" required></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">اسم الطالب</label><input type="text" id="qStudentName" class="input-glass"></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">أعمال السنة (40)</label><input type="number" id="qWorkMark" class="input-glass text-center font-bold" min="0" max="40"></div>
+                    <div><label class="text-xs text-slate-400 block mb-1">النهائي (60)</label><input type="number" id="qExamMark" class="input-glass text-center font-bold" min="0" max="60"></div>
+                    <div class="col-span-2 md:col-span-4 flex gap-3 justify-end">
+                        <button type="button" onclick="toggleQuickAdd()" class="px-4 py-2 rounded-lg bg-slate-700 text-slate-300 font-bold text-sm">إلغاء</button>
+                        <button type="submit" class="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-sm">
+                            <i class="fas fa-save ml-2"></i>حفظ ورصد
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Grades Table -->
+            <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700">
+                <div class="overflow-x-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ID</th>
+                                <th style="text-align:right;padding-right:1rem;">اسم الطالب</th>
+                                <th>أعمال (40)</th>
+                                <th>ميدتيرم (20)</th>
+                                <th>عملي (20)</th>
+                                <th>فاينال (60)</th>
+                                <th>بونص</th>
+                                <th>رحمة</th>
+                                <th>المجموع</th>
+                                <th>التقدير</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gradesTableBody">
+                            <tr><td colspan="12" class="py-8 text-slate-500">اختر مادة من القائمة الجانبية</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══ STUDENT VIEW ═══ -->
+    <div id="student-view" class="p-6 overflow-y-auto max-w-7xl mx-auto w-full" style="display:none; flex: 1;">
+        <!-- Student Info Header -->
+        <div class="glass-panel p-6 rounded-2xl mb-6 flex flex-wrap items-center justify-between gap-4 border border-cyan-500/20">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-cyan-500/20">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-400 font-bold block">سجل درجات الطالب</span>
+                    <h2 class="text-2xl font-black text-white" id="studentHeaderName">...</h2>
+                    <p class="text-xs font-mono text-cyan-400 font-bold mt-0.5">
+                        <i class="fas fa-id-card ml-1"></i> الرقم الأكاديمي: <span id="studentHeaderId">...</span>
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="refreshStudentGrades()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 hover:text-white border border-slate-700 transition flex items-center gap-2 text-sm font-bold">
+                    <i class="fas fa-sync-alt"></i> تحديث الدرجات
+                </button>
+            </div>
+        </div>
+
+        <!-- Student Quick Stats -->
+        <div id="studentStatsRow" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6" style="display:none;">
+            <div class="stat-card glass-panel text-center">
+                <p class="text-slate-400 text-xs font-bold mb-1">المواد المرصودة</p>
+                <h3 class="text-2xl font-black text-white" id="stdStatTotal">0</h3>
+            </div>
+            <div class="stat-card glass-panel text-center">
+                <p class="text-slate-400 text-xs font-bold mb-1">ناجح</p>
+                <h3 class="text-2xl font-black text-emerald-400" id="stdStatPassed">0</h3>
+            </div>
+            <div class="stat-card glass-panel text-center">
+                <p class="text-slate-400 text-xs font-bold mb-1">المتوسط العام</p>
+                <h3 class="text-2xl font-black text-cyan-400" id="stdStatAvg">0%</h3>
+            </div>
+            <div class="stat-card glass-panel text-center">
+                <p class="text-slate-400 text-xs font-bold mb-1">التقدير العام</p>
+                <h3 class="text-2xl font-black text-purple-400" id="stdStatGrade">—</h3>
+            </div>
+        </div>
+
+        <div id="studentGradesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        
+        <div id="noGradesMsg" style="display:none;" class="text-center py-16 glass-panel rounded-2xl">
+            <i class="fas fa-graduation-cap text-6xl mb-4 text-slate-600"></i>
+            <p class="text-lg font-bold text-slate-400 mb-1">لم يتم رصد أو نشر أي درجات لهذا الحساب بعد</p>
+            <p class="text-xs text-slate-500" id="noGradesDetails">تأكد من قيام الدكتور برصد الدرجة لحسابك الأكاديمي.</p>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-20 opacity-0 transition-all duration-500">
+        <div class="bg-emerald-500 text-black font-bold px-6 py-3 rounded-full shadow-lg shadow-emerald-500/20 flex items-center gap-3">
+            <i class="fas fa-check-circle"></i> <span id="toast-text">تم الحفظ بنجاح</span>
+        </div>
+    </div>
+
+    <!-- XLSX for Excel Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // ═══ SUBJECTS ═══
+        const subjects = [
+            { id: 'web', name: 'web Devlopment', icon: 'fa-globe', maxWork: 40, maxExam: 60 },
+            { id: 'linux', name: 'linux', icon: 'fa-terminal', maxWork: 40, maxExam: 60 },
+            { id: 'db', name: 'DB', icon: 'fa-database', maxWork: 40, maxExam: 60 },
+            { id: 'TEST', name: 'TEST', icon: 'fa-flask', maxWork: 40, maxExam: 60 },
+            { id: 'DE', name: 'DE', icon: 'fa-microchip', maxWork: 40, maxExam: 60 },
+            { id: 'OS', name: 'OS', icon: 'fa-desktop', maxWork: 40, maxExam: 60 }
+        ];
+
+        let gradesData = {};
+        let currentSubjectId = 'web';
+        let myChart = null;
+
+        // ═══ INIT ═══
+        async function init() {
+            let user = null;
+            try {
+                user = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('dwd_user') || localStorage.getItem('user') || '{}');
+            } catch(e) { user = {}; }
+
+            // URL param override for testing specific student (e.g. ?id=2420766 or ?id=2420677)
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryId = urlParams.get('id') || urlParams.get('academic_id') || urlParams.get('studentId');
+            if (queryId) {
+                if (!user) user = {};
+                user.academic_id = queryId;
+            }
+
+            const userRole = (user?.role || 'student').toLowerCase();
+            const isDoctor = userRole === 'doctor' || userRole === 'professor';
+            const isAdmin = userRole === 'admin';
+
+            if (document.getElementById('navDocName')) {
+                document.getElementById('navDocName').textContent = user?.name || user?.email || '';
+            }
+
+            if (isDoctor || isAdmin) {
+                document.getElementById('student-view').innerHTML = `
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:1.5rem;text-align:center;padding:2rem;">
+                        <div style="font-size:4rem;">📊</div>
+                        <h2 style="font-size:1.5rem;font-weight:800;color:#00f2ff;">صفحة درجات الطلاب</h2>
+                        <p style="color:#94a3b8;max-width:400px;">لرصد وإدارة درجات الطلاب، يرجى الانتقال إلى لوحة البروفيسور أو لوحة الأدمن.</p>
+                        <div class="flex gap-3">
+                            <a href="professor.html" style="background:linear-gradient(90deg,#00f2ff,#0088ff);color:#000;font-weight:700;padding:0.75rem 2rem;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-chalkboard-teacher"></i> لوحة الدكتور
+                            </a>
+                            <a href="admin.html" style="background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,0.1);font-weight:700;padding:0.75rem 2rem;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;">
+                                <i class="fas fa-user-shield"></i> لوحة الأدمن
+                            </a>
+                        </div>
+                    </div>`;
+                document.getElementById('student-view').style.display = 'block';
+                if (document.querySelector('header .text-right')) {
+                    document.querySelector('header .text-right').style.display = 'none';
+                }
+            } else {
+                document.getElementById('student-view').style.display = 'block';
+                if (document.querySelector('header .text-right')) {
+                    document.querySelector('header .text-right').style.display = 'none';
+                }
+                await loadStudentGrades(user);
+
+                // --- استماع فوري للتعديلات اللحظية للدرجات دون الحاجة لعمل Refresh ---
+                // 1. BroadcastChannel Listener (لحظي بين النوافذ والمتصفح العادي والمتخفي)
+                try {
+                    const bc = new BroadcastChannel('dwd_grades_sync');
+                    bc.onmessage = (e) => {
+                        loadStudentGrades(user);
+                    };
+                } catch(e) {}
+
+                // 2. Storage event listener
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'dwd_grades_db' || e.key === 'dwd_admin_grades_cache') {
+                        loadStudentGrades(user);
+                    }
+                });
+
+                // 3. Supabase Realtime Live Channel
+                const sbLive = window.appSupabaseClient || (window.supabase && typeof window.supabase.channel === 'function' ? window.supabase : null);
+                if (sbLive && typeof sbLive.channel === 'function') {
+                    try {
+                        sbLive.channel('public:grades_live_sync')
+                            .on('broadcast', { event: 'grade_updated' }, () => {
+                                loadStudentGrades(user);
+                            })
+                            .on('postgres_changes', { event: '*', schema: 'public', table: 'grades' }, () => {
+                                loadStudentGrades(user);
+                            })
+                            .subscribe();
+                    } catch(e) {}
+                }
+
+                // 4. فحص لحظي دوري خفيف كل ثانيتين في الخلفية لضمان تحديث الأجهزة المتعددة فوراً
+                setInterval(() => {
+                    if (document.visibilityState === 'visible') {
+                        loadStudentGrades(user);
+                    }
+                }, 2000);
+            }
+        }
+
+        // ═══ DOCTOR: Subject Tabs ═══
+        function renderTabs() {
+            const container = document.getElementById('subjectTabs');
+            container.innerHTML = subjects.map(s => `
+                <div class="subject-tab ${currentSubjectId === s.id ? 'active' : ''}" onclick="switchSubject('${s.id}')">
+                    <div class="tab-icon"><i class="fas ${s.icon}"></i></div>
+                    ${s.name}
+                </div>
+            `).join('');
+        }
+
+        window.switchSubject = function(id) {
+            currentSubjectId = id;
+            renderTabs();
+            renderTable();
+            updateChart();
+            updateStats();
+        };
+
+        // ═══ DOCTOR: Fetch from Supabase ═══
+        async function fetchGrades() {
+            let all = [];
+            try {
+                const cloudResp = await fetch('https://suziirfasrahhaqffymz.supabase.co/storage/v1/object/public/materials/grades_db.json?t=' + Date.now());
+                if (cloudResp.ok) {
+                    const cData = await cloudResp.json();
+                    if (Array.isArray(cData)) all.push(...cData);
+                }
+            } catch(e) {}
+
+            const sb = window.appSupabaseClient;
+            if (sb) {
+                try {
+                    const { data, error } = await sb.from('grades').select('*');
+                    if (!error && data) {
+                        data.forEach(sg => {
+                            const exists = all.some(ag => 
+                                String(ag.studentId || '').trim().toLowerCase() === String(sg.studentId || '').trim().toLowerCase() &&
+                                String(ag.subjectId || '').trim().toLowerCase() === String(sg.subjectId || '').trim().toLowerCase()
+                            );
+                            if (!exists) all.push(sg);
+                        });
+                    }
+                } catch(e) {}
+            }
+
+            if (all.length > 0) {
+                processGrades(all);
+                localStorage.setItem('dwd_grades_db', JSON.stringify(all));
+            } else {
+                loadFromStorage();
+            }
+        }
+
+        function loadFromStorage() {
+            const stored = JSON.parse(localStorage.getItem('dwd_grades_db')) || [];
+            processGrades(stored);
+        }
+
+        function processGrades(flatList) {
+            subjects.forEach(s => gradesData[s.id] = []);
+            flatList.forEach(g => {
+                if (gradesData[g.subjectId]) {
+                    gradesData[g.subjectId].push({
+                        id: g.studentId, name: g.studentName || '',
+                        work: parseInt(g.workMark) || 0, exam: parseInt(g.examMark) || 0,
+                        midterm: parseInt(g.midterm) || 0, practical: parseInt(g.practical) || 0,
+                        bonus: parseInt(g.bonus) || parseInt(g.bonusMark) || 0,
+                        mercy: parseInt(g.mercy) || 0,
+                        db_id: g.id, is_published: g.is_published || false
+                    });
+                }
+            });
+            renderTable();
+            updateChart();
+            updateStats();
+        }
+
+        // ═══ DOCTOR: Render Table ═══
+        function renderTable() {
+            const data = gradesData[currentSubjectId] || [];
+            const tbody = document.getElementById('gradesTableBody');
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="12" class="py-8 text-slate-500">لا توجد درجات لهذه المادة. استخدم زر "رصد درجة سريعة" لإضافة طالب.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map((s, i) => {
+                const total = calcTotal(s);
+                const grade = calculateGrade(total);
+                const isPass = total >= 50;
+                return `
+                <tr>
+                    <td class="font-bold text-xs text-slate-500">${i+1}</td>
+                    <td class="font-mono text-cyan-400 text-xs font-bold">${s.id}</td>
+                    <td style="text-align:right;padding-right:1rem;" class="font-bold text-white">
+                        <div class="flex items-center gap-2 justify-end">
+                            ${s.name || '—'}
+                            <div class="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-xs text-slate-300 font-bold border border-slate-600">${s.name ? s.name.charAt(0) : '?'}</div>
+                        </div>
+                    </td>
+                    <td><input type="number" class="grade-cell" value="${s.work}" min="0" max="40" onchange="updateGrade('${currentSubjectId}',${i},'work',this.value)"></td>
+                    <td><input type="number" class="grade-cell" value="${s.midterm}" min="0" max="20" onchange="updateGrade('${currentSubjectId}',${i},'midterm',this.value)"></td>
+                    <td><input type="number" class="grade-cell" value="${s.practical}" min="0" max="20" onchange="updateGrade('${currentSubjectId}',${i},'practical',this.value)"></td>
+                    <td><input type="number" class="grade-cell" value="${s.exam}" min="0" max="60" onchange="updateGrade('${currentSubjectId}',${i},'exam',this.value)"></td>
+                    <td><input type="number" class="grade-cell" value="${s.bonus}" min="0" max="20" onchange="updateGrade('${currentSubjectId}',${i},'bonus',this.value)" style="border-color: rgba(0,242,255,0.2);"></td>
+                    <td><input type="number" class="grade-cell" value="${s.mercy}" min="0" max="10" onchange="updateGrade('${currentSubjectId}',${i},'mercy',this.value)" style="border-color: rgba(168,85,247,0.2);"></td>
+                    <td class="font-black text-lg font-mono ${isPass ? 'text-white' : 'fail'}">${total}</td>
+                    <td><span class="px-2 py-1 rounded-full text-xs font-bold ${grade.color}">${grade.label}</span></td>
+                    <td>${isPass ? '<i class="fas fa-check-circle pass text-lg"></i>' : '<i class="fas fa-times-circle fail text-lg"></i>'}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function calcTotal(s) {
+            return Math.min((+s.work||0) + (+s.midterm||0) + (+s.practical||0) + (+s.exam||0) + (+s.bonus||0) + (+s.mercy||0), 100);
+        }
+
+        function calculateGrade(total) {
+            if (total >= 90) return { label: 'A+ امتياز', color: 'bg-green-500/20 text-green-400' };
+            if (total >= 85) return { label: 'A امتياز', color: 'bg-green-500/20 text-green-400' };
+            if (total >= 75) return { label: 'B جيد جداً', color: 'bg-blue-500/20 text-blue-400' };
+            if (total >= 65) return { label: 'C جيد', color: 'bg-yellow-500/20 text-yellow-400' };
+            if (total >= 50) return { label: 'D مقبول', color: 'bg-orange-500/20 text-orange-400' };
+            return { label: 'F راسب', color: 'bg-red-500/20 text-red-400' };
+        }
+
+        function updateStats() {
+            const data = gradesData[currentSubjectId] || [];
+            let pass = 0, fail = 0, sum = 0;
+            data.forEach(s => { const t = calcTotal(s); sum += t; if (t >= 50) pass++; else fail++; });
+            document.getElementById('totalStudents').textContent = data.length;
+            document.getElementById('passCount').textContent = pass;
+            document.getElementById('failCount').textContent = fail;
+            document.getElementById('avgGrade').textContent = data.length ? (sum / data.length).toFixed(1) : '0';
+        }
+
+        // ═══ DOCTOR: Update Grade ═══
+        window.updateGrade = async function(subId, index, field, value) {
+            let val = parseInt(value) || 0;
+            if (val < 0) val = 0;
+            gradesData[subId][index][field] = val;
+            renderTable(); updateChart(); updateStats();
+
+            // Save to Supabase
+            const student = gradesData[subId][index];
+            const sub = subjects.find(s => s.id === subId);
+            if (window.appSupabaseClient) {
+                const { error } = await window.appSupabaseClient.from('grades').upsert({
+                    studentId: student.id, subjectId: subId, subjectName: sub?.name,
+                    studentName: student.name, workMark: student.work, examMark: student.exam,
+                    midterm: student.midterm, practical: student.practical,
+                    bonus: student.bonus, mercy: student.mercy,
+                    date: new Date().toLocaleDateString()
+                }, { onConflict: 'studentId, subjectId' });
+
+                if (error) {
+                    console.error("[Grades] Save error:", error);
+                    if (error.code === '42501' || error.status === 401) {
+                        showToast('⚠️ خطأ: غير مصرح لك بالحفظ. جاري إعادة المحاولة...');
+                        if (window.SecureConnect?.syncSupabaseAuth) await window.SecureConnect.syncSupabaseAuth();
+                    } else {
+                        showToast('❌ تعذر الحفظ على السحابة');
+                    }
+                } else {
+                    showToast('تم الحفظ تلقائياً');
+                }
+            }
+            syncToLocalStorage();
+        };
+
+        function syncToLocalStorage() {
+            let flatList = [];
+            Object.keys(gradesData).forEach(subId => {
+                const sub = subjects.find(s => s.id === subId);
+                gradesData[subId].forEach(s => {
+                    flatList.push({
+                        studentId: s.id, studentName: s.name, subjectId: subId,
+                        subjectName: sub?.name || subId, workMark: s.work, examMark: s.exam,
+                        midterm: s.midterm, practical: s.practical, bonus: s.bonus, mercy: s.mercy,
+                        totalMark: calcTotal(s), date: new Date().toLocaleDateString()
+                    });
+                });
+            });
+            localStorage.setItem('dwd_grades_db', JSON.stringify(flatList));
+        }
+
+        // ═══ DOCTOR: Quick Add ═══
+        window.toggleQuickAdd = function() {
+            const panel = document.getElementById('quick-add-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        };
+
+        function setupDoctorEvents() {
+            // Quick Add Form
+            document.getElementById('quickGradeForm')?.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const studentId = document.getElementById('qStudentId').value.trim();
+                const studentName = document.getElementById('qStudentName').value.trim();
+                const work = parseInt(document.getElementById('qWorkMark').value) || 0;
+                const exam = parseInt(document.getElementById('qExamMark').value) || 0;
+                const sub = subjects.find(s => s.id === currentSubjectId);
+
+                if (work > 40 || exam > 60) {
+                    Swal.fire({ title: 'خطأ', text: 'الدرجات تتجاوز الحد المسموح', icon: 'error', background: '#1e293b', color: '#fff' });
+                    return;
+                }
+
+                const newEntry = { id: studentId, name: studentName, work, exam, midterm: 0, practical: 0, bonus: 0, mercy: 0 };
+                if (!gradesData[currentSubjectId]) gradesData[currentSubjectId] = [];
+
+                const exists = gradesData[currentSubjectId].findIndex(g => g.id === studentId);
+                if (exists > -1) gradesData[currentSubjectId][exists] = { ...gradesData[currentSubjectId][exists], ...newEntry };
+                else gradesData[currentSubjectId].push(newEntry);
+
+                // Save to DB
+                if (window.appSupabaseClient) {
+                    await window.appSupabaseClient.from('grades').upsert({
+                        studentId, subjectId: currentSubjectId, subjectName: sub?.name,
+                        studentName, workMark: work, examMark: exam,
+                        date: new Date().toLocaleDateString()
+                    }, { onConflict: 'studentId, subjectId' });
+                }
+                syncToLocalStorage();
+                renderTable(); updateChart(); updateStats();
+                this.reset();
+                toggleQuickAdd();
+                showToast('تم رصد الدرجة بنجاح');
+            });
+
+            // Publish
+            document.getElementById('publish-btn')?.addEventListener('click', async () => {
+                if (!confirm('هل أنت متأكد من نشر درجات ' + subjects.find(s => s.id === currentSubjectId)?.name + ' للطلاب؟')) return;
+                if (window.appSupabaseClient) {
+                    await window.appSupabaseClient.from('grades').update({ is_published: true }).eq('subjectId', currentSubjectId);
+                    showToast('تم نشر الدرجات للطلاب ✅');
+                }
+            });
+
+            // Excel Export
+            document.getElementById('excel-btn')?.addEventListener('click', () => {
+                if (typeof XLSX === 'undefined') { alert('مكتبة التصدير غير محملة'); return; }
+                const sub = subjects.find(s => s.id === currentSubjectId);
+                const data = (gradesData[currentSubjectId] || []).map(s => {
+                    const total = calcTotal(s);
+                    return {
+                        'رقم الطالب': s.id, 'الاسم': s.name, 'أعمال السنة': s.work,
+                        'ميدتيرم': s.midterm, 'عملي': s.practical, 'الامتحان': s.exam,
+                        'بونص': s.bonus, 'رحمة': s.mercy, 'المجموع': total,
+                        'الحالة': total >= 50 ? 'ناجح' : 'راسب'
+                    };
+                });
+                const ws = XLSX.utils.json_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'الدرجات');
+                XLSX.writeFile(wb, `BATU_Grades_${sub?.id || 'all'}.xlsx`);
+            });
+        }
+
+        // ═══ CHART ═══
+        function updateChart() {
+            const ctx = document.getElementById('gradesChart');
+            if (!ctx) return;
+            const data = gradesData[currentSubjectId] || [];
+            let pass = 0, fail = 0;
+            data.forEach(s => { if (calcTotal(s) >= 50) pass++; else fail++; });
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: ['ناجح', 'راسب'], datasets: [{ data: [pass, fail], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '70%' }
+            });
+        }
+
+        // --- توحيد معرفات المواد لتجنب تكرار أو عدم تطابق الدرجات ---
+        function normalizeSubjectKey(val) {
+            if (!val) return 'unknown';
+            const s = String(val).toLowerCase();
+            if (s.includes('os') || s.includes('تشغيل') || s.includes('operat') || s.includes('b4270452')) return 'os';
+            if (s.includes('web') || s.includes('ويب') || s.includes('1439f95a')) return 'web';
+            if (s.includes('linux') || s.includes('لينكس') || s.includes('498786fe')) return 'linux';
+            if (s.includes('db') || s.includes('قواعد') || s.includes('data') || s.includes('52f704fa')) return 'db';
+            if (s.includes('test') || s.includes('اختبار') || s.includes('77036932')) return 'test';
+            if (s.includes('de') || s.includes('دوائر') || s.includes('digital') || s.includes('955bc13c')) return 'de';
+            if (s.includes('prog') || s.includes('برمج') || s.includes('c++')) return 'prog';
+            return s.trim();
+        }
+
+        // ═══ STUDENT VIEW ═══
+        async function loadStudentGrades(user) {
+            const grid = document.getElementById('studentGradesGrid');
+            const noMsg = document.getElementById('noGradesMsg');
+            const statsRow = document.getElementById('studentStatsRow');
+            const sb = window.appSupabaseClient || (window.supabase && typeof window.supabase.from === 'function' ? window.supabase : null);
+
+            let userAcademicId = (user?.academic_id || '').toString().trim();
+            let userEmail = (user?.email || '').toString().trim();
+            let emailPrefix = userEmail ? userEmail.split('@')[0].trim() : '';
+            let numericId = emailPrefix.replace(/\D/g, '');
+            let userName = (user?.name || user?.full_name || '').toString().trim();
+            let userId = (user?.id || user?.uid || '').toString().trim();
+
+            // Resolve missing student info from Supabase users table if needed
+            if (sb && (!userAcademicId || !userName)) {
+                try {
+                    if (userEmail) {
+                        const { data: dbUser } = await sb.from('users').select('*').eq('email', userEmail).maybeSingle();
+                        if (dbUser) {
+                            if (!userAcademicId && dbUser.academic_id) userAcademicId = String(dbUser.academic_id);
+                            if (!userName && (dbUser.name || dbUser.full_name)) userName = dbUser.full_name || dbUser.name;
+                        }
+                    }
+                    if (!userAcademicId && userName) {
+                        const { data: dbUser2 } = await sb.from('users').select('*').ilike('name', `%${userName}%`).maybeSingle();
+                        if (dbUser2 && dbUser2.academic_id) userAcademicId = String(dbUser2.academic_id);
+                    }
+                } catch(e) {}
+            }
+
+            // Fallback display
+            const displayId = userAcademicId || numericId || emailPrefix || '2420766';
+            const displayName = userName || 'الطالب';
+            if (document.getElementById('studentHeaderName')) document.getElementById('studentHeaderName').textContent = displayName;
+            if (document.getElementById('studentHeaderId')) document.getElementById('studentHeaderId').textContent = displayId;
+
+            try {
+                let allGrades = [];
+
+                // 1. Fetch from Supabase Cloud Storage (materials/grades_db.json)
+                try {
+                    const cloudResp = await fetch('https://suziirfasrahhaqffymz.supabase.co/storage/v1/object/public/materials/grades_db.json?t=' + Date.now());
+                    if (cloudResp.ok) {
+                        const cloudData = await cloudResp.json();
+                        if (Array.isArray(cloudData)) allGrades.push(...cloudData);
+                    }
+                } catch(e) {}
+
+                // 2. Fetch from Supabase Table
+                if (sb) {
+                    try {
+                        const { data: sbData, error } = await sb.from('grades').select('*');
+                        if (!error && sbData) {
+                            allGrades.push(...sbData);
+                        }
+                    } catch(e) {}
+                }
+
+                // 3. Fetch from Local Caches
+                try {
+                    const l1 = JSON.parse(localStorage.getItem('dwd_grades_db') || '[]');
+                    const l2 = JSON.parse(localStorage.getItem('dwd_admin_grades_cache') || '[]');
+                    allGrades.push(...l1, ...l2);
+                } catch(e) {}
+
+                // 4. Filter for this exact student
+                const studentRawGrades = allGrades.filter(g => {
+                    if (!g) return false;
+                    const gId = (g.studentId || g.student_id || '').toString().trim().toLowerCase();
+                    const gName = (g.studentName || g.student_name || '').toString().trim().toLowerCase();
+
+                    if (userAcademicId && gId === userAcademicId.toLowerCase()) return true;
+                    if (numericId && (gId === numericId || numericId.includes(gId) || gId.includes(numericId))) return true;
+                    if (emailPrefix && gId === emailPrefix.toLowerCase()) return true;
+                    if (userId && (gId === userId.toLowerCase() || gId === String(user?.id))) return true;
+
+                    if (userName && gName) {
+                        const cleanU = userName.replace(/\s+/g, ' ').toLowerCase();
+                        const cleanG = gName.replace(/\s+/g, ' ').toLowerCase();
+                        if (cleanU === cleanG || cleanU.includes(cleanG) || cleanG.includes(cleanU)) return true;
+                    }
+
+                    return false;
+                });
+
+                // 5. Deduplicate by normalized subject key (latest/most recent update wins)
+                const subjectMap = new Map();
+                studentRawGrades.forEach(g => {
+                    const subKey = normalizeSubjectKey(g.subjectId || g.subjectName);
+                    // Overwrite with newer record
+                    subjectMap.set(subKey, g);
+                });
+
+                const myGrades = Array.from(subjectMap.values());
+
+                if (myGrades.length === 0) {
+                    grid.style.display = 'none';
+                    if (statsRow) statsRow.style.display = 'none';
+                    noMsg.style.display = 'block';
+                    const detailsEl = document.getElementById('noGradesDetails');
+                    if (detailsEl) detailsEl.textContent = `لا توجد درجات مسجلة لرقمك الأكاديمي (${displayId}) حتى الآن.`;
+                    return;
+                }
+
+                // Render Quick Stats
+                if (statsRow) {
+                    statsRow.style.display = 'grid';
+                    let totalSum = 0;
+                    let passedCount = 0;
+                    myGrades.forEach(g => {
+                        const total = Math.min((+g.workMark||0) + (+g.midterm||0) + (+g.practical||0) + (+g.examMark||0) + (+g.bonus||0) + (+g.mercy||0), 100);
+                        totalSum += total;
+                        if (total >= 50) passedCount++;
+                    });
+                    const avg = Math.round(totalSum / myGrades.length);
+                    document.getElementById('stdStatTotal').textContent = myGrades.length;
+                    document.getElementById('stdStatPassed').textContent = passedCount;
+                    document.getElementById('stdStatAvg').textContent = avg + '%';
+                    document.getElementById('stdStatGrade').textContent = calculateGrade(avg).label.split(' ')[0];
+                }
+
+                grid.style.display = 'grid';
+                noMsg.style.display = 'none';
+
+                grid.innerHTML = myGrades.map(g => {
+                    const total = Math.min((+g.workMark||0) + (+g.midterm||0) + (+g.practical||0) + (+g.examMark||0) + (+g.bonus||0) + (+g.mercy||0), 100);
+                    const passed = total >= 50;
+                    const gradeInfo = calculateGrade(total);
+                    const borderColor = passed ? '#10b981' : '#ef4444';
+                    const subName = g.subjectName || g.subjectId || 'المادة الدراسية';
+                    const docName = g.doctor_name || 'د. أشرف عبدالعزيز طه';
+
+                    return `
+                        <div class="student-grade-card glass-panel" style="border-top: 4px solid ${borderColor}; border-radius: 1.25rem;">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-bold text-lg text-white">${subName}</h4>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold ${gradeInfo.color}">${gradeInfo.label}</span>
+                            </div>
+
+                            <div class="space-y-2.5 text-sm">
+                                <div class="flex justify-between py-1 border-b border-slate-700/40">
+                                    <span class="text-slate-400">أعمال السنة (40)</span>
+                                    <span class="font-bold text-cyan-400 font-mono">${g.workMark || 0}</span>
+                                </div>
+                                ${g.midterm > 0 ? `
+                                <div class="flex justify-between py-1 border-b border-slate-700/40">
+                                    <span class="text-slate-400">الميدتيرم (20)</span>
+                                    <span class="font-bold text-white font-mono">${g.midterm}</span>
+                                </div>` : ''}
+                                ${g.practical > 0 ? `
+                                <div class="flex justify-between py-1 border-b border-slate-700/40">
+                                    <span class="text-slate-400">العملي (20)</span>
+                                    <span class="font-bold text-white font-mono">${g.practical}</span>
+                                </div>` : ''}
+                                <div class="flex justify-between py-1 border-b border-slate-700/40">
+                                    <span class="text-slate-400">الامتحان النهائي (60)</span>
+                                    <span class="font-bold text-indigo-400 font-mono">${g.examMark || 0}</span>
+                                </div>
+                                ${g.bonus > 0 ? `
+                                <div class="flex justify-between py-1 border-b border-slate-700/40">
+                                    <span class="text-slate-400">بونص إضافي</span>
+                                    <span class="font-bold text-emerald-400 font-mono">+${g.bonus}</span>
+                                </div>` : ''}
+                                ${g.mercy > 0 ? `
+                                <div class="flex justify-between py-1 border-b border-slate-700/40">
+                                    <span class="text-slate-400">درجات الرأفة</span>
+                                    <span class="font-bold text-purple-400 font-mono">+${g.mercy}</span>
+                                </div>` : ''}
+                                <div class="flex justify-between items-center pt-3 mt-2">
+                                    <span class="font-bold text-sm text-slate-300">المجموع الكلي</span>
+                                    <span class="font-black text-2xl font-mono ${passed ? 'text-emerald-400' : 'text-red-400'}">${total} / 100</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs text-slate-400 pt-2 border-t border-slate-700/40">
+                                    <span><i class="fas fa-user-tie ml-1 text-cyan-400"></i> ${docName}</span>
+                                    <span><i class="far fa-calendar-alt ml-1"></i> ${g.date || new Date().toLocaleDateString('ar-EG')}</span>
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+            } catch(e) { 
+                console.error("Error in loadStudentGrades:", e); 
+            }
+        }
+
+        window.refreshStudentGrades = async function() {
+            let user = null;
+            try {
+                user = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('dwd_user') || localStorage.getItem('user') || '{}');
+            } catch(e) { user = {}; }
+            showToast('جاري تحديث الدرجات...');
+            await loadStudentGrades(user);
+            showToast('تم تحديث الدرجات ✅');
+        };
+
+        // ═══ TOAST ═══
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            document.getElementById('toast-text').textContent = msg;
+            t.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-y-20', 'opacity-0'), 2500);
+        }
+
+        // Fast init without blocking
+        async function waitAndInit() {
+            let attempts = 0;
+            while (!window.appSupabaseClient && !window.supabase && attempts < 10) {
+                await new Promise(r => setTimeout(r, 100));
+                attempts++;
+            }
+            init();
+        }
+        window.addEventListener('DOMContentLoaded', waitAndInit);
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Instant theme apply to prevent white flash -->
+    <script>(function(){var t=localStorage.getItem('dwd-theme')||'dark';var h=document.documentElement;if(t==='dark')h.classList.add('dark');else h.classList.remove('dark');})()</script>
+    <title>لوحة تحكم الأدمن | DWD Smart Campus</title>
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="../../assets/js/tailwind.js"></script>
+    <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../../assets/css/sweetalert2-dark.css">
+    <link rel="stylesheet" href="../../css/academic-design.css">
+    <script src="../../assets/js/sweetalert2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../js/supabase_client.js"></script>
+    <script src="../../js/auth-guard.js"></script>
+    <script>
+        window.DWD_FIREBASE_CONFIG = {
+            apiKey: process.env.VITE_FIREBASE_API_KEY,
+            authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+            projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+            storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+            appId: process.env.VITE_FIREBASE_APP_ID
+        };
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { fontFamily: { cairo: ['Cairo'], ibm: ['IBM Plex Sans Arabic'] } } }
+        }
+    </script>
+    <style>
+        :root {
+            --admin-bg: #050813;
+            --admin-card: rgba(255, 255, 255, 0.04);
+            --admin-border: rgba(255, 255, 255, 0.08);
+            --admin-sidebar: rgba(10, 14, 30, 0.98);
+            --admin-hover: rgba(0, 232, 143, 0.08);
+            --admin-active-text: #00e88f;
+            --admin-muted: rgba(255,255,255,0.45);
+            --text-main: #e2e8f0;
+        }
+
+        /* Light mode overrides */
+        html:not(.dark) {
+            --admin-bg: #f0f4f8;
+            --admin-card: rgba(255, 255, 255, 0.85);
+            --admin-border: rgba(0, 0, 0, 0.1);
+            --admin-sidebar: rgba(255, 255, 255, 0.97);
+            --admin-hover: rgba(0, 180, 120, 0.1);
+            --admin-muted: rgba(0,0,0,0.5);
+            --text-main: #1e293b;
+        }
+        html:not(.dark) body { color: #1e293b; }
+        html:not(.dark) .admin-topbar { background: rgba(240,244,248,0.9); }
+        html:not(.dark) .admin-topbar h2 { color: #0f172a; }
+        html:not(.dark) .admin-user-chip { color: #1e293b; background: rgba(0,0,0,0.06); }
+        html:not(.dark) .sidebar-section-title { color: rgba(0,0,0,0.4); }
+        html:not(.dark) .sidebar-link { color: rgba(30,41,59,0.75) !important; }
+        html:not(.dark) .sidebar-link:hover { color: #00a060 !important; background: rgba(0,160,96,0.08); }
+        html:not(.dark) .sidebar-link.active { color: #00894a !important; background: rgba(0,160,96,0.1); }
+        html:not(.dark) .sidebar-logo h5 { color: #0f172a; }
+        html:not(.dark) .sidebar-logo p { color: rgba(0,0,0,0.45); }
+        html:not(.dark) .stat-card { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+        html:not(.dark) .stat-val { color: inherit !important; }
+        html:not(.dark) .stat-lbl { color: rgba(0,0,0,0.5); }
+        html:not(.dark) .glass-card { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+        html:not(.dark) .glass-card h4 { color: #0f172a; }
+        html:not(.dark) .data-table thead th { color: rgba(0,0,0,0.5); border-bottom-color: rgba(0,0,0,0.08); }
+        html:not(.dark) .data-table tbody td { color: #334155; border-bottom-color: rgba(0,0,0,0.04); }
+        html:not(.dark) .data-table tbody tr:hover { background: rgba(0,160,96,0.04); }
+        html:not(.dark) .modal-box { background: #ffffff; color: #1e293b; }
+        html:not(.dark) .modal-box h3 { color: #0f172a; }
+        html:not(.dark) .input-field { background: #f8fafc; color: #1e293b; border-color: rgba(0,0,0,0.15); }
+        html:not(.dark) .input-field::placeholder { color: rgba(0,0,0,0.35); }
+        html:not(.dark) .input-field option { background: #ffffff; color: #1e293b; }
+        html:not(.dark) .btn-secondary { color: #334155; border-color: rgba(0,0,0,0.15); background: rgba(0,0,0,0.04); }
+        html:not(.dark) .btn-secondary:hover { background: rgba(0,0,0,0.08); }
+        html:not(.dark) .form-label { color: rgba(0,0,0,0.55); }
+        html:not(.dark) #recent-activity { color: #334155; }
+        html:not(.dark) .academic-card { background: #ffffff; color: #334155; }
+        html:not(.dark) #bulk-preview { color: #334155; }
+
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            font-family: 'IBM Plex Sans Arabic', 'Cairo', sans-serif;
+            background: var(--admin-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        h1,h2,h3,h4,h5,h6 { font-family: 'Cairo', sans-serif; }
+
+        /* ── Layout ── */
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar {
+            width: 280px; flex-shrink: 0;
+            background: var(--admin-sidebar);
+            border-left: 1px solid var(--admin-border);
+            display: flex; flex-direction: column;
+            position: sticky; top: 0; height: 100vh; overflow-y: auto;
+        }
+        .admin-main {
+            flex: 1; background: var(--admin-bg);
+            min-height: 100vh; overflow-y: auto;
+        }
+
+        /* ── Sidebar Logo ── */
+        .sidebar-logo {
+            padding: 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--admin-border);
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .sidebar-logo-badge {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, #00e88f, #00b8d9);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: #000; font-weight: 900;
+            flex-shrink: 0;
+        }
+        .sidebar-logo h5 {
+            font-size: 1.1rem; font-weight: 900; color: #ffffff;
+            margin: 0; line-height: 1.2;
+        }
+        .sidebar-logo p { font-size: 0.7rem; color: var(--admin-muted); margin: 0; }
+
+        /* ── Sidebar Nav ── */
+        .sidebar-section-title {
+            padding: 1rem 1.5rem 0.5rem;
+            font-size: 0.65rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--admin-muted);
+        }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1.1rem 1.6rem; font-size: 1.05rem; font-weight: 700;
+            color: rgba(255,255,255,0.65);
+            border-radius: 0; margin: 0; cursor: pointer;
+            text-decoration: none; transition: all 0.18s;
+            border-right: 3px solid transparent;
+            position: relative;
+        }
+        .sidebar-link:hover {
+            background: var(--admin-hover);
+            color: #00e88f;
+            border-right-color: rgba(0,232,143,0.3);
+        }
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(0,232,143,0.15), transparent);
+            color: #00e88f;
+            border-right-color: #00e88f;
+        }
+        .sidebar-link i { width: 1.3rem; text-align: center; font-size: 1rem; }
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1rem 0;
+            border-top: 1px solid var(--admin-border);
+        }
+
+        /* ── Top Bar ── */
+        .admin-topbar {
+            padding: 1.25rem 2rem;
+            border-bottom: 1px solid var(--admin-border);
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(5, 8, 19, 0.7);
+            backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 10;
+        }
+        .admin-topbar h2 {
+            font-size: 1.6rem; font-weight: 900; color: #ffffff;
+            margin: 0;
+        }
+        .admin-user-chip {
+            display: flex; align-items: center; gap: 0.65rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--admin-border);
+            border-radius: 999px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem; font-weight: 700; color: #e2e8f0;
+        }
+        .admin-user-chip .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #00e88f; flex-shrink: 0;
+        }
+
+        /* ── Tab Content ── */
+        .tab-content { display: none; animation: fadeIn 0.25s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+        /* ── Stats Cards ── */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; }
+        .stat-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            display: flex; align-items: center; gap: 1.25rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); border-color: rgba(0,232,143,0.2); }
+        .stat-icon {
+            width: 56px; height: 56px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; flex-shrink: 0;
+        }
+        .stat-val {
+            font-size: 2.5rem; font-weight: 900; line-height: 1;
+            font-family: 'Cairo', sans-serif;
+        }
+        .stat-lbl {
+            font-size: 0.8rem; color: var(--admin-muted);
+            margin-top: 0.25rem; font-weight: 600;
+        }
+
+        /* ── Glass Card ── */
+        .glass-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+        }
+        .glass-card h4 {
+            font-size: 1.1rem; font-weight: 800;
+            color: #ffffff; margin: 0 0 1.25rem;
+            display: flex; align-items: center; gap: 0.65rem;
+        }
+
+        /* ── Data Table ── */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table thead th {
+            padding: 1rem 1.25rem; text-align: right; font-weight: 700;
+            color: var(--admin-muted); font-size: 0.75rem; text-transform: uppercase;
+            border-bottom: 1px solid var(--admin-border);
+            background: rgba(255,255,255,0.02);
+        }
+        .data-table tbody td {
+            padding: 1rem 1.25rem; text-align: right;
+            color: rgba(255,255,255,0.75);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.88rem;
+        }
+        .data-table tbody tr:hover { background: rgba(0,232,143,0.03); }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #0e1527;
+            border: 1px solid var(--admin-border);
+            border-radius: 24px;
+            padding: 2rem; width: 95%; max-width: 560px;
+            max-height: 90vh; overflow-y: auto;
+            color: #e2e8f0;
+        }
+        .modal-box h3 { font-size: 1.3rem; font-weight: 900; color: #ffffff; margin: 0 0 1.5rem; }
+
+        /* ── Form Elements ── */
+        .form-label {
+            display: block; font-size: 0.78rem; font-weight: 700;
+            color: var(--admin-muted); text-transform: uppercase;
+            letter-spacing: 0.06em; margin-bottom: 0.4rem;
+        }
+        .input-field {
+            width: 100%; padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--admin-border);
+            border-radius: 10px; color: #ffffff;
+            font-family: inherit; font-size: 0.9rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .input-field:focus { border-color: #00e88f; }
+        .input-field:disabled { opacity: 0.4; cursor: not-allowed; }
+        .input-field option { background: #0e1527; }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.65rem 1.4rem; border-radius: 10px;
+            font-weight: 700; font-size: 0.88rem; cursor: pointer;
+            border: none; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00e88f, #00b8d9);
+            color: #050813;
+        }
+        .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--admin-border);
+            color: rgba(255,255,255,0.8);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        .btn-ghost { background: transparent; padding: 0.45rem; border-radius: 8px; }
+        .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+        /* ── Theme toggle ── */
+        .theme-toggle {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--admin-border);
+            color: #e2e8f0; padding: 0.5rem 0.75rem;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.1); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .admin-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- ══ SIDEBAR ══ -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-badge"><i class="fas fa-university"></i></div>
+                <div>
+                    <h5>لوحة التحكم</h5>
+                    <p>Admin Dashboard • BATU</p>
+                </div>
+            </div>
+            <nav class="flex-1">
+                <div class="sidebar-section-title">الإدارة</div>
+                <a class="sidebar-link active" data-tab="overview"><i class="fas fa-chart-pie"></i> نظرة عامة</a>
+                <a class="sidebar-link" data-tab="users"><i class="fas fa-users"></i> المستخدمون</a>
+                <a class="sidebar-link" data-tab="subjects"><i class="fas fa-book"></i> المواد الدراسية</a>
+                <a class="sidebar-link" data-tab="departments"><i class="fas fa-building"></i> الأقسام</a>
+                <a class="sidebar-link" data-tab="schedule"><i class="fas fa-calendar-alt"></i> الجداول</a>
+                <a class="sidebar-link" data-tab="grades"><i class="fas fa-chart-line"></i> الدرجات</a>
+                <div class="sidebar-section-title">النظام</div>
+                <a class="sidebar-link" data-tab="security"><i class="fas fa-shield-alt"></i> الأمان</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../../home.html" class="sidebar-link"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+            </div>
+        </aside>
+
+        <!-- ══ MAIN ══ -->
+        <main class="admin-main">
+            <!-- Top Bar -->
+            <header class="admin-topbar">
+                <h2 id="page-title">نظرة عامة</h2>
+                <div class="flex items-center gap-3">
+                    <button id="theme-toggle" class="theme-toggle"><i class="fas fa-sun" id="theme-icon"></i></button>
+                    <div class="admin-user-chip">
+                        <div class="dot"></div>
+                        <span id="admin-name">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-6">
+                <!-- ═══ OVERVIEW TAB ═══ -->
+                <div class="tab-content active" id="tab-overview">
+                    <div class="stat-grid mb-8">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(0,232,143,0.12); color: #00e88f;">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <div class="stat-val" style="color: #00e88f;" id="stat-users">—</div>
+                                <div class="stat-lbl">إجمالي المستخدمين</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div>
+                                <div class="stat-val" style="color: #3b82f6;" id="stat-students">—</div>
+                                <div class="stat-lbl">طلاب</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(168,85,247,0.12); color: #a855f7;">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div>
+                                <div class="stat-val" style="color: #a855f7;" id="stat-doctors">—</div>
+                                <div class="stat-lbl">هيئة تدريس</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(245,158,11,0.12); color: #f59e0b;">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div>
+                                <div class="stat-val" style="color: #f59e0b;" id="stat-subjects">—</div>
+                                <div class="stat-lbl">مادة دراسية</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <h4><i class="fas fa-bolt" style="color: #f59e0b;"></i> نشاط الدكاترة الأخير</h4>
+                        <div id="recent-activity" class="space-y-1">
+                            <p style="color: var(--admin-muted)">جاري التحميل...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ USERS TAB ═══ -->
+                <div class="tab-content" id="tab-users">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <input type="text" id="user-search" class="input-field" placeholder="بحث بالاسم أو البريد..." style="width: 280px;">
+                            <select id="user-role-filter" class="input-field" style="width: 170px;">
+                                <option value="">كل الأدوار</option>
+                                <option value="student">طالب</option>
+                                <option value="doctor">دكتور</option>
+                                <option value="admin">أدمن</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="btn btn-primary" onclick="openAddUserModal()">
+                                <i class="fas fa-plus"></i> إضافة مستخدم
+                            </button>
+                            <button class="btn btn-secondary" onclick="document.getElementById('bulk-import-panel').classList.toggle('hidden')">
+                                <i class="fas fa-file-excel" style="color:#10b981"></i> استيراد Excel/CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ═══ BULK IMPORT PANEL ═══ -->
+                    <div id="bulk-import-panel" class="glass-card mb-6 hidden" style="border-top: 3px solid #10b981;">
+                        <h4 style="color:#10b981;"><i class="fas fa-file-import"></i> الاستيراد المجمع للطلاب (Excel / CSV)</h4>
+                        <p style="font-size:0.82rem; color: var(--admin-muted); margin-bottom:1rem;">
+                            الأعمدة المطلوبة بالترتيب أو بالاسم:
+                            <code style="background:rgba(0,232,143,0.1);color:#00e88f;padding:2px 6px;border-radius:4px;">Name, Email, Password, Academic_ID, Role</code>
+                        </p>
+                        <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
+                            <label for="bulk-file-input" style="flex:1;min-width:200px;">
+                                <div style="border: 2px dashed var(--admin-border); border-radius:12px; padding:1.5rem; text-align:center; cursor:pointer; transition:border-color 0.2s;" onmouseover="this.style.borderColor='#00e88f'" onmouseout="this.style.borderColor=''">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:#10b981;margin-bottom:0.5rem;"></i>
+                                    <p style="font-weight:700;color:var(--admin-muted);font-size:0.85rem;">اسحب الملف هنا أو انقر للاختيار</p>
+                                    <p id="bulk-file-label" style="font-size:0.78rem;color:#10b981;margin-top:0.3rem;">لم يُختر ملف بعد</p>
+                                    <input type="file" id="bulk-file-input" accept=".csv,.xlsx,.xls" style="display:none;" onchange="handleBulkFileSelect(event)">
+                                </div>
+                            </label>
+                            <div style="min-width:220px;">
+                                <div id="bulk-preview" style="font-size:0.82rem;color:var(--admin-muted);margin-bottom:0.75rem;">اختر ملفاً لمعاينة البيانات...</div>
+                                <button class="btn btn-primary w-full" onclick="executeBulkImport()" id="bulk-import-btn" disabled style="opacity:0.5;">
+                                    <i class="fas fa-upload"></i> استيراد ورفع البيانات
+                                </button>
+                            </div>
+                        </div>
+                        <div id="bulk-progress" style="margin-top:1rem;display:none;">
+                            <div style="background:rgba(255,255,255,0.06);border-radius:9999px;height:8px;overflow:hidden;">
+                                <div id="bulk-progress-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#00e88f,#00b8d9);transition:width 0.3s;"></div>
+                            </div>
+                            <p id="bulk-progress-text" style="font-size:0.8rem;color:var(--admin-muted);margin-top:0.5rem;text-align:center;">0%</p>
+                        </div>
+                        <div id="bulk-result" style="margin-top:1rem;display:none;"></div>
+                    </div>
+                    <div class="glass-card" style="padding: 0; overflow: hidden;">
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th><th>الاسم</th><th>البريد</th><th>الدور</th><th>القسم</th><th>السنة</th><th>إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-tbody">
+                                    <tr><td colspan="7" class="text-center py-8" style="color: var(--admin-muted)">جاري التحميل...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-3 mt-6" id="users-pagination"></div>
+                </div>
+
+                <!-- ═══ SUBJECTS TAB ═══ -->
+                <div class="tab-content" id="tab-subjects">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                        <select id="subject-dept-filter" class="input-field" style="width: 220px;">
+                            <option value="">كل الأقسام</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="openAddSubjectModal()">
+                            <i class="fas fa-plus"></i> إضافة مادة
+                        </button>
+                    </div>
+                    <div class="academic-card p-0 overflow-hidden">
+                        <div style="overflow-x: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>الكود</th><th>اسم المادة</th><th>القسم</th><th>السنة</th><th>الفصل</th><th>ساعات</th><th>إجراءات</th></tr>
+                                </thead>
+                                <tbody id="subjects-tbody">
+                                    <tr><td colspan="7" class="text-center py-8" style="color: var(--text-card-muted)">جاري التحميل...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ DEPARTMENTS TAB ═══ -->
+                <div class="tab-content" id="tab-departments">
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="departments-grid">
+                        <p style="color: var(--text-muted)">جاري التحميل...</p>
+                    </div>
+                </div>
+
+                <!-- ═══ SCHEDULE TAB ═══ -->
+                <div class="tab-content" id="tab-schedule">
+                    <div class="academic-card mb-6 flex flex-wrap gap-4 items-center justify-between">
+                        <div>
+                            <h4 class="font-cairo font-bold text-lg mb-2">إدارة الجداول الدراسية</h4>
+                            <p style="color: var(--text-card-muted)" class="text-sm">تعديل جداول المحاضرات للمجموعات الدراسية (يتم الحفظ تلقائياً)</p>
+                        </div>
+                        <div class="flex gap-3 items-center">
+                            <select id="groupSelect" class="input-field" onchange="renderSchedule()">
+                                <option value="g1">المجموعة الأولى</option>
+                                <option value="g2">المجموعة الثانية</option>
+                                <option value="g3">المجموعة الثالثة</option>
+                                <option value="g4">المجموعة الرابعة</option>
+                            </select>
+                            <select id="sectionSelect" class="input-field" onchange="renderSchedule()">
+                                <option value="s1">السكشن 1 (Main)</option>
+                                <option value="s2">السكشن 2</option>
+                                <option value="s3">السكشن 3</option>
+                                <option value="s4">السكشن 4</option>
+                            </select>
+                            <button class="btn btn-secondary" onclick="resetToDefault()" title="استعادة البيانات الأصلية"><i class="fas fa-undo"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="academic-card p-0 overflow-hidden">
+                        <div style="overflow-x: auto;">
+                            <table class="data-table" id="scheduleTable">
+                                <thead>
+                                    <tr id="tableHeader">
+                                        <th>اليوم</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    <tr><td class="text-center py-8" style="color: var(--text-card-muted)">جاري التحميل...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ GRADES TAB ═══ -->
+                <div class="tab-content" id="tab-grades">
+                    <div class="academic-card mb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                            <div>
+                                <h4 class="font-cairo font-bold text-lg mb-1"><i class="fas fa-chart-line" style="color:#06b6d4"></i> إدارة ورصد الدرجات</h4>
+                                <p style="color: var(--admin-muted); font-size:0.85rem;">عرض جميع الدرجات المرصودة من الدكاترة وإمكانية التعديل والإضافة</p>
+                            </div>
+                            <div class="flex gap-2 flex-wrap">
+                                <select id="admin-grades-filter" class="input-field" style="width:200px;" onchange="adminFilterGrades()">
+                                    <option value="">كل المواد</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="openAddGradeModal()">
+                                    <i class="fas fa-plus"></i> رصد درجة جديدة
+                                </button>
+                            </div>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="data-table" style="min-width:700px;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>الرقم الأكاديمي</th>
+                                        <th>اسم الطالب</th>
+                                        <th>المادة</th>
+                                        <th>أعمال (40)</th>
+                                        <th>نهائي (60)</th>
+                                        <th>المجموع</th>
+                                        <th>الدكتور</th>
+                                        <th>تاريخ الرصد</th>
+                                        <th>إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-grades-tbody">
+                                    <tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--admin-muted);">جارٍ التحميل...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ SECURITY TAB ═══ -->
+                <div class="tab-content" id="tab-security">
+                    <div class="academic-card mb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                            <div>
+                                <h4 class="font-cairo font-bold text-lg mb-1 flex items-center gap-2" style="color: #ef4444 !important;">
+                                    <i class="fas fa-shield-alt text-red-500"></i> سجل الأحداث الأمنية وتنبيهات الغش
+                                </h4>
+                                <p style="color: var(--admin-muted); font-size:0.85rem;">مراقبة محاولات الغش والاحتيال وتزييف الموقع في الوقت الفعلي</p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="loadFraudLogs(window.appSupabaseClient)">
+                                <i class="fas fa-sync-alt ml-1"></i> تحديث
+                            </button>
+                        </div>
+                        <div id="fraud-logs">
+                            <p style="color: var(--admin-muted); text-align: center; padding: 2rem;">جاري التحميل...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══ ADD USER MODAL ═══ -->
+    <div class="modal-overlay" id="add-user-modal">
+        <div class="modal-box">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-cairo font-black text-xl">إضافة مستخدم جديد</h3>
+                <button onclick="closeModal('add-user-modal')" class="text-xl" style="color: var(--text-card-muted)">&times;</button>
+            </div>
+            <form id="add-user-form" class="space-y-4">
+                <div>
+                    <label class="form-label">الاسم الكامل</label>
+                    <input type="text" id="new-user-name" class="input-field" required>
+                </div>
+                <div>
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" id="new-user-email" class="input-field" required dir="ltr" autocomplete="username">
+                </div>
+                <div>
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" id="new-user-password" class="input-field" required dir="ltr" minlength="6" autocomplete="new-password">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">الدور</label>
+                        <select id="new-user-role" class="input-field">
+                            <option value="student">طالب</option>
+                            <option value="doctor">دكتور</option>
+                            <option value="admin">أدمن</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">السنة الدراسية</label>
+                        <select id="new-user-year" class="input-field">
+                            <option value="1">الأولى</option>
+                            <option value="2">الثانية</option>
+                            <option value="3">الثالثة</option>
+                            <option value="4">الرابعة</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-label">القسم</label>
+                    <select id="new-user-dept" class="input-field">
+                        <option value="">اختر القسم</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">الرقم الأكاديمي</label>
+                    <input type="text" id="new-user-academic" class="input-field" dir="ltr">
+                </div>
+                <button type="submit" class="btn btn-primary w-full py-3 font-bold mt-2">
+                    <i class="fas fa-plus"></i> إضافة المستخدم
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ ADD GRADE MODAL ═══ -->
+    <div class="modal-overlay" id="add-grade-modal">
+        <div class="modal-box">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-cairo font-black text-xl flex items-center gap-2">
+                    <i class="fas fa-chart-line text-cyan-400"></i> رصد درجة جديدة
+                </h3>
+                <button onclick="closeModal('add-grade-modal')" class="text-xl" style="color: var(--text-card-muted)">&times;</button>
+            </div>
+            <form id="add-grade-form" class="space-y-4" onsubmit="event.preventDefault(); adminSubmitGradeModal();">
+                <div>
+                    <label class="form-label">الرقم الأكاديمي للطالب *</label>
+                    <input type="text" id="grade-modal-student-id" class="input-field" placeholder="مثال: 2420766" required dir="ltr">
+                </div>
+                <div>
+                    <label class="form-label">اسم الطالب</label>
+                    <input type="text" id="grade-modal-student-name" class="input-field" placeholder="اختياري (مثال: عبدالله محمد)">
+                </div>
+                <div>
+                    <label class="form-label">المادة الدراسية *</label>
+                    <select id="grade-modal-subject-id" class="input-field" required style="background: #1e293b; color: #f8fafc;">
+                        <option value="">جارٍ تحميل المواد...</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">أعمال السنة (0 - 40) *</label>
+                        <input type="number" id="grade-modal-work" class="input-field text-center font-bold" min="0" max="40" value="0" required>
+                    </div>
+                    <div>
+                        <label class="form-label">النهائي (0 - 60) *</label>
+                        <input type="number" id="grade-modal-exam" class="input-field text-center font-bold" min="0" max="60" value="0" required>
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button type="button" onclick="closeModal('add-grade-modal')" class="btn btn-secondary flex-1 py-3 font-bold">
+                        إلغاء
+                    </button>
+                    <button type="submit" id="btn-save-grade" class="btn btn-primary flex-1 py-3 font-bold">
+                        <i class="fas fa-save ml-1"></i> حفظ ورصد الدرجة
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ ADD SUBJECT MODAL ═══ -->
+    <div class="modal-overlay" id="add-subject-modal">
+        <div class="modal-box">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-cairo font-black text-xl">إضافة مادة دراسية</h3>
+                <button onclick="closeModal('add-subject-modal')" class="text-xl" style="color: var(--text-card-muted)">&times;</button>
+            </div>
+            <form id="add-subject-form" class="space-y-4">
+                <div>
+                    <label class="form-label">اسم المادة (عربي)</label>
+                    <input type="text" id="new-subj-name-ar" class="input-field" required>
+                </div>
+                <div>
+                    <label class="form-label">اسم المادة (إنجليزي)</label>
+                    <input type="text" id="new-subj-name-en" class="input-field" dir="ltr">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">الكود</label>
+                        <input type="text" id="new-subj-code" class="input-field" required dir="ltr" placeholder="IT301">
+                    </div>
+                    <div>
+                        <label class="form-label">الساعات المعتمدة</label>
+                        <input type="number" id="new-subj-credits" class="input-field" value="3" min="1" max="6">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">السنة الدراسية</label>
+                        <select id="new-subj-year" class="input-field">
+                            <option value="1">الأولى</option><option value="2">الثانية</option>
+                            <option value="3">الثالثة</option><option value="4">الرابعة</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">الفصل الدراسي</label>
+                        <select id="new-subj-semester" class="input-field">
+                            <option value="1">الأول</option><option value="2">الثاني</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">القسم</label>
+                        <select id="new-subj-dept" class="input-field" required></select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">دكتور المادة</label>
+                        <select id="new-subj-doctor" class="input-field">
+                            <option value="">لا يوجد دكتور محدد</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">لون المادة (للدكتور)</label>
+                        <input type="color" id="new-subj-color" class="input-field" style="height:42px; padding:2px; cursor:pointer;" value="#00f2ff">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-full py-3 font-bold mt-2">
+                    <i class="fas fa-plus"></i> إضافة المادة
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./admin.js"></script>
+
+    <!-- ═══ SCHEDULE LOGIC ═══ -->
+    <script>
+        const DB_ROW_ID = 'IT_Schedule_2026';
+        let scheduleData = null;
+
+        const timeSlots = [
+            { id: 0, label: "الأولى", time: "09:40 - 10:20" },
+            { id: 1, label: "الثانية", time: "10:20 - 11:00" },
+            { id: 2, label: "الثالثة", time: "11:00 - 11:40" },
+            { id: 3, label: "الرابعة", time: "11:40 - 12:20" },
+            { id: 4, label: "الخامسة", time: "12:20 - 01:00" },
+            { id: 5, label: "السادسة", time: "01:00 - 01:40" },
+            { id: 6, label: "السابعة", time: "01:40 - 02:20" },
+            { id: 7, label: "الثامنة", time: "02:20 - 03:00" },
+            { id: 8, label: "التاسعة", time: "03:00 - 03:40" }
+        ];
+
+        const days = ["السبت", "الأحد", "الإثنين", "الثلاثاء"];
+
+        const defaultData = {
+            "g1": {
+                "s1": {
+                    0: ["Operating System (د. غادة)", "", "Digital Eng (د. أسامة)", "Digital Eng", "Web+C++ Lab", "Web+C++ Lab", "", "", ""],
+                    1: ["", "Linux (م. لمياء)", "Linux", "Linux", "Prog Essentials C++", "Prog Essentials C++", "", "", ""],
+                    2: ["", "", "", "", "", "", "Intro to DB (د. نيهال)", "Intro to DB", ""],
+                    3: ["", "Web Programming (د. أشرف)", "Web Programming", "Linux Essentials (د. إيمان)", "Linux Essentials", "Web+C++ Lab 2", "Web+C++ Lab 2", "", ""]
+                }
+            },
+            "g2": {
+                "s1": {
+                    0: ["Web+C++ Lab", "Web+C++ Lab", "", "", "C++", "OS (د. غادة)", "OS", "", ""],
+                    1: ["", "", "", "", "", "", "", "", ""],
+                    2: ["Digital Eng (د. أسامة)", "Digital Eng", "", "", "Intro to DB (د. نيهال)", "Intro to DB", "Linux (م. أحمد)", "Linux", "Linux"],
+                    3: ["Web Programming (د. أشرف)", "Web Programming", "", "Linux Essentials (د. إيمان)", "Linux Essentials", "Web+C++ Lab", "Web+C++ Lab", "DE (م. لمياء)", "DE"]
+                }
+            },
+            "g3": {
+                "s1": {
+                    0: ["OS (د. غادة)", "OS", "", "Web+C++ Lab", "Web+C++ Lab", "Linux", "Linux", "", ""],
+                    1: ["", "", "", "", "", "", "", "", ""],
+                    2: ["", "", "", "", "Digital Eng (د. أسامة)", "Digital Eng", "", "Intro to DB", "Intro to DB"],
+                    3: ["Prog Essentials C++", "Prog Essentials C++", "Intro to DB", "", "Linux Essentials", "", "Web Prog (د. أشرف)", "Web+C++ Lab", "Web+C++ Lab"]
+                }
+            },
+            "g4": {
+                "s1": {
+                    0: ["Operating System (د. غادة)", "OS", "", "", "Web+C++ Lab 2", "Web+C++ Lab 2", "", "Web+C++ Lab 1", "Web+C++ Lab 1"],
+                    1: ["", "", "", "", "", "", "", "", ""],
+                    2: ["", "", "", "Web Prog (د. أشرف)", "Web Prog", "Digital Eng", "Digital Eng", "Intro to DB", "Intro to DB"],
+                    3: ["Prog C++ (د. غادة)", "Prog C++", "Linux Essentials", "Linux (Labs)", "Linux (Labs)", "Web+C++ Lab 1", "Web+C++ Lab 1", "DE (م. إسراء)", "DE"]
+                }
+            }
+        };
+
+        async function loadScheduleData() {
+            try {
+                if(!window.appSupabaseClient) { setTimeout(loadScheduleData, 500); return; }
+                const { data, error } = await window.appSupabaseClient
+                    .from('schedules')
+                    .select('schedule_data')
+                    .eq('id', DB_ROW_ID)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    console.error("Error loading schedule:", error);
+                }
+
+                if (data && data.schedule_data) {
+                    scheduleData = data.schedule_data;
+                } else {
+                    scheduleData = JSON.parse(JSON.stringify(defaultData));
+                    saveScheduleData(scheduleData);
+                }
+                renderSchedule();
+            } catch (err) {
+                console.error("Unexpected error:", err);
+                scheduleData = JSON.parse(JSON.stringify(defaultData));
+                renderSchedule();
+            }
+        }
+
+        async function saveScheduleData(data) {
+            scheduleData = data;
+            const btn = document.querySelector('button[onclick="resetToDefault()"]');
+            if(btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            try {
+                const { error } = await window.appSupabaseClient
+                    .from('schedules')
+                    .upsert({ id: DB_ROW_ID, schedule_data: data })
+                    .select();
+
+                if (error) console.error("Error saving schedule:", error);
+            } catch (err) {
+                console.error("Save error:", err);
+            } finally {
+                if(btn) btn.innerHTML = '<i class="fas fa-undo"></i>';
+            }
+        }
+
+        function renderSchedule() {
+            if (!scheduleData) return;
+            const group = document.getElementById('groupSelect').value;
+            const section = document.getElementById('sectionSelect').value;
+
+            const theadRow = document.getElementById('tableHeader');
+            theadRow.innerHTML = '<th>اليوم</th>';
+            timeSlots.forEach(slot => {
+                theadRow.innerHTML += `
+                    <th style="text-align:center;">
+                        ${slot.label}<br>
+                        <span style="font-size: 0.75rem; color: var(--text-card-muted); font-weight:normal;">${slot.time}</span>
+                    </th>
+                `;
+            });
+
+            const tbody = document.getElementById('tableBody');
+            tbody.textContent = '';
+
+            days.forEach((day, dayIndex) => {
+                const tr = document.createElement('tr');
+                const dayTd = document.createElement('td');
+                dayTd.textContent = day;
+                dayTd.style.fontWeight = 'bold';
+                dayTd.style.color = 'var(--text-card-primary)';
+                dayTd.style.textAlign = 'center';
+                dayTd.style.verticalAlign = 'middle';
+                dayTd.style.background = 'var(--bg-card)';
+                tr.appendChild(dayTd);
+
+                timeSlots.forEach((slot, slotIndex) => {
+                    const td = document.createElement('td');
+                    td.style.padding = '0.5rem';
+                    td.style.minWidth = '120px';
+                    const input = document.createElement('textarea');
+                    input.style.width = '100%';
+                    input.style.minHeight = '60px';
+                    input.style.background = 'transparent';
+                    input.style.border = '1px solid var(--border-primary)';
+                    input.style.color = 'var(--text-card-secondary)';
+                    input.style.borderRadius = '6px';
+                    input.style.padding = '8px';
+                    input.style.fontSize = '0.85rem';
+                    input.style.textAlign = 'center';
+                    input.style.resize = 'vertical';
+                    input.style.outline = 'none';
+
+                    input.addEventListener('focus', () => input.style.borderColor = 'var(--accent-green)');
+                    input.addEventListener('blur', () => input.style.borderColor = 'var(--border-primary)');
+
+                    let value = "";
+                    if (scheduleData[group] && scheduleData[group][section] && scheduleData[group][section][dayIndex]) {
+                        value = scheduleData[group][section][dayIndex][slotIndex] || "";
+                    } else if (scheduleData[group] && scheduleData[group]['s1'] && scheduleData[group]['s1'][dayIndex]) {
+                        value = scheduleData[group]['s1'][dayIndex][slotIndex] || "";
+                    }
+
+                    input.value = value;
+                    input.placeholder = "...";
+
+                    let timeoutId;
+                    input.addEventListener('input', (e) => {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(() => {
+                            const newData = JSON.parse(JSON.stringify(scheduleData));
+                            if (!newData[group]) newData[group] = {};
+                            if (!newData[group][section]) newData[group][section] = {};
+                            if (!newData[group][section][dayIndex]) newData[group][section][dayIndex] = [];
+
+                            newData[group][section][dayIndex][slotIndex] = e.target.value;
+                            saveScheduleData(newData);
+                        }, 1000);
+                    });
+
+                    td.appendChild(input);
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function resetToDefault() {
+            if (confirm("هل أنت متأكد؟ سيتم مسح جميع تعديلاتك من السيرفر والعودة لبيانات PDF الأصلية.")) {
+                saveScheduleData(defaultData);
+                renderSchedule();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadScheduleData);
+    </script>
+
+    <!-- Theme Toggle -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        function getThemeMode() { return localStorage.getItem('dwd-theme') || 'dark'; }
+        function applyTheme(mode) {
+            if (mode === 'light') {
+                html.classList.remove('dark');
+                themeIcon.className = 'fas fa-moon';
+                themeToggle.title = 'تفعيل الوضع الداكن';
+            } else {
+                html.classList.add('dark');
+                themeIcon.className = 'fas fa-sun';
+                themeToggle.title = 'تفعيل الوضع الفاتح';
+            }
+        }
+        applyTheme(getThemeMode());
+        themeToggle.addEventListener('click', () => {
+            const current = getThemeMode();
+            const next = (current === 'dark') ? 'light' : 'dark';
+            localStorage.setItem('dwd-theme', next);
+            applyTheme(next);
+        });
+    </script>
+</body>
+</html>

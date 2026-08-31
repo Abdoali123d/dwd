@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/cpp/L2.pdf",
+  "tutorialFile": "W1T1C++.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: مقدمة عن C++ 🚀</h3>\n    <p class=\"mb-4 text-lg\">C++ هي لغة برمجة قوية ومتعددة الأغراض، تم تطويرها كتوسيع للغة C عشان تضيف ميزات **البرمجة الشيئية (Object-Oriented)**. بتعتبر لغة عالية المستوى (High-level) لكنها بتحافظ على قدرة لغة C للوصول المباشر للذاكرة (Low-level memory access).</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n      <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">ليه بنتعلم C++؟</h4>\n      <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>لغة شيئية (Object-Oriented).</li>\n        <li>بتديك أدوات قوية للتحكم في الذاكرة.</li>\n        <li>متعددة الاستخدامات (برامج صغيرة أو تطبيقات ضخمة).</li>\n        <li>الكود بيتحول لـ Machine Code عشان يتنفذ مباشرة.</li>\n      </ul>\n    </div>\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: أول برنامج C++ (الطباعة والتعليقات) 📝</h3>\n    <p class=\"mb-4 text-lg\">بنشوف هيكل البرنامج الأساسي وإزاي نطبع كلام على الشاشة.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">الهيكل الأساسي:</h4>\n        <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello world!\";\n    return 0;\n  }\n        </code></pre>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">شرح المكونات:</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li><code class=\"text-white\">#include <iostream></code></li>\n            <li><code class=\"text-white\">using namespace std;</code></li>\n            <li><code class=\"text-white\">int main() { ... }</code></li>\n            <li><code class=\"text-white\">cout << \"نص\";</code></li>\n            <li><code class=\"text-white\"><<</code></li>\n            <li><code class=\"text-white\">;</code></li>\n            <li><code class=\"text-white\">return 0;</code></li>\n        </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">التعليقات والأسطر الجديدة:</h4>\n         <ul class=\"list-disc list-inside space-y-1 mr-6\">\n             <li><code class=\"text-white\">// تعليق لسطر واحد</code></li>\n             <li><code class=\"text-white\">/* تعليق \\n لعدة أسطر */</code></li>\n             <li><code class=\"text-white\">\\n</code> أو <code class=\"text-white\"><< endl;</code></li>\n         </ul>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: المتغيرات وأنواع البيانات (Variables & Data Types) 📦</h3>\n    <p class=\"mb-4 text-lg\">المتغيرات هي أماكن في الذاكرة بنحجزها عشان نخزن فيها بيانات. كل متغير له اسم ونوع بيحدد نوع البيانات اللي يقدر يشيلها.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">أنواع البيانات الأساسية:</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6\">\n            <li><code class=\"text-white\">int</code></li>\n            <li><code class=\"text-white\">double</code></li>\n            <li><code class=\"text-white\">float</code></li>\n            <li><code class=\"text-white\">string</code></li>\n            <li><code class=\"text-white\">char</code></li>\n            <li><code class=\"text-white\">bool</code></li>\n        </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">تعريف المتغيرات:</h4>\n        <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\nint age = 25;\nstring name = \"Ali\";\nfloat temperature;\n        </code></pre>\n        <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\nint x = 10, z = 15;\n        </code></pre>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">طباعة قيمة المتغير:</h4>\n         <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\nint score = 100;\ncout << \"Your score is: \" << score << endl;\n        </code></pre>\n    </div>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Introduction to C++ 🚀</h3>\n    <p class=\"mb-4 text-lg\">C++ is a powerful, general-purpose programming language created as an extension of the C language to add **Object-Oriented** features. It is considered a High-level language but maintains C's ability for low-level memory access.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n      <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Why learn C++?</h4>\n      <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>Object-Oriented Language.</li>\n        <li>Gives you strong tools for memory control.</li>\n        <li>Versatile (small programs or huge applications).</li>\n        <li>Code is compiled into Machine Code for direct execution.</li>\n      </ul>\n    </div>\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: First C++ Program (Printing & Comments) 📝</h3>\n    <p class=\"mb-4 text-lg\">Looking at the basic program structure and how to print text to the screen.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Basic Structure:</h4>\n        <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello world!\";\n    return 0;\n  }\n        </code></pre>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Components Explanation:</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li><code class=\"text-white\">#include <iostream></code></li>\n            <li><code class=\"text-white\">using namespace std;</code></li>\n            <li><code class=\"text-white\">int main() { ... }</code></li>\n            <li><code class=\"text-white\">cout << \"text\";</code></li>\n            <li><code class=\"text-white\"><<</code></li>\n            <li><code class=\"text-white\">;</code></li>\n            <li><code class=\"text-white\">return 0;</code></li>\n        </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Comments and Newlines:</h4>\n         <ul class=\"list-disc list-inside space-y-1 ml-6\">\n             <li><code class=\"text-white\">// Single line comment</code></li>\n             <li><code class=\"text-white\">/* Multi-line \\n comment */</code></li>\n             <li><code class=\"text-white\">\\n</code> or <code class=\"text-white\"><< endl;</code></li>\n         </ul>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Variables & Data Types 📦</h3>\n    <p class=\"mb-4 text-lg\">Variables are memory locations reserved to store data. Each variable has a name and a type that defines the kind of data it can hold.</p>\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n        <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">Basic Data Types:</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6\">\n            <li><code class=\"text-white\">int</code></li>\n            <li><code class=\"text-white\">double</code></li>\n            <li><code class=\"text-white\">float</code></li>\n            <li><code class=\"text-white\">string</code></li>\n            <li><code class=\"text-white\">char</code></li>\n            <li><code class=\"text-white\">bool</code></li>\n        </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Declaring Variables:</h4>\n        <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\nint age = 25;\nstring name = \"Ali\";\nfloat temperature;\n        </code></pre>\n        <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\nint x = 10, z = 15;\n        </code></pre>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-4 mb-2\">Printing Variable Values:</h4>\n         <pre><code class=\"language-cpp block bg-slate-800 rounded p-4 text-sm overflow-x-auto text-white\">\nint score = 100;\ncout << \"Your score is: \" << score << endl;\n        </code></pre>\n    </div>\n  ",
+  "quiz": [
+    {
+      "question": "1. C++ is an enhancement of which programming language?",
+      "options": [
+        "Java",
+        "Python",
+        "C",
+        "Basic"
+      ],
+      "correctAnswer": "C",
+      "hint": "اللغة اللي C++ مبنية عليها ووسعتها."
+    },
+    {
+      "question": "2. The `#include <iostream>` directive is used for?",
+      "options": [
+        "Mathematical functions",
+        "String manipulation",
+        "Input/Output operations",
+        "File handling"
+      ],
+      "correctAnswer": "Input/Output operations",
+      "hint": "اسم المكتبة نفسها بيدل على وظيفتها (input/output stream)."
+    },
+    {
+      "question": "3. What is the function where C++ program execution begins?",
+      "options": [
+        "start()",
+        "main()",
+        "begin()",
+        "execute()"
+      ],
+      "correctAnswer": "main()",
+      "hint": "الدالة الرئيسية والأساسية في أي برنامج C++."
+    },
+    {
+      "question": "4. Which symbol is used to terminate most C++ statements?",
+      "options": [
+        ". (dot)",
+        ", (comma)",
+        ": (colon)",
+        "; (semicolon)"
+      ],
+      "correctAnswer": "; (semicolon)",
+      "hint": "العلامة دي بتقول للكومبايلر إن الأمر انتهى."
+    },
+    {
+      "question": "5. How do you write a single-line comment in C++?",
+      "options": [
+        "// comment",
+        "/* comment */",
+        "# comment",
+        "-- comment"
+      ],
+      "correctAnswer": "// comment",
+      "hint": "علامتين شرطة مائلة."
+    },
+    {
+      "question": "6. Which keyword is used to output data to the console?",
+      "options": [
+        "cin",
+        "cout",
+        "print",
+        "display"
+      ],
+      "correctAnswer": "cout",
+      "hint": "اختصار لـ 'character output'."
+    },
+    {
+      "question": "7. What does `endl` or `\\n` do when used with `cout`?",
+      "options": [
+        "Adds a space",
+        "Prints the text backwards",
+        "Moves the cursor to the next line",
+        "Clears the screen"
+      ],
+      "correctAnswer": "Moves the cursor to the next line",
+      "hint": "عشان تبدأ سطر جديد."
+    },
+    {
+      "question": "8. Which data type is suitable for storing a person's age (whole number)?",
+      "options": [
+        "float",
+        "double",
+        "string",
+        "int"
+      ],
+      "correctAnswer": "int",
+      "hint": "العمر عادة بيكون رقم صحيح."
+    },
+    {
+      "question": "9. Which data type is suitable for storing the value 3.14159?",
+      "options": [
+        "int",
+        "char",
+        "double",
+        "bool"
+      ],
+      "correctAnswer": "double",
+      "hint": "محتاجين دقة عالية لرقم عشري."
+    },
+    {
+      "question": "10. How do you declare a variable named `score` to store whole numbers and initialize it to 0?",
+      "options": [
+        "int score = 0;",
+        "score int = 0;",
+        "float score = 0;",
+        "declare score = 0;"
+      ],
+      "correctAnswer": "int score = 0;",
+      "hint": "النوع الأول، بعدين الاسم، بعدين القيمة."
+    },
+    {
+      "question": "11. What is the output of `cout << \"Welcome\\n\"; cout << \"C++\";`?",
+      "options": [
+        "Welcome C++",
+        "Welcome\\nC++",
+        "Welcome\nC++",
+        "Welcome C++\n"
+      ],
+      "correctAnswer": "Welcome\nC++",
+      "hint": "\\n بتنزل سطر جديد."
+    },
+    {
+      "question": "12. The `using namespace std;` line allows you to:",
+      "options": [
+        "Include libraries",
+        "Define functions",
+        "Use names like `cout` without `std::` prefix",
+        "Declare variables"
+      ],
+      "correctAnswer": "Use names like `cout` without `std::` prefix",
+      "hint": "بتوفر علينا كتابة std:: كل مرة."
+    },
+    {
+      "question": "13. Which data type stores text like \"Hello World\"?",
+      "options": [
+        "char",
+        "int",
+        "string",
+        "text"
+      ],
+      "correctAnswer": "string",
+      "hint": "لتخزين النصوص الطويلة."
+    },
+    {
+      "question": "14. Which data type has only two possible values: `true` or `false`?",
+      "options": [
+        "int",
+        "bool",
+        "char",
+        "logic"
+      ],
+      "correctAnswer": "bool",
+      "hint": "اختصار لـ boolean."
+    },
+    {
+      "question": "15. What is the value of `x` after `int x = 15;`?",
+      "options": [
+        "0",
+        "15",
+        "Undefined",
+        "Error"
+      ],
+      "correctAnswer": "15",
+      "hint": "تم إعطاء قيمة ابتدائية للمتغير."
+    },
+    {
+      "question": "16. Which of the following is a valid way to declare multiple integer variables?",
+      "options": [
+        "int x, y, z;",
+        "integer x, y, z;",
+        "int x; int y; int z",
+        "Both A and C"
+      ],
+      "correctAnswer": "Both A and C",
+      "hint": "ممكن تعرفهم في سطر واحد بفاصلة أو كل واحد في سطر."
+    },
+    {
+      "question": "17. What is the role of the compiler in C++?",
+      "options": [
+        "To write the code",
+        "To execute the program",
+        "To translate source code into machine code",
+        "To manage memory"
+      ],
+      "correctAnswer": "To translate source code into machine code",
+      "hint": "بيحول الكود اللي أنت كتبته لِلُغة يفهمها الكمبيوتر."
+    },
+    {
+      "question": "18. What does `return 0;` typically signify at the end of `main()`?",
+      "options": [
+        "An error occurred",
+        "The program executed successfully",
+        "The program needs input",
+        "The program is starting"
+      ],
+      "correctAnswer": "The program executed successfully",
+      "hint": "اتفاق عام إن 0 يعني النجاح."
+    },
+    {
+      "question": "19. Which data type would you use to store a single letter grade like 'B'?",
+      "options": [
+        "string",
+        "int",
+        "char",
+        "grade"
+      ],
+      "correctAnswer": "char",
+      "hint": "لتخزين حرف واحد فقط."
+    },
+    {
+      "question": "20. The `{` and `}` symbols in C++ are used to:",
+      "options": [
+        "End statements",
+        "Define a block of code",
+        "Write comments",
+        "Include libraries"
+      ],
+      "correctAnswer": "Define a block of code",
+      "hint": "بيحددوا بداية ونهاية جسم الدالة أو أي كتلة كود تانية."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

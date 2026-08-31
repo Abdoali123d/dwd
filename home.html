@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+    <title>DWD | البوابة الأكاديمية</title>
+    <link rel="icon" href="./app_icon.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="./js/security-utils.js"></script>
+    <script src="./js/auth-guard.js"></script>
+    <script type="module" src="./js/secure_connect.js"></script>
+    <script src="./js/content-protection.js" defer></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/fontawesome-all.min.css">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com" integrity="sha384-igm5BeiBt36UU4gqwWS7imYmelpTsZlQ45FZf+XBn9MuJbn4nQr7yx1yFydocC/K" crossorigin="anonymous"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['IBM Plex Sans Arabic', 'sans-serif'],
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: 'var(--primary-color)',
+                        zinc: {
+                            50: '#fafafa',
+                            100: '#f4f4f5',
+                            200: '#e4e4e7',
+                            300: '#d4d4d8',
+                            400: '#a1a1aa',
+                            500: '#71717a',
+                            600: '#52525b',
+                            700: '#3f3f46',
+                            800: '#27272a',
+                            900: '#18181b',
+                            950: '#09090b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #3B82F6; /* Sapphire */
+        }
+        
+        /* DEFAULT LIGHT */
+        body { 
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: #fafafa; 
+            color: #18181b; 
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* DARK THEME (Deep Blue) */
+        html.dark body {
+            background-color: #060a13;
+            background-image: 
+                 radial-gradient(ellipse at 20% 50%, color-mix(in srgb, var(--primary-color) 12%, transparent) 0%, transparent 50%),
+                 radial-gradient(ellipse at 80% 20%, rgba(0, 210, 211, 0.08) 0%, transparent 50%),
+                 radial-gradient(ellipse at 50% 80%, rgba(253, 121, 168, 0.06) 0%, transparent 50%),
+                 linear-gradient(180deg, #060a13 0%, #0d1224 100%);
+            background-attachment: fixed;
+            color: #f1f5f9;
+        }
+
+        /* BLACK THEME (Pitch Black OLED) */
+        html.black body {
+            background-color: #000000;
+            background-image: none;
+            color: #f1f5f9;
+        }
+
+        /* PERFORMANCE MODE */
+        html.perf-mode body {
+            background-image: none !important;
+        }
+
+        h1, h2, h3, h4, h5, h6, .cairo-font {
+            font-family: 'Cairo', sans-serif;
+        }
+        .icon-bg-circle {
+            background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);
+        }
+        .icon-primary {
+            color: var(--primary-color);
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+        .btn-soft {
+            background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+            color: var(--primary-color);
+        }
+        html.dark .btn-soft, html.black .btn-soft {
+            background-color: color-mix(in srgb, var(--primary-color) 20%, transparent);
+        }
+        .btn-soft:hover {
+            background-color: color-mix(in srgb, var(--primary-color) 20%, transparent);
+        }
+        html.dark .btn-soft:hover, html.black .btn-soft:hover {
+            background-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
+        }
+        
+        .transition-colors {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        .nano-fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 999;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        html.dark .nano-fab, html.black .nano-fab {
+            background: #18181b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .nano-fab:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 8px 25px color-mix(in srgb, var(--primary-color) 40%, transparent);
+        }
+        .nano-fab img { width: 40px; height: 40px; object-fit: contain; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #00d2d3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Active Ring Styles */
+        .theme-btn-active {
+            background-color: white !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        html.dark .theme-btn-active, html.black .theme-btn-active {
+            background-color: #27272a !important;
+            color: white !important;
+        }
+        .color-dot-active {
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+    </style>
+    
+    <!-- Theme & Color Init Script (Prevents FOUC) -->
+    <script>
+        (function() {
+            try {
+                const root = document.documentElement;
+                const savedTheme = localStorage.getItem('dwd-theme-mode') || 'dark';
+                root.classList.remove('light', 'dark', 'black');
+                if (savedTheme !== 'light') root.classList.add('dark');
+                root.classList.add(savedTheme);
+
+                const savedColor = localStorage.getItem('dwd-primary-color') || '#3B82F6';
+                root.style.setProperty('--primary-color', savedColor);
+
+                const perfMode = localStorage.getItem('dwd-perf-mode') === 'true';
+                if(perfMode) root.classList.add('perf-mode');
+            } catch (e) {}
+        })();
+    </script>
+</head>
+<body class="antialiased font-sans flex flex-col min-h-screen">
+    <div class="flex-grow w-full">
+        <!-- Header -->
+        <header class="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm sticky top-0 z-50">
+            <div class="px-4 sm:px-10 py-3 sm:py-4 flex items-center justify-between">
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center gap-3 group">
+                    <div class="relative w-12 h-12 rounded-xl bg-[var(--primary-color)]/10 flex items-center justify-center border border-[var(--primary-color)]/20">
+                        <i class="fas fa-microchip text-2xl icon-primary"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-50 cairo-font">DWD</h1>
+                        <span class="text-xs text-zinc-500 dark:text-zinc-400 font-medium hidden sm:block">Smart Campus Platform</span>
+                    </div>
+                </a>
+
+                <!-- Nav & Settings -->
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Nav links -->
+                    <div class="hidden md:flex items-center gap-6 mr-6">
+                        <a href="https://communication-1p3m.vercel.app/" target="_blank" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-[var(--primary-color)] transition-colors" data-no-swup>منصة التواصل</a>
+                        <a href="./DWD/about/index.html" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors" data-no-swup>عنا</a>
+                        <a href="./DWD/materials/index.html" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors" data-no-swup>المواد</a>
+                        <a href="./DWD/schedule/index.html" class="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors" data-no-swup>الجدول</a>
+                    </div>
+
+                    <!-- PWA Header Button -->
+                    <button onclick="document.getElementById('pwa-unified-popup').style.display='flex'; setTimeout(()=>{document.getElementById('pwa-unified-popup').style.opacity='1'; document.getElementById('pwa-unified-popup').style.transform='translateY(0) scale(1)'},50);" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--primary-color)] text-white hover:brightness-110 transition-all font-bold text-sm shadow-lg shadow-[var(--primary-color)]/30">
+                        <i class="fas fa-download"></i> تثبيت التطبيق
+                    </button>
+
+                    <!-- Theme & Color Settings -->
+                    <div class="relative appearance-wrapper">
+                        <button onclick="toggleDropdown()" class="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+                            <i class="fas fa-palette"></i>
+                        </button>
+                        
+                        <!-- Dropdown Panel -->
+                        <div id="appearance-dropdown" class="absolute top-full left-0 mt-2 w-56 border border-zinc-200 dark:border-zinc-700 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl rounded-2xl p-4 hidden z-50">
+                            <!-- 3 Themes -->
+                            <h4 class="text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-3 uppercase tracking-wider">المظهر</h4>
+                            <div class="grid grid-cols-3 gap-1 bg-zinc-100 dark:bg-zinc-950 p-1 rounded-xl mb-4">
+                                <button onclick="setThemeMode('light')" id="theme-btn-light" class="py-2 text-xs font-bold rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all flex flex-col items-center gap-1">
+                                    <i class="fas fa-sun text-sm"></i> فاتح
+                                </button>
+                                <button onclick="setThemeMode('dark')" id="theme-btn-dark" class="py-2 text-xs font-bold rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all flex flex-col items-center gap-1">
+                                    <i class="fas fa-moon text-sm"></i> داكن
+                                </button>
+                                <button onclick="setThemeMode('black')" id="theme-btn-black" class="py-2 text-xs font-bold rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all flex flex-col items-center gap-1">
+                                    <i class="fas fa-circle text-sm text-black dark:text-zinc-900 drop-shadow-md"></i> أسود
+                                </button>
+                            </div>
+                            
+                            <!-- 5 Colors -->
+                            <h4 class="text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-3 uppercase tracking-wider">اللون</h4>
+                            <div class="flex justify-between items-center mb-4">
+                                <button class="color-dot w-6 h-6 rounded-full" style="background: #3B82F6" onclick="setPrimaryColor('#3B82F6')" data-color="#3B82F6"></button>
+                                <button class="color-dot w-6 h-6 rounded-full" style="background: #8B5CF6" onclick="setPrimaryColor('#8B5CF6')" data-color="#8B5CF6"></button>
+                                <button class="color-dot w-6 h-6 rounded-full" style="background: #14B8A6" onclick="setPrimaryColor('#14B8A6')" data-color="#14B8A6"></button>
+                                <button class="color-dot w-6 h-6 rounded-full" style="background: #F43F5E" onclick="setPrimaryColor('#F43F5E')" data-color="#F43F5E"></button>
+                                <button class="color-dot w-6 h-6 rounded-full" style="background: #F59E0B" onclick="setPrimaryColor('#F59E0B')" data-color="#F59E0B"></button>
+                            </div>
+
+                            <!-- Performance Mode -->
+                            <div class="border-t border-zinc-200 dark:border-zinc-800 pt-3 flex items-center justify-between">
+                                <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">أداء فائق <i class="fas fa-bolt text-yellow-500 ml-1"></i></span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="perf-toggle" class="sr-only peer" onchange="togglePerformance(this.checked)">
+                                    <div class="w-9 h-5 bg-zinc-200 peer-focus:outline-none rounded-full peer dark:bg-zinc-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[var(--primary-color)]"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile -->
+                    <a href="#" onclick="goNodejsProfile(); return false;" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors" data-no-swup>
+                        <img src="./img/nano_v2.png" alt="Profile" class="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-700" onerror="this.src='https://ui-avatars.com/api/?name=User&background=3B82F6&color=fff'">
+                        <span class="text-sm font-semibold text-zinc-900 dark:text-zinc-50 hidden sm:block">حسابي</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="swup-main" class="w-full max-w-5xl mx-auto px-4 sm:px-8 py-10 transition-fade">
+            <!-- Hero -->
+            <div class="text-center mb-14" id="hero">
+                <div class="mb-6 flex justify-center">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-[var(--primary-color)]/10 flex items-center justify-center border border-[var(--primary-color)]/20">
+                        <i class="fas fa-graduation-cap text-5xl icon-primary"></i>
+                    </div>
+                </div>
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold text-zinc-900 dark:text-zinc-50 mb-4 cairo-font">
+                    جامعة ذكية، <span class="gradient-text">بين يديك</span>
+                </h1>
+                
+                <!-- Welcome Message Container -->
+                <div id="welcome-message-container" class="hidden mb-4 opacity-0 transition-opacity duration-500 flex flex-col items-center">
+                    <p class="text-xl sm:text-2xl font-bold text-[var(--primary-color)] cairo-font leading-relaxed max-w-2xl mx-auto">
+                        مرحباً بك يا <span id="student-name-display" class="text-zinc-900 dark:text-zinc-50 border-b-2 border-[var(--primary-color)] pb-1">بطل</span>
+                        <span id="batu-badge" class="hidden inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded text-[10px] sm:text-xs font-bold border border-green-200 dark:border-green-800/50 align-middle mx-1 translate-y-[-2px]" title="حساب جامعة موثق">
+                            <i class="fas fa-check-circle"></i> موثق
+                        </span>
+                        ! 👋
+                    </p>
+                </div>
+
+                <script>
+                    // Display user's name immediately when hero section loads
+                    document.addEventListener('DOMContentLoaded', () => {
+                        try {
+                            const userStr = localStorage.getItem("currentUser");
+                            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+                            
+                            if (isLoggedIn && userStr) {
+                                const user = JSON.parse(userStr);
+                                if (user && user.name) {
+                                    const container = document.getElementById('welcome-message-container');
+                                    const nameDisplay = document.getElementById('student-name-display');
+                                    const batuBadge = document.getElementById('batu-badge');
+                                    
+                                    // Set the name
+                                    nameDisplay.textContent = user.name;
+                                    
+                                    // Show BATU verified badge if applicable
+                                    if (user.isBatuVerified) {
+                                        batuBadge.classList.remove('hidden');
+                                    }
+                                    
+                                    // Animate in
+                                    container.classList.remove('hidden');
+                                    setTimeout(() => container.classList.remove('opacity-0'), 50);
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error displaying welcome message:", e);
+                        }
+                    });
+                </script>
+
+                <p class="text-lg sm:text-xl text-zinc-600 dark:text-zinc-300 mb-8 max-w-2xl mx-auto font-medium">
+                    منصة DWD تمنحك الوصول السريع لمحاضراتك، جداولك، وامتحاناتك بلمسة واحدة.
+                </p>
+                <div class="grid grid-cols-2 gap-3 max-w-[400px] mx-auto w-full">
+                    <a href="./DWD/materials/index.html" class="btn-primary flex items-center justify-center gap-2 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-2xl transition-all duration-200 w-full" data-no-swup>
+                        <i class="fas fa-book"></i> ابدأ المذاكرة
+                    </a>
+                    <a href="./DWD/schedule/index.html" class="btn-soft flex items-center justify-center gap-2 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-2xl transition-all duration-200 w-full" data-no-swup>
+                        <i class="fas fa-calendar-alt"></i> جدولي
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="mb-14">
+                <h2 class="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-8 text-center cairo-font">لوحة التحكم الأكاديمية</h2>
+                
+                <!-- Increased gap and padding for bigger cards -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
+                    <!-- 1 -->
+                    <a href="./DWD/materials/index.html" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-book-open text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">المواد</h4>
+                        <p class="text-sm text-zinc-400 mt-2">محاضرات وملخصات</p>
+                    </a>
+                    
+                    <!-- 2 -->
+                    <a href="./DWD/Ai-Nano/exams/index.html" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-laptop-code text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">الامتحانات</h4>
+                        <p class="text-sm text-zinc-400 mt-2">تقييم مستواك</p>
+                    </a>
+
+                    <!-- 3 -->
+                    <a href="./DWD/schedule/index.html" id="schedule-card" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-calendar-alt text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">البوابة الاكاديمية</h4>
+                        <p class="text-sm text-zinc-400 mt-2">ادارة شاملة للمحاضرات والسكاشن</p>
+                    </a>
+
+                    <!-- 4 -->
+                    <a href="./DWD/downloads/index.html" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-cloud-upload-alt text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">التكليفات</h4>
+                        <p class="text-sm text-zinc-400 mt-2">رفع الواجبات</p>
+                    </a>
+
+                    <!-- 5 -->
+                    <a href="./DWD/attendance/index.html" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-location-dot text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">الحضور</h4>
+                        <p class="text-sm text-zinc-400 mt-2">تسجيل بـ GPS</p>
+                    </a>
+
+                    <!-- 6 -->
+                    <a href="./DWD/news/index.html" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-bullhorn text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">الأخبار</h4>
+                        <p class="text-sm text-zinc-400 mt-2">إعلانات الكلية</p>
+                    </a>
+                    
+                    <!-- 7 -->
+                    <a href="#" onclick="goNodejsProfile(); return false;" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-user-graduate text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">حسابي</h4>
+                        <p class="text-sm text-zinc-400 mt-2">والدرجات</p>
+                    </a>
+
+                    <!-- 8 -->
+                    <a href="./DWD/training-weeks/index.html" class="group p-6 sm:p-7 rounded-2xl bg-zinc-950 dark:bg-zinc-900/40 dark:backdrop-blur-xl border border-zinc-800 dark:border-zinc-800/50 hover:border-[var(--primary-color)] transition-all shadow-sm hover:shadow-md text-center" data-no-swup>
+                        <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center icon-bg-circle group-hover:scale-110 transition-transform">
+                            <i class="fas fa-chalkboard-user text-2xl icon-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-zinc-50 cairo-font">التدريب</h4>
+                        <p class="text-sm text-zinc-400 mt-2">التدريب الصيفي</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Moving Banner -->
+    <div class="w-full bg-gradient-to-r from-[var(--primary-color)] to-indigo-600 text-white py-12 relative overflow-hidden mt-8">
+        <!-- decorative background elements -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        
+        <div class="max-w-5xl mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-2xl sm:text-4xl font-bold mb-4 cairo-font">مستقبل التعليم، الآن.</h2>
+            <p class="text-sm sm:text-base font-medium max-w-2xl mx-auto mb-8 leading-relaxed opacity-90">
+                منصة DWD تدمج قوة الذكاء الاصطناعي مع أحدث تقنيات الويب لتقديم تجربة أكاديمية تتخطى حدود الزمان والمكان. واجهة مصممة لراحتك، وسرعة بلا تنازلات.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-md text-sm font-bold border border-white/30 flex items-center gap-2"><i class="fas fa-rocket"></i> أداء فائق</span>
+                <span class="px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-md text-sm font-bold border border-white/30 flex items-center gap-2"><i class="fas fa-shield-alt"></i> أمان متقدم</span>
+                <span class="px-5 py-2.5 rounded-full bg-white/20 backdrop-blur-md text-sm font-bold border border-white/30 flex items-center gap-2"><i class="fas fa-robot"></i> مساعد AI</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Old Footer Reverted -->
+    <footer class="w-full bg-[#030712] border-t border-white/5 py-12 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-right" dir="rtl">
+            <!-- Column 1: Join Us -->
+            <div>
+                <h3 class="text-white text-lg font-bold mb-4 cairo-font">انضم إلينا</h3>
+                <p class="text-zinc-400 text-sm mb-4 leading-relaxed">خليك متابع كل جديد في عالم التكنولوجيا والذكاء الاصطناعي.</p>
+                <a href="https://communication-1p3m.vercel.app" class="inline-flex items-center gap-2 bg-[#111827] hover:bg-[#1f2937] text-white border border-white/10 px-4 py-2 rounded-xl transition-all text-sm font-bold">
+                    <i class="fas fa-users"></i> مجتمع DWD
+                </a>
+            </div>
+            
+            <!-- Column 2: Support & Help -->
+            <div>
+                <h3 class="text-white text-lg font-bold mb-4 cairo-font">الدعم والمساعدة</h3>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-circle-question text-xs w-4 text-center"></i> الأسئلة الشائعة</a></li>
+                    <li><a href="#" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-headset text-xs w-4 text-center"></i> تواصل مع الدعم</a></li>
+                    <li><a href="./DWD/Ai-Nano/exams/index.html" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-robot text-xs w-4 text-center"></i> المساعد الذكي نانو</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Quick Links -->
+            <div>
+                <h3 class="text-white text-lg font-bold mb-4 cairo-font">روابط سريعة</h3>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-home text-xs w-4 text-center"></i> الرئيسية</a></li>
+                    <li><a href="./DWD/materials/index.html" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-book text-xs w-4 text-center"></i> المواد الدراسية</a></li>
+                    <li><a href="./DWD/schedule/index.html" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-calendar-alt text-xs w-4 text-center"></i> الجدول الدراسي</a></li>
+                    <li><a href="./DWD/Ai-Nano/exams/index.html" class="text-zinc-400 hover:text-[var(--primary-color)] transition-colors text-sm flex items-center gap-2"><i class="fas fa-file-alt text-xs w-4 text-center"></i> بنك الأسئلة</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Logo & About -->
+            <div>
+                <a href="#" class="flex items-center justify-start gap-2 mb-4 group">
+                    <h2 class="text-2xl font-bold text-white cairo-font">DWD</h2>
+                    <i class="fas fa-microchip text-[var(--primary-color)] text-xl"></i>
+                </a>
+                <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+                    منصة DWD للتعليم الذكي الأولى من نوعها، تجربة تعليمية متكاملة تمزج بين التكنولوجيا والمستقبل لضمان التفوق.
+                </p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-9 h-9 rounded-full bg-[#111827] border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#1877F2] transition-all"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-[#111827] border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[#0A66C2] transition-all"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-[#111827] border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-[var(--primary-color)] transition-all"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="border-t border-white/5 pt-6 text-center">
+            <p class="text-zinc-500 text-xs font-medium">
+                &copy; 2026 جميع الحقوق محفوظة لصالح <strong>Digital World Developers</strong> | صُنع بكل فخر في مصر &hearts;
+            </p>
+        </div>
+    </footer>
+
+    <!-- Nano FAB -->
+    <a href="./DWD/Ai-Nano/exams/#agent" class="nano-fab" title="المساعد الذكي نانو" data-no-swup>
+        <img src="./img/nano_v2.png" alt="Nano">
+    </a>
+
+    <!-- UI Scripts -->
+    <script>
+        // Dropdown Toggle Logic
+        function toggleDropdown() {
+            const drop = document.getElementById('appearance-dropdown');
+            drop.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const wrapper = document.querySelector('.appearance-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('appearance-dropdown').classList.add('hidden');
+            }
+        });
+
+        // Theme Set Logic
+        function setThemeMode(mode) {
+            const root = document.documentElement;
+            root.classList.remove('light', 'dark', 'black');
+            if (mode !== 'light') root.classList.add('dark');
+            root.classList.add(mode);
+            localStorage.setItem('dwd-theme-mode', mode);
+            updateActiveStates();
+        }
+
+        // Primary Color Set Logic
+        function setPrimaryColor(color) {
+            document.documentElement.style.setProperty('--primary-color', color);
+            localStorage.setItem('dwd-primary-color', color);
+            updateActiveStates();
+        }
+
+        // Performance Mode Toggle Logic
+        function togglePerformance(isPerf) {
+            const root = document.documentElement;
+            if(isPerf) root.classList.add('perf-mode');
+            else root.classList.remove('perf-mode');
+            localStorage.setItem('dwd-perf-mode', isPerf);
+        }
+
+        // UI State sync logic
+        function updateActiveStates() {
+            const currentTheme = localStorage.getItem('dwd-theme-mode') || 'dark';
+            document.querySelectorAll('[id^="theme-btn-"]').forEach(btn => btn.classList.remove('theme-btn-active'));
+            const activeBtn = document.getElementById('theme-btn-' + currentTheme);
+            if(activeBtn) activeBtn.classList.add('theme-btn-active');
+
+            const currentColor = localStorage.getItem('dwd-primary-color') || '#3B82F6';
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.classList.remove('color-dot-active');
+                if(dot.dataset.color === currentColor) dot.classList.add('color-dot-active');
+            });
+
+            const perfToggle = document.getElementById('perf-toggle');
+            if(perfToggle) perfToggle.checked = localStorage.getItem('dwd-perf-mode') === 'true';
+        }
+
+        // Init UI state
+        document.addEventListener('DOMContentLoaded', updateActiveStates);
+    </script>
+
+    <!-- UNIFIED PWA POPUP -->
+    <div id="pwa-unified-popup" dir="rtl" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999999;
+               background: rgba(10, 15, 30, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+               border: 1px solid rgba(0, 210, 255, 0.2);
+               box-shadow: 0 15px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05);
+               border-radius: 18px; padding: 18px;
+               width: calc(100% - 30px); max-width: 360px;
+               color: #fff; font-family: 'IBM Plex Sans Arabic', sans-serif;
+               flex-direction: column; gap: 14px;
+               transform: translateY(130px) scale(0.92); opacity: 0;
+               transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(0,210,255,0.1); 
+                            display: flex; justify-content: center; align-items: center; padding: 4px;">
+                    <img src="./app_icon.png" alt="DWD Logo" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0,210,255,0.4));" onerror="this.src='https://ui-avatars.com/api/?name=DWD&background=0D8ABC&color=fff'">
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #fff; font-family: 'Cairo', sans-serif;">منصة DWD الذكية</h3>
+                    <p style="margin: 2px 0 0 0; font-size: 12px; color: #00d2ff; font-weight: 500;">Smart Campus Platform</p>
+                </div>
+            </div>
+        </div>
+        <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5; font-weight: 500;">
+            ثبّت التطبيق أو حمّل الصفحات للتصفح بدون إنترنت
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button id="pwa-install-btn" style="background: linear-gradient(90deg, #00d2ff, #0088ff); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                تثبيت التطبيق <i class="fa-solid fa-download"></i>
+            </button>
+            <button id="pwa-offline-btn" style="background: linear-gradient(90deg, #7c3aed, #4f46e5); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                التصفح دون إنترنت <i class="fa-solid fa-cloud-arrow-down"></i>
+            </button>
+            <button id="pwa-later-btn" onclick="document.getElementById('pwa-unified-popup').style.transform='translateY(130px) scale(0.92)'; document.getElementById('pwa-unified-popup').style.opacity='0'; setTimeout(()=>{document.getElementById('pwa-unified-popup').style.display='none'},600);" style="background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;">
+                لاحقاً
+            </button>
+        </div>
+    </div>
+    <script>
+        (function(){
+            let deferredPrompt = null;
+            const popup = document.getElementById('pwa-unified-popup');
+            const installBtn = document.getElementById('pwa-install-btn');
+            const offlineBtn = document.getElementById('pwa-offline-btn');
+
+            const isInstalled = localStorage.getItem('dwd_pwa_installed') === 'true';
+            const isDismissed = sessionStorage.getItem('dwd_pwa_dismissed') === 'true';
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+
+            function showPopup() {
+                if (isInstalled || isStandalone || isDismissed) return;
+                popup.style.display = 'flex';
+                setTimeout(() => {
+                    popup.style.transform = 'translateY(0) scale(1)';
+                    popup.style.opacity = '1';
+                }, 80);
+            }
+
+            function hidePopup() {
+                popup.style.transform = 'translateY(130px) scale(0.92)';
+                popup.style.opacity = '0';
+                setTimeout(() => { popup.style.display = 'none'; }, 600);
+            }
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                setTimeout(showPopup, 3000);
+            });
+
+            // Fallback for file:/// protocol (tests)
+            setTimeout(() => {
+                if (!deferredPrompt && !isInstalled && !isStandalone && !isDismissed) {
+                    showPopup();
+                }
+            }, 3000);
+
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (!deferredPrompt) {
+                        alert('متصفحك لا يدعم التثبيت حالياً. جرّب من Chrome على الموبايل.');
+                        return;
+                    }
+                    hidePopup();
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    if (outcome === 'accepted') {
+                        localStorage.setItem('dwd_pwa_installed', 'true');
+                    }
+                });
+            }
+
+            if (offlineBtn) {
+                offlineBtn.addEventListener('click', () => {
+                    hidePopup();
+                    alert("سيبدأ تحميل التطبيق للتصفح أوفلاين...");
+                });
+            }
+
+            window.addEventListener('appinstalled', () => {
+                hidePopup();
+                deferredPrompt = null;
+                localStorage.setItem('dwd_pwa_installed', 'true');
+            });
+
+            // Service Worker Registration
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('SW registered!', reg))
+                        .catch(err => console.log('SW registration failed', err));
+                });
+            }
+        })();
+    </script>
+    <script src="./js/home_navigation.js"></script>
+</body>
+</html>

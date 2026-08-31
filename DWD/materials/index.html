@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Learning Hub - موادك الستة</title>
+  <script src="../../js/auth-guard.js"></script>
+
+
+  <!-- Tailwind CSS CDN -->
+  <script src="../../assets/js/tailwind.js"></script>
+
+  <!-- Google Fonts: Cairo for Arabic UI -->
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+
+  <!-- Font Awesome for Icons -->
+
+  <!-- css style -->
+  <link rel="stylesheet" href="/DWD/materials/style.css">
+  <link rel="stylesheet" href="../../assets/css/local-fonts.css">
+  <link rel="stylesheet" href="../../assets/css/fontawesome-all.min.css">
+  <link rel="manifest" href="../../manifest.json">
+</head>
+
+<body class="p-4 md:p-8">
+  <!-- Background decorative blobs (FIXED — stay behind all content while scrolling) -->
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+    <div
+      class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-pulse bg-purple-600">
+    </div>
+    <div
+      class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-pulse delay-700 bg-cyan-500">
+    </div>
+  </div>
+
+  <!-- Theme Switcher Menu -->
+  <div class="fixed top-6 left-6 z-50">
+    <button id="theme-switcher-btn"
+      class="glass-card text-[var(--primary-color)] p-4 rounded-full shadow-lg hover:scale-110 transition-transform">
+      <i class="fa-solid fa-palette w-6 h-6"></i>
+    </button>
+    <!-- Theme Options Dropdown -->
+    <div id="theme-options" class="hidden absolute top-20 left-0 glass-card rounded-2xl p-3 space-y-3">
+      <button data-theme="default" title="الداكن"
+        class="w-10 h-10 rounded-full bg-slate-900 border-2 border-cyan-400 hover:scale-110 transition-transform"></button>
+      <button data-theme="light-theme" title="الفاتح"
+        class="w-10 h-10 rounded-full bg-slate-100 border-2 border-slate-400 hover:scale-110 transition-transform"></button>
+      <button data-theme="purple-theme" title="البنفسجي"
+        class="w-10 h-10 rounded-full bg-indigo-950 border-2 border-violet-400 hover:scale-110 transition-transform"></button>
+    </div>
+  </div>
+
+  <!-- Language Toggle Button -->
+  <button id="lang-toggle-btn" onclick="toggleLanguage(document.documentElement.lang)"
+    class="fixed top-6 right-6 z-50 glass-card text-[var(--text-color)] px-6 py-3 rounded-full shadow-lg hover:scale-105 transition-transform text-sm font-bold tracking-wide">
+    English Mode
+  </button>
+
+  <!-- Burger Menu Button (New) -->
+  <button id="burger-btn"
+    class="fixed top-6 right-[180px] z-50 glass-card text-[var(--text-color)] p-3 rounded-full shadow-lg hover:scale-110 transition-transform">
+    <i class="fa-solid fa-bars text-xl"></i>
+  </button>
+
+  <!-- Sidebar (New) -->
+  <aside id="material-sidebar"
+    class="fixed top-0 right-[-300px] w-72 h-full bg-slate-900/95 backdrop-blur-xl border-l border-white/10 z-[100] transition-all duration-300 p-6 flex flex-col shadow-2xl">
+    <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/10">
+      <h2 class="text-2xl font-bold text-cyan-400">القائمة</h2>
+      <button id="close-sidebar" class="text-red-400 hover:rotate-90 transition-transform"><i
+          class="fa-solid fa-xmark text-2xl"></i></button>
+    </div>
+
+    <nav class="flex flex-col gap-4 space-y-2">
+      <a href="../../home.html"
+        class="flex items-center gap-3 text-lg font-medium p-3 rounded-xl hover:bg-white/5 hover:text-cyan-400 transition-colors">
+        <i class="fa-solid fa-house w-8 text-center"></i> الرئيسية
+      </a>
+      <a href="../schedule/index.html"
+        class="flex items-center gap-3 text-lg font-medium p-3 rounded-xl hover:bg-white/5 hover:text-cyan-400 transition-colors">
+        <i class="fa-solid fa-calendar-days w-8 text-center" data-no-swup></i> الجدول
+      </a>
+      <a href="../downloads/index.html"
+        class="flex items-center gap-3 text-lg font-medium p-3 rounded-xl hover:bg-white/5 hover:text-cyan-400 transition-colors">
+        <i class="fa-solid fa-cloud-arrow-down w-8 text-center"></i> التنزيلات
+      </a>
+      <a href="../Ai-Nano/exams/index.html"
+        class="flex items-center gap-3 text-lg font-medium p-3 rounded-xl hover:bg-white/5 hover:text-cyan-400 transition-colors">
+        <i class="fa-solid fa-file-pen w-8 text-center"></i> الامتحانات
+      </a>
+      <a href="../profile/index.html"
+        class="flex items-center gap-3 text-lg font-medium p-3 rounded-xl hover:bg-white/5 hover:text-cyan-400 transition-colors">
+        <i class="fa-solid fa-user w-8 text-center"></i> الملف الشخصي
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Overlay for start sidebar -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-[90] hidden backdrop-blur-sm"></div>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="hero-bg-blur"></div>
+    <h1 id="main-title" class="hero-title">
+      IT Learning Hub 🚀
+    </h1>
+    <p id="main-subtitle" class="hero-subtitle">
+      المنصة الشاملة لطلاب الفرقة الثانية - قسم تكنولوجيا المعلومات.
+      <br> كل ما تحتاجه للنجاح والتفوق في مكان واحد.
+    </p>
+    <a href="#subjects-grid" class="cta-button">
+      <span>ابدأ التعلم الآن</span>
+      <i class="fa-solid fa-arrow-down animate-bounce"></i>
+    </a>
+  </header>
+
+  <main class="container mx-auto px-4 pb-24 flex-1">
+    <!-- Home View: Subjects Grid -->
+    <div id="home-view" class="animation-container">
+      <div id="subjects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Subject Cards will be injected here -->
+      </div>
+    </div>
+
+    <!-- Lecture & Quiz View (Initially Hidden) -->
+    <!-- [UPDATED] Changed max-w-5xl to max-w-[90%]/max-w-[85%] for wider view as requested -->
+    <div id="lecture-view"
+      class="hidden animation-container max-w-[90%] md:max-w-[85%] mx-auto transition-all duration-500">
+      <!-- Back Buttons Container -->
+      <div id="navigation-buttons" class="flex items-center gap-4 mb-8">
+        <button onclick="goHome()"
+          class="glass-card px-6 py-3 rounded-full text-[var(--text-color)] hover:text-[var(--primary-color)] flex items-center transition-all duration-300 hover:shadow-lg"
+          dir="ltr">
+          <svg id="back-arrow-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="2.5" stroke="currentColor"
+            class="w-5 h-5 transition-transform duration-300 rtl:mr-2 rtl:ml-0 ltr:ml-2 ltr:mr-0">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span id="back-to-home-text" class="font-bold">العودة للصفحة الرئيسية</span>
+        </button>
+
+        <button id="back-to-lectures-btn"
+          class="glass-card px-6 py-3 rounded-full text-[var(--text-color)] hover:text-[var(--primary-color)] flex items-center transition-all duration-300 hover:shadow-lg"
+          style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+            stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+          </svg>
+          <span id="back-to-lectures-text" class="font-bold">العودة للمحاضرات</span>
+        </button>
+      </div>
+
+      <!-- Lecture Header -->
+      <div class="glass-card p-8 rounded-3xl mb-8 flex flex-col md:flex-row justify-between items-center bg-opacity-40">
+        <h2 id="lecture-title" class="text-3xl md:text-4xl font-extrabold text-[var(--primary-color)]"></h2>
+
+        <button id="lecture-lang-toggle-btn" onclick="switchLectureLanguage()"
+          class="mt-4 md:mt-0 bg-[var(--card-bg)] border border-[var(--primary-color)] text-[var(--primary-color)] px-6 py-2 rounded-full font-bold hover:bg-[var(--primary-color)] hover:text-[#0f172a] transition-all duration-300"
+          style="display: none;">
+          عرض باللغة الإنجليزية
+        </button>
+      </div>
+
+      <!-- Lecture Content Container -->
+      <div id="lecture-view-content"
+        class="glass-card p-8 md:p-12 rounded-3xl shadow-2xl space-y-8 overflow-y-auto max-h-[75vh]">
+        <div id="lecture-content">
+          <!-- Content injected here -->
+        </div>
+
+        <div id="lecture-actions-container"
+          class="pt-8 border-t border-[var(--border-color)] mt-12 flex flex-col items-center gap-6">
+          <p id="pdf-link-container" class="text-xl font-semibold"></p>
+
+          <button id="start-quiz-btn" class="cta-button w-full md:w-auto justify-center" style="display: none;">
+            <i class="fa-solid fa-clipboard-question"></i>
+            <span id="quiz-btn-text">ابدأ الاختبار القصير</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Page Quiz View (Hidden initially) -->
+    <div id="quiz-view" class="hidden animation-container max-w-4xl mx-auto">
+      <button onclick="goHome()"
+        class="glass-card px-6 py-3 rounded-full mb-8 text-[var(--text-color)] hover:text-[var(--primary-color)] flex items-center transition-all duration-300"
+        dir="ltr">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+          class="w-5 h-5 transition-transform duration-300 transform rotate-0 mr-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        <span id="quiz-back-text" class="font-bold">العودة للصفحة الرئيسية</span>
+      </button>
+
+      <h2 id="quiz-header" class="text-4xl font-extrabold text-center animated-gradient-text mb-12"></h2>
+
+      <div id="quiz-container"
+        class="glass-card p-8 md:p-12 rounded-3xl shadow-2xl min-h-[50vh] flex flex-col justify-center items-center">
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-8 px-4 opacity-70 w-screen relative"
+    style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%);">
+    <p class="font-medium text-lg">
+      Made with ❤️ by <span class="text-[var(--primary-color)] font-bold">Abdallah Mohamed Ali</span> &copy; 2025
+    </p>
+    <p class="text-sm mt-2 max-w-2xl mx-auto leading-relaxed">
+      هذا الموقع أداة تعليمية وتطوعية لمساعدة الطلاب، ولا يتبع جامعة برج العرب التكنولوجية بشكل رسمي.
+      <br>للملاحظات والأفكار: <span class="font-mono dir-ltr select-all">01285512241</span>
+    </p>
+  </footer>
+
+  <script src="/DWD/materials/app.js"></script>
+  <script src="../../js/sound-effects.js" defer></script>
+  <script src="../../js/content-protection.js" defer></script>
+
+  <!-- Vercel Analytics -->
+  <script type="module">
+    import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics/+esm';
+    inject();
+  </script>
+</body>
+
+</html>

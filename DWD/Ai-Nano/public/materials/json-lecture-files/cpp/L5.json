@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/cpp/L5.pdf",
+  "tutorialFile": "W5T5C++.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: معاملات الزيادة والنقصان (Increment & Decrement) ++ --</h3>\n    <p class=\"mb-4 text-lg\">هي اختصارات لزيادة أو إنقاص قيمة المتغير بمقدار واحد.</p>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**الزيادة اللاحقة (Postfix Increment - <code class=\"font-mono text-white\">x++</code>):**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>بيستخدم القيمة **الحالية** للمتغير الأول، وبعدين يزودها بواحد.</li>\n                 <li><em>مثال:</em> لو <code class=\"font-mono text-white\">x = 3;</code>, <code class=\"font-mono text-white\">cout << x++;</code> هتطبع 3، وبعدها x هتبقى 4.</li>\n             </ul>\n        </li>\n        <li>**الزيادة السابقة (Prefix Increment - <code class=\"font-mono text-white\">++x</code>):**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>بيزود قيمة المتغير بواحد **الأول**، وبعدين يستخدم القيمة الجديدة.</li>\n                 <li><em>مثال:</em> لو <code class=\"font-mono text-white\">x = 3;</code>, <code class=\"font-mono text-white\">cout << ++x;</code> هتطبع 4، و x هتبقى 4.</li>\n             </ul>\n        </li>\n        <li>(نفس المنطق ينطبق على النقصان <code class=\"font-mono text-white\">x--</code> و <code class=\"font-mono text-white\">--x</code>).</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: التحكم في الحلقات (Loop Control Statements) 🛑➡️</h3>\n    <p class=\"mb-4 text-lg\">أوامر بنستخدمها جوه الحلقات (for, while, do-while) عشان نغير مسار التنفيذ الطبيعي.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. <code class=\"font-mono text-white\">break</code>:</h4>\n            <p>بتستخدم للخروج **فورًا** من الحلقة الحالية بالكامل والانتقال للسطر اللي بعد الحلقة.</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\nfor (int i = 0; i < 10; i++) {\n  if (i == 5) {\n    break; // Exit loop when i is 5\n  }\n  cout << i; // Prints 01234\n}\n            </code></pre>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. <code class=\"font-mono text-white\">continue</code>:</h4>\n            <p>بتستخدم لتخطي **باقي الكود في التكرار الحالي فقط** والانتقال مباشرة للتكرار التالي في الحلقة.</p>\n             <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\nfor (int i = 1; i < 5; i++) {\n  if (i == 3) {\n    continue; // Skip printing 3\n  }\n  cout << i; // Prints 124\n}\n            </code></pre>\n        </div>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: مقدمة للمصفوفات (Arrays) 🔢</h3>\n    <p class=\"mb-4 text-lg\">المصفوفة هي مجموعة من المتغيرات من **نفس نوع البيانات** متخزنة ورا بعض في الذاكرة تحت اسم واحد. بنوصل لكل عنصر عن طريق **الفهرس (index)** بتاعه اللي بيبدأ من 0.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">فوائد المصفوفات:</h4>\n    <p class=\"mb-4\">بدل ما تعرف متغيرات كتير لنفس النوع (زي <code class=\"font-mono text-white\">int x1, x2, x3...</code>)، ممكن تعرف مصفوفة واحدة تجمعهم كلهم (زي <code class=\"font-mono text-white\">int x[5]</code>).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">تعريف المصفوفات (Declaration):</h4>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\n// Syntax: data_type array_name[size];\n\n// 1. Declare and initialize at the same time\nint numbers[5] = {10, 20, 30, 40, 50};\n\n// 2. Declare first, then assign values later (using index)\nint scores[3];\nscores[0] = 95;\nscores[1] = 80;\nscores[2] = 92;\n\n// 3. Let the compiler determine the size from initialization\nint ages[] = {25, 30, 22}; // Size will be 3\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">الوصول لعناصر المصفوفة (Accessing Elements):</h4>\n    <p class=\"mb-4\">بنستخدم اسم المصفوفة ومعاه الفهرس (index) بين قوسين مربعين <code class=\"font-mono text-white\">[]</code>. **الفهرس الأول دايمًا 0.**</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nint numbers[5] = {10, 20, 30, 40, 50};\n\ncout << numbers[0]; // Prints 10 (First element)\ncout << numbers[2]; // Prints 30 (Third element)\nnumbers[1] = 25;   // Changes the second element to 25\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">استخدام الحلقات مع المصفوفات:</h4>\n    <p class=\"mb-4\">حلقة <code class=\"font-mono text-white\">for</code> هي الطريقة المثالية للمرور على كل عناصر المصفوفة.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nint grades[4] = {88, 91, 75, 99};\n\n// Print all elements\nfor (int i = 0; i < 4; i++) {\n  cout << grades[i] << endl;\n}\n\n// Increment all elements using prefix\nfor (int i = 0; i < 4; i++) {\n  ++grades[i];\n}\n    </code></pre>\n\n    <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: النصوص (Strings) - مراجعة من التمارين 🔡</h3>\n      <p class=\"mb-4 text-lg\">الـ <code class=\"font-mono text-white\">string</code> في C++ هي كلاس (وليس نوع بيانات أساسي مباشر) لتخزين مجموعة من الحروف (نص). بنحتاج نعمل <code class=\"font-mono text-white\">#include <string></code> (رغم إن بعض المترجمات بتضمنها تلقائيًا مع <code class=\"font-mono text-white\"><iostream></code>).</p>\n      <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li><strong>التعريف:</strong> <code class=\"font-mono text-white\">string myText = \"Hello\";</code> (علامات اقتباس مزدوجة).</li>\n        <li><strong>الدمج (Concatenation):</strong> بنستخدم علامة <code class=\"font-mono text-white\">+</code> لدمج النصوص. <br><em>مثال:</em> <code class=\"font-mono text-white\">string fullName = firstName + \" \" + lastName;</code></li>\n        <li><strong>دمج نص ورقم:</strong> مينفعش نجمع <code class=\"font-mono text-white\">string</code> مع <code class=\"font-mono text-white\">int</code> مباشرة بعلامة <code class=\"font-mono text-white\">+</code> (هيسبب خطأ).</li>\n        <li><strong>الطول (Length/Size):</strong> بنستخدم الدالة <code class=\"font-mono text-white\">myText.length()</code> أو <code class=\"font-mono text-white\">myText.size()</code> لمعرفة عدد الحروف.</li>\n        <li><strong>الوصول للحروف:</strong> زي المصفوفات، بنستخدم الفهرس <code class=\"font-mono text-white\">[]</code> (يبدأ من 0). <br><em>مثال:</em> <code class=\"font-mono text-white\">cout << myText[0];</code> (يطبع 'H'). <code class=\"font-mono text-white\">cout << myText[myText.length() - 1];</code> (يطبع آخر حرف).</li>\n        <li><strong>تغيير حرف:</strong> <code class=\"font-mono text-white\">myText[0] = 'J';</code> (نستخدم علامات اقتباس مفردة للحرف).</li>\n        <li><strong>الحروف الخاصة (Escape Characters):</strong> بنستخدم الباك سلاش <code class=\"font-mono text-white\">\\</code> قبل الحرف الخاص عشان نطبعه. <br><em>أمثلة:</em> <code class=\"font-mono text-white\">\\\"</code> لطباعة \" , <code class=\"font-mono text-white\">\\'</code> لطباعة ' , <code class=\"font-mono text-white\">\\\\</code> لطباعة \\ .</li>\n      </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Increment & Decrement Operators ++ --</h3>\n    <p class=\"mb-4 text-lg\">Shortcuts to increase or decrease a variable's value by one.</p>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**Postfix Increment (<code class=\"font-mono text-white\">x++</code>):**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>Uses the **current** value of the variable first, then increments it by one.</li>\n                 <li><em>Example:</em> If <code class=\"font-mono text-white\">x = 3;</code>, <code class=\"font-mono text-white\">cout << x++;</code> will print 3, and then x becomes 4.</li>\n             </ul>\n        </li>\n        <li>**Prefix Increment (<code class=\"font-mono text-white\">++x</code>):**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>Increments the variable's value by one **first**, then uses the new value.</li>\n                 <li><em>Example:</em> If <code class=\"font-mono text-white\">x = 3;</code>, <code class=\"font-mono text-white\">cout << ++x;</code> will print 4, and x becomes 4.</li>\n             </ul>\n        </li>\n        <li>(The same logic applies to decrement <code class=\"font-mono text-white\">x--</code> and <code class=\"font-mono text-white\">--x</code>).</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Loop Control Statements 🛑➡️</h3>\n    <p class=\"mb-4 text-lg\">Commands used inside loops (for, while, do-while) to alter the normal flow of execution.</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. <code class=\"font-mono text-white\">break</code>:</h4>\n            <p>Used to **immediately** exit the current loop entirely and jump to the statement following the loop.</p>\n            <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\nfor (int i = 0; i < 10; i++) {\n  if (i == 5) {\n    break; // Exit loop when i is 5\n  }\n  cout << i; // Prints 01234\n}\n            </code></pre>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. <code class=\"font-mono text-white\">continue</code>:</h4>\n            <p>Used to skip the **rest of the code in the current iteration only** and proceed directly to the next iteration of the loop.</p>\n             <pre class=\"bg-slate-800 p-2 mt-2 rounded text-white font-mono text-sm overflow-x-auto\"><code>\nfor (int i = 1; i < 5; i++) {\n  if (i == 3) {\n    continue; // Skip printing 3\n  }\n  cout << i; // Prints 124\n}\n            </code></pre>\n        </div>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Introduction to Arrays 🔢</h3>\n    <p class=\"mb-4 text-lg\">An array is a collection of variables of the **same data type** stored sequentially in memory under a single name. Each element is accessed using its **index**, starting from 0.</p>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Benefits of Arrays:</h4>\n    <p class=\"mb-4\">Instead of declaring many variables of the same type (like <code class=\"font-mono text-white\">int x1, x2, x3...</code>), you can declare a single array to hold them all (like <code class=\"font-mono text-white\">int x[5]</code>).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Declaring Arrays:</h4>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\n// Syntax: data_type array_name[size];\n\n// 1. Declare and initialize at the same time\nint numbers[5] = {10, 20, 30, 40, 50};\n\n// 2. Declare first, then assign values later (using index)\nint scores[3];\nscores[0] = 95;\nscores[1] = 80;\nscores[2] = 92;\n\n// 3. Let the compiler determine the size from initialization\nint ages[] = {25, 30, 22}; // Size will be 3\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Accessing Elements:</h4>\n    <p class=\"mb-4\">Use the array name followed by the index in square brackets <code class=\"font-mono text-white\">[]</code>. **The first index is always 0.**</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nint numbers[5] = {10, 20, 30, 40, 50};\n\ncout << numbers[0]; // Prints 10 (First element)\ncout << numbers[2]; // Prints 30 (Third element)\nnumbers[1] = 25;   // Changes the second element to 25\n    </code></pre>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Using Loops with Arrays:</h4>\n    <p class=\"mb-4\">A <code class=\"font-mono text-white\">for</code> loop is ideal for iterating through all elements of an array.</p>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\nint grades[4] = {88, 91, 75, 99};\n\n// Print all elements\nfor (int i = 0; i < 4; i++) {\n  cout << grades[i] << endl;\n}\n\n// Increment all elements using prefix\nfor (int i = 0; i < 4; i++) {\n  ++grades[i];\n}\n    </code></pre>\n\n    <hr class=\"my-8 border-slate-700\">\n\n     <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Strings (Review from Practice) 🔡</h3>\n      <p class=\"mb-4 text-lg\">The <code class=\"font-mono text-white\">string</code> in C++ is a class (not a direct primitive type) for storing sequences of characters (text). It requires <code class=\"font-mono text-white\">#include <string></code> (although some compilers include it automatically with <code class=\"font-mono text-white\"><iostream></code>).</p>\n      <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li><strong>Declaration:</strong> <code class=\"font-mono text-white\">string myText = \"Hello\";</code> (double quotes).</li>\n        <li><strong>Concatenation:</strong> Use the <code class=\"font-mono text-white\">+</code> operator to join strings. <br><em>Example:</em> <code class=\"font-mono text-white\">string fullName = firstName + \" \" + lastName;</code></li>\n        <li><strong>Adding String and Number:</strong> Cannot directly add a <code class=\"font-mono text-white\">string</code> and an <code class=\"font-mono text-white\">int</code> using <code class=\"font-mono text-white\">+</code> (causes an error).</li>\n        <li><strong>Length/Size:</strong> Use the <code class=\"font-mono text-white\">myText.length()</code> or <code class=\"font-mono text-white\">myText.size()</code> function to get the number of characters.</li>\n        <li><strong>Accessing Characters:</strong> Like arrays, use the index <code class=\"font-mono text-white\">[]</code> (starts from 0). <br><em>Example:</em> <code class=\"font-mono text-white\">cout << myText[0];</code> (prints 'H'). <code class=\"font-mono text-white\">cout << myText[myText.length() - 1];</code> (prints the last character).</li>\n        <li><strong>Changing Characters:</strong> <code class=\"font-mono text-white\">myText[0] = 'J';</code> (use single quotes for the character).</li>\n        <li><strong>Escape Characters:</strong> Use the backslash <code class=\"font-mono text-white\">\\</code> before special characters to include them literally. <br><em>أمثلة:</em> <code class=\"font-mono text-white\">\\\"</code> لطباعة \" , <code class=\"font-mono text-white\">\\'</code> لطباعة ' , <code class=\"font-mono text-white\">\\\\</code> لطباعة \\ .</li>\n      </ul>\n  ",
+  "quiz": [
+    {
+      "question": "1. If `x = 5;`, what is the value printed by `cout << x++;`?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "Error"
+      ],
+      "correctAnswer": "5",
+      "hint": "Postfix: بيستخدم القيمة الحالية الأول (5) وبعدين يزودها."
+    },
+    {
+      "question": "2. If `x = 5;`, what is the value printed by `cout << ++x;`?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "Error"
+      ],
+      "correctAnswer": "6",
+      "hint": "Prefix: بيزود القيمة الأول (تبقى 6) وبعدين يستخدمها."
+    },
+    {
+      "question": "3. Which statement immediately exits the current loop?",
+      "options": [
+        "continue",
+        "exit",
+        "return",
+        "break"
+      ],
+      "correctAnswer": "break",
+      "hint": "بيكسر الحلقة ويخرج منها خالص."
+    },
+    {
+      "question": "4. Which statement skips the rest of the current iteration and goes to the next one?",
+      "options": [
+        "continue",
+        "skip",
+        "next",
+        "break"
+      ],
+      "correctAnswer": "continue",
+      "hint": "بيكمل للحلقة اللي بعدها."
+    },
+    {
+      "question": "5. What is an array?",
+      "options": [
+        "A single variable",
+        "A collection of variables of *different* types",
+        "A collection of variables of the *same* type",
+        "A loop structure"
+      ],
+      "correctAnswer": "A collection of variables of the *same* type",
+      "hint": "مجموعة عناصر من نفس النوع."
+    },
+    {
+      "question": "6. How do you declare an integer array named `ages` of size 10?",
+      "options": [
+        "int ages[10];",
+        "array int ages[10];",
+        "int[10] ages;",
+        "ages int[10];"
+      ],
+      "correctAnswer": "int ages[10];",
+      "hint": "نوع البيانات، اسم المصفوفة، ثم الحجم بين []."
+    },
+    {
+      "question": "7. If you have `int nums[] = {5, 10, 15};`, what is the index of the element `10`?",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "10"
+      ],
+      "correctAnswer": "1",
+      "hint": "الفهرسة بتبدأ من 0."
+    },
+    {
+      "question": "8. What is the correct way to access the *last* element of `int arr[5];`?",
+      "options": [
+        "arr[5]",
+        "arr[last]",
+        "arr[4]",
+        "arr[0]"
+      ],
+      "correctAnswer": "arr[4]",
+      "hint": "لو الحجم 5، يبقى آخر فهرس هو 4 (من 0 إلى 4)."
+    },
+    {
+      "question": "9. Which loop is typically used to iterate through all elements of an array?",
+      "options": [
+        "while",
+        "do...while",
+        "if",
+        "for"
+      ],
+      "correctAnswer": "for",
+      "hint": "حلقة for مثالية للمرور على العناصر بترتيب الفهرس."
+    },
+    {
+      "question": "10. What header file is needed to use the `string` class?",
+      "options": [
+        "<iostream>",
+        "<string>",
+        "<vector>",
+        "<array>"
+      ],
+      "correctAnswer": "<string>",
+      "hint": "اسم الهيدر هو نفس اسم الكلاس."
+    },
+    {
+      "question": "11. How do you concatenate two strings, `s1` and `s2`, with a space in between?",
+      "options": [
+        "s1 + \" \" + s2",
+        "s1 & \" \" & s2",
+        "concat(s1, \" \", s2)",
+        "s1.add(s2)"
+      ],
+      "correctAnswer": "s1 + \" \" + s2",
+      "hint": "علامة + بتستخدم لدمج النصوص."
+    },
+    {
+      "question": "12. What happens if you try `string z = \"Age: \" + 25;`?",
+      "options": [
+        "z becomes \"Age: 25\"",
+        "z becomes \"Age: \"",
+        "An error occurs",
+        "z becomes 25"
+      ],
+      "correctAnswer": "An error occurs",
+      "hint": "مينفعش تجمع string مع int مباشرة بعلامة +."
+    },
+    {
+      "question": "13. How do you get the length of a string `str`?",
+      "options": [
+        "str.length",
+        "length(str)",
+        "str.length()",
+        "str.size"
+      ],
+      "correctAnswer": "str.length()",
+      "hint": "بنستخدم دالة اسمها length() أو size()."
+    },
+    {
+      "question": "14. How do you access the first character of a string `myStr`?",
+      "options": [
+        "myStr(0)",
+        "myStr[0]",
+        "myStr.first()",
+        "myStr{0}"
+      ],
+      "correctAnswer": "myStr[0]",
+      "hint": "زي المصفوفات، بنستخدم الفهرس 0."
+    },
+    {
+      "question": "15. How do you change the first character of `string s = \"Car\";` to 'B'?",
+      "options": [
+        "s[0] = \"B\";",
+        "s.set(0, 'B');",
+        "s[0] = 'B';",
+        "s(0) = 'B';"
+      ],
+      "correctAnswer": "s[0] = 'B';",
+      "hint": "بنستخدم الفهرس وعلامات اقتباس مفردة للحرف."
+    },
+    {
+      "question": "16. Which escape character represents a double quote `\"` inside a string?",
+      "options": [
+        "\\q",
+        "\\d",
+        "\\\"",
+        "\\dq"
+      ],
+      "correctAnswer": "\\\"",
+      "hint": "بنستخدم باك سلاش قبل علامة الاقتباس."
+    },
+    {
+      "question": "17. What is the output of `int x=1; x = x++; cout << x;`?",
+      "options": [
+        "1",
+        "2",
+        "0",
+        "Undefined behavior"
+      ],
+      "correctAnswer": "Undefined behavior",
+      "hint": "تعديل واستخدام نفس المتغير مع ++ في نفس الجملة ممكن يدي نتايج مختلفة حسب المترجم (الأفضل تجنبها)."
+    },
+    {
+      "question": "18. Which loop control statement would you use to exit a loop if an error condition is met?",
+      "options": [
+        "continue",
+        "goto",
+        "break",
+        "return"
+      ],
+      "correctAnswer": "break",
+      "hint": "للخروج الفوري من الحلقة."
+    },
+    {
+      "question": "19. If `int a[] = {1, 2, 3};`, what is `a[1]`?",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "Error"
+      ],
+      "correctAnswer": "2",
+      "hint": "الفهرس 1 هو العنصر الثاني."
+    },
+    {
+      "question": "20. What is the index of the last element in `char name[7];`?",
+      "options": [
+        "7",
+        "6",
+        "0",
+        "Unknown"
+      ],
+      "correctAnswer": "6",
+      "hint": "الفهارس بتكون من 0 إلى (الحجم - 1)."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

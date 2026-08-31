@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/DE/L2.pdf",
+  "tutorialFile": "W2T2DE.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: البوابات المنطقية الأساسية وتوسيعها  GATE</h3>\n    <p class=\"mb-4 text-lg\">بنراجع البوابات الأساسية وبنشوف سلوكها مع أكتر من مدخلين، وبنعرف البوابات المعكوسة.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مراجعة وتوسيع البوابات الأساسية:</h4>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n      <li>**NOT (Inverter):** بوابة أحادية (Unary) بتعكس المدخل. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A'</code>. جدول الحقيقة: (0 -> 1, 1 -> 0).</li>\n      <li>**AND:** بتطلع 1 **فقط** لو كل المداخل 1. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A · B · C</code>. لو مدخل واحد بس بـ 0، الخرج بيكون 0.</li>\n      <li>**OR:** بتطلع 1 لو **أي مدخل** (أو أكتر) بـ 1. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A + B + C</code>. بتطلع 0 فقط لو كل المداخل 0.</li>\n      <li>**XOR (Exclusive OR):** بتطلع 1 لو عدد **فردي** من المداخل بـ 1. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A ⊕ B ⊕ C</code>. (لما يكون مدخلين بس: بتطلع 1 لو المدخلين مختلفين).</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">البوابات المعكوسة (Inverted Gates):</h4>\n     <ul class=\"list-disc list-inside space-y-2 mr-6\">\n       <li>**Buffer:** (عكس الـ NOT) بتطلع نفس المدخل بدون تغيير <code class=\"text-white bg-slate-700 px-1 rounded\">X = A</code>. (مستخدم أحيانًا لتقوية الإشارة).</li>\n       <li>**NAND:** هي AND معكوسة. <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A · B)'</code>. بتطلع 0 فقط لو كل المداخل 1. (مهمة جدًا لأنها بوابة شاملة - Universal Gate).</li>\n       <li>**NOR:** هي OR معكوسة. <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A + B)'</code>. بتطلع 1 فقط لو كل المداخل 0. (بوابة شاملة أيضًا).</li>\n       <li>**XNOR (Exclusive NOR):** هي XOR معكوسة. <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A ⊕ B)'</code>. بتطلع 1 لو عدد **زوجي** من المداخل بـ 1 (أو لو المدخلين متشابهين في حالة المدخلين).</li>\n     </ul>\n          <p class=\"mt-4 text-yellow-400\"><strong>ملحوظة مهمة:</strong> لو وصلت نفس المدخل لكل أطراف بوابة NAND أو NOR، هتشتغل كأنها بوابة NOT.</p>\n          <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: مقدمة للجبر البولياني (Boolean Algebra) ➕✖️</h3>\n    <p class=\"mb-4 text-lg\">الجبر البولياني هو الأساس الرياضي للمنطق الرقمي. بنستخدمه لتحليل وتبسيط المعادلات المنطقية (وبالتالي الدوائر). بيعتمد على متغيرات بتاخد قيمتين بس (0 و 1) وعمليات أساسية (AND, OR, NOT).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">قوانين أساسية (مستنتجة من جداول الحقيقة):</h4>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">عمليات مع 0 و 1:</h5>\n            <ul class=\"list-disc list-inside space-y-1 mr-6 font-mono\">\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · 0 = 0</code></li>\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + 0 = X</code></li>\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · 1 = X</code></li>\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + 1 = 1</code></li>\n            </ul>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">قانون التكرار (Idempotent Law):</h5>\n             <ul class=\"list-disc list-inside space-y-1 mr-6 font-mono\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · X = X</code></li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + X = X</code></li>\n             </ul>\n        </div>\n         <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">قانون المكمل (Complementarity Law):</h5>\n             <ul class=\"list-disc list-inside space-y-1 mr-6 font-mono\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · X' = 0</code></li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + X' = 1</code></li>\n             </ul>\n        </div>\n         <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">قانون النفي المزدوج (Involution Law):</h5>\n            <p class=\"font-mono\"><code class=\"text-white bg-slate-700 px-1 rounded\">(X')' = X</code></p>\n        </div>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">قوانين أخرى مهمة:</h4>\n     <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**القانون التبادلي (Commutative):** <code class=\"text-white bg-slate-700 px-1 rounded\">X + Y = Y + X</code> و <code class=\"text-white bg-slate-700 px-1 rounded\">X · Y = Y · X</code>.</li>\n        <li>**القانون التجميعي (Associative):** <code class=\"text-white bg-slate-700 px-1 rounded\">(X + Y) + Z = X + (Y + Z)</code> و <code class=\"text-white bg-slate-700 px-1 rounded\">(X · Y) · Z = X · (Y · Z)</code>. ده بيسمحلنا نشيل الأقواس في حالة تكرار نفس العملية.</li>\n        <li>**القانون التوزيعي (Distributive):**\n            <ul class=\"list-disc list-inside ml-6 mt-1 font-mono\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · (Y + Z) = X · Y + X · Z</code> (زي الجبر العادي)</li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + (Y · Z) = (X + Y) · (X + Z)</code> (ده مختلف عن الجبر العادي ومهم)</li>\n            </ul>\n        </li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مثال تطبيقي (من التيتوريال):</h4>\n    <p>لو عندنا الدالة <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A NAND B) AND (A OR B)</code> عايزين نعرف هي بتكافئ أنهي بوابة بسيطة؟</p>\n    <ol class=\"list-decimal list-inside space-y-1 mr-6\">\n        <li>نحولها لمعادلة بوليانية: <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A · B)' · (A + B)</code>.</li>\n        <li>نرسم الدائرة المنطقية.</li>\n        <li>نعمل جدول الحقيقة للدالة X عن طريق حساب قيم <code class=\"text-white bg-slate-700 px-1 rounded\">(A · B)'</code> و <code class=\"text-white bg-slate-700 px-1 rounded\">(A + B)</code> لكل الاحتمالات، وبعدين نعمل بينهم AND.</li>\n        <li>هنلاقي إن جدول الحقيقة الناتج للدالة X هو نفس جدول الحقيقة لبوابة **XOR**.</li>\n    </ol>\n       ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Basic Logic Gates and Extensions GATE</h3>\n    <p class=\"mb-4 text-lg\">Reviewing the basic gates, their behavior with more than two inputs, and introducing inverted gates.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Basic Gates Review and Extension:</h4>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n      <li>**NOT (Inverter):** A unary gate that inverts the input. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A'</code>. Truth table: (0 -> 1, 1 -> 0).</li>\n      <li>**AND:** Outputs 1 **only** if all inputs are 1. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A · B · C</code>. If even one input is 0, the output is 0.</li>\n      <li>**OR:** Outputs 1 if **any** input (or more) is 1. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A + B + C</code>. Outputs 0 only if all inputs are 0.</li>\n      <li>**XOR (Exclusive OR):** Outputs 1 if an **odd** number of inputs are 1. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A ⊕ B ⊕ C</code>. (For two inputs: outputs 1 if inputs are different).</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Inverted Gates:</h4>\n     <ul class=\"list-disc list-inside space-y-2 ml-6\">\n       <li>**Buffer:** (Inverse of NOT) Outputs the same as the input. <code class=\"text-white bg-slate-700 px-1 rounded\">X = A</code>. (Sometimes used for signal amplification).</li>\n       <li>**NAND:** Inverted AND. <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A · B)'</code>. Outputs 0 only if all inputs are 1. (Very important as a Universal Gate).</li>\n       <li>**NOR:** Inverted OR. <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A + B)'</code>. Outputs 1 only if all inputs are 0. (Also a Universal Gate).</li>\n       <li>**XNOR (Exclusive NOR):** Inverted XOR. <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A ⊕ B)'</code>. Outputs 1 if an **even** number of inputs are 1 (or if inputs are the same for two inputs).</li>\n     </ul>\n          <p class=\"mt-4 text-yellow-400\"><strong>Important Note:</strong> Connecting the same input to all terminals of a NAND or NOR gate makes it function as a NOT gate.</p>\n          <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Introduction to Boolean Algebra ➕✖️</h3>\n    <p class=\"mb-4 text-lg\">Boolean Algebra is the mathematical foundation for digital logic. It's used to analyze and simplify logic equations (and thus circuits). It uses variables with only two values (0 and 1) and basic operations (AND, OR, NOT).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Basic Laws (Derived from Truth Tables):</h4>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">Operations with 0 and 1:</h5>\n            <ul class=\"list-disc list-inside space-y-1 ml-6 font-mono\">\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · 0 = 0</code></li>\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + 0 = X</code></li>\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · 1 = X</code></li>\n              <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + 1 = 1</code></li>\n            </ul>\n        </div>\n        <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">Idempotent Law:</h5>\n             <ul class=\"list-disc list-inside space-y-1 ml-6 font-mono\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · X = X</code></li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + X = X</code></li>\n             </ul>\n        </div>\n         <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">Complementarity Law:</h5>\n             <ul class=\"list-disc list-inside space-y-1 ml-6 font-mono\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · X' = 0</code></li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + X' = 1</code></li>\n             </ul>\n        </div>\n         <div class=\"glass-card p-4 rounded-lg\">\n            <h5 class=\"font-bold text-lg mb-2 text-cyan-400\">Involution Law (Double Negation):</h5>\n            <p class=\"font-mono\"><code class=\"text-white bg-slate-700 px-1 rounded\">(X')' = X</code></p>\n        </div>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Other Important Laws:</h4>\n     <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**Commutative Law:** <code class=\"text-white bg-slate-700 px-1 rounded\">X + Y = Y + X</code> and <code class=\"text-white bg-slate-700 px-1 rounded\">X · Y = Y · X</code>.</li>\n        <li>**Associative Law:** <code class=\"text-white bg-slate-700 px-1 rounded\">(X + Y) + Z = X + (Y + Z)</code> and <code class=\"text-white bg-slate-700 px-1 rounded\">(X · Y) · Z = X · (Y · Z)</code>. Allows removing parentheses for repeated operations.</li>\n        <li>**Distributive Law:**\n            <ul class=\"list-disc list-inside ml-6 mt-1 font-mono\">\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X · (Y + Z) = X · Y + X · Z</code> (Like regular algebra)</li>\n                <li><code class=\"text-white bg-slate-700 px-1 rounded\">X + (Y · Z) = (X + Y) · (X + Z)</code> (Different from regular algebra, very important)</li>\n            </ul>\n        </li>\n    </ul>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Applied Example (from Tutorial):</h4>\n    <p>If we have the function <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A NAND B) AND (A OR B)</code>, what simple gate is it equivalent to?</p>\n    <ol class=\"list-decimal list-inside space-y-1 ml-6\">\n        <li>Convert to Boolean equation: <code class=\"text-white bg-slate-700 px-1 rounded\">X = (A · B)' · (A + B)</code>.</li>\n        <li>Draw the logic circuit.</li>\n        <li>Create the truth table for X by calculating <code class=\"text-white bg-slate-700 px-1 rounded\">(A · B)'</code> and <code class=\"text-white bg-slate-700 px-1 rounded\">(A + B)</code> for all input combinations, then ANDing the results.</li>\n        <li>We find that the resulting truth table for X is identical to the truth table of an **XOR** gate.</li>\n    </ol>\n       ",
+  "quiz": [
+    {
+      "question": "1. Which basic gate is also known as an inverter?",
+      "options": [
+        "AND",
+        "OR",
+        "NOT",
+        "XOR"
+      ],
+      "correctAnswer": "NOT",
+      "hint": "هي البوابة التي تعكس المدخل."
+    },
+    {
+      "question": "2. An AND gate with inputs A=1, B=0, C=1 will output:",
+      "options": [
+        "1",
+        "0",
+        "Undefined",
+        "A"
+      ],
+      "correctAnswer": "0",
+      "hint": "بوابة AND تحتاج *كل* المداخل تكون 1 لتخرج 1."
+    },
+    {
+      "question": "3. An OR gate with inputs A=1, B=0, C=0 will output:",
+      "options": [
+        "1",
+        "0",
+        "Undefined",
+        "A"
+      ],
+      "correctAnswer": "1",
+      "hint": "بوابة OR تحتاج مدخل واحد *على الأقل* يكون 1 لتخرج 1."
+    },
+    {
+      "question": "4. An XOR gate with inputs A=1, B=1, C=0 will output:",
+      "options": [
+        "1",
+        "0",
+        "Undefined",
+        "C"
+      ],
+      "correctAnswer": "0",
+      "hint": "بوابة XOR تخرج 1 لو عدد 'الوحايد' في المدخل فردي. هنا يوجد 'واحدين' (عدد زوجي)."
+    },
+    {
+      "question": "5. Which gate outputs 0 only when all inputs are 1?",
+      "options": [
+        "AND",
+        "OR",
+        "NAND",
+        "NOR"
+      ],
+      "correctAnswer": "NAND",
+      "hint": "هي عكس بوابة AND."
+    },
+    {
+      "question": "6. Which gate outputs 1 only when all inputs are 0?",
+      "options": [
+        "AND",
+        "OR",
+        "NAND",
+        "NOR"
+      ],
+      "correctAnswer": "NOR",
+      "hint": "هي عكس بوابة OR."
+    },
+    {
+      "question": "7. An XNOR gate outputs 1 when the two inputs are:",
+      "options": [
+        "Different",
+        "The same",
+        "Both 0",
+        "Both 1"
+      ],
+      "correctAnswer": "The same",
+      "hint": "هي عكس بوابة XOR."
+    },
+    {
+      "question": "8. Connecting both inputs of a NAND gate to the same signal A results in an output equivalent to:",
+      "options": [
+        "A",
+        "0",
+        "1",
+        "A'"
+      ],
+      "correctAnswer": "A'",
+      "hint": "NAND(A, A) = (A · A)' = A'. تعمل كعاكس."
+    },
+    {
+      "question": "9. The Boolean expression X + 1 simplifies to:",
+      "options": [
+        "X",
+        "X'",
+        "0",
+        "1"
+      ],
+      "correctAnswer": "1",
+      "hint": "أي شيء OR مع 1 يعطي 1."
+    },
+    {
+      "question": "10. The Boolean expression X · X simplifies to:",
+      "options": [
+        "X",
+        "X'",
+        "0",
+        "1"
+      ],
+      "correctAnswer": "X",
+      "hint": "قانون التكرار (Idempotent Law)."
+    },
+    {
+      "question": "11. The Boolean expression X + X' simplifies to:",
+      "options": [
+        "X",
+        "X'",
+        "0",
+        "1"
+      ],
+      "correctAnswer": "1",
+      "hint": "قانون المكمل (Complementarity Law)."
+    },
+    {
+      "question": "12. The Boolean expression (X')' simplifies to:",
+      "options": [
+        "X",
+        "X'",
+        "0",
+        "1"
+      ],
+      "correctAnswer": "X",
+      "hint": "قانون النفي المزدوج (Involution Law)."
+    },
+    {
+      "question": "13. Which law states that X + Y = Y + X?",
+      "options": [
+        "Associative",
+        "Distributive",
+        "Commutative",
+        "Idempotent"
+      ],
+      "correctAnswer": "Commutative",
+      "hint": "القانون التبادلي."
+    },
+    {
+      "question": "14. Which law allows us to write X + Y + Z without parentheses?",
+      "options": [
+        "Associative",
+        "Distributive",
+        "Commutative",
+        "Complementarity"
+      ],
+      "correctAnswer": "Associative",
+      "hint": "القانون التجميعي."
+    },
+    {
+      "question": "15. The expression X · (Y + Z) is equivalent to:",
+      "options": [
+        "X + Y · Z",
+        "X · Y + Z",
+        "X · Y + X · Z",
+        "(X + Y) · (X + Z)"
+      ],
+      "correctAnswer": "X · Y + X · Z",
+      "hint": "القانون التوزيعي (يشبه الجبر العادي)."
+    },
+    {
+      "question": "16. The expression X + (Y · Z) is equivalent to:",
+      "options": [
+        "X · Y + X · Z",
+        "(X + Y) · (X + Z)",
+        "X + Y + Z",
+        "X · Y · Z"
+      ],
+      "correctAnswer": "(X + Y) · (X + Z)",
+      "hint": "القانون التوزيعي الثاني (مختلف عن الجبر العادي)."
+    },
+    {
+      "question": "17. The circuit implementing the expression (A NAND B) AND (A OR B) behaves like which gate?",
+      "options": [
+        "AND",
+        "OR",
+        "XOR",
+        "XNOR"
+      ],
+      "correctAnswer": "XOR",
+      "hint": "تم إثبات ذلك باستخدام جدول الحقيقة في المحاضرة."
+    },
+    {
+      "question": "18. What is the Boolean expression for a 3-input NOR gate?",
+      "options": [
+        "(A+B+C)'",
+        "(A·B·C)'",
+        "A⊕B⊕C",
+        "A+B+C"
+      ],
+      "correctAnswer": "(A+B+C)'",
+      "hint": "هي OR ثم NOT."
+    },
+    {
+      "question": "19. Which of the following is NOT a basic Boolean operation?",
+      "options": [
+        "AND",
+        "OR",
+        "NOT",
+        "IF"
+      ],
+      "correctAnswer": "IF",
+      "hint": "IF هي جملة شرطية في البرمجة، ليست عملية بوليانية أساسية."
+    },
+    {
+      "question": "20. How is the decimal number 65 represented in Octal?",
+      "options": [
+        "65",
+        "100",
+        "101",
+        "77"
+      ],
+      "correctAnswer": "101",
+      "hint": "65 / 8 = 8 R 1; 8 / 8 = 1 R 0; 1 / 8 = 0 R 1. Read remainders bottom-up."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

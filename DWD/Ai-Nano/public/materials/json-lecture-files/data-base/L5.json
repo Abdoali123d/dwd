@@ -1,0 +1,230 @@
+{
+  "pdfFile": "../../materials-lectures/DB/L5.pdf",
+  "tutorialFile": "W5T5DB.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: ما هي SQL؟ 🤔</h3>\n    <p class=\"mb-4 text-lg\">SQL اختصار لـ **Structured Query Language** (لغة الاستعلام الهيكلية). هي اللغة القياسية المستخدمة لإدارة والتعامل مع قواعد البيانات العلائقية (Relational Databases). بنستخدمها عشان:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>نسترجع بيانات (Retrieve data).</li>\n        <li>ندخل بيانات جديدة (Insert new data).</li>\n        <li>نحدّث بيانات موجودة (Update existing data).</li>\n        <li>نحذف بيانات (Delete data).</li>\n        <li>ننشئ ونعدل هياكل قواعد البيانات والجداول نفسها.</li>\n    </ul>\n    <p class=\"mt-4 text-lg\">SQL لغة مهمة جدًا لأي حد بيتعامل مع الداتا، لأنها بتخلينا ندير ونحلل كميات كبيرة من البيانات بكفاءة.</p>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: تصنيفات أوامر SQL الرئيسية 📚</h3>\n    <p class=\"mb-4 text-lg\">أوامر SQL بتتقسم لمجموعات حسب وظيفتها:</p>\n    <ul class=\"list-disc list-inside space-y-2 mr-6\">\n        <li>**DQL (Data Query Language) - لغة استعلام البيانات:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>هدفها استرجاع البيانات من قاعدة البيانات.</li>\n                <li>الأمر الأساسي: <code class=\"font-mono text-cyan-300\">SELECT</code> (و <code class=\"font-mono text-cyan-300\">SELECT DISTINCT</code>).</li>\n            </ul>\n        </li>\n        <li>**DDL (Data Definition Language) - لغة تعريف البيانات:**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>هدفها تعريف وتعديل وحذف هياكل قاعدة البيانات (زي الجداول نفسها).</li>\n                <li>الأوامر الأساسية: <code class=\"font-mono text-cyan-300\">CREATE DATABASE</code>, <code class=\"font-mono text-cyan-300\">DROP DATABASE</code>, <code class=\"font-mono text-cyan-300\">CREATE TABLE</code>, <code class=\"font-mono text-cyan-300\">DROP TABLE</code>, <code class=\"font-mono text-cyan-300\">ALTER TABLE</code>.</li>\n            </ul>\n        </li>\n        <li>**DML (Data Manipulation Language) - لغة معالجة البيانات:**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>هدفها إضافة وتعديل وحذف البيانات *داخل* الجداول.</li>\n                 <li>الأوامر الأساسية: <code class=\"font-mono text-cyan-300\">INSERT INTO</code>, <code class=\"font-mono text-cyan-300\">UPDATE</code>, <code class=\"font-mono text-cyan-300\">DELETE FROM</code>.</li>\n             </ul>\n        </li>\n        <li>(أنواع أخرى مشروحة في المحاضرة بس مش مطلوبة هنا زي DCL و TCL).</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: أوامر SQL الأساسية (مع أمثلة) ⌨️</h3>\n\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n      <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. DDL (تعريف الهياكل):</h4>\n      <ul class=\"list-disc list-inside space-y-1 mr-6 mt-2\">\n          <li><strong>إنشاء قاعدة بيانات:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE DATABASE database_name;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE DATABASE Batu_Uni;</code></li>\n          <li><strong>حذف قاعدة بيانات:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP DATABASE database_name;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP DATABASE Batu_Uni;</code></li>\n          <li><strong>إنشاء جدول:</strong> (بنحدد اسم الجدول وأسماء الأعمدة وأنواع بياناتها والقيود زي المفتاح الأساسي) <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE TABLE table_name (column1 datatype constraints, column2 datatype, ...);</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE TABLE Students (StudentID INT PRIMARY KEY, Name VARCHAR(255), Age INT);</code></li>\n          <li><strong>حذف جدول:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP TABLE table_name;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP TABLE Students;</code></li>\n          <li><strong>تعديل جدول (مثال: إضافة عمود):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE table_name ADD column_name datatype;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE Students ADD Email VARCHAR(255);</code></li>\n          <li><strong>تعديل جدول (مثال: حذف عمود):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE table_name DROP COLUMN column_name;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE Students DROP COLUMN Email;</code></li>\n      </ul>\n    </div>\n\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n      <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. DML (معالجة البيانات داخل الجداول):</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6 mt-2\">\n            <li><strong>إضافة سجل جديد (صف):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">INSERT INTO table_name (column1, column2) VALUES (value1, value2);</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">INSERT INTO Students (StudentID, Name, Age) VALUES (1, 'Ahmed', 20);</code></li>\n             <li><strong>إضافة عدة سجلات:</strong> (تختلف الصيغة قليلًا حسب نوع قاعدة البيانات)<br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">INSERT INTO Students (StudentID, Name, Age) VALUES (2, 'Sara', 21), (3, 'Mona', 19);</code></li>\n            <li><strong>تعديل سجلات موجودة:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">UPDATE table_name SET column1 = value1 WHERE condition;</code><br><em>مثال (تحديث عمر طالب معين):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">UPDATE Students SET Age = 21 WHERE StudentID = 1;</code></li>\n            <li><strong>حذف سجلات:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DELETE FROM table_name WHERE condition;</code><br><em>مثال (حذف طالب معين):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DELETE FROM Students WHERE StudentID = 1;</code><br><em>مثال (حذف كل الطلاب الأقل من 18 سنة):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DELETE FROM Students WHERE Age &lt; 18;</code><br><em>(تحذير: لو محطتش <code class=\"font-mono text-cyan-300\">WHERE</code>، الأمر هيمسح **كل** السجلات في الجدول!)</em></li>\n       </ul>\n    </div>\n\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n       <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">3. DQL (استرجاع البيانات):</h4>\n        <ul class=\"list-disc list-inside space-y-1 mr-6 mt-2\">\n            <li><strong>اختيار كل الأعمدة وكل الصفوف:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM table_name;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM Students;</code></li>\n            <li><strong>اختيار أعمدة محددة:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT column1, column2 FROM table_name;</code><br><em>مثال:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT Name, Age FROM Students;</code></li>\n            <li><strong>فلترة الصفوف (اختيار سجلات معينة):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT columns FROM table_name WHERE condition;</code><br><em>مثال (اختيار الطلاب الأكبر من 20 سنة):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT Name FROM Students WHERE Age > 20;</code> <br>(بنستخدم معاملات مقارنة زي: =, <>, >, <, >=, <=).</li>\n            <li><strong>اختيار قيم فريدة (بدون تكرار):</b> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT DISTINCT column FROM table_name;</code><br><em>مثال (عرض المدن المختلفة للطلاب بدون تكرار):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT DISTINCT City FROM Students;</code></li>\n             <li><strong>ترتيب النتائج:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT columns FROM table_name ORDER BY column ASC/DESC;</code><br><em>مثال (ترتيب الطلاب حسب الاسم أبجديًا):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM Students ORDER BY Name ASC;</code><br><em>مثال (ترتيب الطلاب حسب العمر تنازليًا - من الأكبر للأصغر):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM Students ORDER BY Age DESC;</code><br>(الافتراضي هو ASC - تصاعدي).</li>\n       </ul>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الرابع: القيود (Constraints) 🧱</h3>\n     <p class=\"mb-4 text-lg\">هي قواعد بنحطها على الأعمدة عشان نضمن دقة وسلامة البيانات.</p>\n      <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**NOT NULL:** يضمن إن الحقل مينفعش يتساب فاضي (لازم تدخل فيه قيمة).</li>\n        <li>**UNIQUE:** يضمن إن كل القيم في العمود ده تكون فريدة (مفيش تكرار).</li>\n        <li>**PRIMARY KEY:** بيجمع بين NOT NULL و UNIQUE. هو المعرف الفريد الأساسي للجدول.</li>\n        <li>**FOREIGN KEY:** بيضمن التكامل المرجعي مع جدول تاني.</li>\n        <li>(أنواع أخرى زي CHECK, DEFAULT).</li>\n     </ul>\n     <p class=\"mt-2 text-lg\">القيود دي بنحددها واحنا بنعمل الجدول بـ <code class=\"font-mono text-cyan-300\">CREATE TABLE</code> أو بنضيفها بعدين بـ <code class=\"font-mono text-cyan-300\">ALTER TABLE</code>.</p>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: What is SQL? 🤔</h3>\n    <p class=\"mb-4 text-lg\">SQL stands for **Structured Query Language**. It's the standard language used to manage and manipulate Relational Databases. We use it to:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>Retrieve data.</li>\n        <li>Insert new data.</li>\n        <li>Update existing data.</li>\n        <li>Delete data.</li>\n        <li>Create and modify database and table structures themselves.</li>\n    </ul>\n    <p class=\"mt-4 text-lg\">SQL is a crucial language for anyone working with data, as it allows efficient management and analysis of large datasets.</p>\n        <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Main SQL Command Categories 📚</h3>\n    <p class=\"mb-4 text-lg\">SQL commands are grouped based on their function:</p>\n    <ul class=\"list-disc list-inside space-y-2 ml-6\">\n        <li>**DQL (Data Query Language):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Purpose: Retrieve data from the database.</li>\n                <li>Primary Command: <code class=\"font-mono text-cyan-300\">SELECT</code> (and <code class=\"font-mono text-cyan-300\">SELECT DISTINCT</code>).</li>\n            </ul>\n        </li>\n        <li>**DDL (Data Definition Language):**\n            <ul class=\"list-disc list-inside ml-6 mt-1\">\n                <li>Purpose: Define, modify, and delete database structures (like tables).</li>\n                <li>Primary Commands: <code class=\"font-mono text-cyan-300\">CREATE DATABASE</code>, <code class=\"font-mono text-cyan-300\">DROP DATABASE</code>, <code class=\"font-mono text-cyan-300\">CREATE TABLE</code>, <code class=\"font-mono text-cyan-300\">DROP TABLE</code>, <code class=\"font-mono text-cyan-300\">ALTER TABLE</code>.</li>\n            </ul>\n        </li>\n        <li>**DML (Data Manipulation Language):**\n             <ul class=\"list-disc list-inside ml-6 mt-1\">\n                 <li>Purpose: Insert, update, and delete data *within* tables.</li>\n                 <li>Primary Commands: <code class=\"font-mono text-cyan-300\">INSERT INTO</code>, <code class=\"font-mono text-cyan-300\">UPDATE</code>, <code class=\"font-mono text-cyan-300\">DELETE FROM</code>.</li>\n             </ul>\n        </li>\n        <li>(Other categories like DCL and TCL exist but are not the focus here).</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: Basic SQL Commands (with Examples) ⌨️</h3>\n\n    <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n      <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">1. DDL (Defining Structures):</h4>\n      <ul class=\"list-disc list-inside space-y-1 ml-6 mt-2\">\n          <li><strong>Create Database:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE DATABASE database_name;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE DATABASE Batu_Uni;</code></li>\n          <li><strong>Delete Database:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP DATABASE database_name;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP DATABASE Batu_Uni;</code></li>\n          <li><strong>Create Table:</strong> (Specify table name, column names, data types, and constraints like Primary Key) <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE TABLE table_name (column1 datatype constraints, column2 datatype, ...);</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">CREATE TABLE Students (StudentID INT PRIMARY KEY, Name VARCHAR(255), Age INT);</code></li>\n          <li><strong>Delete Table:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP TABLE table_name;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DROP TABLE Students;</code></li>\n          <li><strong>Modify Table (e.g., Add Column):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE table_name ADD column_name datatype;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE Students ADD Email VARCHAR(255);</code></li>\n           <li><strong>Modify Table (e.g., Drop Column):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE table_name DROP COLUMN column_name;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">ALTER TABLE Students DROP COLUMN Email;</code></li>\n      </ul>\n    </div>\n\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n      <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">2. DML (Manipulating Data within Tables):</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6 mt-2\">\n            <li><strong>Add a New Record (Row):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">INSERT INTO table_name (column1, column2) VALUES (value1, value2);</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">INSERT INTO Students (StudentID, Name, Age) VALUES (1, 'Ahmed', 20);</code></li>\n             <li><strong>Add Multiple Records:</strong> (Syntax varies slightly by DBMS)<br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">INSERT INTO Students (StudentID, Name, Age) VALUES (2, 'Sara', 21), (3, 'Mona', 19);</code></li>\n            <li><strong>Modify Existing Records:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">UPDATE table_name SET column1 = value1 WHERE condition;</code><br><em>Example (Update a specific student's age):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">UPDATE Students SET Age = 21 WHERE StudentID = 1;</code></li>\n            <li><strong>Delete Records:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DELETE FROM table_name WHERE condition;</code><br><em>Example (Delete a specific student):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DELETE FROM Students WHERE StudentID = 1;</code><br><em>Example (Delete all students under 18):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">DELETE FROM Students WHERE Age &lt; 18;</code><br><em>(Warning: Omitting the <code class=\"font-mono text-cyan-300\">WHERE</code> clause deletes **all** records in the table!)</em></li>\n       </ul>\n    </div>\n\n     <div class=\"glass-card p-4 my-6 border-l-4 border-cyan-400\">\n       <h4 class=\"text-xl font-semibold text-cyan-400 mb-2\">3. DQL (Retrieving Data):</h4>\n        <ul class=\"list-disc list-inside space-y-1 ml-6 mt-2\">\n            <li><strong>Select All Columns and Rows:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM table_name;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM Students;</code></li>\n            <li><strong>Select Specific Columns:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT column1, column2 FROM table_name;</code><br><em>Example:</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT Name, Age FROM Students;</code></li>\n            <li><strong>Filter Rows (Select specific records):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT columns FROM table_name WHERE condition;</code><br><em>Example (Select students older than 20):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT Name FROM Students WHERE Age > 20;</code> <br>(Uses comparison operators: =, <>, >, <, >=, <=).</li>\n            <li><strong>Select Unique Values (No duplicates):</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT DISTINCT column FROM table_name;</code><br><em>Example (Show distinct cities of students):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT DISTINCT City FROM Students;</code></li>\n             <li><strong>Sort Results:</strong> <br><code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT columns FROM table_name ORDER BY column ASC/DESC;</code><br><em>Example (Sort students by name alphabetically):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM Students ORDER BY Name ASC;</code><br><em>Example (Sort students by age descending - oldest first):</em> <code class=\"font-mono text-white bg-slate-700 px-2 py-1 rounded\">SELECT * FROM Students ORDER BY Age DESC;</code><br>(Default is ASC - ascending).</li>\n       </ul>\n    </div>\n\n    <hr class=\"my-8 border-slate-700\">\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 4: Constraints 🧱</h3>\n     <p class=\"mb-4 text-lg\">Rules applied to columns to ensure data accuracy and integrity.</p>\n      <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**NOT NULL:** Ensures a column cannot have a NULL (empty) value.</li>\n        <li>**UNIQUE:** Ensures all values in a column are different (no duplicates).</li>\n        <li>**PRIMARY KEY:** Uniquely identifies each record in a table (combines NOT NULL and UNIQUE).</li>\n        <li>**FOREIGN KEY:** Enforces referential integrity with another table.</li>\n        <li>(Other types include CHECK, DEFAULT).</li>\n     </ul>\n     <p class=\"mt-2 text-lg\">Constraints are usually defined when creating the table with <code class=\"font-mono text-cyan-300\">CREATE TABLE</code> or added later using <code class=\"font-mono text-cyan-300\">ALTER TABLE</code>.</p>\n  ",
+  "quiz": [
+    {
+      "question": "1. What does SQL stand for?",
+      "options": [
+        "Strong Question Language",
+        "Structured Query Language",
+        "Simple Query Logic",
+        "System Query Language"
+      ],
+      "correctAnswer": "Structured Query Language",
+      "hint": "لغة الاستعلام الهيكلية."
+    },
+    {
+      "question": "2. Which SQL command is used to retrieve data from a database?",
+      "options": [
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "SELECT"
+      ],
+      "correctAnswer": "SELECT",
+      "hint": "هو الأمر الأساسي لجلب البيانات."
+    },
+    {
+      "question": "3. Which SQL category does the `SELECT` command belong to?",
+      "options": [
+        "DDL",
+        "DML",
+        "DQL",
+        "DCL"
+      ],
+      "correctAnswer": "DQL",
+      "hint": "لغة استعلام البيانات."
+    },
+    {
+      "question": "4. What is the purpose of the `SELECT DISTINCT` statement?",
+      "options": [
+        "Select all data",
+        "Select only unique values",
+        "Select data based on a condition",
+        "Select data in order"
+      ],
+      "correctAnswer": "Select only unique values",
+      "hint": "بتجيب القيم الفريدة بس من غير تكرار."
+    },
+    {
+      "question": "5. Which SQL command is used to create a new database?",
+      "options": [
+        "CREATE TABLE",
+        "CREATE DATABASE",
+        "NEW DATABASE",
+        "ADD DATABASE"
+      ],
+      "correctAnswer": "CREATE DATABASE",
+      "hint": "لإنشاء قاعدة بيانات جديدة."
+    },
+    {
+      "question": "6. Which SQL command completely deletes a database?",
+      "options": [
+        "DELETE DATABASE",
+        "REMOVE DATABASE",
+        "DROP DATABASE",
+        "CLEAR DATABASE"
+      ],
+      "correctAnswer": "DROP DATABASE",
+      "hint": "لحذف قاعدة البيانات بالكامل."
+    },
+    {
+      "question": "7. `CREATE TABLE` and `DROP TABLE` belong to which SQL category?",
+      "options": [
+        "DQL",
+        "DML",
+        "DDL",
+        "TCL"
+      ],
+      "correctAnswer": "DDL",
+      "hint": "لغة تعريف البيانات (بتتعامل مع هيكل الجداول)."
+    },
+    {
+      "question": "8. Which SQL command is used to add new rows (records) to a table?",
+      "options": [
+        "ADD INTO",
+        "UPDATE",
+        "INSERT INTO",
+        "CREATE RECORD"
+      ],
+      "correctAnswer": "INSERT INTO",
+      "hint": "لإدخال بيانات جديدة."
+    },
+    {
+      "question": "9. Which SQL command modifies existing data in a table?",
+      "options": [
+        "MODIFY",
+        "UPDATE",
+        "CHANGE",
+        "ALTER"
+      ],
+      "correctAnswer": "UPDATE",
+      "hint": "لتحديث بيانات موجودة بالفعل."
+    },
+    {
+      "question": "10. Which SQL command removes rows (records) from a table?",
+      "options": [
+        "DROP",
+        "REMOVE",
+        "CLEAR",
+        "DELETE FROM"
+      ],
+      "correctAnswer": "DELETE FROM",
+      "hint": "لحذف سجلات بناءً على شرط (أو كلها لو مفيش شرط)."
+    },
+    {
+      "question": "11. `INSERT INTO`, `UPDATE`, and `DELETE FROM` belong to which SQL category?",
+      "options": [
+        "DQL",
+        "DML",
+        "DDL",
+        "DCL"
+      ],
+      "correctAnswer": "DML",
+      "hint": "لغة معالجة البيانات (بتتعامل مع البيانات جوه الجداول)."
+    },
+    {
+      "question": "12. What is the purpose of the `WHERE` clause in a `SELECT` statement?",
+      "options": [
+        "To sort data",
+        "To group data",
+        "To filter rows based on a condition",
+        "To select unique values"
+      ],
+      "correctAnswer": "To filter rows based on a condition",
+      "hint": "عشان تحدد السجلات اللي أنت عايزها بس."
+    },
+    {
+      "question": "13. Which clause is used to sort the results of a query?",
+      "options": [
+        "SORT BY",
+        "ORDER BY",
+        "ARRANGE BY",
+        "GROUP BY"
+      ],
+      "correctAnswer": "ORDER BY",
+      "hint": "لترتيب النتائج تصاعدي أو تنازلي."
+    },
+    {
+      "question": "14. How do you sort results in descending order (Z to A, highest to lowest)?",
+      "options": [
+        "ORDER BY column ASC",
+        "ORDER BY column DESC",
+        "SORT BY column DESC",
+        "ARRANGE BY column DESC"
+      ],
+      "correctAnswer": "ORDER BY column DESC",
+      "hint": "بنستخدم كلمة DESC."
+    },
+    {
+      "question": "15. What does the asterisk (*) mean in `SELECT * FROM Students;`?",
+      "options": [
+        "Select the first column",
+        "Select the last column",
+        "Select all columns",
+        "Select no columns"
+      ],
+      "correctAnswer": "Select all columns",
+      "hint": "النجمة معناها 'كل الأعمدة'."
+    },
+    {
+      "question": "16. What is the difference between `DELETE FROM Students;` and `DROP TABLE Students;`?",
+      "options": [
+        "No difference",
+        "DELETE removes data, DROP removes the table structure",
+        "DROP removes data, DELETE removes the table structure",
+        "DELETE is DDL, DROP is DML"
+      ],
+      "correctAnswer": "DELETE removes data, DROP removes the table structure",
+      "hint": "DELETE بتفضي الجدول، DROP بتشيله هو نفسه من الوجود."
+    },
+    {
+      "question": "17. Which command would you use to add a new column named 'Email' to the 'Students' table?",
+      "options": [
+        "CREATE COLUMN Email",
+        "ADD COLUMN Email",
+        "ALTER TABLE Students ADD Email VARCHAR(255)",
+        "UPDATE TABLE Students ADD Email"
+      ],
+      "correctAnswer": "ALTER TABLE Students ADD Email VARCHAR(255)",
+      "hint": "ALTER TABLE بيعدل هيكل الجدول."
+    },
+    {
+      "question": "18. What is a constraint in SQL?",
+      "options": [
+        "A type of query",
+        "A rule applied to data in a column",
+        "A database user",
+        "A backup file"
+      ],
+      "correctAnswer": "A rule applied to data in a column",
+      "hint": "قيد بنحطه عشان نضمن صحة البيانات."
+    },
+    {
+      "question": "19. Which constraint ensures that a column cannot have NULL values?",
+      "options": [
+        "UNIQUE",
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "NOT NULL"
+      ],
+      "correctAnswer": "NOT NULL",
+      "hint": "بيمنع إن الحقل يتساب فاضي."
+    },
+    {
+      "question": "20. Which constraint ensures that all values in a column are different?",
+      "options": [
+        "UNIQUE",
+        "PRIMARY KEY",
+        "NOT NULL",
+        "CHECK"
+      ],
+      "correctAnswer": "UNIQUE",
+      "hint": "بيمنع تكرار القيم في العمود ده."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}

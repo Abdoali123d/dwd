@@ -1,0 +1,69 @@
+{
+    "id": "/",
+    "name": "DWD - Smart Campus",
+    "short_name": "DWD",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "display_override": [
+        "window-controls-overlay",
+        "minimal-ui"
+    ],
+    "background_color": "#1a1a2e",
+    "theme_color": "#1a1a2e",
+    "orientation": "portrait-primary",
+    "categories": [
+        "education",
+        "productivity",
+        "utilities"
+    ],
+    "description": "منصتك الجامعية الذكية. جداول، محاضرات، وتسجيل حضور بضغطة زر.",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "192x192 512x512",
+            "type": "image/x-icon",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/img/nano_v2.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/img/nano_v2.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "المحاضرات",
+            "short_name": "Materials",
+            "description": "الوصول السريع للمحاضرات",
+            "url": "/DWD/materials",
+            "icons": [
+                {
+                    "src": "https://ui-avatars.com/api/?name=Mat&background=00e676&color=fff&size=96",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "البروفيسور",
+            "short_name": "Professor",
+            "description": "لوحة تحكم الدكاترة",
+            "url": "/professor",
+            "icons": [
+                {
+                    "src": "https://ui-avatars.com/api/?name=Prof&background=ff1744&color=fff&size=96",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ]
+}

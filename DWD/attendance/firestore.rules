@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if the user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper function to get user's role from a 'users' collection
+    // This assumes you have a 'users' collection where each document ID is the user's UID
+    // and contains a 'role' field ('student' or 'professor')
+    function getUserRole(userId) {
+      return get(/databases/$(database)/documents/users/$(userId)).data.role;
+    }
+
+    // Helper function to check if the user is a professor
+    function isProfessor() {
+      return isSignedIn() && getUserRole(request.auth.uid) == 'professor';
+    }
+
+    // === Rules for Courses ===
+    // Professors can create, update, delete courses.
+    // Students can only read courses.
+    match /courses/{courseId} {
+      allow read: if isSignedIn();
+      allow write: if isProfessor();
+    }
+
+    // === Rules for Content (Lectures, Sections, Labs) ===
+    // Professors can create, update, delete content.
+    // Students can only read content.
+    match /content/{contentId} {
+      allow read: if isSignedIn();
+      allow write: if isProfessor();
+    }
+
+    // === Rules for Assignments ===
+    // Professors can create, update, delete assignments.
+    // Students can only read assignments.
+    match /assignments/{assignmentId} {
+      allow read: if isSignedIn();
+      allow write: if isProfessor();
+    }
+
+    // === Rules for Submissions ===
+    // Students can ONLY create submissions under their own UID.
+    // Students cannot read other students' submissions.
+    // Professors can read all submissions.
+    match /submissions/{submissionId} {
+      allow read: if isProfessor() || (isSignedIn() && resource.data.studentId == request.auth.uid);
+      allow create: if isSignedIشn() && request.resource.data.studentId == request.auth.uid;
+      allow update, delete: if isProfessor();
+    }
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "pdfFile": "../../materials-lectures/web-1/L2.pdf",
+  "arabicSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الأول: مقدمة لـ HTML5 وهيكله الأساسي 🦴</h3>\n    <p class=\"mb-4 text-lg\">HTML5 هي أحدث إصدار من لغة HTML، وهي اللغة الأساسية لبناء صفحات الويب. جابت معاها تحسينات ومميزات كتير عن HTML4.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مميزات HTML5 الرئيسية:</h4>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**عناصر هيكلية جديدة (Semantic Elements):** زي <code class=\"text-white\">&lt;header&gt;</code>, <code class=\"text-white\">&lt;nav&gt;</code>, <code class=\"text-white\">&lt;section&gt;</code>, <code class=\"text-white\">&lt;article&gt;</code>, <code class=\"text-white\">&lt;aside&gt;</code>, <code class=\"text-white\">&lt;footer&gt;</code>. بتدي معنى أفضل لهيكل الصفحة لمحركات البحث وللمطورين.</li>\n        <li>**دعم الصوت والفيديو المدمج:** باستخدام وسوم <code class=\"text-white\">&lt;audio&gt;</code> و <code class=\"text-white\">&lt;video&gt;</code> نقدر نضيف ملفات صوت وفيديو مباشرة بدون الحاجة لـ Flash.</li>\n        <li>(مميزات تانية زي Canvas للرسم، دعم أفضل للفورم، Geolocation، Web Storage).</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">هيكل مستند HTML5 الأساسي:</h4>\n    <p class=\"mb-4\">أي صفحة HTML بتبدأ بالتصريح عن نوع المستند (<code class=\"text-white\">&lt;!DOCTYPE html&gt;</code>)، وبعدين الوسم الرئيسي <code class=\"text-white\">&lt;html&gt;</code> اللي جواه قسمين:</p>\n    <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**&lt;head&gt;:** بيحتوي على معلومات عن الصفحة (metadata) زي العنوان (<code class=\"text-white\">&lt;title&gt;</code>)، ترميز الحروف (<code class=\"text-white\">&lt;meta charset=\"UTF-8\"&gt;</code>)، روابط لملفات CSS (<code class=\"text-white\">&lt;link&gt;</code>)، و favicon (<code class=\"text-white\">&lt;link rel=\"icon\" ...&gt;</code>).</li>\n        <li>**&lt;body&gt;:** بيحتوي على كل المحتوى المرئي للصفحة اللي المستخدم بيشوفه.</li>\n    </ul>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\n&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n&lt;head&gt;\n  &lt;meta charset=\"UTF-8\"&gt;\n  &lt;title&gt;Page Title&lt;/title&gt;\n  &lt;link rel=\"icon\" type=\"image/x-icon\" href=\"/images/favicon.ico\"&gt;\n  &lt;link rel=\"stylesheet\" href=\"styles.css\"&gt;\n&lt;/head&gt;\n&lt;body&gt;\n  &lt;h1&gt;My First Heading&lt;/h1&gt;\n  &lt;p&gt;My first paragraph.&lt;/p&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n    </code></pre>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثاني: عناصر HTML الشائعة 🧱</h3>\n    <p class=\"mb-4 text-lg\">دي بعض الوسوم (Tags) اللي بنستخدمها كتير عشان نبني المحتوى:</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;h1&gt;</code> to <code class=\"font-mono text-lg text-cyan-300\">&lt;h6&gt;</code>: للعناوين (Headings) بمستويات مختلفة (h1 الأكبر والأهم).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;p&gt;</code>: للفقرات (Paragraphs).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;a href=\"...\"&gt;</code>: لإنشاء الروابط (Links/Anchors). خاصية <code class=\"text-white\">href</code> بتحدد عنوان الوجهة، وخاصية <code class=\"text-white\">target=\"_blank\"</code> بتخليه يفتح في تاب جديد.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;img src=\"...\" alt=\"...\"&gt;</code>: لإدراج الصور. <code class=\"text-white\">src</code> هو مسار الصورة، و <code class=\"text-white\">alt</code> هو نص بديل بيظهر لو الصورة مش موجودة (مهم للـ SEO و accessibility). ممكن نضيف <code class=\"text-white\">width</code> و <code class=\"text-white\">height</code> لتحديد الأبعاد.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;ul&gt;</code> و <code class=\"font-mono text-lg text-cyan-300\">&lt;li&gt;</code>: لإنشاء قوائم غير مرتبة (Unordered Lists - بنقاط).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;ol&gt;</code> و <code class=\"font-mono text-lg text-cyan-300\">&lt;li&gt;</code>: لإنشاء قوائم مرتبة (Ordered Lists - بأرقام).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;table&gt;</code>, <code class=\"font-mono text-lg text-cyan-300\">&lt;tr&gt;</code>, <code class=\"font-mono text-lg text-cyan-300\">&lt;th&gt;</code>, <code class=\"font-mono text-lg text-cyan-300\">&lt;td&gt;</code>: لإنشاء الجداول (Table, Table Row, Table Header, Table Data/Cell).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;div&gt;</code>: عنصر حاوية **(Block-level)** بيستخدم لتجميع وتنظيم المحتوى (بياخد عرض السطر كله).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;span&gt;</code>: عنصر حاوية **(Inline)** بيستخدم لتطبيق تنسيق على جزء من النص (بياخد عرضه على قد المحتوى بس).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;br&gt;</code>: لعمل سطر جديد (Line Break).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;hr&gt;</code>: لعمل خط أفقي فاصل (Horizontal Rule).</div>\n         <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;iframe src=\"...\"&gt;</code>: لتضمين محتوى من صفحة تانية (زي فيديو يوتيوب).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;audio controls&gt;&lt;source src=\"...\"&gt;&lt;/audio&gt;</code>: لتشغيل ملف صوتي مع إظهار أزرار التحكم.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;video controls width=\"...\"&gt;&lt;source src=\"...\"&gt;&lt;/video&gt;</code>: لتشغيل ملف فيديو مع إظهار أزرار التحكم وتحديد العرض.</div>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">الخصائص العامة (Global Attributes):</h4>\n    <p class=\"mb-4\">دي خصائص ممكن نضيفها لأي عنصر HTML تقريبًا:</p>\n     <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li><code class=\"text-white\">id=\"...\"</code>: بيعرف مُعرّف **فريد** للعنصر (مهم للـ CSS و JS).</li>\n        <li><code class=\"text-white\">class=\"...\"</code>: بيحدد اسم \"فئة\" أو أكتر للعنصر (ممكن يتكرر، مهم للـ CSS).</li>\n        <li><code class=\"text-white\">style=\"...\"</code>: بيسمح بإضافة تنسيقات CSS مباشرة للعنصر (Inline CSS).</li>\n        <li><code class=\"text-white\">title=\"...\"</code>: بيعرض تلميح (tooltip) لما الماوس يقف على العنصر.</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">الجزء الثالث: أساسيات CSS 🎨</h3>\n    <p class=\"mb-4 text-lg\">CSS (Cascading Style Sheets) هي اللغة اللي بنستخدمها عشان ننسق شكل ومظهر صفحة الـ HTML (الألوان، الخطوط، التخطيط، المسافات، إلخ).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">طرق إضافة CSS للصفحة:</h4>\n     <ol class=\"list-decimal list-inside space-y-2 mr-6\">\n        <li>**Inline CSS (مباشر):** باستخدام خاصية <code class=\"text-white\">style</code> جوه وسم الـ HTML نفسه. (مثال: <code class=\"text-white\">&lt;p style=\"color:red;\"&gt;...&lt;/p&gt;</code>). مناسب للتغييرات الصغيرة جدًا.</li>\n        <li>**Internal CSS (داخلي):** بكتابة التنسيقات جوه وسم <code class=\"text-white\">&lt;style&gt;</code> داخل قسم <code class=\"text-white\">&lt;head&gt;</code> في ملف الـ HTML. مناسب للصفحات المنفردة.</li>\n        <li>**External CSS (خارجي):** بكتابة التنسيقات في ملف منفصل بامتداد <code class=\"text-white\">.css</code> وربطه بملف الـ HTML باستخدام وسم <code class=\"text-white\">&lt;link&gt;</code> في الـ <code class=\"text-white\">&lt;head&gt;</code>. (مثال: <code class=\"text-white\">&lt;link rel=\"stylesheet\" href=\"styles.css\"&gt;</code>). **دي الطريقة الأفضل والأكثر تنظيمًا للمواقع الكبيرة.**</li>\n    </ol>\n         <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">مُحدِّدات CSS الأساسية (Selectors):</h4>\n      <p class=\"mb-4\">بنستخدمها عشان نختار العناصر اللي عايزين نطبق عليها التنسيق.</p>\n      <ul class=\"list-disc list-inside space-y-1 mr-6\">\n        <li>**مُحدِّد العنصر (Element Selector):** بيختار كل العناصر من نوع معين (مثال: <code class=\"text-white\">p { color: blue; }</code> يطبق على كل الفقرات).</li>\n        <li>**مُحدِّد الـ ID (ID Selector):** بيختار عنصر واحد بس ليه ID معين (بيبدأ بـ <code class=\"text-white\">#</code>). (مثال: <code class=\"text-white\">#myHeader { background-color: lightblue; }</code>).</li>\n        <li>**مُحدِّد الكلاس (Class Selector):** بيختار كل العناصر اللي ليها class معين (بيبدأ بـ <code class=\"text-white\">.</code>). (مثال: <code class=\"text-white\">.city { color: white; }</code>).</li>\n    </ul>\n  ",
+  "englishSummary": "\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 1: Introduction to HTML5 and Basic Structure 🦴</h3>\n    <p class=\"mb-4 text-lg\">HTML5 is the latest version of HTML, the core language for building web pages. It introduced many improvements and features over HTML4.</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Key HTML5 Features:</h4>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**New Semantic Elements:** Tags like <code class=\"text-white\">&lt;header&gt;</code>, <code class=\"text-white\">&lt;nav&gt;</code>, <code class=\"text-white\">&lt;section&gt;</code>, <code class=\"text-white\">&lt;article&gt;</code>, <code class=\"text-white\">&lt;aside&gt;</code>, <code class=\"text-white\">&lt;footer&gt;</code> provide better meaning to the page structure for search engines and developers.</li>\n        <li>**Built-in Audio and Video Support:** Using <code class=\"text-white\">&lt;audio&gt;</code> and <code class=\"text-white\">&lt;video&gt;</code> tags allows embedding media directly without needing plugins like Flash.</li>\n        <li>(Other features include Canvas, improved forms, Geolocation, Web Storage).</li>\n    </ul>\n        <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Basic HTML5 Document Structure:</h4>\n    <p class=\"mb-4\">Every HTML page starts with a document type declaration (<code class=\"text-white\">&lt;!DOCTYPE html&gt;</code>), followed by the root <code class=\"text-white\">&lt;html&gt;</code> tag containing two main sections:</p>\n    <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**&lt;head&gt;:** Contains meta-information about the page (like title (<code class=\"text-white\">&lt;title&gt;</code>), character encoding (<code class=\"text-white\">&lt;meta charset=\"UTF-8\"&gt;</code>), links to CSS files (<code class=\"text-white\">&lt;link&gt;</code>), and the favicon (<code class=\"text-white\">&lt;link rel=\"icon\" ...&gt;</code>)). Content here isn't displayed on the page itself.</li>\n        <li>**&lt;body&gt;:** Contains all the visible content of the web page that the user sees.</li>\n    </ul>\n    <pre class=\"bg-slate-800 p-3 rounded-lg text-white font-mono text-sm overflow-x-auto\"><code>\n&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n&lt;head&gt;\n  &lt;meta charset=\"UTF-8\"&gt;\n  &lt;title&gt;Page Title&lt;/title&gt;\n  &lt;link rel=\"icon\" type=\"image/x-icon\" href=\"/images/favicon.ico\"&gt;\n  &lt;link rel=\"stylesheet\" href=\"styles.css\"&gt;\n&lt;/head&gt;\n&lt;body&gt;\n  &lt;h1&gt;My First Heading&lt;/h1&gt;\n  &lt;p&gt;My first paragraph.&lt;/p&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n    </code></pre>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 2: Common HTML Elements 🧱</h3>\n    <p class=\"mb-4 text-lg\">Some frequently used tags for building content:</p>\n    <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4 mt-4\">\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;h1&gt;</code> to <code class=\"font-mono text-lg text-cyan-300\">&lt;h6&gt;</code>: Headings of different levels (h1 is largest/most important).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;p&gt;</code>: Paragraphs.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;a href=\"...\"&gt;</code>: Creates Links/Anchors. The <code class=\"text-white\">href</code> attribute specifies the destination URL, and <code class=\"text-white\">target=\"_blank\"</code> opens it in a new tab.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;img src=\"...\" alt=\"...\"&gt;</code>: Embeds Images. <code class=\"text-white\">src</code> is the image path, <code class=\"text-white\">alt</code> provides alternative text (important for SEO & accessibility). <code class=\"text-white\">width</code> and <code class=\"text-white\">height</code> can set dimensions.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;ul&gt;</code> and <code class=\"font-mono text-lg text-cyan-300\">&lt;li&gt;</code>: Create Unordered Lists (with bullet points).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;ol&gt;</code> and <code class=\"font-mono text-lg text-cyan-300\">&lt;li&gt;</code>: Create Ordered Lists (with numbers).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;table&gt;</code>, <code class=\"font-mono text-lg text-cyan-300\">&lt;tr&gt;</code>, <code class=\"font-mono text-lg text-cyan-300\">&lt;th&gt;</code>, <code class=\"font-mono text-lg text-cyan-300\">&lt;td&gt;</code>: Create Tables (Table, Table Row, Table Header, Table Data/Cell).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;div&gt;</code>: A **Block-level** container used to group and organize content (takes up the full width).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;span&gt;</code>: An **Inline** container used to apply styles to a part of text (takes up only as much width as needed).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;br&gt;</code>: Inserts a Line Break.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;hr&gt;</code>: Creates a Horizontal Rule (thematic break).</div>\n         <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;iframe src=\"...\"&gt;</code>: Embeds content from another page (like a YouTube video).</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;audio controls&gt;&lt;source src=\"...\"&gt;&lt;/audio&gt;</code>: Plays an audio file with controls.</div>\n        <div class=\"glass-card p-4 rounded-lg\"><code class=\"font-mono text-lg text-cyan-300\">&lt;video controls width=\"...\"&gt;&lt;source src=\"...\"&gt;&lt;/video&gt;</code>: Plays a video file with controls and specified width.</div>\n    </div>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Global Attributes:</h4>\n    <p class=\"mb-4\">These attributes can be added to almost any HTML element:</p>\n     <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li><code class=\"text-white\">id=\"...\"</code>: Defines a **unique** identifier for an element (important for CSS & JS).</li>\n        <li><code class=\"text-white\">class=\"...\"</code>: Specifies one or more class names for an element (can be repeated, important for CSS).</li>\n        <li><code class=\"text-white\">style=\"...\"</code>: Allows adding CSS styles directly to the element (Inline CSS).</li>\n        <li><code class=\"text-white\">title=\"...\"</code>: Displays extra information as a tooltip when hovering over the element.</li>\n    </ul>\n\n    <hr class=\"my-8 border-slate-700\">\n\n    <h3 class=\"text-2xl font-bold text-cyan-300 mb-4\">Part 3: CSS Basics 🎨</h3>\n    <p class=\"mb-4 text-lg\">CSS (Cascading Style Sheets) is the language used to style the presentation and layout of an HTML page (colors, fonts, spacing, positioning, etc.).</p>\n\n    <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Ways to Add CSS:</h4>\n     <ol class=\"list-decimal list-inside space-y-2 ml-6\">\n        <li>**Inline CSS:** Using the <code class=\"text-white\">style</code> attribute directly inside the HTML tag. (Example: <code class=\"text-white\">&lt;p style=\"color:red;\"&gt;...&lt;/p&gt;</code>). Suitable for very small, specific changes.</li>\n        <li>**Internal CSS:** Writing styles within a <code class=\"text-white\"><style></code> tag inside the <code class=\"text-white\"><head></code> section of the HTML file. Suitable for single pages.</li>\n        <li>**External CSS:** Writing styles in a separate file with a <code class=\"text-white\">.css</code> extension and linking it to the HTML file using a <code class=\"text-white\"><link></code> tag in the <code class=\"text-white\"><head></code>. (Example: <code class=\"text-white\"><link rel=\"stylesheet\" href=\"styles.css\"&gt;</code>). **This is the best and most organized method for larger websites.**</li>\n    </ol>\n         <h4 class=\"text-xl font-semibold text-cyan-400 mt-6 mb-2\">Basic CSS Selectors:</h4>\n      <p class=\"mb-4\">Used to target the HTML elements you want to style.</p>\n      <ul class=\"list-disc list-inside space-y-1 ml-6\">\n        <li>**Element Selector:** Selects all elements of a specific type (Example: <code class=\"text-white\">p { color: blue; }</code> applies to all paragraphs).</li>\n        <li>**ID Selector:** Selects the single element with a specific ID (starts with <code class=\"text-white\">#</code>). (Example: <code class=\"text-white\">#myHeader { background-color: lightblue; }</code>).</li>\n        <li>**Class Selector:** Selects all elements with a specific class (starts with <code class=\"text-white\">.</code>). (Example: <code class=\"text-white\">.city { color: white; }</code>).</li>\n    </ul>\n  ",
+  "questions": [
+    {
+      "question": "1. What does <!DOCTYPE html> declare?",
+      "options": [
+        "The start of the content",
+        "The document type and HTML version",
+        "A comment",
+        "The page title"
+      ],
+      "correctAnswer": "The document type and HTML version",
+      "hint": "أول سطر في أي ملف HTML5."
+    },
+    {
+      "question": "2. Which HTML section contains meta-information, title, and links?",
+      "options": [
+        "<body>",
+        "<footer>",
+        "<head>",
+        "<header>"
+      ],
+      "correctAnswer": "<head>",
+      "hint": "الجزء اللي مش بيظهر مباشرة في محتوى الصفحة."
+    },
+    {
+      "question": "3. What is the purpose of the `alt` attribute in an <img> tag?",
+      "options": [
+        "To set the image source",
+        "To provide alternative text if the image fails to load",
+        "To set image width",
+        "To create a link"
+      ],
+      "correctAnswer": "To provide alternative text if the image fails to load",
+      "hint": "نص بديل بيساعد محركات البحث وذوي الاحتياجات الخاصة."
+    },
+    {
+      "question": "4. Which tag pair creates a numbered list?",
+      "options": [
+        "<ul> and <li>",
+        "<dl> and <dt>",
+        "<ol> and <li>",
+        "<list> and <item>"
+      ],
+      "correctAnswer": "<ol> and <li>",
+      "hint": "O اختصار لـ Ordered (مرتبة)."
+    },
+    {
+      "question": "5. Which tag pair creates a bulleted list?",
+      "options": [
+        "<ul> and <li>",
+        "<ol> and <li>",
+        "<list> and <item>",
+        "<bl> and <li>"
+      ],
+      "correctAnswer": "<ul> and <li>",
+      "hint": "U اختصار لـ Unordered (غير مرتبة)."
+    },
+    {
+      "question": "6. What is the difference between <div> and <span>?",
+      "options": [
+        "<div> is inline, <span> is block",
+        "<div> is block, <span> is inline",
+        "<div> is for images, <span> is for text",
+        "No difference"
+      ],
+      "correctAnswer": "<div> is block, <span> is inline",
+      "hint": "Block بياخد السطر كله، Inline على قد المحتوى."
+    },
+    {
+      "question": "7. Which tag creates a horizontal line?",
+      "options": [
+        "<br>",
+        "<line>",
+        "<rule>",
+        "<hr>"
+      ],
+      "correctAnswer": "<hr>",
+      "hint": "اختصار لـ Horizontal Rule."
+    },
+    {
+      "question": "8. How do you add a favorite icon (favicon) to your webpage title?",
+      "options": [
+        "Using <favicon> tag in <body>",
+        "Using <link rel='icon' ...> in <head>",
+        "Using <img> tag in <head>",
+        "Using <meta> tag"
+      ],
+      "correctAnswer": "Using <link rel='icon' ...> in <head>",
+      "hint": "بنستخدم وسم link خاص في الهيد."
+    },
+    {
+      "question": "9. Which attribute makes a link open in a new browser tab?",
+      "options": [
+        "target='_new'",
+        "target='_blank'",
+        "target='_tab'",
+        "open='new'"
+      ],
+      "correctAnswer": "target='_blank'",
+      "hint": "قيمة blank هي اللي بتفتح تاب جديد."
+    },
+    {
+      "question": "10. What are the three ways to add CSS to an HTML document?",
+      "options": [
+        "Inline, Internal, External",
+        "Header, Body, Footer",
+        "Class, ID, Tag",
+        "JavaScript, PHP, Python"
+      ],
+      "correctAnswer": "Inline, Internal, External",
+      "hint": "مباشر، داخلي، خارجي."
+    },
+    {
+      "question": "11. Where do you place Internal CSS rules?",
+      "options": [
+        "Inside the <body> tag",
+        "Inside a <script> tag",
+        "Inside a <style> tag within the <head>",
+        "In a separate .css file"
+      ],
+      "correctAnswer": "Inside a <style> tag within the <head>",
+      "hint": "جوه وسم style في الهيد."
+    },
+    {
+      "question": "12. Which attribute is used for Inline CSS?",
+      "options": [
+        "css",
+        "inline",
+        "style",
+        "class"
+      ],
+      "correctAnswer": "style",
+      "hint": "بنكتب التنسيق جوه قيمة الـ style."
+    },
+    {
+      "question": "13. How do you link an External CSS file named `styles.css`?",
+      "options": [
+        "<style src='styles.css'>",
+        "<link rel='stylesheet' href='styles.css'>",
+        "<css link='styles.css'>",
+        "<script src='styles.css'>"
+      ],
+      "correctAnswer": "<link rel='stylesheet' href='styles.css'>",
+      "hint": "بنستخدم وسم link في الهيد."
+    },
+    {
+      "question": "14. Which CSS selector targets an element with a specific ID (e.g., `id='logo'`)?",
+      "options": [
+        ".logo",
+        "logo",
+        "#logo",
+        "*logo"
+      ],
+      "correctAnswer": "#logo",
+      "hint": "الـ ID بنستخدم معاه علامة #."
+    },
+    {
+      "question": "15. Which CSS selector targets all elements with a specific class (e.g., `class='button'`)?",
+      "options": [
+        "#button",
+        ".button",
+        "button",
+        "*button"
+      ],
+      "correctAnswer": ".button",
+      "hint": "الكلاس بنستخدم معاه علامة ."
+    },
+    {
+      "question": "16. Which HTML5 element is used to define the main navigation links?",
+      "options": [
+        "<header>",
+        "<menu>",
+        "<nav>",
+        "<links>"
+      ],
+      "correctAnswer": "<nav>",
+      "hint": "اختصار لـ Navigation."
+    },
+    {
+      "question": "17. Which HTML5 element represents independent, self-contained content like a blog post?",
+      "options": [
+        "<section>",
+        "<article>",
+        "<aside>",
+        "<div>"
+      ],
+      "correctAnswer": "<article>",
+      "hint": "زي المقال في الجريدة."
+    },
+    {
+      "question": "18. Which tag is used to embed a YouTube video?",
+      "options": [
+        "<video>",
+        "<embed>",
+        "<object>",
+        "<iframe>"
+      ],
+      "correctAnswer": "<iframe>",
+      "hint": "بيسمح بتضمين محتوى من موقع تاني."
+    },
+    {
+      "question": "19. Which attribute adds playback controls (play/pause, volume) to <audio> and <video> elements?",
+      "options": [
+        "controls",
+        "buttons",
+        "playback",
+        "ui"
+      ],
+      "correctAnswer": "controls",
+      "hint": "خاصية بسيطة لإظهار الأزرار."
+    },
+    {
+      "question": "20. Which global attribute provides extra information about an element as a tooltip?",
+      "options": [
+        "id",
+        "class",
+        "style",
+        "title"
+      ],
+      "correctAnswer": "title",
+      "hint": "بيظهر لما الماوس يقف على العنصر."
+    }
+  ],
+  "audio": "",
+  "video": ""
+}
